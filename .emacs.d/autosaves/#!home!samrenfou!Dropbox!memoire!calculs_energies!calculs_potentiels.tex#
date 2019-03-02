@@ -1,0 +1,550 @@
+\documentclass[12pt,a4paper,oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{amssymb,amsmath,amsthm,mathrsfs,cases,empheq,braket,bm,youngtab,appendix,color,subfig,slashed}
+\usepackage{pgfplots}
+\usepackage{xparse}
+\usepackage{breqn}
+\catcode`_=12
+\catcode`^=12
+\usepackage{tensor}
+
+
+\begin{document}
+
+\chapter{La méthode AFM}
+\label{chap:afm}
+
+Une bonne partie de la physique est basé sur la très célèbre équation de Schrödinger
+
+\begin{equation}
+  H \ket{\Phi} = E \ket{\Phi}
+\end{equation}
+
+Un cas simple est un Hamiltonien à 2 corps, que nous écrivons généralement dans la forme $H = T(p) + V(r)$, constitué d'une partie cinétique $T(p)$ et une partie potentielle $V(r)$, avec $\bm{r}$ et $\bm{p}$ les variables conjuguées de position et d'impulsion, et $r=|\bm{r}|,p=|\bm{p}|$ leurs modules respectifs.
+
+Résoudre cette équation n'est pas si simple et il existe plusieurs manières de procéder, que ça soit de manière numérique ou analytique. Nous pouvons noter la méthode WKBJ ou la méthode d'Hartree-Fock, dérivée de la méthode variationelle, grandement utilisée dans le domaine de la structure du noyau. De notre côté, nous utiliserons la méthode des champs auxiliaire - aussi appelée théorie des enveloppes %REFERENCE NECESSAIRE
+qui permet d'approximer simplement les solutions d'un Hamiltonien. La méthode étant un point crucial pour notre travail, nous l'introduirons dans ce chapitre sans rentrer dans les détais sachant qu'il a déjà été développé dans plusieurs références\cite{AFMI,AFMII}. Nous appliquerons ensuite la méthode aux différents systèmes à $N$ corps étudiés le long de ce mémoire.
+
+
+\section{Rappel de la méthode général}
+
+Soit deux Hamiltoniens distincts de part leur partie potentielle\footnote{Une démarche similaire peut être appliquée pour la partie cinétique}
+\begin{equation}
+  H = T(p)+V(r)
+\end{equation}
+dont les solutions $E_0$ sont inconnues et
+
+\begin{equation}
+  H_A = T(p)+\rho P(r)
+\end{equation}
+avec $\rho$ un paramètre réel, dont les solutions $E_A(\rho)$ sont connues. Nous introduisons une fonction $K(r)$ et l'opérateur $\hat{\rho}$ tel que
+
+\begin{equation}
+  \hat{\rho} \equiv K(r) \equiv \frac{V'(r)}{P'(r)}
+\end{equation}
+avec
+
+\begin{equation}
+  f'(x) \equiv \frac{\partial f(x)}{\partial x}.
+\end{equation}
+On suppose maintenant qu'il existe une fonction inverse de $K(r)$ notée $I=K^{-1}$, et donc
+
+\begin{equation}
+  \label{iderho}
+  r=I(\hat{\rho}),\quad K(r) = \hat{\rho}.
+\end{equation}
+On construit maintenant l'Hamiltonien dit ``auxiliaire''
+
+\begin{equation}
+  \label{vetildeuh}
+  \tilde{H}(\rho) = T(p)+\tilde{V}(r,\rho)
+\end{equation}
+avec
+
+\begin{equation}
+  \hat{V}(r,\rho) = \rho P(r) + B(\rho)
+\end{equation}
+et
+
+\begin{equation}
+  B(x)=V(I(x))-xP(I(x))
+\end{equation}
+qui nous donnent
+
+\begin{equation}
+  \tilde{H}=H_A(\rho)+B(\rho).
+\end{equation}
+Nous considérons maintenant l'opérateur $\hat{\rho}$ comme un réel $\rho$, ce qui nous permet de 
+donner les valeurs propres de l'hamiltonien ``auxilaire''
+
+\begin{equation}
+  E(\rho)=E_A(\rho)+B(\rho).
+\end{equation}
+Pour un niveau donné, la valeur $\rho_0$ qui extrémise l'énergie totale, $E(\rho)$ nous donne une approximation de la valeur propre correspondante de l'energie du Hamiltonien $H$ \cite{AFMIII}
+
+\begin{equation}
+  \label{extremenergie}
+  E \approx E(\rho_0) = E_A(\rho_0)+B(\rho_0).
+\end{equation}
+Cette valeur de $E_0$ peut être, dans certains cas, une borne supérieure ou inférieure de $E_0$.
+L'état propre $\ket{\psi(\rho_0)}$ correspondant à $E(\rho_0)$ est une fonction d'onde approchée d'un état propre du Hamiltonien $H$.
+\section{Généralisation à $N$ particules identiques et $D$ dimensions}
+
+Comme nous devons étudier l'interaction entre $N$ quarks identiques au sein d'un baryon, cela nous amène à généraliser la méthode pour $N$ particules identiques
+
+\begin{equation}
+  H = \sum^N_{i=1} T(p_i) + \sum^N_{i=1} U(|\bm{r}_i-\bm{r}|) + \sum^N_{i<j=1}V(|\bm{r}_i-\bm{r}_j|).
+\end{equation}
+avec le centre de masse $\displaystyle  \bm{r}=\frac{1}{N}\sum^N_{i=1}\bm{r}_i$, et $\displaystyle  \sum^N_{i=1} \bm{p}_i = \bm{0}$. Nous pouvons maintenant construire via \textit{AFM} le Hamiltonien ``auxiliaire'' 
+
+
+\begin{eqnarray}
+  \label{hamiltilde}
+  \tilde{H} &=& \sum^N_{i=1}\left[\frac{\bm{P}_i^2}{2\mu_i}+T(G(\mu_i))-\frac{G(\mu_i)^2}{2\mu_i}\right] \nonumber \\ 
+            & & +\sum^N_{i=1}\left[\nu_i P(s_i)+ U(I(\nu_i))-\nu_iP(I(\nu_i))\right]  \\
+            & & +\sum^N_{i<j=1}\left[\rho_{ij} S(r_{ij})+ V(J(\rho_{ij}))-\rho_{ij}S(J(\rho_{ij}))\right] \nonumber
+\end{eqnarray}
+avec
+\begin{equation}
+  s_i =  |\bm{r}_i-\bm{r}|, \quad r_{ij} = |\bm{r}_i-\bm{r}_j|
+\end{equation}
+et 
+\begin{eqnarray}
+  \label{fonctinv}
+  G(x)=F^{-1}(x) &\quad F(x)= \displaystyle  \frac{x}{T'(x)} \nonumber \\
+  I(x) = K^{-1}(x) &\quad K(x) = \displaystyle  \frac{U'(x)}{P'(x)} \\
+  J(x) = L^{-1}(x) &\quad L(x) = \displaystyle  \frac{V'(x)}{S'(x)}. \nonumber
+\end{eqnarray}
+
+Pour un état complètement symétrique ou antisymétrique, on montre que \cite{JMPS1} 
+\begin{equation}
+  \mu_i = \mu, \quad  \nu_i = \nu, \quad  \rho_{ij} = \rho
+\end{equation}
+qui réduit donc l'expression du Hamiltonien (\ref{hamiltilde})
+
+\begin{eqnarray}
+  \tilde{H}&=&N\left[T(G(\mu))-\frac{G(\mu)^2}{2\mu}\right]+\left[U(I(\nu))-\nu I(\nu)^2\right]+C_N[V(J(\rho))-\rho J(\rho)^2] \nonumber\\ 
+           & & + \sum^N_{i=1}\frac{p_i^2}{2\mu} +\nu \sum^N_{i=1}r^2_i+\rho \sum^N_{i<j=1}r^2_{ij}
+\end{eqnarray}
+avec $C_N = \frac{N(N-1)}{2}$ et où on a choisi $P(x)=S(x) = x^2$ de manière à rendre le probleme soluble par l'utilisation de l'oscillateur harmonique que nous connaissons bien. On trouve les valeurs propres de $\tilde{H}$ %REF NECESSAIRE
+
+\begin{eqnarray}
+  E(\mu,\nu,\rho) = N\left[T(G(\mu))-\frac{G(\mu)^2}{2\mu}\right]+\left[U(I(\nu))-\nu I(\nu)^2\right]\nonumber \\
+  +C_N[V(J(\rho))-\rho J(\rho)^2] + Q\sqrt{\frac{2}{\mu}(\nu+N\rho)},
+\end{eqnarray}
+avec $\displaystyle Q=\sum^{N-1}_{i=1} (2n_i+l_i)+\frac{D}{2}(N-1)$. On extrémise l'energie pour trouver les valeurs $\rho_0$, $\mu_0$ et $\nu_0$ qui nous donnent 
+
+\begin{subequations}
+  \label{gégé}
+  \begin{equation}
+    \label{g}
+    G(\mu_0) = \left[\frac{2(\nu_0+N\rho_0)\mu_0Q^2}{N^2}\right]^{1/4}
+  \end{equation}
+  \begin{equation}
+    \label{i}
+    I(\nu_0) = \left[\frac{Q^2}{2N^2 \mu_0 (\nu_0+N\rho_0)}\right]^{1/4}
+  \end{equation}
+  \begin{equation}
+    \label{j}
+    J(\rho_0) =\left[\frac{2Q^2}{(N-1)^2 \mu_0 (\nu_0+N\rho_0)}\right]^{1/4}.
+  \end{equation}
+\end{subequations}
+On réexprime les relations (\ref{g}), (\ref{i}) et (\ref{j}), avec (\ref{fonctinv}) et les définitions de $P(x)$ et $S(x)$, et avec le changement de variables
+\begin{equation}
+  r_0=\sqrt{\frac{NQ}{\sqrt{2 \mu_0 (\nu_0+N\rho_0)}}}, \quad p_0 =\frac{Q}{r_0}.
+\end{equation}
+Cela donne
+\begin{subequations}
+  \begin{eqnarray}
+    G(\mu_0)=p_0,& \qquad &\mu_0 = F(p_0)=\frac{p_0}{T'(p_0)}  \\
+    I(\mu_0)=\frac{r_0}{N},& \qquad &\nu_0 = K\left(\frac{r_0}{N}\right)=\frac{N}{2r_0}U'\left(\frac{r_0}{N}\right) \\
+    J(\mu_0)=\frac{r_0}{\sqrt{C_N}},& \qquad &\rho_0 = L\left(\frac{r_0}{\sqrt{C_N}}\right)=\frac{\sqrt{C_N}}{2r_0}V'\left(\frac{r_0}{\sqrt{C_N}}\right)
+  \end{eqnarray}
+\end{subequations}
+qui, injectés dans les équations (\ref{gégé}), nous donne
+
+\begin{equation}
+  Np_0T'(p_0)  =  r_0 U'\left(\frac{r_0}{N}\right)+\sqrt{C_N}r_0V'\left(\frac{r_0}{\sqrt{C_N}}\right).
+\end{equation}
+Finalement nous obtenons, avec $E_0=E(\mu_0,\nu_0,\rho_0)$, un système de trois équations à trois inconnues, $r_0$, $p_0$ et $E_0$
+% $
+\begin{subequations}
+  \begin{empheq}[left={\empheqlbrace}]{alignat=2}
+    & E_0 & = & NT(p_0)+NU(\frac{r_0}{N})+C_NV(\frac{r_0}{\sqrt{C_N}}) \\
+    & p_0 &  =&  \frac{Q}{r_0}  \\
+    & Np_0T'(p_0) & = & r_0 U'\left(\frac{r_0}{N}\right)+\sqrt{C_N}r_0V'\left(\frac{r_0}{\sqrt{C_N}}\right)
+  \end{empheq}
+\end{subequations}%$
+
+
+\section{L'AFM appliquée pour deux potentiels}
+
+La méthode des champs auxiliaires nous fournit un outil très pratique dans l'étude des systèmes à $N$ corps. Il permet de trouver l'énergie approchée d'un Hamiltonien. Ainsi, elle nous est très utile dans notre travail de comparaison de différents modèles de potentiels. 
+
+Rappelons le système de trois équations démontrés dans le chapitre précédent
+% $
+\begin{subequations}
+  \label{systAFM}
+  \begin{empheq}[left={\empheqlbrace}]{alignat=2}
+    &  E_0 & = & NT(p_0)+NU(\frac{r_0}{N})+C_NV(\frac{r_0}{\sqrt{C_N}}) \label{syst1}\\
+    & p_0 &  =&  \frac{Q}{r_0}  \label{syst2}\\
+    & Np_0T'(p_0) & = & r_0 U'\left(\frac{r_0}{N}\right)+\sqrt{C_N}r_0V'\left(\frac{r_0}{\sqrt{C_N}}\right) \label{syst3}
+  \end{empheq}
+\end{subequations}% $
+avec $C_N = \frac{N(N-1)}{2}$ et $\displaystyle Q=\sum^{N-1}_{i=1} (2n_i+l_i)+\frac{D}{2}(N-1)$
+\\
+
+Lors de notre étude, nous considérons uniquement l'interaction à deux corps entre particules, donc $U(x) = 0$, et le système dans l'état fondamental ($n_j=l_j=0$).
+Cette dernière considération sera expliquée par la suite.
+
+\subsection{Potentiel exponentiel général}
+
+Pour plus de généralité, nous prenons une partie cinétique et potentielle dont les paramètres nous permettront par la suite de traiter les cas que nous allons étudier dans les chapitres suivants.
+
+Soit l'expression de l'énergie cinétique et potentiel qui sont respectivement
+\begin{equation}
+  T(p)=M p^\alpha
+\end{equation}
+avec de sorte que $T(p)$ croit avec $p$, et  
+\begin{equation}
+  \label{potentielexpogeneral}
+  V(x)=-\gamma e^{-\beta x^\lambda}
+\end{equation}
+avec $\gamma>0$, $\beta >0$ et $\lambda>1$. 
+
+Exprimer l'énergie cinétique de cette manière nous permet par exemple de couvrir les cas
+non-relativiste ($\alpha=2$ et $M=1/2m$) et relativiste à masse nulle ($\alpha=M=1$).
+Concernant la partie potentielle, cette expression permet de choisir facilement le cas du potentiel
+exponentiel $-\gamma e^{-\beta x}$ et un potentiel gaussien. Cela permet aussi d'avoir une ``poche'' de potentiel pas trop abrupte.
+
+Nous pouvons donc injecter ces deux expressions dans le système d'équation précédent, en ne considérant que les interactions à 2 corps ($U(x)=0$). Nous obtenons le système
+% $
+\begin{subequations}
+  \begin{empheq}[left={\empheqlbrace}]{alignat=2}
+    & E_0 & = & NM p_0^\alpha - C_N \gamma \exp\left(-\beta \left(\frac{r_0}{\sqrt{C_N}}\right)^\lambda\right) \label{syst1}\\
+    & p_0 &  =&  \frac{Q}{r_0}  \label{syst2}\\
+    & Np_0^\alpha M \alpha & = & C_N^{\frac{2-\lambda}{2}}r_0^\lambda \beta \gamma \lambda \exp\left(-\beta \left(\frac{r_0}{\sqrt{C_N}}\right)^\lambda\right)  \label{syst3}.
+  \end{empheq}
+\end{subequations}% $
+En injectant l'equation (\ref{syst2}) dans (\ref{syst3}) nous obtenons
+
+\begin{equation}
+  \label{beaumembre}
+  \frac{N \alpha M Q^\alpha}{\gamma \beta \lambda C_N^{\frac{2-\lambda}{2}}} = r_0^{\alpha + \lambda} \exp\left(-\beta \left(\frac{r_0}{\sqrt{C_N}}\right)^\lambda\right).
+\end{equation}
+Arrêtons nous un instant pour discuter de la crédibilité de cette égalité. En effet nous travaillons avec un rayon $r_0$ positif. Le membre de droite de cette équation est donc strictement positif, ce qui est bien le cas étant donné les contraintes sur les paramètres du membre de gauche de (\ref{beaumembre}). Reprenons maintenant le raisonnement précédent en appliquant le changement de variable
+
+\begin{equation}
+  \label{chgtvar}
+  y= \beta \left(\frac{r_0}{\sqrt{C_N}}\right)^\lambda,
+\end{equation}
+
+
+\begin{equation}
+  \label{eqtranspotentielgeneral}
+  \frac{N\alpha M Q^\alpha \beta^\frac{\alpha}{\lambda}}{\gamma\lambda C_N^\frac{\alpha+2}{2}}=e^{-y} y^\frac{\alpha+\lambda}{\lambda}.
+\end{equation} Cette équation transcendente peut se résoudre en utilisant la fonction de lambert.
+Pour rappel, l'équation
+
+\begin{equation}
+  (a z + b)^n e^{- z}=\theta
+\end{equation}
+a pour solutions
+\begin{equation}
+  z=\frac{-b}{ a} -nW\left[-\frac{1}{an}\left(e^{-b/a}\theta\right)^{1/n}\right],
+\end{equation}
+avec $W(x)$ la fonction de Lambert présentée dans l'annexe \ref{ann:lambert}.
+Ici, les paramètres de l'équation (\ref{eqtranspotentielgeneral}) sont
+
+\begin{equation}
+  a=1, \quad b=0, \quad n=\frac{\alpha+\lambda}{\lambda} \quad \text{et} \quad \theta =   \frac{N\alpha M Q^\alpha \beta^\frac{\alpha}{\lambda}}{\gamma\lambda C_N^\frac{\alpha+2}{2}}
+\end{equation} qui nous donne donc
+
+
+\begin{equation}
+  \label{definiy}
+  y=-\frac{\alpha+\lambda}{\lambda}W\left[-\frac{\lambda}{\alpha+\lambda}\left(\frac{N\alpha M Q^\alpha \beta^\frac{\alpha}{\lambda}}{\gamma\lambda C_N^\frac{\alpha+2}{2}}\right)^{\frac{\lambda}{\alpha+\lambda}}\right]= \beta \left(\frac{r_0}{\sqrt{C_N}}\right)^\lambda.
+\end{equation}
+Finalement, on peut injecter l'équation (\ref{syst3}) dans (\ref{syst1}), en renommant $y$ défini
+dans l'équation (\ref{definiy}) en $\xi$, qui nous donne
+
+\begin{equation}
+  \label{energieliaisongeneral}
+  E_0=C_N \gamma e^{-\xi} \left(\frac{\xi \lambda}{\alpha}-1\right),
+\end{equation}
+avec
+
+\begin{equation}
+  \label{xiexpressiongeneral}
+  \xi=-\frac{\alpha+\lambda}{\lambda}W\left[-\frac{\lambda}{\alpha+\lambda}\left(\frac{N\alpha M Q^\alpha \beta^\frac{\alpha}{\lambda}}{\gamma\lambda C_N^\frac{\alpha+2}{2}}\right)^{\frac{\lambda}{\alpha+\lambda}}\right].
+\end{equation}
+Étudions plus en détail cette expression. Tout d'abord, la fonction de Lambert qui ressort de l'equation est composée de deux branches. Déterminons quelle branche sera utlisée lors de nos futurs calculs. 
+
+En sachant que $\lambda$, $\gamma$, $\beta$, $M$, $\alpha$, $C_N$ et $Q$ sont positifs, on a que
+\begin{equation}
+  \label{chiexpress}
+  -\frac{\lambda}{\alpha+\lambda}\left(\frac{N\alpha M Q^\alpha \beta^\frac{\alpha}{\lambda}}{\gamma\lambda C_N^\frac{\alpha+2}{2}}\right)^{\frac{\lambda}{\alpha+\lambda}} = \chi \leq 0.
+\end{equation}
+Cela implique plusieurs choses. Premièrement, la fonction de Lambert est définie pour les $x \in [-1/e,+\infty [ $,  on a donc la condition
+
+\begin{equation}
+  -\frac{1}{e}\leq\chi\leq0.
+\end{equation}
+Cette équation impose des contraintes sur $Q$ étant donné les valeurs des paramètres et de $N$.
+
+Ensuite, par les propriétés de la fonction de Lambert (voir annexe \ref{ann:lambert}), on a que $(W[\chi]\leq 0, \forall \chi \leq 0 )$ et donc, par (\ref{xiexpressiongeneral}), que
+
+\begin{equation}
+  \xi\geq 0
+\end{equation}
+qui reste cohérent étant donné sa relation avec le rayon en (\ref{definiy}).
+Nous pouvons déterminer la branche utilisée grâce à ces conditions. On sait qu'une poche de potentiel accepte parfois des états liés. L'expression (\ref{energieliaisongeneral}) nous donne l'énergie de liaison d'un système à $N$ corps qui représentera par la suite un baryon composé de $N$ quarks pour une cinématique non relativiste. Une énergie négative se traduit par un état lié tandis qu'une énergie de liaison nulle ou positive signifie la disparition ou ``fusion'' du baryon. Il faut donc chercher la solution qui donne $E<0$, en sachant que parfois les conditions ne sont pas réunies. Cette condition réside donc dans la détermination du signe de cette expression et est déterminé par
+
+\begin{equation}
+  \frac{\xi \lambda}{\alpha}-1.
+\end{equation}
+Considérons maintenant uniquement la branche $W_{-1}$, nous avons
+
+\begin{equation}  
+  (\forall x, -\frac{1}{e}<x<0) \Rightarrow W_{-1}(x)<-1,
+\end{equation}
+et donc
+\begin{equation}
+  \frac{\xi \lambda}{\alpha}=-\frac{\alpha+\lambda}{\alpha}W_{-1}\left[\chi\right] > \frac{\alpha+\lambda}{\alpha}>1,
+\end{equation}
+car $\alpha$ et $\lambda$ sont strictement positifs. Nous avons donc
+\begin{equation}
+  E_0=C_N \gamma e^{-\xi} \left(\frac{\xi \lambda}{\alpha}-1\right)>0,
+\end{equation}
+et ce pour tout $\chi$. Il est donc inutile pour nous de faire nos calculs dans la branche $W_{-1}$. Regardons maintenant si nous avons bien des états liés et si possible un point de fusion dans la branche $W_0$. Par un même raisonnement nous avons que
+
+\begin{equation}
+  \label{coolverifie}
+  0\leq \frac{\xi \lambda}{\alpha}\leq \frac{\alpha+\lambda}{\alpha}.
+\end{equation}
+Par (\ref{energieliaisongeneral}), nous avons
+
+\begin{equation}
+  E_0\leq0 \iff \frac{\xi \lambda}{\alpha} \leq 1,
+\end{equation}
+ce qui est bien vérifié graĉe à (\ref{coolverifie}) et nous avons donc
+\begin{equation}
+  E_0\leq 0 \iff W_{0}[\chi] \geq -\frac{\alpha}{\alpha+\lambda},
+\end{equation}
+en sachant que seul $\chi$ aura une dépendance en la température\footnote{ou plutôt les paramètres $\gamma$ et $\beta$ et $M$ du potentiel, avec l'expression de $\chi$ en (\ref{chiexpress})}, $\lambda$ et $\alpha$ étants des entiers positifs. Nous avons donc un point de fusion et des états liés possibles dans la branche $W_{0}$.
+
+En guise de conclusion, nous pouvons utiliser l'equation (\ref{energieliaisongeneral}) pour le cas non relativiste
+\begin{equation}
+  T(x)=\frac{x^2}{2m},
+\end{equation}
+avec un potentiel exponentiel
+\begin{equation}
+  V(x)=-\gamma e^{-\beta x},
+\end{equation}
+qui revient donc à reprendre (\ref{potentielexpogeneral}) avec le paramètre
+\begin{equation*}
+  \lambda = 1
+\end{equation*}
+pour la partie potentielle et
+\begin{equation*}
+  \alpha = 2 \qquad  M =\frac{1}{2m}
+\end{equation*}
+pour la partie cinétique, ce qui nous donne
+\begin{equation}
+  E_0= C_N \gamma e^{-\xi}\left(\frac{\xi}{2}-1\right),
+\end{equation}
+avec
+\begin{equation}
+  \xi= -3 W\left[-\frac{1}{3}  \left(\frac{N Q^2 \beta^2}{m \gamma C_N^2}\right)^\frac{1}{3} \right].
+\end{equation}
+
+\subsection{Potentiel de Yukawa}
+
+Intéressons nous maintenant au célèbre potentiel de Yukawa. Comme pour le cas précédent, nous utiliserons une énergie cinétique générale, et nous ne considèrerons seulement l'interaction à deux corps. Soit le potentiel
+\begin{equation}
+  \label{potentielyukawa}
+  V(x)=\frac{-\gamma e^{-\beta x}}{x}
+\end{equation}
+avec $\gamma>0$ et $\beta>0$, et une énergie cinétique
+\begin{equation}
+  T(x)=M x^\alpha
+\end{equation}
+avec $M>0$ et $\alpha>0$. Le système d'équation devient donc
+% $
+\begin{subequations}
+  \begin{empheq}[left={\empheqlbrace}]{alignat=2}
+    & E_0 &=&   NMp_0^\alpha - \gamma \frac{C_N^{3/2}}{r_0} \exp\left(\frac{-\beta r_0}{\sqrt{C_N}}\right) \label{pot21} \\
+    & p_0 &  =&  \frac{Q}{r_0} \label{pot22} \\
+    & N\alpha M p_0^\alpha & = &  \gamma r_0 \sqrt{C_N}  \left( \frac{C_N}{r_0^2} + \frac{\beta \sqrt{C_N}}{r_0}\right) \exp\left(\frac{-\beta r_0}{\sqrt{C_N}}\right).\label{pot23}
+  \end{empheq}
+\end{subequations}
+% $
+On injecte (\ref{pot22}) dans l'équation (\ref{pot23}), puis on effectue quelques mises en évidence pour obtenir
+
+\begin{equation}
+  N\alpha M Q^\alpha = \gamma r_0^{\alpha-1} C_N^{3/2} \exp\left(\frac{-\beta r_0}{\sqrt{C_N}}\right) \left( \frac{r_0 \beta}{\sqrt{C_N}} + 1 \right) .
+\end{equation}
+Posons $y = \frac{ r_0 \beta}{\sqrt{C_N}}$, on a donc
+
+\begin{equation}
+  \label{yukawagen:alpha1}
+  \frac{\alpha N M Q^\alpha \beta^{\alpha-1}}{\gamma C_N^{\frac{\alpha + 2}{2}}}=e^{-y} y^{\alpha - 1}(y+1).
+\end{equation}
+Cette équation transcendente peut être résolue en utilisant la fonction de Lambert généralisée présentée dans l'annexe \ref{ann:lambert}. Comme il nous est difficile de traiter l'infinité de cas pour $\alpha$ car cela impliquerait d'étudier chaque fonction généralisée de Lambert qui lui correspond. Nous ne nous intéresserons de ce fait qu'aux cas où $\alpha=1$ et $\alpha=2$.
+
+\subsubsection{Potentiel de Yukawa pour $\alpha=1$}
+
+A titre de curiosité, prenons $\alpha=1$, l'équation (\ref{yukawagen:alpha1}) devient donc
+
+\begin{equation}
+  \frac{N M Q}{\gamma C_N^{3/2}}=e^{-y}(y+1),
+\end{equation}
+qui se résoud en utilisant la fonction de lambert ``classique'', avec le changement de variable
+\begin{equation}
+  \label{chgtuy}
+  y+1=-u.
+\end{equation}
+Nous obtenons
+\begin{equation}
+  -\frac{N M Q}{\gamma e C_N^{3/2}}=e^{u}u,
+\end{equation}
+dont les solutions sont
+
+\begin{equation}
+  u = W\left[-\frac{N M Q}{\gamma e C_N^{3/2}}\right] = -y-1.
+\end{equation}
+ou encore
+\begin{equation}
+  \label{igrecquepotyuka1}
+  y = -1 - W\left[-\frac{N M Q}{\gamma e C_N^{3/2}}\right] = \frac{ r_0 \beta}{\sqrt{C_N}}.
+\end{equation}
+
+On injecte ensuite l'équation (\ref{pot23}) dans (\ref{pot21}) avec (\ref{igrecquepotyuka1}) et nous avons finalement, avec $-y=\xi$
+
+\begin{equation}
+  E_0 = C_N \beta \gamma \exp\left(1 + W\left[-\frac{N M Q}{\gamma e C_N^{3/2}}\right]\right)
+\end{equation}
+
+Nous remarquons que l'énergie est positive quelque soit les valeurs de $\beta$, $C_N$, $\gamma$ et $\xi$, il n'existe donc aucuns états liés pour $\alpha=1$ et ce cas sort du contexte de notre étude. 
+
+\subsubsection{Potentiel de Yukawa pour $\alpha=2$}
+
+Pour $\alpha=2$, avec pour changement de variable $-y=x$, l'équation (\ref{yukawagen:alpha1}) devient
+\begin{equation}
+  \label{yukawagen:alpha1}
+  \frac{2 N M Q^2\beta}{\gamma C_N^2}=e^{x}x(x-1).
+\end{equation}
+Pour résoudre cette équation transcendente, nous utilisons la fonction de Lambert généralisée décrite dans l'annexe \ref{ann:lambert}.
+Sachant que
+
+\begin{equation}
+  W\left(^{0,1}_{\text{ }};e^x x(x-1)\right)=x,
+\end{equation}
+avec
+\begin{equation}
+  \label{kadef}
+  K =  \frac{2 N M Q^2\beta}{\gamma C_N^2},
+\end{equation}
+on a
+
+\begin{equation}
+  \label{ypot2}
+  x=W\left(^{0,1}_{\text{ }};K\right),
+\end{equation}
+et donc
+
+\begin{equation}
+  \label{r0yukawa}
+  r_0 = -\frac{\sqrt{C_N}}{\beta} W\left(^{0,1}_{\text{ }};K\right).
+\end{equation}
+En injectant (\ref{pot23}) dans l'équation (\ref{pot21}) en gardant le changement de variable $x=\frac{-\beta r_0}{\sqrt{C_N}}$, nous avons
+
+\begin{equation}
+  E_0 = \frac{\gamma \beta C_N}{2} e^x\left(1+\frac{1}{x}\right),
+\end{equation}
+et donc avec la valeur de $x$ de l'équation (\ref{ypot2}), nous obtenons
+
+\begin{equation}
+  \label{energieyukawa}
+  E_0 = \frac{\gamma \beta C_N}{2} e^{W\left(^{0,1}_{\text{ }};K\right)}\left(1+\frac{1}{W\left(^{0,1}_{\text{ }};K\right)}\right)
+\end{equation}
+avec la définition de $K$ en (\ref{kadef}).
+
+Comme pour le potentiel exponentiel, nous pouvons nous demander quelle branche est sollicitée. Il existe trois branches distinctes à notre 
+fonction $W\left(^{0,1}_{\text{ }};x\right)$, que nous notons par analogie avec la fonction de Lambert traditionnelle : $W_{-\phi}\left(^{0,1}_{\text{ }};x\right)$, $W_{1/\phi}\left(^{0,1}_{\text{ }};x\right)$ et $W_{+\infty}\left(^{0,1}_{\text{ }};x\right)$, avec $\phi$ le nombre d'or (voir annexe \ref{ann:lambert}). Une rapide étude de signe sur le rayon (\ref{r0yukawa}), l'énergie (\ref{energieyukawa}) et l'expression de l'argument $K$ nous permet de trouver
+
+\begin{equation}
+  K\geq 0
+\end{equation}
+et 
+\begin{equation}
+  \forall x \geq 0, \quad  W_{+\infty}\left(^{0,1}_{\text{ }};x\right)>0
+\end{equation}
+Avec cette condition, nous pouvons remarquer que l'énergie sera toujours positive dans la branche $ W_{+\infty}\left(^{0,1}_{\text{ }};x\right)$. Nous sommes donc contraints à choisir entre la branche $ W_{-\phi}$ et $ W_{1/\phi}$. Pour nous aider à faire ce choix, nous pouvons passer par une approximation à la limite $\beta \rightarrow 0$, l'exponentielle peut dans ce cas être exprimé sous forme de polynôme via la série de taylor, rappelons
+
+\begin{equation}
+  e^x=\sum^\infty_{n=0}\frac{x^n}{n!}
+\end{equation} 
+et donc
+
+\begin{equation}
+  e^{-\beta x} = 1-\beta x + \mathcal{O}(x^2).
+\end{equation}
+Le potentiel de Yukawa se réécrit donc comme
+
+\begin{equation}
+  V(x)=-\frac{\gamma}{x}+\gamma\beta +\mathcal{O}(x).
+\end{equation}
+En injectant ce potentiel dans le système d'équation (\ref{systAFM}), nous trouvons l'énergie\footnote{Ce calcul a déjà été réalisé dans la référence \cite{AFMI}}
+
+\begin{equation}
+  \label{energiecoulombien}
+  E_0 = \gamma \beta C_N - \frac{\gamma^2 C_N^3}{4 N M Q^2}.
+\end{equation}
+Partons maintenant de l'expression de l'énergie en (\ref{energieyukawa}), en approximant l'exponentielle sous forme de polynôme et en prenant la limite (puisque $\beta \rightarrow 0$ $\Rightarrow$ $K \rightarrow 0$) $\lim_{x\to0} W\left(^{0,1}_{\text{ }};x\right) = -x$, (\ref{energieyukawa}) devient
+
+\begin{equation}
+  E_0 = \frac{\gamma\beta C_N}{2}(1-K)\left(1-\frac{1}{K}\right),
+\end{equation}
+et donc
+
+\begin{equation}
+  E_0 = \gamma \beta C_N - \frac{\gamma \beta C_N}{2} \left(\frac{1}{K}+K\right) \approx  \gamma \beta C_N - \frac{\gamma \beta C_N}{2K}
+\end{equation}
+
+Car $K$ est petit et donc que $\left(\frac{1}{K}+K\right) \approx \left(\frac{1}{K}\right)$. Nous retrouvons bien l'expression de l'énergie (\ref{energiecoulombien}).
+La branche sollicitée est donc $W_{1/\phi}$.
+
+
+\section{Propriété de l'approximation}
+
+Pour conclure ce chapitre, nous pouvons déterminer de quelle manière nos valeurs propres approches celles du Hamiltonien exact grâce au théorème de comparaison expliqué dans la chapitre précédent. 
+Pour notre travail nous utiliserons deux types de potentiels, un potentiel de type exponentiel et un de type Yukawa, pour ce faire nous considérons les parties cinétiques des Hamiltoniens identiques. La démarche étant similaire pour les deux potentiels, nous ne détaillerons que le cas du potentiel de Yukawa pour $\alpha=2$. 
+
+Soit une fonction $g(x)$ tel que
+\begin{equation}
+  V(x)=g(x^2),
+\end{equation}
+ou encore 
+
+\begin{equation}
+  g(y)=V(\sqrt{y}) = \frac{-\gamma e^{-\beta\sqrt{y}}}{\sqrt{y}}
+\end{equation}
+Notre but ici est de trouver la concavité de $g(x)$, pour ce faire, étudions le signe de sa dérivée seconde
+
+\begin{equation}
+  g''(y)=-\frac{\gamma\left(3+3\sqrt{y}\beta+y\beta^2\right)e^{-\beta\sqrt{y}}}{4y^{5/2}}
+\end{equation}
+Nous remarquons bien que
+\begin{equation}
+  g''(y)\leq 0, \quad \forall y.
+\end{equation}
+Nos valeurs de l'energie de notre Hamiltonien auxiliaire borne donc supérieurement celles du Hamiltonien exact. Une démarche similaire permet de trouver que les valeurs pour le Hamiltonien auxiliaire constitué du potentiel exponentiel est également une borne supérieur de la solution exacte.
+
+\bibliography{biblio}
+\bibliographystyle{abbrv}
+
+\end{document}
+

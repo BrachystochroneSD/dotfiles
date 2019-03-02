@@ -1,0 +1,12 @@
+#!/bin/bash
+
+owl(){
+    dunstify -i owl 'Whoo is that?'
+}
+
+case $1 in
+    --owl)
+	owl
+	;;
+esac
+echo A

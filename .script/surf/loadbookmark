@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. "${HOME}/.config/wpg/formats/colors.sh"
+
+cat ~/.surf/bookmarks | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Load Bookmark' -i -l 10 -w $1 | awk '{print $1}'

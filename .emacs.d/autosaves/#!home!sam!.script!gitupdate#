@@ -1,0 +1,20 @@
+#!/bin/bash
+
+[[ -n $2 ]] && name_commit=$2 || name_commit=update:$(date +%D)
+
+gitcommit(){
+    folder=.
+    git add $folder && git commit $folder -m $name_commit && git push
+}
+
+case $1 in
+    --here)
+	gitcommit
+	;;
+    --dotscripts)
+	folder=~/.github/dotscripts
+	gitcommit
+	;;
+    *)
+	echo -e 'Available options \n    --dotscripts name_of_commit(optionnal) \n    --here name_of_commit(optionnal)'
+esac

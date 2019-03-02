@@ -1,0 +1,82 @@
+#!/bin/bash -i
+
+apikey=AIzaSyAxoOzmqHSjvkv0LzYm5v4vUzvjorBu374
+max_results=30
+
+. "${HOME}/.config/wpg/formats/colors.sh"
+
+aborted(){
+    echo "Aborted"
+    exit
+}
+
+save_channel(){
+    check=$(cat ~/.emacs.d/rss/rss.org | grep $channelID)
+    [[ ! -n $check ]] && save_or_not=$(echo -e "No\nYes" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "Save this channel ?")
+    [[ $save_or_not == Yes ]] && echo '*** [[https://www.youtube.com/feeds/videos.xml?channel_id='$channelID']['$channame']]' >> ~/.emacs.d/rss/rss.org 
+}
+
+get_channel_id(){
+    echo $channelname
+    channelsearch=$(curl -s \
+			 -G https://www.googleapis.com/youtube/v3/search \
+			 --data-urlencode 'q='"'$channelname'"'' \
+			 -d 'type=channel' \
+			 -d 'maxResults=25' \
+			 -d 'part=snippet' \
+			 -d 'key='$apikey'')
+    chanchoice=$(echo $channelsearch | jq -r '.items[] | .snippet.channelTitle' | awk '{printf ("%2d: %s\n",NR,$0)}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p 'Which channel ?')
+    channame=$(echo $chanchoice | sed 's/.*: //')
+    chanchoice=$(echo $chanchoice | sed 's/:.*//')
+    [[ ! -n $chanchoice ]] && youtube_search
+    (( numchan= $chanchoice - 1 ))
+    channelID=$(echo $channelsearch | jq -r '.items['$numchan'].snippet.channelId')
+}
+
+youtube_search(){
+    channelID=""
+    searchingshit=$(cat ~/.script/youtube/datas/searchhistory | awk '{print$0}END{printf "\n\nChannel option"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
+    if [[ $searchingshit == 'Channel option' ]];then
+	channelname=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Channel Search") || youtube_search
+        get_channel_id
+	save_channel
+	searchingshit=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Search on this channel:") || youtube_search 
+    fi
+    echo $searchingshit >~/.script/youtube/datas/searchhistory
+    echo "Searching for "$searchingshit
+
+    if [[ ! -n $channelID ]];then
+	youtubesearchdata=$(curl -s \
+				 -G https://www.googleapis.com/youtube/v3/search \
+				 -d 'type=video' \
+				 -d 'maxResults='$max_results'' \
+				 -d 'key='$apikey'' \
+				 -d 'part=snippet' \
+				 --data-urlencode 'q='"'$searchingshit'"''
+				 )
+    else
+	youtubesearchdata=$(curl -s \
+				 -G https://www.googleapis.com/youtube/v3/search \
+				 -d 'type=video' \
+				 -d 'maxResults='$max_results'' \
+				 -d 'key='$apikey'' \
+				 -d 'part=snippet' \
+				 -d 'channelId='$channelID'' \
+				 --data-urlencode 'q='"'$searchingshit'"''
+				 )
+    fi
+    video=$(echo $youtubesearchdata | jq -r '.items[] | .snippet.title, .snippet.channelTitle, .snippet.publishedAt' | awk '{printf ("%.85s\n",$0)}' | awk '(NR%3==1){name=$0}(NR%3==2){date=$0}(NR%3==0){printf ("%2d: %-85s %-20s %.10s \n", NR/3, name, date, $0)}' | sed 's/|//g' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 30 -i -p 'YTSearch' | sed 's/:.*//')
+    [[ ! -n $video ]] && youtube_search
+    (( num= $video - 1 ))
+    videoID=$(echo $youtubesearchdata | jq -r '.items['$num'].id.videoId')
+
+    res=$(echo -e "720\n1080\n360" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "Which resolution? (if avalaible)") || youtube_search
+    mpv --ytdl-format="[height<=?"$res"]" 'https://www.youtube.com/watch?v='$videoID    
+    exit
+}
+
+if ping -q -c 1 -W 1 1.1.1.1 &>/dev/null; then
+    youtube_search
+else
+    echo "No internet connection"
+fi

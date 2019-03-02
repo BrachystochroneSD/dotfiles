@@ -1,0 +1,8 @@
+(
+ (:id "sha1:4158b124e1e8d2d100f3297176fcf240ba85542a" :fingerprint "sha1:8f:cd:2f:2b:37:5b:d9:7c:fb:5c:8f:9e:fc:84:f8:22:75:4e:d4:de" :host "melpa.milkbox.net:443" :conditions (:no-host-match))
+ (:id "sha1:85457c729378cc93c732b6a3941c8e4f9c2e60f3" :fingerprint "sha1:ab:a6:d7:6a:b3:d3:63:fa:19:0d:65:41:60:23:6e:ef:d3:2a:46:dc" :host "marmalade-repo.org:443" :conditions (:expired :unknown-ca :invalid))
+ (:id "sha1:81c6b3ba58ae4352c80fd1f6dc2ad263b78441d9" :fingerprint "sha1:a6:69:28:f1:9e:dd:56:ed:ad:85:7f:1d:22:a3:74:61:c9:2d:80:e2")
+ (:id "sha1:1281e6b8174642f83221222c6f4835ad92f32136" :fingerprint "sha1:a6:69:28:f1:9e:dd:56:ed:ad:85:7f:1d:22:a3:74:61:c9:2d:80:e2")
+ (:id "sha1:e0acbeee81b3221f64362597325b2aa4c4065761" :fingerprint "sha1:a6:69:28:f1:9e:dd:56:ed:ad:85:7f:1d:22:a3:74:61:c9:2d:80:e2")
+ (:id "sha1:706608f9b7fcfdea563351d49047f296d74a5a76" :fingerprint "sha1:de:47:56:bc:43:07:da:63:23:30:a0:ab:fa:fc:4a:c0:6c:88:cf:ae")
+)

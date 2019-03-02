@@ -1,0 +1,6 @@
+#!/bin/bash
+
+df ~ / | grep \[0-9]\ | awk '{printf $2" "$3" "}' | {
+    read homeSize homeUsed rootSize rootUsed
+    echo :$(echo "($homeUsed + $rootUsed) * 100 / ($homeSize + $rootSize)" | bc -l | awk '{print int($1+0.5)}')%	
+    }

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+cable=$(cat /sys/class/net/eth0/carrier)
+
+if [[ $cable == 1 ]];then
+    echo E
+else
+    wifi=$(awk 'NR==3 {print $4}' /proc/net/wireless)
+    wifi="${wifi%.}"
+    wifi="${wifi#-}"
+    if [[ ! $wifi == "" ]];then
+	if [[ $wifi -le 55 ]];then
+	    echo A
+	elif [[ $wifi -le 75 ]];then
+	    echo B
+	elif [[ $wifi -le 85 ]];then
+	    echo C
+	else
+	    echo D
+	fi
+    else
+	echo 
+    fi
+fi

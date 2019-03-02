@@ -1,0 +1,21 @@
+#!/bin/bash
+
+prount(){
+    number=$(pacman -Qu | wc -l)
+    (( ! $number == 0 )) && echo  $number || echo ""
+}
+
+update(){
+    exec sudo pacman -Syu
+    notify-send 'Update finished successfully!'
+    prount
+}
+
+case $1 in
+    --update)
+	update
+	;;
+    *)
+	prount
+	;;
+esac

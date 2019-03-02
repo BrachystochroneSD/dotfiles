@@ -1,0 +1,6 @@
+[dmenu]
+dmenu_command = dmen
+
+[dmenu_passphrase]
+nf = #0C1A19
+nb = #0C1A19

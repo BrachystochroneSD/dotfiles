@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { MaindbProvider } from '../../providers/maindb/maindb';
+
+@Injectable()
+export class ShareService {
+
+    uidict: any;
+    uipercent: number;
+
+    
+    constructor() {
+	this.dict
+    }
+
+
+    queryDictandPercent(dico,perco){
+	
+    }
+    
+    setDictandPercent(dico) {
+	this.uidict = dico;
+	this.uipercent = perco;
+    }
+    
+    saveDataStorage() {
+	console.log('test');
+    }
+    
+}

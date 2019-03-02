@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle *ngIf="!selectedItem">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{selectedItem.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card color="secondary">
+    <ion-card-content>
+      <h1>NameOfTheCours</h1>
+      <h2>Prof: Mme Mélon</h2>
+      <p>{{description.}}</p>
+      <ion-buttons end>
+	<button round ion-button item-end icon-only (click)="showEditPrompt()">
+	  <ion-icon name="create"></ion-icon>
+	</button>
+      </ion-buttons>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-list>
+    <button *ngFor="let per of selectedItem.per" ion-item (click)="doCheckbox(per.checked)"> {{per.date}} </button>
+  </ion-list>
+  
+</ion-content>

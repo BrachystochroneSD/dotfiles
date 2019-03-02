@@ -1,0 +1,285 @@
+diff --git a/config.def.h b/config.def.h
+index 0e01717..e116631 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -82,6 +82,9 @@ char *termname = "st-256color";
+  */
+ unsigned int tabspaces = 8;
+ 
++/* bg opacity */
++float alpha = 0.8;
++
+ /* Terminal colors (16 first used in escape sequence) */
+ static const char *colorname[] = {
+ 	/* 8 normal colors */
+@@ -109,6 +112,7 @@ static const char *colorname[] = {
+ 	/* more colors can be added after 255 to use with DefaultXX */
+ 	"#cccccc",
+ 	"#555555",
++	"black",
+ };
+ 
+ 
+@@ -117,7 +121,7 @@ static const char *colorname[] = {
+  * foreground, background, cursor, reverse cursor
+  */
+ unsigned int defaultfg = 7;
+-unsigned int defaultbg = 0;
++unsigned int defaultbg = 258;
+ static unsigned int defaultcs = 256;
+ static unsigned int defaultrcs = 257;
+ 
+diff --git a/config.mk b/config.mk
+index 0cbb002..1d2f0e2 100644
+--- a/config.mk
++++ b/config.mk
+@@ -16,7 +16,7 @@ PKG_CONFIG = pkg-config
+ INCS = -I$(X11INC) \
+        `$(PKG_CONFIG) --cflags fontconfig` \
+        `$(PKG_CONFIG) --cflags freetype2`
+-LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft \
++LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender\
+        `$(PKG_CONFIG) --libs fontconfig` \
+        `$(PKG_CONFIG) --libs freetype2`
+ 
+diff --git a/st.c b/st.c
+index cf8687e..b8e6077 100644
+--- a/st.c
++++ b/st.c
+@@ -2594,7 +2594,6 @@ draw(void)
+ 			term.ocx, term.ocy, term.line[term.ocy][term.ocx]);
+ 	term.ocx = cx, term.ocy = term.c.y;
+ 	xfinishdraw();
+-	xximspot(term.ocx, term.ocy);
+ }
+ 
+ void
+diff --git a/st.h b/st.h
+index 38c61c4..b7634ab 100644
+--- a/st.h
++++ b/st.h
+@@ -120,3 +120,4 @@ extern char *termname;
+ extern unsigned int tabspaces;
+ extern unsigned int defaultfg;
+ extern unsigned int defaultbg;
++extern float alpha;
+diff --git a/win.h b/win.h
+index a6ef1b9..31f327d 100644
+--- a/win.h
++++ b/win.h
+@@ -36,4 +36,3 @@ void xsetmode(int, unsigned int);
+ void xsetpointermotion(int);
+ void xsetsel(char *);
+ int xstartdraw(void);
+-void xximspot(int, int);
+diff --git a/x.c b/x.c
+index 865dacc..588dec3 100644
+--- a/x.c
++++ b/x.c
+@@ -98,6 +98,7 @@ typedef struct {
+ 	XSetWindowAttributes attrs;
+ 	int scr;
+ 	int isfixed; /* is fixed geometry? */
++	int depth; /* bit depth */
+ 	int l, t; /* left and top offset */
+ 	int gm; /* geometry mask */
+ } XWindow;
+@@ -139,9 +140,6 @@ static void xdrawglyphfontspecs(const XftGlyphFontSpec *, Glyph, int, int, int);
+ static void xdrawglyph(Glyph, int, int);
+ static void xclear(int, int, int, int);
+ static int xgeommasktogravity(int);
+-static void ximopen(Display *);
+-static void ximinstantiate(Display *, XPointer, XPointer);
+-static void ximdestroy(XIM, XPointer, XPointer);
+ static void xinit(int, int);
+ static void cresize(int, int);
+ static void xresize(int, int);
+@@ -232,6 +230,7 @@ static char *usedfont = NULL;
+ static double usedfontsize = 0;
+ static double defaultfontsize = 0;
+ 
++static char *opt_alpha = NULL;
+ static char *opt_class = NULL;
+ static char **opt_cmd  = NULL;
+ static char *opt_embed = NULL;
+@@ -691,7 +690,7 @@ xresize(int col, int row)
+ 
+ 	XFreePixmap(xw.dpy, xw.buf);
+ 	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h,
+-			DefaultDepth(xw.dpy, xw.scr));
++			xw.depth);
+ 	XftDrawChange(xw.draw, xw.buf);
+ 	xclear(0, 0, win.w, win.h);
+ 
+@@ -751,6 +750,13 @@ xloadcols(void)
+ 			else
+ 				die("could not allocate color %d\n", i);
+ 		}
++
++	/* set alpha value of bg color */
++	if (opt_alpha)
++		alpha = strtof(opt_alpha, NULL);
++	dc.col[defaultbg].color.alpha = (unsigned short)(0xffff * alpha);
++	dc.col[defaultbg].pixel &= 0x00FFFFFF;
++	dc.col[defaultbg].pixel |= (unsigned char)(0xff * alpha) << 24;
+ 	loaded = 1;
+ }
+ 
+@@ -999,43 +1005,6 @@ xunloadfonts(void)
+ 	xunloadfont(&dc.ibfont);
+ }
+ 
+-void
+-ximopen(Display *dpy)
+-{
+-	XIMCallback destroy = { .client_data = NULL, .callback = ximdestroy };
+-
+-	if ((xw.xim = XOpenIM(xw.dpy, NULL, NULL, NULL)) == NULL) {
+-		XSetLocaleModifiers("@im=local");
+-		if ((xw.xim = XOpenIM(xw.dpy, NULL, NULL, NULL)) == NULL) {
+-			XSetLocaleModifiers("@im=");
+-			if ((xw.xim = XOpenIM(xw.dpy, NULL, NULL, NULL)) == NULL)
+-				die("XOpenIM failed. Could not open input device.\n");
+-		}
+-	}
+-	if (XSetIMValues(xw.xim, XNDestroyCallback, &destroy, NULL) != NULL)
+-		die("XSetIMValues failed. Could not set input method value.\n");
+-	xw.xic = XCreateIC(xw.xim, XNInputStyle, XIMPreeditNothing | XIMStatusNothing,
+-				XNClientWindow, xw.win, XNFocusWindow, xw.win, NULL);
+-	if (xw.xic == NULL)
+-		die("XCreateIC failed. Could not obtain input method.\n");
+-}
+-
+-void
+-ximinstantiate(Display *dpy, XPointer client, XPointer call)
+-{
+-	ximopen(dpy);
+-	XUnregisterIMInstantiateCallback(xw.dpy, NULL, NULL, NULL,
+-					ximinstantiate, NULL);
+-}
+-
+-void
+-ximdestroy(XIM xim, XPointer client, XPointer call)
+-{
+-	xw.xim = NULL;
+-	XRegisterIMInstantiateCallback(xw.dpy, NULL, NULL, NULL,
+-					ximinstantiate, NULL);
+-}
+-
+ void
+ xinit(int cols, int rows)
+ {
+@@ -1044,11 +1013,23 @@ xinit(int cols, int rows)
+ 	Window parent;
+ 	pid_t thispid = getpid();
+ 	XColor xmousefg, xmousebg;
++	XWindowAttributes attr;
++	XVisualInfo vis;
+ 
+ 	if (!(xw.dpy = XOpenDisplay(NULL)))
+ 		die("can't open display\n");
+ 	xw.scr = XDefaultScreen(xw.dpy);
+-	xw.vis = XDefaultVisual(xw.dpy, xw.scr);
++
++	if (!(opt_embed && (parent = strtol(opt_embed, NULL, 0)))) {
++		parent = XRootWindow(xw.dpy, xw.scr);
++		xw.depth = 32;
++	} else {
++		XGetWindowAttributes(xw.dpy, parent, &attr);
++		xw.depth = attr.depth;
++	}
++
++	XMatchVisualInfo(xw.dpy, xw.scr, xw.depth, TrueColor, &vis);
++	xw.vis = vis.visual;
+ 
+ 	/* font */
+ 	if (!FcInit())
+@@ -1058,7 +1039,7 @@ xinit(int cols, int rows)
+ 	xloadfonts(usedfont, 0);
+ 
+ 	/* colors */
+-	xw.cmap = XDefaultColormap(xw.dpy, xw.scr);
++	xw.cmap = XCreateColormap(xw.dpy, parent, xw.vis, None);
+ 	xloadcols();
+ 
+ 	/* adjust fixed window geometry */
+@@ -1073,24 +1054,20 @@ xinit(int cols, int rows)
+ 	xw.attrs.background_pixel = dc.col[defaultbg].pixel;
+ 	xw.attrs.border_pixel = dc.col[defaultbg].pixel;
+ 	xw.attrs.bit_gravity = NorthWestGravity;
+-	xw.attrs.event_mask = FocusChangeMask | KeyPressMask | KeyReleaseMask
++	xw.attrs.event_mask = FocusChangeMask | KeyPressMask
+ 		| ExposureMask | VisibilityChangeMask | StructureNotifyMask
+ 		| ButtonMotionMask | ButtonPressMask | ButtonReleaseMask;
+ 	xw.attrs.colormap = xw.cmap;
+ 
+-	if (!(opt_embed && (parent = strtol(opt_embed, NULL, 0))))
+-		parent = XRootWindow(xw.dpy, xw.scr);
+ 	xw.win = XCreateWindow(xw.dpy, parent, xw.l, xw.t,
+-			win.w, win.h, 0, XDefaultDepth(xw.dpy, xw.scr), InputOutput,
++			win.w, win.h, 0, xw.depth, InputOutput,
+ 			xw.vis, CWBackPixel | CWBorderPixel | CWBitGravity
+ 			| CWEventMask | CWColormap, &xw.attrs);
+ 
+ 	memset(&gcvalues, 0, sizeof(gcvalues));
+ 	gcvalues.graphics_exposures = False;
+-	dc.gc = XCreateGC(xw.dpy, parent, GCGraphicsExposures,
+-			&gcvalues);
+-	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h,
+-			DefaultDepth(xw.dpy, xw.scr));
++	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h, xw.depth);
++	dc.gc = XCreateGC(xw.dpy, xw.buf, GCGraphicsExposures, &gcvalues);
+ 	XSetForeground(xw.dpy, dc.gc, dc.col[defaultbg].pixel);
+ 	XFillRectangle(xw.dpy, xw.buf, dc.gc, 0, 0, win.w, win.h);
+ 
+@@ -1101,7 +1078,22 @@ xinit(int cols, int rows)
+ 	xw.draw = XftDrawCreate(xw.dpy, xw.buf, xw.vis, xw.cmap);
+ 
+ 	/* input methods */
+-	ximopen(xw.dpy);
++	if ((xw.xim = XOpenIM(xw.dpy, NULL, NULL, NULL)) == NULL) {
++		XSetLocaleModifiers("@im=local");
++		if ((xw.xim =  XOpenIM(xw.dpy, NULL, NULL, NULL)) == NULL) {
++			XSetLocaleModifiers("@im=");
++			if ((xw.xim = XOpenIM(xw.dpy,
++					NULL, NULL, NULL)) == NULL) {
++				die("XOpenIM failed. Could not open input"
++					" device.\n");
++			}
++		}
++	}
++	xw.xic = XCreateIC(xw.xim, XNInputStyle, XIMPreeditNothing
++					   | XIMStatusNothing, XNClientWindow, xw.win,
++					   XNFocusWindow, xw.win, NULL);
++	if (xw.xic == NULL)
++		die("XCreateIC failed. Could not obtain input method.\n");
+ 
+ 	/* white cursor, black outline */
+ 	cursor = XCreateFontCursor(xw.dpy, mouseshape);
+@@ -1579,16 +1571,6 @@ xfinishdraw(void)
+ 				defaultfg : defaultbg].pixel);
+ }
+ 
+-void
+-xximspot(int x, int y)
+-{
+-	XPoint spot = { borderpx + x * win.cw, borderpx + (y + 1) * win.ch };
+-	XVaNestedList attr = XVaCreateNestedList(0, XNSpotLocation, &spot, NULL);
+-
+-	XSetICValues(xw.xic, XNPreeditAttributes, attr, NULL);
+-	XFree(attr);
+-}
+-
+ void
+ expose(XEvent *ev)
+ {
+@@ -1929,6 +1911,9 @@ main(int argc, char *argv[])
+ 	case 'a':
+ 		allowaltscreen = 0;
+ 		break;
++	case 'A':
++		opt_alpha = EARGF(usage());
++		break;
+ 	case 'c':
+ 		opt_class = EARGF(usage());
+ 		break;

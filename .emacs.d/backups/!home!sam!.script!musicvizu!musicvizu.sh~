@@ -1,0 +1,5 @@
+#!/bin/bash
+
+exec st -n cavaviz -e cava &
+exec st -n album -e ~/Downloads/albumshow.sh &
+exec st -n ncmpcppwin -e ncmpcpp -s playlist &

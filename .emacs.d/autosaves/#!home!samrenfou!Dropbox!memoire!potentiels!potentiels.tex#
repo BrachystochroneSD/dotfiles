@@ -1,0 +1,191 @@
+\documentclass[12pt,a4paper,oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{mathrsfs}
+\usepackage{cases}
+\usepackage{empheq}
+\usepackage{braket}
+\usepackage{bm}
+\usepackage{youngtab}
+\usepackage{appendix}
+\usepackage{color}
+
+
+\begin{document}
+
+
+
+\chapter{Formalisme Hamiltonien et Interaction entre particules}
+
+
+La physique des particule s'occupe exclusivement des interactions entre particules. Pour ce faire, les physiciens de particules utilisent différents modèles, plus ou moins adaptés à la situation et au problème étudié. Dans notre cas, l'étude directe de l'intéraction des baryons au sein du QGP nous demande alors de savoir ce qu'est le QGP. Nous verrons ensuite de quelle manière nous pouvons considérer l'interaction entre les quarks au seins de ce ``plasma''. Pour ce faire nous utiliserons des potentiels d'interaction que nous présenterons dans la section \ref{potentiels}. Ensuite, nous nous intéresserons au baryons et nottament à leurs fonction d'onde et de leur implication aux différents paramètres de notre étude et ce dans la section \ref{fobaryon}.
+
+\section{Le quark Gluon plasma}
+
+L'interaction des quarks et des gluons est géré par l'interaction forte et la chromodynamique quantique. Cette théorie est caractérisée par le confinement des quarks qui, bien qu'ils aient un nombre quantique de couleur, ne se montre dans la nature que sous la forme de hadron en tant que ingulet de couleur. La QCD, prédit également une température critique à partirde laquelle les quarks et gluons deviennet déconfiné et peuvent se mouvoir librement dans un nouvel état de la matière. Cet état est appelé le plasma quark-gluon. Historiquement, c'est en 1975 que Collins et Perry ont suggéré qu'un tel état de matière était possible au centre des étoiles à neutron, où il règne une température et une densité propice à la formation d'un tel ``plasma'' \cite{collperr75}. C'est par la suite, en 1980 que la dénomination de plasma quark gluon fut introduit par Suryak, qui étudia l'état des atomes à haute température et densité \cite{shuryak80} par analogie aux différentes transition qu'on retrouve en physique atomique et moléculaire. L'étude même de cet état de la manière est très intéressant pour tout ce qui concerne l'évolution d'étoile à neutron mais aussi à comprendre comment notre univers s'est formé lors de sa phase d'hadronisation lors des premiers intants de notre univers après le big bang, lorsqu'il régnait des conditions de température et de densité propice à la formation du plasma quark-gluon. Plus récemment, des expérience au CERN ont pu mettre en évidence la création d'un tel état de la matière. Il existe plusieurs approche pour étudier les baryons dans le plasma quark-gluon, la plus connue et qui domine les études réalisée pour modéliser le QGP est en lattice QCD \cite{Wils74} qui discrétise le lagrangien QCD.
+
+Pour notre part, nous procéderons de manière plus simple, en considérant une hamiltonien décrivant l'interaction entre les quarks au sein du baryon, donc lequel nous choisirons une partie cinétique et potentielle décrivant au mieux les quarks étudiés. Les parties potentiels quant à eux seront repris de divers études et seront éxpliqué plus en détail dans la section suivante.
+Cette approche nous permet de travailler analytiquement.
+
+
+
+\section{Potentiel Exponentiel}
+
+Ce potentiel est issu de plusieurs travaux \cite{KACZMAREK2004560,PRD79}. La première motivation a été de calculer l'énergie interne d'une paire quark-antiquark via la fonction de correlation ``Polyakov Loop''. D'un point de vue purement thermodynamique, l'énergie interne d'un système est
+
+\begin{equation}
+  \label{energieinterne}
+  V(R,T)=F(R,T)+TS(R,T)
+\end{equation}
+avec $S$ l'entropie du système et $F$ l'energie libre du système, donné par 
+\begin{equation} %polyakov loop free energy
+  F(|x|,T)/T=-\ln \braket{\text{Tr}L(\vec{x})L^\dagger (0)}.
+\end{equation}
+
+On montre dans \cite{shuryak} que l'énergie d'un système est l'énergie totale qu'il contient. Dans une approche potentielle nous pouvons donc rapporter l'énergie interne du système (\ref{energieinterne}) comme l'énergie potentielle qui lie les quarks $q$ $\bar{q}$. 
+
+Les différentes valeurs d'énergie interne ont été calculées numériquement dans \cite{KACZMAREK2004560} pour ensuite être interpolée dans \cite{PRD79} pour trouver une expression de l'énergie potentielle
+
+\begin{subequations}
+  \label{eq:potexpo}
+  \begin{equation}
+  V(r,T)=-a(T)e^{-b(T)r}+C
+\end{equation}
+avec
+
+\begin{equation}
+  a=\frac{a_0}{\ln\left(\frac{T}{a_1 T_c}\right)}+a_2 \ln\left(\frac{T}{a_1 T_c}\right), \quad b=b_0+b_1\frac{T}{T_c},c=\frac{c_0}{\ln\left(\frac{T}{c_1 T_c}\right)}
+\end{equation}
+et les paramètres
+
+\begin{equation*}
+a_0=0.459 \text{GeV},\quad a_1=0.915\text{GeV}, \quad a_2=1.159\text{GeV}
+\end{equation*}
+
+\begin{equation*}
+b_0=0.111 \text{GeV},\quad b_1=0.489\text{GeV}
+\end{equation*}
+\begin{equation}
+c_0=0.341\text{GeV}, \quad c_1=0.808\text{GeV}.
+\end{equation}
+\end{subequations}
+
+La constante $C$ est un paramètre qui détermine la masse absolue du système, dans notre cas, nous sommes intéressé par la fusion du baryon dans le plasma, nous prendrons donc $C=0$ pour ne chercher que les conditions qui annulent la masse du système. Ce potentiel ayant été élaboré pour des interactions quark-antiquark, nous devons généraliser le potentiel (\ref{eq:potexpo}) pour pouvoir l'appliquer à nos baryons dans les différentes représentations et dans la limite à large $N_c$. Nous prendrons donc le potentiel
+
+\begin{equation}
+  W(r,T)=\frac{-9 F_R }{4N_c} V(r,T)= \frac{9 a(T)F_R }{4N_c}e^{-b(T)r}
+\end{equation}
+avec $F_R$ le facteur de couleur d'une paire de fermions. Le facteur $\frac{-9 F_R }{4N_c}$ est là pour normaliser le potentiel V(r,T) tel que nous obtenons une limite finie lorsque $N_c\rightarrow \infty$. Ce même facteur nous permet également de revenir au potentiel (\ref{eq:potexpo}) pour $N_c=3$ dans la représentation fondamentale. Attention, pour notre étude nous travaillons avec des baryons, les facteurs de couleur sont donc ceux d'une paire quark-quark, contrairement à \cite{KACZMAREK2004560,PRD79} qui étudie le cas des méson soit des paires quark-antiquark. De fait, nous avons le facteur de couleur
+
+\begin{equation}
+  F_R=\frac{1}{2}\left(C_{12}-C_1-C_2\right)
+\end{equation}
+qui nous donne pour une paire quark-quark
+
+\begin{equation}
+  F_{qq}=\frac{1}{2}\left(C_{qq}-C_q-C_q\right)=-\frac{N_c+1}{2N_c}=-\frac{4}{6}.
+\end{equation}
+pour $N_c=3$. Tandis que une paire quark-antiquark nous obtenons
+% \scalebox{.3}{$\begin{array}{ll} \yng(1,1) \\ \vdots \\ \yng(1) \end{array}$}
+\begin{equation}
+  F_{q\bar{q}}=\frac{1}{2}(C_{q\bar{q}}-C_{\bar{q}}-C_q)=-\frac{N_c^2-1}{2N_c}=-\frac{4}{3}
+\end{equation}
+avec les valeurs de $C_{q\bar{q}}$, $C_q$ et $C_{\bar{q}}$ calculée dans la section \ref{sec:calculcolorfactor}. Notez que l'interaction entre deux quarks au sein du baryon est deux fois inférieure à l'interaction entre un quark et un antiquark dans un méson. Nous avons donc bien
+\begin{equation}
+\frac{-9 F_{q\bar{q}} }{4N_c}=\frac{-9.(-4)}{3.4.3}=1
+\end{equation}
+qui nous redonne le potentiel (\ref{eq:potexpo}). Pour nos calculs d'energie, nous predrons les masses du Particle Data Group \cite{PDG} qui seront constantes par rapport à la température. La valeur de la température critique est fixée ici à 180 MeV.
+
+\section{Potentiel de type Yukawa}
+
+La motivation quant à l'utilisation de ce potentiel vient du fait de l'intuition pour laquelle l'interaction entre les quarks 
+
+Puisque l'interaction diminue avec $T>T_c$, on peut supposer que l'interaction entre les quarks est minimale et correspond à l'échange d'un gluon. Le potentiel est alors de type Yukawa car les gluon acquiert une masse en fonction de la température \cite{blaizot2001}. On peut prendre la forme \cite{compaI}
+
+\begin{equation}
+  V=F_{R_{ij}} \alpha_s \frac{e^{-M_d r}}{r}
+\end{equation}
+avec $M_d=\sqrt{2}m_g$. On prend $\alpha_s=g^2/4\pi$
+
+\begin{equation}
+  g^2=\frac{8\pi^2}{\beta_0 \ln\left(\frac{T}{\Lambda}\right)}\left(1-\frac{\beta_1}{2\beta_0^2}\frac{\ln\left(2\ln\left(\frac{T}{\Lambda}\right)\right)}{\ln\left(\frac{T}{\Lambda}\right)}\right)
+\end{equation}
+
+\begin{equation}
+  \beta_0=\frac{11}{3}N_c-\frac{4}{3}T_Rn_f
+\end{equation}
+\begin{equation}
+\beta_1=\frac{34}{3}N_c^2-\left(\frac{20}{3}N_c+4C_R\right)T_Rn_f
+\end{equation}
+
+Il se fait que les masses des quarks et des gluons est renormalisée par le bain thermique \cite{plasmaqg}
+\begin{equation}  m_g^2=\left(N_c+T_Rn_f\right)\frac{g^2}{6}T^2+\mu^2\frac{g^2}{2\pi^2}T_Rn_f
+\end{equation}
+
+\begin{equation}
+  m^2_q=\bar{m}_f^2+C_R \frac{g^2}{4}\left(T^2+\frac{\mu^2}{\pi^2}\right)
+\end{equation}
+
+où $\bar{m}_f$ est la masse courante du quark de saveur $f$. On peut prendre \cite{plasmaqg}
+
+\begin{eqnarray}
+\Lambda = 0.88 T_c, \qquad T_c = 180 \text{ MeV} \nonumber \\
+m_c=1270\text{ MeV}, \qquad m_b=4200\text{ MeV}
+\end{eqnarray}
+
+
+\subsection{Masse thermique des quarks et gluons}
+\label{sec:massquarks}
+
+L'idée d'intégrer une masse thermique aux quarks et gluons vient du choix de consiédrer leur interaction comme un gas parfait au delà de la température critique $T_c$, 
+
+Notons qu'il existe des corrections d'ordre supérieur en utilisant HTL \cite{correctionmassquarks} mais nous ne les considérerons pas lors de cette étude.
+
+% In the phenomenological studies
+% [10–12], it has been shown that an agreement between the
+% lattice EoS and the one computed assuming that QCD above
+% T c consists in an ideal gas of quasiparticles (quarks and glu-
+% ons) can be reached only if the quark and gluon masses are
+% temperature-dependent. Those thermal masses have to be fit-
+% ted on the lattice data if one wants an agreement in the whole
+% temperature range studied by lattice calculations, typically
+% (1.0, 4.0) × T c .
+% Instead of introducing ad hoc thermal masses, it is rele-
+% vant to recall that perturbative techniques, or HTL resumma-
+% tion methods, allow to compute the thermal quark and gluon
+% masses at large temperatures from diagrams of self-energy
+% and vacuum polarisation-type
+
+\section{Symétrie des fonctions d'onde des baryons}
+
+Considéront un baryon dont la fonction d'onde est définie par
+
+\begin{equation}
+\Psi =\left[ \Psi_e  \Psi_s\right]^J \Psi_i \Psi_c 
+\end{equation}
+qui sont respectivement les fonctions d'ondes d'espace, de spin, d'isospin et de couleur.
+
+Premièrement
+
+Nous les choisirons comme suit :\\
+\begin{itemize}
+\item   couleur, nous n'avons d'autres choix que d'avoir une fonction d'onde de couleur antisymétrique, dans la représentation fondamentale.
+\item La fonction d'onde d’isospin est ici symétrique, nos baryons sont consti\-tués de $N=N_c$ quarks identiques. 
+\item La fonction d'onde de spin choisie est symétrique. Pour notre travail, ce choix peut paraître inutile vu que nous n'étudierons pas de potentiel dépendant du spin. Mais 
+  les symétries choisies plus haut nous poussent à choisir une fonction d'onde symétrique pour amener le choix de la dernière fonction d'onde.
+\item Finalement, la fonction d'onde d'espace est choisie symétrique, ce qui se traduit pas une étude de l'état fondamental\footnote{Nombres quantiques $n$ et $l$ tous nuls.}. C'est un choix judicieux qui nous aide beaucoup car, en plus de simplifier grandement nos calculs, il nous intéresse particulièrement. En effet, nous cherchons les conditions de température pour lesquelles l'énergie de liaison s'annule. Si l'état fondamental est au-delà la température de fusion, les états excités d'énergie plus élevée le seront également. 
+\end{itemize}
+La particularité des quarks de posséder des fonctions d'ondes globales d'espace-spin-isospin symétriques leur donne la dénomination de pseudo-bosons. \\
+
+
+
+
+
+
+\bibliography{biblio}
+\bibliographystyle{abbrv}
+
+\end{document}
+

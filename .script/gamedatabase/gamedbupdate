@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#parameter
+apikey=abda390e015cc8cfba7cf4574fd883b2aeca0081
+database=~/.script/gamedatabase/gamesdb
+
+curly=$(curl -s 'https://www.giantbomb.com/api/games/?api_key='$apikey'&format=json&field_list=number_of_total_results&offset=0&limit=1')
+
+number_max=$(echo $curly | jq .number_of_total_results)
+offset=$(cat $database | wc -l)
+
+while [ $offset -lt $number_max ]; do
+    echo "Curl giant bomb site with offset="$offset
+    curly=$(curl -s 'https://www.giantbomb.com/api/games/?api_key='$apikey'&format=json&field_list=name&offset='$offset)
+    i=0
+    gameuh=""
+    res_max=$(echo $curly | jq .number_of_page_results)
+    echo $curly | jq .results[] | jq .name | sed 's/^"\(.*\)"$/\1/' >> $database 
+    (( offset= $offset + 100 ))
+done
+
+echo "Database updated"

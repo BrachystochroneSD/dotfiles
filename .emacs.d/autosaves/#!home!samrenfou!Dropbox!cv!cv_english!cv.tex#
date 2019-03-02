@@ -1,0 +1,157 @@
+ubu
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper,10pt]{article} % Default font size and paper size
+
+\usepackage{fontspec} % For loading fonts
+\defaultfontfeatures{Mapping=tex-text}
+\setmainfont[SmallCapsFont = Fontin SmallCaps]{Fontin} % Main document font
+
+\usepackage{xunicode,xltxtra,url,parskip} % Formatting packages
+
+\usepackage[usenames,dvipsnames]{xcolor} % Required for specifying custom colors
+
+\usepackage[big]{layaureo} % Margin formatting of the A4 page, an alternative to layaureo can be \usepackage{fullpage}
+% To reduce the height of the top margin uncomment: \addtolength{\voffset}{-1.3cm}
+
+\usepackage{hyperref} % Required for adding links	and customizing them
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} % Link color
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} % Set link colors throughout the document
+
+\usepackage{titlesec} % Used to customize the \section command
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule] % Text formatting of sections
+\titlespacing{\section}{0pt}{3pt}{3pt} % Spacing around sections
+
+\begin{document}
+
+\pagestyle{empty} % Removes page numbering
+
+\font\fb=''[cmr10]'' % Change the font of the \LaTeX command under the skills section
+
+%----------------------------------------------------------------------------------------
+%	NAME AND CONTACT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\par{\centering{\Huge Samuel \textsc{Dawant}}\bigskip\par} % Your name
+
+\section{Personal Data}
+
+\begin{tabular}{rl}
+\textsc{Place and Date of Birth:} & La Louvière  | 24 Mars 1994 \\
+\textsc{Address:} & 1 Rue de la Tombelle, Houdeng-Aimeries, Hainaut, Belgique \\
+\textsc{Phone:} & +32 475 637 558\\
+\textsc{email:} & \href{mailto:samuel.dawant@alumni.umons.ac.be}{samuel.dawant@alumni.umons.ac.be} \\
+\textsc{github:} & \href{https://github.com/BrachystochroneSD}{GitHub/BrachystochroneSD}
+\end{tabular}
+
+%----------------------------------------------------------------------------------------
+%	WORK EXPERIENCE 
+%----------------------------------------------------------------------------------------
+
+% \section{Work Experience}
+
+% \begin{tabular}{r|p{11cm}}
+% \emph{Current} & 1\textsuperscript{st} year Analyst at \textsc{Lehman Brothers}, London \\
+% \textsc{Mar 2012} & \emph{Commodities Structured Trading}\\ 
+% & \footnotesize{Developed spreadsheets for risk analysis on exotic derivatives on a wide array of commodities (\textit{ags, oils, precious} and \textit{base metals}), managed blotter and secondary trades on structured notes, liaised with Middle Office, Sales and Structuring for bookkeeping.}\\
+% \multicolumn{2}{c}{} \\
+
+% %------------------------------------------------
+
+% \textsc{Jul 2010-Oct 2011} & Summer Intern at \textsc{Intech Inc}, Chicago \emph{}\\
+% & \footnotesize{Received pre-placed offer from the Exotics Trading Desk as a result of very positive review. Rated ``\emph{truly distinctive}'' for Analytical Skills and Teamwork.}\\
+% \multicolumn{2}{c}{} \\
+
+% %------------------------------------------------
+
+% \textsc{Jan-Mar 2011} & Computer Technician at \textsc{Buy More}, Burbank \emph{}\\
+% & \footnotesize{Worked in the Nerd Herd and helped to solve computer problems by asking customers to turn their computers off and on again.}
+% \end{tabular}
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION
+%----------------------------------------------------------------------------------------
+
+\section{Education}
+
+\begin{tabular}{rl}	
+2016 - 2018 & Master of \textsc{Physics}, \textbf{University of Mons}, Mons\\
+            & \small\emph{Distinction} | Fundamental Interaction, \textsc{Major :} Particles Physics\\
+            & Master Thesis: ``Fusion des baryons dans le Plasma Quark Gluon'' \\
+            & \small Advisor : Prof. Claude \textsc{Semay}\\
+            &\\
+
+%------------------------------------------------
+
+2011 - 2016 & Bachelor of \textsc{Physics}, \textbf{University of Mons}, Mons\\
+            & \small\emph{Satisfaction}\\
+            & General formation in physics, programmation, and analytics skills\\
+&\\
+
+  
+  2005 - 2011 & CESS\\
+            & \normalsize\textbf{Collège Saint-Vincent}, Soignies\\
+  & \small \emph{Spéciality Science - Biotechnique}\\
+&\\
+
+\end{tabular}
+
+%----------------------------------------------------------------------------------------
+%	SCHOLARSHIPS AND ADDITIONAL INFO
+%----------------------------------------------------------------------------------------
+
+\section{Works and Internships}
+
+\begin{tabular}{rl}
+  2016 & Intern at the Polytechnic Faculty of Mons | \textit{Department of Metallurgy}\\
+       & Subject : ``Mesure d'épaisseur de nickel sur acier par Spectrométrie de Fluorescence X'' \\
+       & Advisor : Evelyne \textsc{Daubie}, Véronique \textsc{Vitry}\\
+       &\\
+  
+  2017 & Internship/course at the ``Université Libre de Bruxelles'' \textsc{VUB} | \textit{iihe} \\
+       & Subject : Calcul du temps de vie du muon par détecteur à scintillation\\
+       & Advisor : Evelyne \textsc{Daubie}, Gilles \textsc{De Lentdecker} \\
+       & \\
+
+\end{tabular}
+
+%----------------------------------------------------------------------------------------
+%	LANGUAGES
+%----------------------------------------------------------------------------------------
+
+\section{Languages}
+
+\begin{tabular}{rl}
+\textsc{English :} & Fluent (C1)\\
+
+\textsc{French :} & Mothertongue (C2)\\
+\end{tabular}
+
+%----------------------------------------------------------------------------------------
+%	COMPUTER SKILLS 
+%----------------------------------------------------------------------------------------
+
+\section{Computer Skills}
+
+\begin{tabular}{rl}
+  Languages : & \textsc{Python}, \textsc{C++}, Javascript/Typescript, \textsc{Bash/Linux}, \textsc{html}, \textsc{css}, my\textsc{sql}, \textsc{php},\\
+                              & {\fb \LaTeX}\setmainfont[SmallCapsFont=Fontin SmallCaps]{Fontin-Regular}\\
+
+  Programs/Framework :      & Ionic Framework, Mathematica, Unreal Engine, Adobe Photoshop,\\
+                              & Blender, Adobe Illustrator, Adobe Flash, Word, Excel,\\
+                              & FL Studio, Sony Vega, LTSpice, Diptrace\\
+
+\end{tabular}
+
+%----------------------------------------------------------------------------------------
+%	INTERESTS AND ACTIVITIES
+%----------------------------------------------------------------------------------------
+
+\section{Interests and Activities}
+
+Programation, Machine Learning, Open-Source, Music, Creativity, Self-Learning, Graphism, Technology, Electronics.
+
+
+\end{document}

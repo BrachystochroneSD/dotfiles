@@ -1,0 +1,8 @@
+#!/bin/bash
+
+memtot=$(cat /proc/meminfo | grep MemTotal | awk '{print $2}')
+memava=$(cat /proc/meminfo | grep MemAvailable | awk '{print $2}')
+
+per=$(echo 0$(echo "($memtot - $memava.) / $memtot * 100" | bc -l | awk '{print int($1+0.5)}' ))
+
+echo :${per: -2}%

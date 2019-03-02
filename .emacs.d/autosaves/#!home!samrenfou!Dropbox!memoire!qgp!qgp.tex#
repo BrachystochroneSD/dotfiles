@@ -1,0 +1,44 @@
+\documentclass[a4paper,12pt,oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{cases}
+\usepackage{empheq}
+\usepackage{braket}
+\usepackage{bm}
+\usepackage{youngtab}
+\usepackage{appendix}
+\usepackage{pdfpages}
+
+\numberwithin{equation}{section}
+
+
+%opening
+\title{Fusion des baryons dans le plasma quarks-gluons}
+\author{Samuel Dawant}
+
+\begin{document}
+
+\chapter{QPG}
+
+Le quark gluon plasma a commencé à être étudié depuis qulques temps déjà
+
+La QGP est un état de la matière où l'energie est assez grande pour déconfiner les particules composites et permettres aux gluons et aux quarks de se mouvoir librement dans le ``plasma''.
+
+La température critique est de l'ordre de $10^{12}$ MeV, il a été atteint dans l'accélérateur de particule.
+
+(TODO : se renseigner sur le QGP)
+
+Au sein du QGP, il peut encore exister des état liés (hadronique) qui survivent même après plusierus fois la température de déconfinement.
+
+Dû au déconfinement, des états colorés peuvent exister dans le QGP mais nous ne nous intéressons qu'au cas de singulet de couleur.
+Parce que c'est plus simple... bah ouais
+
+
+\bibliography{biblio}
+\bibliographystyle{abbrv}
+
+\end{document}
+

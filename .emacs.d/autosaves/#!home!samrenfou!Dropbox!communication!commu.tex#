@@ -1,0 +1,35 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{amssymb,amsmath,amsthm}
+
+\title{Travail de Communication : Pourquoi un violon sonne-t-il différenmment d'un piano}
+\author{Samuel Dawant}
+
+
+\begin{document}
+
+\maketitle
+\newpage 
+\tableofcontents
+\newpage
+
+Bonjour, ensemble nous allons essayer de comprendre pourquoi chaque instrument sonnent de manière différentes.
+
+\section{Les Bases du son}
+
+Un son, c'est la résultante d'une vibration. Un corps, que ça soit une corde, une peau tendue, un verre ou un caillou, vibre et crée une onde intrasèquement liée à la manière dont l'objet vibre, cette onde se propage dans l'air pour parvenir jusqu'à nos oreilles et faire vibrer nos tympans. Comme exemple simple, nous pouvons prendre 
+
+\section{Les caractéristique du son}
+ 
+Le son est caractérisé par trois choses, sa \textbf{hauteur}, son \textbf{intensité} et son \textbf{timbre}. 
+
+
+
+
+fsdffgf
+\bibliography{biblio}
+\bibliographystyle{abbrv}
+
+\end{document}

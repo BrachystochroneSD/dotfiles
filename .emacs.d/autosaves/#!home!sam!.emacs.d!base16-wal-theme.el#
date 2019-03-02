@@ -1,0 +1,34 @@
+(require 'base16-theme)
+
+;; colours generated dynamically by wal
+(defun set-wal-colors () (setq base16-wal-colors
+			       '(:base00 "#2e351e"
+					 :base01 "#2e351e"
+					 :base02 "50,57,34"
+					 :base03 "#DCF9A2"
+					 :base04 "#BCBCA2"
+					 :base05 "#D0E9CF"
+					 :base06 "#FAFECC"
+					 :base07 "#e0f6f6"
+					 :base08 "#9cacac"
+					 :base09 "#BCBCA2"
+					 :base0A "#D5F990"
+					 :base0B "#DCF9A2"
+					 :base0C "#EBFFB0"
+					 :base0D "#D0E9CF"
+					 :base0E "#FAFECC"
+					 :base0F "#e0f6f6")))
+
+(defvar base16-wal-colors nil "All colors for base16-wal are defined here.")
+(set-wal-colors)
+
+;; Define the theme
+(deftheme base16-wal)
+
+;; Add all the faces to the theme
+(base16-theme-define 'base16-wal base16-wal-colors)
+
+;; Mark the theme as provided
+(provide-theme 'base16-wal)
+
+(provide 'base16-wal)

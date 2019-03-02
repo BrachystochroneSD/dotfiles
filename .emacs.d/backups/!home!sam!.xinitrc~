@@ -1,0 +1,4 @@
+numlockx &
+wpg -m &
+hdparm -B 200 -S 0 /dev/sda &
+exec i3

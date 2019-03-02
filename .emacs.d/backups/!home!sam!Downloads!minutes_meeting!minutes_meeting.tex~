@@ -1,0 +1,58 @@
+\documentclass[12pt,a4paper]{article}
+\pagestyle{plain}
+
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{pstricks}
+\usepackage{tikz}
+\usepackage{pgf-pie}
+\usepackage{verbatim}
+\usepackage{wrapfig}
+\usepackage[T1]{fontenc}
+\usepackage[colorlinks=true,
+            linkcolor=blue,
+            urlcolor=blue,
+            citecolor=blue,
+            anchorcolor=blue,
+            bookmarks=true]{hyperref}
+\usepackage{float}
+\usepackage[british]{babel}
+\usepackage[nodayofweek]{datetime}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.0in}
+\setlength{\footskip}{18pt}
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{6in}
+\setlength{\marginparwidth}{1in}
+\renewcommand{\familydefault}{\sfdefault}
+\let\margin\marginpar
+\newcommand\myMargin[1]{\margin{\raggedright\scriptsize #1}}
+\renewcommand{\marginpar}[1]{\myMargin{#1}}
+\newcommand{\action}[3]{\marginpar{#1 [#2]}}
+
+\begin{document}
+
+\title{}
+\author{}
+\date{}
+\maketitle
+
+\begin{center}
+  \textbf{Attendees:} A~N~Other 
+  \textbf{Apologies:} A~N~Other \\
+\end{center}
+
+\hrule
+
+\section{REVIEW OF MINUTES OF LAST MEETING}
+
+\section{MATTERS ARISING}
+
+\section{ANY OTHER BUSINESS}
+
+\paragraph{}
+The meeting ended at 12.15pm.
+
+\end{document}

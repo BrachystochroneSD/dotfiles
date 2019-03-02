@@ -1,0 +1,111 @@
+set rnu
+set number
+set t_Co=256
+set shiftwidth=4
+set smartindent
+set autoindent 
+set smarttab
+set encoding=utf-8
+set wrap linebreak
+"set mouse=a
+
+
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+
+"+-------------------------------------+
+"| A | B |    C     X | Y | Z |  [...] |
+"+-------------------------------------+
+
+"A : mode
+"B : branche,...
+"C: filename
+"X:filetype
+"y: encoding
+"z: nombre de mots, pourcentage et ligne, position dans la page
+
+
+
+" Airline
+let g:airline_theme="bubblegum"
+
+"let g:airline_section_a=""
+"let g:airline_section_b=""
+"let g:airline_section_c=""
+"let g:airline_section_x=""
+"let g:airline_section_y=""
+"let g:airline_section_z=""
+
+
+
+
+
+" C-E pour le retour à la normale. Uune habitude perso.
+imap <C-e> <Esc>
+
+" sauver et quitter comme dans emacs
+nmap <C-x><C-s> :w<CR>
+imap <C-x><C-s> <Esc>:w<CR>i
+map <C-x><C-c> <Esc>:wq<CR>
+
+" monter/descendre la ligne courante ou la sélection avec J et K
+nnoremap J :m .+1<CR>==
+nnoremap K :m .-2<CR>==
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+ 
+" easymotion
+map <Space>f <Plug>(easymotion-bd-w)
+" kill-ring
+map <C-p> <Plug>yankstack_substitute_older_paste
+" mark_multiple
+let g:mark_multiple_trigger = "<C-n>"
+
+" Distraction-free
+let g:goyo_width=100
+let g:goyo_height=100
+
+
+
+
+" LaTeX
+let g:tex_flavor="latex"
+let g:Tex_DefaultTargetFormat="pdf"
+let g:Tex_CustomTemplateDirectory="~/.emacs.d/templates/"
+nmap <C-x>t :TTemplate<CR>
+map <C-c><C-l> <Esc>:!pdflatex %<CR>
+map <C-c><C-b> <Esc>:!bibtex %:r<CR>
+map <C-c><C-o> <Esc><leader>lv
+autocmd VimLeave *.tex !rubber --clean %
+
+
+" LaTeX raccourcis
+
+autocmd FileType tex inoremap &fr \begin{frame}<CR>\frametitle{}<CR><CR><CR><CR>\end{frame}<CR><CR><++><Esc>6kf}i
+autocmd FileType tex inoremap &bit \begin{itemize}<CR><CR>\end{itemize}<CR><CR><++><Esc>3kA\item<Space>
+autocmd FileType tex inoremap &en \begin{enumerate}<CR><CR>\end{enumerate}<CR><CR><++><Esc>3kA\item<Space>
+autocmd FileType tex inoremap &sec \section{}<CR><CR><++><Esc>2kf}i
+autocmd FileType tex inoremap &ssec \subsection{}<CR><CR><++><Esc>2kf}i
+autocmd FileType tex inoremap &sssec \subsubsection{}<CR><CR><++><Esc>2kf}i
+autocmd FileType tex inoremap &up \usepackage{}<CR><++><Esc>kf{a
+autocmd FileType tex inoremap &it \textit{}<++><Esc>T{i
+autocmd FileType tex inoremap &bf \textbf{}<++><Esc>T{i
+autocmd FileType tex inoremap &li <CR>\item<Space>
+autocmd FileType tex inoremap &chap \chapter{}<CR><CR><++><Esc>2kf}i
+autocmd FileType tex inoremap &- «~~»<++><Esc>T~hi
+
+" HTML raccourcis
+
+autocmd FileType html inoremap &bf <b></b><++><Esc>FbT>i
+autocmd FileType html inoremap &it <i></i><++><Esc>FbT>i
+autocmd FileType html inoremap &1 <h1></h1><CR><CR><++><Esc>2kf<i
+autocmd FileType html inoremap &2 <h2></h2><CR><CR><++><Esc>2kf<i
+autocmd FileType html inoremap &3 <h3></h3><CR><CR><++><Esc>2kf<i
+autocmd FileType html inoremap &p <p></p><CR><CR><++><Esc>02kf>a
+autocmd FileType html inoremap &a <a<Space>href=""><++></a><Space><++><Esc>14hi
+autocmd FileType html inoremap &ul <ul><CR><li></li><CR></ul><CR><CR><++><Esc>03kf<i
+autocmd FileType html inoremap &li <Esc>o<li></li><Esc>F>a
+autocmd FileType html inoremap &ol <ol><CR><li></li><CR></ol><CR><CR><++><Esc>03kf<i
+autocmd FileType html inoremap &im <img src="" alt="<++>"><++><esc>Fcf"a
+

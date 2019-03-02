@@ -1,0 +1,16 @@
+devices=$(lsblk -Jplno NAME,TYPE,RM,SIZE,MOUNTPOINT,VENDOR)
+output=""
+counter=0
+
+for mounted in $(echo "$devices" | jq -r '.blockdevices[] | select(.rm == "1") | select(.mountpoint == "/media/usb") | .size'); do
+    if [ $counter -eq 0 ]; then
+        space=""
+    else
+        space="   "
+    fi
+    counter=$((counter + 1))
+
+    output="$output$space $mounted"
+done
+
+echo "$output"

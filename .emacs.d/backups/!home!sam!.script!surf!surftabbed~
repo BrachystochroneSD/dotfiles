@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. "${HOME}/.cache/wal/colors.sh"
+
+tabbed -t "$color0" -T "$color15" -u "$color7" -U "$colors0" -c surf -e
+
+

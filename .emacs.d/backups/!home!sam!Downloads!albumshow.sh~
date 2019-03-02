@@ -1,0 +1,43 @@
+#!/bin/bash
+
+w3m="w3mimgdisplay"
+MUSIC_DIR=$HOME/Music
+COVER=/tmp/cover.jpg
+backup_img="/home/sam/Documents/zenocyne/site_zenocyne/www/html/ressources/owl.png"
+
+backup(){
+    draw_img $backup
+}
+
+draw_img() {    
+    
+    # Display the image.
+    printf '0;1;%s;%s;%s;%s;;;;;%s\n3;\n4\n' \
+           "0" \
+           "0" \
+           "192" \
+           "192" \
+           "$1" | "$w3m" &>/dev/null
+}
+
+while true;do
+    newalbum=$(mpc --format %album% current)
+    
+    if [[ $album != $newalbum ]] ; then
+	file=$(mpc --format %file% current)
+	album=$newalbum
+	album_dir="${file%/*}"
+	if [[ -n "$album_dir" ]] ; then
+	    album_dir="$MUSIC_DIR/$album_dir"
+	    covers="$(find "$album_dir" -type d -exec find {} -maxdepth 1 -type f -iregex ".*/.*\(${album}\|cover\|folder\|artwork\|front\).*[.]\(jpe?g\|png\|gif\|bmp\)" \; )"
+	    src="$(echo -n "$covers" | head -n1)"
+	    rm -f "$COVER" 
+	    [[ ! -n "$src" ]] && src=$backup_img
+	    cp "$src" "$COVER"
+	fi
+    fi
+    
+    draw_img $COVER
+    sleep 1
+    
+done

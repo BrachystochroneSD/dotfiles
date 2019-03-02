@@ -1,0 +1,226 @@
+ ###########################################  
+##########-|-     TODO-list      -|-#########
+ ###########################################  
+
+* TODO App Aurore, sécher les cours. 
+* TODO Zenocyne
+** A fait pour compo
+   - Grosse basse sourde
+   - Submarine sound
+   - tourbillon sound
+** TODO [#A] Télévision
+** TODO [#B] Pédales d'effet
+*** DONE Big Muff
+*** DONE ShHin-ei FY2 custom
+** TODO [#C] Site Zenocyne
+*** DONE [#A] Page gallerie
+**** DONE Ajout de dossiers
+**** DONE Modification de dossiers
+***** DONE Ajouts et suppression de photos individuellement
+***** DONE Ajout de commentaires aux photos
+*** TODO [#B] Sites logo
+**** TODO Rabbit
+     Vidéos psyché et malsaines
+**** TODO Sloth
+     Vidéos au ralenti
+**** TODO Bear
+     Images bizarres
+**** DONE Crow
+**** DONE Owl
+*** DONE Background on/off
+**** DONE Boutton graphique en svg
+*** TODO New buttons calendar/camera/etc
+    Refaire les bouttons (animés?) en svg
+* TODO Trouver un boulot/formation pour l'année qui arrive
+** Informatique : 
+*** Regarder pour une SSI :
+***** Accenture
+***** Alten
+***** Dolmen
+* TODO Neural Network
+** TODO Lire les articles téléchargé
+*** TODO Neural network en général
+*** TODO Word séquencial (un truc du genre)
+** TODO Finir le tuto de daniel Shiffman
+* TODO Regarder le fonction d'un bot discord
+** Voir commend fonctionne command de discord.ext
+** Voir comment marche ce truc de @function
+** voir aussi commands.group etc... 
+** en gros faire un tour sur la documentation.
+* Youtube
+** DONE Pearl inside Pearl's Pearl
+** TODO LLY w/ Aur
+** TODO Monster Budies  
+** TODO Hit the Diamond
+* Make a wav trigger with arduino
+** Use a CH376S module [[https://arduinobasics.blogspot.com/2015/05/ch376s-usb-readwrite-module.html][link]]
+* "OIsAU" Project
+** Trouver un acronyme cool
+   Propositions : 
+    1. "OIsEAU Is Emotionnal but A* Unit"
+    2. "WAZO Arrange Zenocyne Organisation"
+    3. "OIsO Is OIsO"
+** Mycroft bases
+   Faire plusieurs changement sur le logiciel mycroft :
+*** text2speech 
+    Supprimer ce text2speech dégueulasse (du moins le désactiver par défaut)
+    Le remplacer par un texte qui s'affichera sur le GUI
+*** Musique
+    - Utiliser MPD + MPC pour la musique
+    - Reprendre les infos avec mpc current
+    - Faire en sorte de controller un serveur unique qui lancera des scéance
+      MPD sur différents port qui seront réceptionné dans différentes pièce de la maison.
+*** Terminal
+    Permet d'accéder à un Shell (linux) des rasberry qui s'affiche sur le GUI
+    Un clavier bluetooth sera connecté au rasberry pour l'utilisation du terminal
+*** Thermostat
+    Lier Oiseau avec le thermostat pour gérer la température
+    Il doit certainement y avoir des thermostat qui sont accédable via wifi.
+** GUI
+   Créer un GUI principal qui remplacera le Text2speech. 
+   Utilisation du plugin python qui permet de faire un GUI, ou alors
+   faire ça en C++ (standalone) sur lequel sera envoyé les données
+   par python en live. (voir comment ça marcheraitç).
+   Sur le quel il y aura :
+*** Main
+    Avec le logo Oiseau, qui s'active lors de la mise en route de l'écoute =oeil qui s'ouvre=
+*** Texte
+    Affiche un texte à la place des mots prononcés par mycroft. Le logo devient plus petit
+    dans le coin inférieur droit et laisse la place au texte qui s'affiche.
+*** Musique
+    Afficher la musique avec :
+     - Le nom de la musique
+     - L'artiste
+     - L'album
+     - L'image de l'album
+*** Weather
+    Intègre la fonction weather (fonction déjà intégrée à mycroft/ou alors utiliser mon script traduit sur python), qui s'affiche avec :
+     - la température interne et externe
+     - la météo
+     - l'humidité
+*** Terminal
+    Pour accéder facilement à l'intégieur des rasberry
+** Fonctionnalités OP
+*** Reconnaissance de visage et eye tracking
+    Pour n'activer le wake word seulement si quelqu'un fixe l'appareil
+*** sequence2sequence AI
+    Pour les conversation avec l'unité, basé sur les neural 
+    network de sequence-to-sequence.
+**** Écoute constante 
+     Pour grossir la base de données de conversations et augmenter 
+     les datas lors des phases de training du seq2seq : 
+      1. Utiliser le système speech2text pour retranscrire les paroles.
+      2. Enregistrer les conversations dans un fichier .txt
+      3. Analyser le fichier txt pour corriger les éventuelles fautes de gramaire etc 
+	 avec Ispell ou l'equivalent
+      4. Trier les phrases pour avoir les questions et les réponses séparées.
+* Config dotfiles
+** DONE Polybar
+*** DONE Mails
+    [[file:~/.script/mails][script mails]]   
+*** DONE Weather
+    va sur dark-sky toute les 30 minutes et enregistre les datas pour la semaine. 
+    Si on est offline il compare le timestamp à ceux des datas et il donne la température du jour en question
+    [[file:~/.script/weatherdir/weather][weather script]]
+*** DONE network script
+    fair un network script qui montre la puissance du wifi avec
+    awk 'NR==3 {print $3 ou $4}' /proc/net/wireless
+*** DONE updates
+** DONE Twitch
+   Voir github
+** DONE RSSfeed with Elfeed
+*** play-with-mpv
+*** elfeed-org 
+** DONE Mails 
+*** Offlineimap 
+    C'est supercool il se connecte à un serveur imap pour télécharger les mails
+    [[file:~/.offlineimaprc][Config]]
+*** Mu4e
+    Package emacs qui permet de gérer les mails dans le format Maildir (comme offlineimap)
+** TODO animated wallpaper
+   Faire un wallpaper animé avec ça
+   https://www.desktophut.com/animated-wallpapers-on-linux/
+* Zenocyne links 
+** Messages
+*** Windows
+    file:/plink:root@www.zenocyne.com:/var/www/html/sitealt/contacts.txt
+*** Linux
+    file:/ssh:root@www.zenocyne.com:/var/www/html/sitealt/contacts.txt
+    file:/ssh:root@192.168.0.100:/var/www/html/sitealt/contacts.txt
+* Jardin futur:
+** Plantes pour tisanes :
+   - Camomille
+   - sauge
+   - Thym
+   - menthe bergamote
+   - bleuet
+** Potager indispensable :
+   - Patate
+   - Ail
+   - Oignons
+   - Céleri
+   - Carotte
+   - Tomate
+   - Laitue
+   - Romarin
+** Katky/Hydroponics :
+   - Laitue
+   - Radish
+   - Persil
+* Vegan?
+** Apport protéine journalier : 50g
+** Plantes richent en protéines (par 100g):
+*** Local
+    - Lentille : ~15g
+    - Pain : 11g
+    - Petit pois : 6.5g
+    - oeuf : 12g
+    - Sésame 20g
+    - Blé : ~11g
+    - Ail 6.4g
+    - Maïs : ~7g
+*** Non-local
+    - soja 38g
+    - cacahuète 26g
+    - Quinoa : 14g
+      - cuite : 4.4g
+    - Riz : 7.1g
+* immowrb
+** https://www.immoweb.be/fr/annonce/appartement/a-louer/uccle/1180/id5473725
+** https://www.immoweb.be/fr/annonce/duplex/a-louer/uccle/1180/id7746721 
+** https://www.immoweb.be/fr/annonce/appartement/a-louer/evere/1140/id7746604
+** https://www.immoweb.be/fr/annonce/appartement/a-louer/evere/1140/id7745516
+* Youtube Gui for Windows
+** Fonction recherche
+** Regarder les nouvelles vidéos des abonnements
+** Commentaires
+** descriptions
+** Informations sur le nombre de vues etc
+accord compo : sol dièse mineur then fa dièse majeur
+* Yusynth modular IC list :
+** CA3046/CA3146/CA3086 2
+** TL072 1
+** TL074 3
+** BC557 1
+** BC547 6
+** BC547C 3
+** 78L15 1
+** 79L15 1
+** OPA2137/TL072 1
+** LM394/SSM2210/MAT02/MAT12/LS312||2SC1583||2xBC547B
+** LM311N 1
+** 1N4148 6
+** j112/j111
+** 7555 or CMOS version of NE555
+** BS170 1
+* Trucs à mettre dans une lettre de motivation
+  La formation en sciences physiques vise la maîtrise d’outils
+ physiques et mathématiques avancés. Elle développe des 
+compétences telles que la curiosité et la rigueur scientifique, 
+la capacité d’abstraction, la modélisation de problèmes physiques 
+complexes, le sens de la précision et de la mesure expérimentale
+ ainsi que l’aptitude au travail en équipe et à la communication.
+* Cadeaux Aurore
+  - Sanza amplifié
+  - Des petites crevettes préhistoriques
+    

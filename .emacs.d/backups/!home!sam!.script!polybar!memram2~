@@ -1,0 +1,14 @@
+#!/bin/bash
+
+round() {
+    echo $1 | awk '{print int($1+0.5)}'
+}
+
+memtot=$(cat /proc/meminfo | grep MemTotal | awk '{print $2}')
+memava=$(cat /proc/meminfo | grep MemAvailable | awk '{print $2}')
+
+echo :$(python -c "print ( '{:02}'.format(int(round( ($memtot - $memava.) / $memtot * 100))))")%
+
+per=$(echo 0$(round $(echo "($memtot - $memava.) / $memtot * 100" | bc -l )))
+
+echo :${per: -2}%

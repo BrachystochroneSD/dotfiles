@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+
+
+homeSize=$(df -h ~ | awk 'NR==2{print $2}' | sed 's/G//')
+homeUsed=$(df -h ~ | awk 'NR==2{print $3}' | sed 's/G//')
+
+rootSize=$(df -h / | awk 'NR==2{print $2}' | sed 's/G//')
+rootUsed=$(df -h / | awk 'NR==2{print $3}' | sed 's/G//')
+
+totSize=$( echo "$homeSize + $rootSize" | bc )
+totUsed=$( echo "$homeUsed + $rootUsed" | bc )
+
+echo :$(echo "$totUsed * 100 / $totSize" | bc -l | awk '{print int($1+0.5)}')%
