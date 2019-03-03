@@ -1,13 +1,15 @@
 #!/bin/bash -i
 
-# Parameters
+# get my private twitch_clientID
+. "${HOME}/.authentification/apikeys.sh"
 
+# colors from wpgtk/pywal
 . "${HOME}/.config/wpg/formats/colors.sh"
 
-channelsfile=/home/$USER/.script/twitch/datas/listchanneltwitch
-gamesfile=/home/$USER/.script/twitch/datas/listgamestwitch 
-clientID=9wba9dk3evmmlxs2xz0xwle0fwr6uc
-gamesdb=/home/$USER/.script/gamedatabase/gamesdb
+# Parameters
+channelsfile=${HOME}/.script/twitch/datas/listchanneltwitch
+gamesfile=${HOME}/.script/twitch/datas/listgamestwitch 
+gamesdb=${HOME}/.script/gamedatabase/gamesdb
 
 max_vid=100
 
@@ -25,7 +27,7 @@ aborted(){
 check_and_launch(){
     echo "Checking connected streams for $@ ..."
     gametocheck=$(echo $@ | sed 's/ /%20/g')
-    twitchdata=$(curl -s 'https://api.twitch.tv/kraken/streams?client_id='$clientID'&game='$gametocheck)
+    twitchdata=$(curl -s 'https://api.twitch.tv/kraken/streams?client_id='$twitch_clientID'&game='$gametocheck)
     [[ $(echo $twitchdata | jq '._total') == 0 ]] && nobodyshit
     stream=$(echo $twitchdata | jq -r '.streams[] | .channel.language, .channel.name' | awk 'NR%2{printf "%s:",$0;next;}1' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 10 -p "Which stream ?" | sed 's/.*://')
     [[ ! -n $stream ]] && aborted
@@ -54,13 +56,13 @@ twitchgamefunction(){
 twitchlivefunction(){
     if [[ -n $@ ]]; then
 	echo "Checking if $@ is live ..."
-	test=$(curl -s https://api.twitch.tv/kraken/streams/"$@"?client_id=$clientID | jq ".stream._id")
+	test=$(curl -s https://api.twitch.tv/kraken/streams/"$@"?client_id=$twitch_clientID | jq ".stream._id")
 
 	[ ! $test == null ] && (exec surf https://www.twitch.tv/popout/$@/chat?darkpopout & mpv https://www.twitch.tv/"$@") || echo "$@ doesn't stream right now"
 	exit
     else
 	echo "Checking connected streams ..."
-	twitchdata=$(curl -s 'https://api.twitch.tv/kraken/streams?client_id='$clientID'&channel='$(cat $channelsfile))
+	twitchdata=$(curl -s 'https://api.twitch.tv/kraken/streams?client_id='$twitch_clientID'&channel='$(cat $channelsfile))
 
 	stream=$(echo $twitchdata | jq -r '.streams[] | .channel.name' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "Which stream do you want to watch?") || aborted
 	exec surf -new-window https://www.twitch.tv/popout/$stream/chat?darkpopout & mpv https://www.twitch.tv/"$stream"
@@ -69,14 +71,14 @@ twitchlivefunction(){
 }
 
 twitchvod_search(){
-    searchingshit=$(cat ~/.script/twitch/datas/listchanneltwitch | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -p "TwitchVOD Channel:") || aborted
+    searchingshit=$(cat $channelsfile | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -p "TwitchVOD Channel:") || aborted
     echo "Searching for video on "$searchingshit
     curl_choose_and_watch
 }
 
 curl_choose_and_watch(){	
     #curl the api twitch vod search for a channel
-    twitchvod=$(curl -s 'https://api.twitch.tv/kraken/channels/'$searchingshit'/videos?client_id='$clientID'&limit='$max_vid'&offset='$offset)
+    twitchvod=$(curl -s 'https://api.twitch.tv/kraken/channels/'$searchingshit'/videos?client_id='$twitch_clientID'&limit='$max_vid'&offset='$offset)
     total_vod=$(echo $twitchvod | jq '._total')
     [[ $total_vod == null || $total_vod == 0 ]] && twitchvod_search
 

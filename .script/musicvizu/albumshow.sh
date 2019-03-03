@@ -1,8 +1,8 @@
 #!/bin/bash
 
 w3m="w3mimgdisplay"
-MUSIC_DIR=$HOME/Music
-backup_img="/home/sam/Images/owl.png"
+MUSIC_DIR=${HOME}/Music
+backup_img=${HOME}/Images/owl.png
 
 while true;do
     src=""

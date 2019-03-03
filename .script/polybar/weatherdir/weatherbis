@@ -1,7 +1,9 @@
 #!/bin/bash
 
+# get my private app ip
+. "${HOME}/.authentification/apikeys.sh"
+
 # parameters
-appid=7fd03f521f1f63d4f21335b700747609
 current=${HOME}/.script/polybar/weatherdir/datas/current
 forecast=${HOME}/.script/polybar/weatherdir/datas/forecast
 
@@ -80,8 +82,8 @@ get_datas(){
     location=$(curl -s ipinfo.io/geo | jq .loc)
     lat=$(echo $location | sed 's/,.*//' | sed 's/^.//')
     long=$(echo $location | sed 's/.*,//' | sed 's/.$//')
-    curl -s 'http://api.openweathermap.org/data/2.5/weather?lat='$lat'&lon='$long'&APPID='$appid'&units=metric'> $current
-    curl -s 'http://api.openweathermap.org/data/2.5/forecast?lat='$lat'&lon='$long'&APPID='$appid'&units=metric'>$forecast
+    curl -s 'http://api.openweathermap.org/data/2.5/weather?lat='$lat'&lon='$long'&APPID='$weatherbisappid'&units=metric'> $current
+    curl -s 'http://api.openweathermap.org/data/2.5/forecast?lat='$lat'&lon='$long'&APPID='$weatherbisappid'&units=metric'>$forecast
 }
 
 echocurrent(){

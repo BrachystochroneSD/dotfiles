@@ -1,8 +1,10 @@
 #!/bin/bash
 
-appid=819cc5ba7acaa9c1ad13006d67ca242d
+# get my private app ip
+. "${HOME}/.authentification/apikeys.sh"
+
 datas=${HOME}/.script/polybar/weatherdir/datas/data
-utc=2
+utc=2 #utc zone
 
 icons() {
     case $1 in
@@ -30,7 +32,7 @@ ceilshit() {
 
 get_datas(){
     location=$(curl -s ipinfo.io | jq .loc | sed 's/"//g')
-    curl -s https://api.darksky.net/forecast/819cc5ba7acaa9c1ad13006d67ca242d/$location?units=ca >$datas
+    curl -s https://api.darksky.net/forecast/$weather1appid/$location?units=ca >$datas
 }
 
 current_weather(){

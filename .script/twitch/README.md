@@ -22,7 +22,7 @@ All you have to do is run this script with one of the two options
   + Bash 4
   + mpv (0.14.0)
   + youtube-dl
-  + firefox (or other browser than can launch url on a new windows)
+  + A web browser (here I use surf)
   + [dmenu](https://tools.suckless.org/dmenu/) (This shit is awesome)
   + internet connection (ok.)
 

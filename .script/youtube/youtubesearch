@@ -1,9 +1,15 @@
 #!/bin/bash -i
 
-apikey=AIzaSyAxoOzmqHSjvkv0LzYm5v4vUzvjorBu374
-max_results=30
+# get my private ytapikey
+. "${HOME}/.authentification/apikeys.sh"
 
+# colors from wpgtk/pywal
 . "${HOME}/.config/wpg/formats/colors.sh"
+
+#Parameters
+max_results=30
+rss_file=${HOME}/.emacs.d/rss/rss.org
+searchhistory=${HOME}/.script/youtube/datas/searchhistory
 
 aborted(){
     echo "Aborted"
@@ -11,9 +17,10 @@ aborted(){
 }
 
 save_channel(){
-    check=$(cat ~/.emacs.d/rss/rss.org | grep $channelID)
+    # Save a channel on a rss.org file 
+    check=$(cat $rss_file | grep $channelID)
     [[ ! -n $check ]] && save_or_not=$(echo -e "No\nYes" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "Save this channel ?")
-    [[ $save_or_not == Yes ]] && echo '*** [[https://www.youtube.com/feeds/videos.xml?channel_id='$channelID']['$channame']]' >> ~/.emacs.d/rss/rss.org 
+    [[ $save_or_not == Yes ]] && echo '*** [[https://www.youtube.com/feeds/videos.xml?channel_id='$channelID']['$channame']]' >> $rss_file
 }
 
 get_channel_id(){
@@ -24,7 +31,7 @@ get_channel_id(){
 			 -d 'type=channel' \
 			 -d 'maxResults=25' \
 			 -d 'part=snippet' \
-			 -d 'key='$apikey'')
+			 -d 'key='$ytapikey'')
     chanchoice=$(echo $channelsearch | jq -r '.items[] | .snippet.channelTitle' | awk '{printf ("%2d: %s\n",NR,$0)}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p 'Which channel ?')
     channame=$(echo $chanchoice | sed 's/.*: //')
     chanchoice=$(echo $chanchoice | sed 's/:.*//')
@@ -35,14 +42,14 @@ get_channel_id(){
 
 youtube_search(){
     channelID=""
-    searchingshit=$(cat ~/.script/youtube/datas/searchhistory | awk '{print$0}END{printf "\n\nChannel option"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
+    searchingshit=$(cat $searchhistory | awk '{print$0}END{printf "\n\nChannel option"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
     if [[ $searchingshit == 'Channel option' ]];then
 	channelname=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Channel Search") || youtube_search
         get_channel_id
 	save_channel
 	searchingshit=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Search on this channel:") || youtube_search 
     fi
-    echo $searchingshit >~/.script/youtube/datas/searchhistory
+    echo $searchingshit > $searchhistory
     echo "Searching for "$searchingshit
 
     if [[ ! -n $channelID ]];then
@@ -50,7 +57,7 @@ youtube_search(){
 				 -G https://www.googleapis.com/youtube/v3/search \
 				 -d 'type=video' \
 				 -d 'maxResults='$max_results'' \
-				 -d 'key='$apikey'' \
+				 -d 'key='$ytapikey'' \
 				 -d 'part=snippet' \
 				 --data-urlencode 'q='"'$searchingshit'"''
 				 )
@@ -59,7 +66,7 @@ youtube_search(){
 				 -G https://www.googleapis.com/youtube/v3/search \
 				 -d 'type=video' \
 				 -d 'maxResults='$max_results'' \
-				 -d 'key='$apikey'' \
+				 -d 'key='$ytapikey'' \
 				 -d 'part=snippet' \
 				 -d 'channelId='$channelID'' \
 				 --data-urlencode 'q='"'$searchingshit'"''
