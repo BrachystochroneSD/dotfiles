@@ -183,7 +183,9 @@ bindsym Shift+XF86MonBrightnessUp   exec light -U 10
 
 #---# Music shits #---#
 
+exec ~/.script/musicvizu/musicvizu.sh
 exec mpd
+
 bindsym $mod+Ctrl+Shift+m 	  exec mpd
 bindsym $mod+Ctrl+m 	  	  exec ~/.script/musicvizu/musicvizu.sh
 
@@ -243,7 +245,7 @@ for_window [instance="scripts"] floating enable
 for_window [instance="scripts"] resize set 625 400
 for_window [instance="scripts"] border pixel 5
 
-bindsym $mod+t exec $term -n scripts -e vim ~/.script/note/notes
+bindsym $mod+t exec $term -n scripts -e vim ~/.notes
 
 #Twitch#
 
@@ -276,8 +278,10 @@ bindsym $mod+q			gaps outer current plus 5
 bindsym $mod+Shift+q		gaps outer current minus 5
 
 # usb-dev
-bindsym $mod+u exec ~/.script/system-usb-udev.sh --mount
-bindsym $mod+Shift+u exec ~/.script/system-usb-udev.sh --unmount
+#TODOTODOTODOTODOTODOTODOTODOTODO
+# bindsym $mod+u exec ~/.script/system-usb-udev.sh --mount
+# bindsym $mod+Shift+u exec ~/.script/system-usb-udev.sh --unmount
+#TODOTODOTODOTODOTODOTODOTODOTODO
 
 # update
 bindsym $mod+Ctrl+u exec st -n scripts -e sudo pacman -Syu

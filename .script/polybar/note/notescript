@@ -1,5 +1,5 @@
 #!/bin/bash
  
-num=$(cat ${HOME}/.script/polybar/note/notes | grep -c "*")
+num=$(cat ${HOME}/.notes | grep -c "*")
 
 [[ ! $num == 0 ]] && echo " $num" || echo ""
