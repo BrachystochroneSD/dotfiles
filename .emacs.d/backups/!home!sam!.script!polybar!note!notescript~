@@ -1,5 +1,0 @@
-#!/bin/bash
- 
-num=$(cat ~/.script/note/notes | grep -c "*")
-
-[[ ! $num == 0 ]] && echo " $num" || echo ""

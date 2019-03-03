@@ -1,4 +1,0 @@
-from math import *
-
-def dailyround(timestamp):
-    return timestamp
