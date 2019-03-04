@@ -8,7 +8,6 @@ choice=$(cat $bookmarks_file | awk '{print$0}END{printf "\nDelete bookmarks"}' |
 
 if [[ "$choice" == 'Delete bookmarks' ]]; then
     del_choice=$(cat $bookmarks_file | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Delete :' -i -l 10 -w $1)
-    dunstify "$del_choice"
     prompt=$(echo -e "No\nYes" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Are you sure?' -i -w $1)
 
     if [[ "$prompt" == "Yes" ]] ; then
