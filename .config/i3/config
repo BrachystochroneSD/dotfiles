@@ -52,6 +52,7 @@ floating_modifier $mod
 
 #App launcher bindings
 bindsym $mod+z			exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
+bindsym $mod+Ctrl+z		exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
 bindsym $mod+Shift+z 		exec $browser
 bindsym $mod+Return		exec $term
 bindsym $mod+Shift+Return	exec $editor

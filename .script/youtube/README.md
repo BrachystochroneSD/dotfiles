@@ -10,7 +10,7 @@ You can search for an specific channel with the channel options.
   + Bash 4
   + mpv (0.14.0)
   + youtube-dl
-  + [dmenu](https://tools.suckless.org/dmenu/)
+  + dmenu or rofi or alternative (fzf for example)
   + internet connection (of course.)
 
 # Parameters:
