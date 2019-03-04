@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/mqHo10H.png",
+    "alpha": "100",
+    "special": {
+        "background": "#011704",
+        "foreground": "#c6f5e3",
+        "cursor": "#c6f5e3"
+    },
+    "colors": {
+        "color0": "#011704",
+        "color1": "#5CA955",
+        "color2": "#6CD757",
+        "color3": "#819072",
+        "color4": "#9F9471",
+        "color5": "#93EB6D",
+        "color6": "#BFD9AD",
+        "color7": "#c6f5e3",
+        "color8": "#8aab9e",
+        "color9": "#5CA955",
+        "color10": "#6CD757",
+        "color11": "#819072",
+        "color12": "#9F9471",
+        "color13": "#93EB6D",
+        "color14": "#BFD9AD",
+        "color15": "#c6f5e3"
+    }
+}

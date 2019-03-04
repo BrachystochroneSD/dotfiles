@@ -1,0 +1,79 @@
+sw_volume: 100
+audio_device_state:1:Pulseaudio
+audio_device_state:1:Alsa output
+audio_device_state:1:my_fifo
+state: play
+current: 38
+time: 4.075000
+random: 1
+repeat: 0
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0.000000
+mixrampdelay: -1.000000
+playlist_begin
+0:Siriusmo_/2008 - Siriusmo - Diskoding/01 Intro.mp3
+1:Siriusmo_/2008 - Siriusmo - Diskoding/02 Simple.mp3
+2:Siriusmo_/2008 - Siriusmo - Diskoding/03 Too Simple.mp3
+3:Siriusmo_/2008 - Siriusmo - Diskoding/04  Mein Menu Fahrrad (Boys Noize Edit).mp3
+4:Siriusmo_/2008 - Siriusmo - Diskoding/05 Schreitmaschine.mp3
+5:Siriusmo_/2008 - Siriusmo - Diskoding/06 Diskoding.mp3
+6:Siriusmo_/2008 - Siriusmo - Diskoding/07 Diskozinzin.mp3
+7:Siriusmo_/2008 - Siriusmo - Diskoding/08 Lastdear.mp3
+8:Siriusmo_/2011 - Mosaik/01 - High Together (Album Version).flac
+9:Siriusmo_/2011 - Mosaik/02 - Feromonikon (CD Edit).flac
+10:Siriusmo_/2011 - Mosaik/03 - Sirimande.flac
+11:Siriusmo_/2011 - Mosaik/04 - Call Me.flac
+12:Siriusmo_/2011 - Mosaik/05 - Mosaik.flac
+13:Siriusmo_/2011 - Mosaik/06 - Bad Idea.flac
+14:Siriusmo_/2011 - Mosaik/07 - Lass Den Vogel Frei!.flac
+15:Siriusmo_/2011 - Mosaik/08 - 123 (Album Version).flac
+16:Siriusmo_/2011 - Mosaik/09 - Idiologie.flac
+17:Siriusmo_/2011 - Mosaik/10 - Einmal In Der Woche Schreien.flac
+18:Siriusmo_/2011 - Mosaik/11 - Good Idea.flac
+19:Siriusmo_/2011 - Mosaik/12 - Nights Off.flac
+20:Siriusmo_/2011 - Mosaik/13 - Peeved.flac
+21:Siriusmo_/2011 - Mosaik/14 - Feed My Meatmachine.flac
+22:Siriusmo_/2011 - Mosaik/15 - Goldene Kugel.flac
+23:Siriusmo_/2011 - Mosaik/16 - Signal.flac
+24:Siriusmo_/2011 - Mosaik/17 - Red Knob.flac
+25:Siriusmo_/2013 - Enthusiast/Siriusmo - 01. Doctor Beak.m4a
+26:Siriusmo_/2013 - Enthusiast/Siriusmo - 02. Congratulator.m4a
+27:Siriusmo_/2013 - Enthusiast/Siriusmo - 03. Traenen aus Bier.m4a
+28:Siriusmo_/2013 - Enthusiast/Siriusmo - 04. Enthusiast.m4a
+29:Siriusmo_/2013 - Enthusiast/Siriusmo - 05. Cornerboy.m4a
+30:Siriusmo_/2013 - Enthusiast/Siriusmo - 06. Plastic Hips.m4a
+31:Siriusmo_/2013 - Enthusiast/Siriusmo - 07. Itchy.m4a
+32:Siriusmo_/2013 - Enthusiast/Siriusmo - 08. Stinky Wig.m4a
+33:Siriusmo_/2013 - Enthusiast/Siriusmo - 09. Liu.m4a
+34:Siriusmo_/2013 - Enthusiast/Siriusmo - 10. Rantanplant.m4a
+35:Siriusmo_/2013 - Enthusiast/Siriusmo - 11. Wattislosmitmir.m4a
+36:Siriusmo_/2013 - Enthusiast/Siriusmo - 12. Petit Cochon.m4a
+37:Siriusmo_/2013 - Enthusiast/Siriusmo - 13. Leftovers.m4a
+38:Siriusmo_/2017 - Comic/01_MTR076_Siriusmo_COMIC.mp3
+39:Siriusmo_/2017 - Comic/02_MTR076_Siriusmo_WRONG_PASSWORD.mp3
+40:Siriusmo_/2017 - Comic/03_MTR076_Siriusmo_DOPPELKLICK_feat_MR_OIZO.mp3
+41:Siriusmo_/2017 - Comic/04_MTR076_Siriusmo_IMPORTANT_MOVIE_SCENE.mp3
+42:Siriusmo_/2017 - Comic/05_MTR076_Siriusmo_LA_BOUCHE_feat_DANA_and_ROMANO.mp3
+43:Siriusmo_/2017 - Comic/06_MTR076_Siriusmo_DAGOBERTA.mp3
+44:Siriusmo_/2017 - Comic/07_MTR076_Siriusmo_PATINA_feat_JAN_DRIVER.mp3
+45:Siriusmo_/2017 - Comic/08_MTR076_Siriusmo_MOMENTO_MORI.mp3
+46:Siriusmo_/2017 - Comic/09_MTR076_Siriusmo_GEILOMANT.mp3
+47:Siriusmo_/2017 - Comic/10_MTR076_Siriusmo_BLEAT.mp3
+48:Siriusmo_/2017 - Comic/11_MTR076_Siriusmo_WIXN.mp3
+49:Siriusmo_/2017 - Comic/12_MTR076_Siriusmo_ISEGRIM.mp3
+50:Siriusmo_/2017 - Comic/13_MTR076_Siriusmo_STOCK_UND_STEIN.mp3
+51:Siriusmo_/2017 - Comic/14_MTR076_Siriusmo_PSYCHOFANT.mp3
+52:Siriusmo_/2017 - Where Was I - Single/01 Comic (Single Edit).m4a
+53:Siriusmo_/2017 - Where Was I - Single/02 Always Du.m4a
+54:Siriusmo_/2017 - Where Was I - Single/03 Where Was I_.m4a
+55:Siriusmo_/Pearls & Embarrassments Compil/1-04 Siriusmo - The Uninvited Guest.flac
+56:Siriusmo_/Pearls & Embarrassments Compil/1-05 Siriusmo - Wow.flac
+57:Siriusmo_/Pearls & Embarrassments Compil/1-06 Siriusmo - Femuscle.flac
+58:Siriusmo_/Pearls & Embarrassments Compil/1-10 Siriusmo - Let Me In!.flac
+59:Siriusmo_/Pearls & Embarrassments Compil/1-13 Siriusmo - Rockwurst.flac
+60:Siriusmo_/Pearls & Embarrassments Compil/1-18 Siriusmo - Katharsis Impossible.flac
+61:Siriusmo_/Pearls & Embarrassments Compil/2-03 Siriusmo - Cuba.flac
+62:Siriusmo_/Pearls & Embarrassments Compil/2-06 Siriusmo - Discosau.flac
+playlist_end

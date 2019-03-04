@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/tkee54Z.jpg",
+    "alpha": "100",
+    "special": {
+        "background": "#050509",
+        "foreground": "#e4e8ed",
+        "cursor": "#e4e8ed"
+    },
+    "colors": {
+        "color0": "#050509",
+        "color1": "#AFCBD6",
+        "color2": "#B5CCE8",
+        "color3": "#CAD8D7",
+        "color4": "#DAE3DB",
+        "color5": "#FDF6DC",
+        "color6": "#CDD5FB",
+        "color7": "#e4e8ed",
+        "color8": "#9fa2a5",
+        "color9": "#AFCBD6",
+        "color10": "#B5CCE8",
+        "color11": "#CAD8D7",
+        "color12": "#DAE3DB",
+        "color13": "#FDF6DC",
+        "color14": "#CDD5FB",
+        "color15": "#e4e8ed"
+    }
+}

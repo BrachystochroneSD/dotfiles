@@ -1,0 +1,6 @@
+[dmenu]
+dmenu_command = dmen
+
+[dmenu_passphrase]
+nf = {color0}
+nb = {color0}

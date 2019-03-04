@@ -1,0 +1,28 @@
+{
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/IRHwARX.jpg",
+    "alpha": "100",
+
+    "special": {
+        "background": "#092A10",
+        "foreground": "#f5ccbb",
+        "cursor": "#f5ccbb"
+    },
+    "colors": {
+        "color0": "#092A10",
+        "color1": "#A29F58",
+        "color2": "#AFA95D",
+        "color3": "#FE8D72",
+        "color4": "#ECB076",
+        "color5": "#F7BF78",
+        "color6": "#EB9F8A",
+        "color7": "#f5ccbb",
+        "color8": "#ab8e82",
+        "color9": "#A29F58",
+        "color10": "#AFA95D",
+        "color11": "#FE8D72",
+        "color12": "#ECB076",
+        "color13": "#F7BF78",
+        "color14": "#EB9F8A",
+        "color15": "#f5ccbb"
+    }
+}

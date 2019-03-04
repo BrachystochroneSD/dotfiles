@@ -1,0 +1,23 @@
+" Special
+let wallpaper  = "/home/sam/.config/wpg/wallpapers/IRHwARX.jpg"
+let background = "#092A10"
+let foreground = "#f5ccbb"
+let cursor     = "#f5ccbb"
+
+" Colors
+let color0  = "#092A10"
+let color1  = "#A29F58"
+let color2  = "#AFA95D"
+let color3  = "#FE8D72"
+let color4  = "#ECB076"
+let color5  = "#F7BF78"
+let color6  = "#EB9F8A"
+let color7  = "#f5ccbb"
+let color8  = "#ab8e82"
+let color9  = "#A29F58"
+let color10 = "#AFA95D"
+let color11 = "#FE8D72"
+let color12 = "#ECB076"
+let color13 = "#F7BF78"
+let color14 = "#EB9F8A"
+let color15 = "#f5ccbb"

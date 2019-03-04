@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/237343.jpg",
+    "alpha": "100",
+    "special": {
+        "background": "#343424",
+        "foreground": "#f3eee6",
+        "cursor": "#f3eee6"
+    },
+    "colors": {
+        "color0": "#343424",
+        "color1": "#F2AA9C",
+        "color2": "#F1DEA5",
+        "color3": "#DFA7DC",
+        "color4": "#FDB2F6",
+        "color5": "#9AD0DA",
+        "color6": "#9BD6DF",
+        "color7": "#f3eee6",
+        "color8": "#aaa6a1",
+        "color9": "#F2AA9C",
+        "color10": "#F1DEA5",
+        "color11": "#DFA7DC",
+        "color12": "#FDB2F6",
+        "color13": "#9AD0DA",
+        "color14": "#9BD6DF",
+        "color15": "#f3eee6"
+    }
+}

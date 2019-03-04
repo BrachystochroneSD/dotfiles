@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/OPruInE.jpg",
+    "alpha": "100",
+    "special": {
+        "background": "#0e0e0e",
+        "foreground": "#e7d9b1",
+        "cursor": "#e7d9b1"
+    },
+    "colors": {
+        "color0": "#0e0e0e",
+        "color1": "#AF8C2C",
+        "color2": "#DCA925",
+        "color3": "#A89562",
+        "color4": "#B9A56E",
+        "color5": "#CFAA4D",
+        "color6": "#C9B173",
+        "color7": "#e7d9b1",
+        "color8": "#a1977b",
+        "color9": "#AF8C2C",
+        "color10": "#DCA925",
+        "color11": "#A89562",
+        "color12": "#B9A56E",
+        "color13": "#CFAA4D",
+        "color14": "#C9B173",
+        "color15": "#e7d9b1"
+    }
+}

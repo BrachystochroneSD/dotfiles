@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/tumblr_nsfpjigvXS1sxagvto5_1280.jpg",
+    "alpha": "100",
+    "special": {
+        "background": "#0d161e",
+        "foreground": "#e1f1ef",
+        "cursor": "#e1f1ef"
+    },
+    "colors": {
+        "color0": "#0d161e",
+        "color1": "#539AAB",
+        "color2": "#5EB3C5",
+        "color3": "#5DC0C9",
+        "color4": "#8FB1BC",
+        "color5": "#A6DFE1",
+        "color6": "#C7D9DB",
+        "color7": "#e1f1ef",
+        "color8": "#9da8a7",
+        "color9": "#539AAB",
+        "color10": "#5EB3C5",
+        "color11": "#5DC0C9",
+        "color12": "#8FB1BC",
+        "color13": "#A6DFE1",
+        "color14": "#C7D9DB",
+        "color15": "#e1f1ef"
+    }
+}

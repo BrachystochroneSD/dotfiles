@@ -1,0 +1,21 @@
+set $wallpaper /home/sam/.config/wpg/wallpapers/IRHwARX.jpg
+
+set $background #092A10
+set $foreground #f5ccbb
+
+set $color0 #092A10
+set $color1 #A29F58
+set $color2 #AFA95D
+set $color3 #FE8D72
+set $color4 #ECB076
+set $color5 #F7BF78
+set $color6 #EB9F8A
+set $color7 #f5ccbb
+set $color8 #ab8e82
+set $color9 #A29F58
+set $color10 #AFA95D
+set $color11 #FE8D72
+set $color12 #ECB076
+set $color13 #F7BF78
+set $color14 #EB9F8A
+set $color15 #f5ccbb

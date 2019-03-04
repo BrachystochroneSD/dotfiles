@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/S1e20_Gideon_Rises_.jpg",
+    "alpha": "100",
+    "special": {
+        "background": "#0a0705",
+        "foreground": "#f3dec6",
+        "cursor": "#f3dec6"
+    },
+    "colors": {
+        "color0": "#0a0705",
+        "color1": "#906639",
+        "color2": "#94714F",
+        "color3": "#B18A65",
+        "color4": "#D7A26A",
+        "color5": "#EDC16B",
+        "color6": "#DFA98E",
+        "color7": "#f3dec6",
+        "color8": "#aa9b8a",
+        "color9": "#906639",
+        "color10": "#94714F",
+        "color11": "#B18A65",
+        "color12": "#D7A26A",
+        "color13": "#EDC16B",
+        "color14": "#DFA98E",
+        "color15": "#f3dec6"
+    }
+}
