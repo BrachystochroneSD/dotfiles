@@ -22,8 +22,8 @@ All you have to do is run this script with one of the two options
   + Bash 4
   + mpv (0.14.0)
   + youtube-dl
-  + A web browser (here I use surf)
-  + [dmenu](https://tools.suckless.org/dmenu/) (This shit is awesome)
+  + A web browser
+  + dmenu or rofi or alternative (fzf for example)
   + internet connection (ok.)
 
 # Parameters:
@@ -32,7 +32,10 @@ All you have to do is run this script with one of the two options
     + List of desired channel
       In the form of
       ```
-      channel1,channel2,channel3,...
+      channel1
+      channel2
+      channel3
+      ...
       ```
     + List of fav games
       In the form of
@@ -48,4 +51,3 @@ All you have to do is run this script with one of the two options
 # TODO:
   + Use Chatty or Streamlink or something to access the chat without using the browser.
   + Fix the problem of hosted stream
-  + Optimisation

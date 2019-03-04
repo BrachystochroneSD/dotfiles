@@ -268,8 +268,6 @@
 ;;comment line
 (global-set-key (kbd "C-c ;") 'comment-line)
 
-
-
 ;; Elfeed
 (global-set-key (kbd "<f5>") 'elfeed)
 (require 'elfeed)
@@ -310,7 +308,6 @@ See `elfeed-play-with-mpv'."
         (elfeed-show-visit)))))
 
 (define-key elfeed-search-mode-map "b" 'elfeed-visit-or-play-with-mpv)
-
 
 ;; Mu4e
 

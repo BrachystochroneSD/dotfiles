@@ -2,7 +2,7 @@
 
 w3m="w3mimgdisplay"
 MUSIC_DIR=${HOME}/Music
-backup_img=${HOME}/Images/owl.png
+backup_img=${HOME}/Images/owl.png #when no cover img found
 
 while true;do
     src=""

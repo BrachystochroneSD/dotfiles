@@ -2714,3 +2714,15 @@ Mar 04 12:33 : exception: nested: Failed to open ALSA device "hw:0,0": Device or
 Mar 04 12:36 : player: played "Siriusmo_/2013 - Enthusiast/Siriusmo - 13. Leftovers.m4a"
 Mar 04 12:36 : exception: Failed to open "Alsa output" (alsa)
 Mar 04 12:36 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 04 12:39 : player: played "Siriusmo_/2017 - Comic/01_MTR076_Siriusmo_COMIC.mp3"
+Mar 04 12:39 : exception: Failed to open "Alsa output" (alsa)
+Mar 04 12:39 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 04 12:43 : player: played "Siriusmo_/2011 - Mosaik/14 - Feed My Meatmachine.flac"
+Mar 04 12:43 : exception: Failed to open "Alsa output" (alsa)
+Mar 04 12:43 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 04 12:47 : player: played "Siriusmo_/Pearls & Embarrassments Compil/1-05 Siriusmo - Wow.flac"
+Mar 04 12:47 : exception: Failed to open "Alsa output" (alsa)
+Mar 04 12:47 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 04 12:48 : player: played "Siriusmo_/2017 - Comic/10_MTR076_Siriusmo_BLEAT.mp3"
+Mar 04 12:48 : exception: Failed to open "Alsa output" (alsa)
+Mar 04 12:48 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
