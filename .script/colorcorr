@@ -15,9 +15,10 @@ b=${b: -2}
 
 sed "/base02/c\                                         :base02 \"#$r$g$b\"" ~/.config/wpg/formats/base16-wal-theme.el > ~/.emacs.d/base16-wal-theme.el
 
-# template for keepmenu
+# templates for keepmenu, networkdmenu and cava
 
 cp ~/.config/wpg/formats/keepmenuconf ~/.config/keepmenu/config.ini
 cp ~/.config/wpg/formats/nm_dmenu ~/.config/networkmanager-dmenu/config.ini
+cp ~/.config/wpg/formats/cavaconf ~/.config/cava/config
 
 dunst &

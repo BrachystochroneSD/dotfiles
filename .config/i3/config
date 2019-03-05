@@ -63,6 +63,12 @@ for_window [instance="scratchterm"] resize set 625 400
 for_window [instance="scratchterm"] border pixel 5
 
 
+# for aria windows
+for_window [instance="ariawin"] floating enable
+for_window [instance="ariawin"] resize set 300 50
+for_window [instance="ariawin"] border pixel 3
+for_window [instance="ariawin"] move container to workspace 9
+
 # kill focused window
 bindsym $mod+a		kill
 
