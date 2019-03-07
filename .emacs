@@ -1,9 +1,17 @@
+;;;;;;;;;;;;;;;;;;
+;; ALPHA values ;;
+;;;;;;;;;;;;;;;;;;
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
 (add-to-list 'default-frame-alist '(alpha 85 85))
-;; ajout de nombres dans la marge
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Basic Configuration ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-linum-mode t)
-;;désactive le menu-bar "file edit" inutile en haut
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
 (menu-bar-mode -1)
+(delete-selection-mode 1)
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -35,7 +43,7 @@
  '(org-agenda-files (quote ("~/Dropbox/a_faire.org")))
  '(package-selected-packages
    (quote
-    (base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode ace-window)))
+    (pyim base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode ace-window)))
  '(send-mail-function (quote mailclient-send-it)))
 
 (custom-set-faces
@@ -47,57 +55,60 @@
 ;;dir packages ajouté
 (add-to-list 'load-path "~/.emacs.d/packages/")
 
-(load-theme 'base16-wal t)
-;;Highlited replacement
-(delete-selection-mode 1)
 
-;;Binding custom début et fin de ligne
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Base16 Wal theme on The Fly ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(load-theme 'base16-wal t)
+
+(defun refresh-theme ()
+  (progn
+    (load-theme 'base16-wal t)))
+(defun theme-callback (event)
+  (refresh-theme))
+(require 'filenotify)
+(file-notify-add-watch
+  "/home/sam/.emacs.d/base16-wal-theme.el" '(change) 'theme-callback)
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Custom Bindings ;;
+;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "M-<left>") 'move-beginning-of-line)
 (global-set-key (kbd "M-<right>") 'move-end-of-line)
 
-;;resoudre le probleme des terminaux et du backspace (inutile en GUI mode)
-;; (global-set-key (kbd "C-h") 'backward-kill-word)
-;; (global-set-key (kbd "M-?") 'help)
-
-;; outline-magic
-
-;; (add-hook 'outline-mode-hook
-;;           (lambda ()
-;;             (require 'outline-cycle)))
-
-;; (add-hook 'outline-minor-mode-hook
-;;           (lambda ()
-;;             (require 'outline-magic)
-;;             (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
-
-;; (add-hook 'LaTeX-mode-hook
-;; 	  (lambda ()
-;; 	    (setq outline-promotion-headings
-;; 		  '("\\section" "\\chapter" "\\subsection" "\\subsubsection" ))))
-
-;;move-lineS
+;;;;;;;;;;;;;;;;
+;; Move-LineS ;;
+;;;;;;;;;;;;;;;;
 (require 'move-lines)
-;; (move-lines-binding)
+
 (global-set-key (kbd "M-<up>") 'move-lines-up)
 (global-set-key (kbd "M-<down>") 'move-lines-down)
 (global-set-key (kbd "C-M-:") 'move-lines-up)
 (global-set-key (kbd "C-M-;") 'move-lines-down)
 
-;;undo tree, c'est pété
+;;;;;;;;;;;;;;;
+;; Undo Tree ;;
+;;;;;;;;;;;;;;;
 (require 'undo-tree)
 (global-undo-tree-mode 1)
 (setq undo-tree-enable-undo-in-region nil)
 (global-set-key (kbd "C-z") 'undo-tree-undo)
 (global-set-key (kbd "C-M-z") 'undo-tree-redo)
 
-;;auto pair with electric pair mode + adding curly brackets
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Electric Pair Mode ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
 (electric-pair-mode 1)  
 (setq electric-pair-pairs '(
                             (?\" . ?\")
                             (?\{ . ?\})
                             ) )
 
-;;binding windows
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Bindings For Windows Move ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (global-set-key (kbd "C-M-<right>") 'windmove-right)
 (global-set-key (kbd "C-M-<left>") 'windmove-left)
 (global-set-key (kbd "C-M-<down>") 'windmove-down)
@@ -119,13 +130,19 @@
 ;; (global-set-key (kbd "C-x C-<down>") 'other-window)
 ;; (global-set-key (kbd "C-x C-<up>") 'ace-window)
 
-;;mark-multiple/multiple cursor
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mark-Multiple/Multiple Cursor ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (add-to-list 'load-path "~/.emacs.d/packages/mark-multiple.el-master/")
 (require 'multiple-cursors)
 (global-set-key (kbd "M-l") 'mc/mark-previous-like-this)
 (global-set-key (kbd "M-m") 'mc/mark-next-like-this)
 (global-set-key (kbd "M-o") 'mc/mark-all-like-this)
-;; (global-set-key (kbd "C-*") 'mc/edit-lines)
+
+;;;;;;;;;;;;;;
+;; WEB-MODE ;;
+;;;;;;;;;;;;;;
 
 ;;mark-multiple pour le mode html
 (add-hook 'sgml-mode-hook
@@ -142,7 +159,11 @@
 (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 (multi-web-global-mode 1)
 
-;;visual-line-mode for latex et raccourcis
+;;;;;;;;;;;
+;; LaTeX ;;
+;;;;;;;;;;;
+
+;;visual-line-mode
 (add-hook 'LaTeX-mode-hook #'visual-line-mode)
 
 (global-set-key (kbd "<f6>") 'visual-line-mode)
@@ -151,16 +172,7 @@
 (setq TeX-save-query nil)
 (setq TeX-clean-confirm nil)
 
-;; electric $
-
-;; (setq TeX-electric-math (cons "$" "$"))
-
-;;nouveau tex-command Compile&Clean, qui compile deux fois et supprime les fichiers .log .aux et .toc
-;; (eval-after-load "tex"
-;;   '(add-to-list 'TeX-command-list
-;; 		'("Compile&Clean" "%`%l%(mode)%' %t && %`%l%(mode)%' %t && rm *.aux *.toc *.log *.out *.snm *.nav" TeX-run-command nil t :help "compile et clean") t))
-
-;;nouveau tex-command Xelatex
+;;tex-command Xelatex
 (add-hook 'LaTeX-mode-hook 
           (lambda()
              (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))))
@@ -180,39 +192,42 @@
 	    (local-set-key (kbd "C-v") 'outline-next-visible-heading)
 	    ))
 
-;;auto-insert pour des templates lors de la création de nouveaux fichiers
+;;auto-insert for templates
 (auto-insert-mode)
 (setq auto-insert-directory "~/.mytemplates/") ;; dossier custom à créer
 (setq auto-insert-query nil) ;; supprimer la demande de confirmation pour l'insertion
 
-;;les auto-insert custom du dossier .mytemplates/ pour des extensions prédéfinies, kile est mort, vive emacs.
 (define-auto-insert "\.tex" "tex_template.tex")
 
-;;auctex binding
+;; Bindings
 (add-hook 'TeX-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "<C-return>") 'LaTeX-close-environment)
 	    (local-set-key (kbd "M-RET") 'LaTeX-insert-item)))
-
 
 (add-hook 'LaTeX-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "<C-return>") 'LaTeX-close-environment)
 	    (local-set-key (kbd "M-RET") 'LaTeX-insert-item)))
 
-;;put the autocompletion at Shift-TaB (apparemment appelé backtab)
+;;;;;;;;;;;;;;;;;;;;
+;; Autocompletion ;;
+;;;;;;;;;;;;;;;;;;;;
+
 (global-set-key (kbd "<backtab>") 'completion-at-point)
 
-;;New font et tool-bar-mode de merde
+;;;;;;;;;;
+;; Font ;;
+;;;;;;;;;;
 (set-default-font "Inconsolata-14:regular")
 
 (add-to-list 'default-frame-alist
 	     '(font . "Inconsolata-14:regular"))
 
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
 
-;;Next-buffer et previous-buffer customization (mon premier code lisp bordel, c'est beau)
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom Change-Buffer ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my-next-buffer ()
   "next-buffer, only skip buffer nuls"
   (interactive)
@@ -236,7 +251,9 @@
 (global-set-key (kbd "C-x C-j") 'my-previous-buffer)
 (global-set-key (kbd "C-c C-j") 'previous-buffer)
 
-;;better bullets
+;;;;;;;;;;;;;;;;
+;; Org-Bullet ;;
+;;;;;;;;;;;;;;;;
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda ()
 			   (org-bullets-mode 1)
@@ -244,31 +261,40 @@
 			   (local-set-key (kbd "C-c C-l") 'next-buffer)))
 
 
-;; ouvre automatiquement les choses à faire de la dropbox synchronisée avec mes autres pc
-;;(find-file "~/Dropbox/a_faire.org")
-
-
+;;;;;;;;;;;;;;;;;;;;;
+;; Show-Paren-Mode ;;
+;;;;;;;;;;;;;;;;;;;;;
 (show-paren-mode 1)
 
-;;calendar
+;;;;;;;;;;;;;;
+;; Calendar ;;
+;;;;;;;;;;;;;;
 (global-set-key (kbd "<f8>") 'calendar)
-
 (setq diary-file "~/Dropbox/diary")
 
 
-;;autorefresh sur le docview pdf
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Autorefresh Docview ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'DocView-mode-hook
 	  (lambda ()
 	    (auto-revert-mode)))
 
-;;Org-mode agenda
+;;;;;;;;;;;;;;;;;;;;;
+;; Org-mode Agenda ;;
+;;;;;;;;;;;;;;;;;;;;;
 (global-set-key "\C-ca" 'org-agenda)
 (setq org-agenda-include-diary t)
 
-;;comment line
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Comment Line and Box ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-c ;") 'comment-line)
+(global-set-key (kbd "C-c b") 'comment-box)
 
-;; Elfeed
+;;;;;;;;;;;;
+;; Elfeed ;;
+;;;;;;;;;;;;
 (global-set-key (kbd "<f5>") 'elfeed)
 (require 'elfeed)
 (require 'elfeed-org)
@@ -309,16 +335,14 @@ See `elfeed-play-with-mpv'."
 
 (define-key elfeed-search-mode-map "b" 'elfeed-visit-or-play-with-mpv)
 
-;; Mu4e
+;;;;;;;;;;
+;; Mu4e ;;
+;;;;;;;;;;
 
 (set-language-environment "UTF-8")
-
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
-
 (require 'mu4e)
-
 (global-set-key (kbd "S-<f5>") 'mu4e)
-
 (setq message-kill-buffer-on-exit t)
 (setq mu4e-context-policy 'pick-first)
 (setq mu4e-confirm-quit nil)
@@ -327,13 +351,9 @@ See `elfeed-play-with-mpv'."
  mu4e-view-show-images t
  mu4e-view-image-max-width 1000)
 
-;; default
 (setq mu4e-maildir (expand-file-name "~/.mail"))
 
-;; don't save message to Sent Messages, GMail/IMAP will take care of this
-;; (setq mu4e-sent-messages-behavior 'delete)
-
-;; setup some handy shortcuts
+;; Setup Shortcuts
 (setq mu4e-maildir-shortcuts
       '(("/outlook/Inbox"     . ?O)
         ("/umons/Inbox"       . ?U)
@@ -344,7 +364,6 @@ See `elfeed-play-with-mpv'."
 
 ;; allow for updating mail using 'U' in the main view:
 (setq mu4e-get-mail-command "offlineimap")
-
 
 ;; html mail
 (require 'shr)
@@ -436,12 +455,16 @@ See `elfeed-play-with-mpv'."
 	    (local-set-key (kbd "<tab>") 'shr-next-link)
 	    (local-set-key (kbd "<backtab>") 'shr-previous-link)))
 
-;;text scale adjust
-
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Text Scale Adjust ;;
+;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
-;; unset keys hbn, to be the arrow keys
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Set Moving Keys ;;
+;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-,") 'forward-char)
 (define-key key-translation-map (kbd "C-?") (kbd "C-S-f"))
 (define-key key-translation-map (kbd "M-?") (kbd "M-S-f"))
@@ -463,17 +486,14 @@ See `elfeed-play-with-mpv'."
 (global-set-key (kbd "C-M-S-h") 'enlarge-window)
 (global-set-key (kbd "C-M-S-n") 'shrink-window)
 
-(defun refresh-theme ()
-  (progn
-    (load-theme 'base16-wal t)))
-
-(defun theme-callback (event)
-  (refresh-theme))
-
-(require 'filenotify)
-(file-notify-add-watch
-  "/home/sam/.emacs.d/base16-wal-theme.el" '(change) 'theme-callback)
-
-;; GOtoline binding
-
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Goto-Line Binding ;;
+;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-M-g") 'goto-line)
+
+
+;;;;;;;;;;;;;
+;; CHINESE ;;
+;;;;;;;;;;;;;
+
+(global-set-key (kbd "C-=") 'toggle-input-method)

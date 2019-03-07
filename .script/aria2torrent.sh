@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# colors from wpgtk/pywal
+. "${HOME}/.config/wpg/formats/colors.sh"
+
 ariaconf=${HOME}/.config/aria2/aria2.bittorrent 
 torrentdir=${HOME}/.config/aria2/torrents
 musicdir=${HOME}/Music
@@ -7,9 +10,15 @@ videodir=${HOME}/Movies
 dldir=${HOME}/Downloads
 
 downloading(){
-    magnetlink=$1
 
+    magnetlink=$1
+    i=0
     type=$(echo -e "Music\nVideo\nFile" | dmenu -p "What's the type of the download?" -l 3) || exit 1
+
+    ######################################
+    # Downloads Directory change by type #
+    ######################################
+
     if [[ $type == 'Music' ]]; then
 	savedir=$(find $musicdir -maxdepth 1 | dmenu -l 10 -i) || exit 1
     elif [[ $type == 'Video' ]]; then
@@ -19,17 +28,24 @@ downloading(){
     fi
 
     exec st -n ariawin -e aria2c --conf-path $ariaconf --dir $savedir $magnetlink &
-    echo -e "Waiting for the torrent file creation...\nPress key to continue"
-    read -ern 1
+    echo "Waiting for the torrent file creation"
 
-
-    torrentfile=$(ls "$savedir" | grep .torrent) || (echo "no torrent found" ; exit 1)
+    while [ ! -f $savedir/*.torrent ]; do
+	sleep 1
+	printf "."
+	[[ $i -ge 30 ]] && break
+	((i++))
+    done
+    
+    echo -e "\nTorrent file found, processing the datas for futur seeding \n \n"    
+    torrentfile=$(ls "$savedir" | grep .torrent) && echo "Torrent file is : $torrentfile" || (echo "no torrent found" ; exit 1)
 
     name=$(aria2c --show-files $savedir/$torrentfile | grep -i name | sed 's/.*: //' | sed 's/ /_/g')
-    echo $name
+    echo "Name is " $name
 
     ln -s "$savedir" "$torrentdir"/"$name"
     mv "$savedir"/"$torrentfile" "$torrentdir"/"$name".torrent
+    echo -e "\n\nDone"
 }
 
 seeding(){

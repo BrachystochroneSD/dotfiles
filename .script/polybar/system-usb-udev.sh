@@ -1,10 +1,10 @@
 #!/bin/sh
 
 usb_print() {
-    devices=$(lsblk -Jplno LABEL,NAME,TYPE,RM,SIZE,MOUNTPOINT,VENDOR)
+    devices=$( lsblk -Jplno LABEL,NAME,TYPE,RM,SIZE,MOUNTPOINT,VENDOR)
     output=""
     counter=0
-    for unmounted in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == "1") | select(.mountpoint == null) | .name'); do
+    for unmounted in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
 	unmounted=$(echo "$unmounted" | tr -d "[:digit:]")
         unmounted=$(echo "$devices" | jq -r '.blockdevices[]  | select(.name == "'"$unmounted"'") | .vendor')
         unmounted=$(echo "$unmounted" | tr -d ' ')
@@ -19,7 +19,7 @@ usb_print() {
         output=" $output$space$unmounted "
     done
 
-    for mounted in $(echo "$devices" | jq -r '.blockdevices[] | select(.type == "part") | select(.rm == "1") | select(.mountpoint != null) | .size'); do
+    for mounted in $(echo "$devices" | jq -r '.blockdevices[] | select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .size'); do
 
         if [ $counter -eq 0 ]; then
             space=""
@@ -48,7 +48,7 @@ case "$1" in
         ;;
     --mount)
         devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
-        for mount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == "1") | select(.mountpoint == null) | .name'); do
+        for mount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
 
             mountpoint=$(udisksctl mount --no-user-interaction -b $mount)
             mountpoint=$(echo $mountpoint | cut -d " " -f 4 | tr -d ".")

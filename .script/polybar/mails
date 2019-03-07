@@ -4,7 +4,7 @@
 
 
 count_mail(){
-    num_mail=$(find ~/.mail new 2>/dev/null | grep -c new/)
+    num_mail=$(find ~/.mail -regex ".*new/.*" | wc -l)
     [[ ! $num_mail == 0 ]] && echo " $num_mail" || echo ""
 }
 

@@ -2,8 +2,8 @@
 dmenu_command = dmen
 
 [dmenu_passphrase]
-nf = #2c2219
-nb = #2c2219
+nf = #2d2d1e
+nb = #2d2d1e
 
 [database]
 database_1 = ~/Dropbox/Samuel_Main.kdbx

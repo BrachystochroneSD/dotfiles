@@ -1,28 +1,28 @@
 {
-    "wallpaper": "/home/sam/.config/wpg/wallpapers/lR5i7u6.jpg",
+    "wallpaper": "/home/sam/.config/wpg/wallpapers/XeJvVgc.jpg",
     "alpha": "100",
 
     "special": {
-        "background": "#2c2219",
-        "foreground": "#dee9cc",
-        "cursor": "#dee9cc"
+        "background": "#2d2d1e",
+        "foreground": "#dfe7c3",
+        "cursor": "#dfe7c3"
     },
     "colors": {
-        "color0": "#2c2219",
-        "color1": "#929968",
-        "color2": "#69B791",
-        "color3": "#99A28A",
-        "color4": "#B9BB85",
-        "color5": "#B6C186",
-        "color6": "#C4DFAA",
-        "color7": "#dee9cc",
-        "color8": "#9ba38e",
-        "color9": "#929968",
-        "color10": "#69B791",
-        "color11": "#99A28A",
-        "color12": "#B9BB85",
-        "color13": "#B6C186",
-        "color14": "#C4DFAA",
-        "color15": "#dee9cc"
+        "color0": "#2d2d1e",
+        "color1": "#E1CD7C",
+        "color2": "#71BD82",
+        "color3": "#73C288",
+        "color4": "#90CE9A",
+        "color5": "#BBD899",
+        "color6": "#89D3A5",
+        "color7": "#dfe7c3",
+        "color8": "#9ca188",
+        "color9": "#E1CD7C",
+        "color10": "#71BD82",
+        "color11": "#73C288",
+        "color12": "#90CE9A",
+        "color13": "#BBD899",
+        "color14": "#89D3A5",
+        "color15": "#dfe7c3"
     }
 }

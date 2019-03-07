@@ -63,11 +63,13 @@ for_window [instance="scratchterm"] resize set 625 400
 for_window [instance="scratchterm"] border pixel 5
 
 
-# for aria windows
+# for aria windows for seeding
 for_window [instance="ariawin"] floating enable
-for_window [instance="ariawin"] resize set 300 50
+for_window [instance="ariawin"] resize set 400 100
 for_window [instance="ariawin"] border pixel 3
-for_window [instance="ariawin"] move container to workspace 9
+for_window [instance="ariawin"] move scratchpad
+
+bindsym $mod+Shift+t [instance="ariawin"] scratchpad show
 
 # kill focused window
 bindsym $mod+a		kill
@@ -256,9 +258,9 @@ bindsym $mod+t exec $term -n scripts -e vim ~/.notes
 
 #Twitch#
 
-bindsym $mod+Shift+t exec ~/.script/twitch/twitchscript --live
-bindsym $mod+Ctrl+t exec ~/.script/twitch/twitchscript --game
-bindsym $mod+Ctrl+Shift+t exec ~/.script/twitch/twitchscript --vod
+
+bindsym $mod+Ctrl+t exec ~/.script/twitch/twitchmenu.sh
+
 
 #youtube#
 
@@ -285,10 +287,10 @@ bindsym $mod+q			gaps outer current plus 5
 bindsym $mod+Shift+q		gaps outer current minus 5
 
 # usb-dev
-#TODOTODOTODOTODOTODOTODOTODOTODO
+#TODO
 # bindsym $mod+u exec ~/.script/system-usb-udev.sh --mount
 # bindsym $mod+Shift+u exec ~/.script/system-usb-udev.sh --unmount
-#TODOTODOTODOTODOTODOTODOTODOTODO
+#TODO
 
 # update
 bindsym $mod+Ctrl+u exec st -n scripts -e sudo pacman -Syu
@@ -320,3 +322,5 @@ for_window [instance="wifi"] border pixel 5
 bindsym $mod+F7 exec networkmanager_dmenu
 
 bindsym Print exec scrot ~/Images/screenshots/%Y-%d-%T-screenshot.png
+
+exec unclutter --timeout 2
