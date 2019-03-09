@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# colors from wpgtk/pywal
+. "${HOME}/.config/wpg/formats/colors.sh"
+
 usb_print() {
     devices=$( lsblk -Jplno LABEL,NAME,TYPE,RM,SIZE,MOUNTPOINT,VENDOR)
     output=""
@@ -46,30 +49,27 @@ case "$1" in
     --update)
         usb_update
         ;;
+
     --mount)
         devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
         for mount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
-
-            mountpoint=$(udisksctl mount --no-user-interaction -b $mount)
-            mountpoint=$(echo $mountpoint | cut -d " " -f 4 | tr -d ".")
-            exec st -n ranger -e ranger $mountpoint &
-
-            
+	    [[ -n $(ls /media/usb_drive1/) ]] && num=2 || num=1
+	    echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "sudo password for mount $mount on /media/usb_drive$num/" | sudo -S mount $mount /media/usb_drive$num/
+	    exec st -n fff -e fff /media/usb_drive$num/
         done
         usb_update
-
-
         ;;
+
     --unmount)
         devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
 
-        for unmount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == "1") | select(.mountpoint != null) | .name'); do
-            sudo udisksctl unmount --no-user-interaction -b "$unmount"
-            sudo udisksctl power-off --no-user-interaction -b "$unmount"
+        for unmount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .mountpoint'); do
+	    echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "sudo password for umount $unmount" | sudo -S umount $unmount
         done
 
         usb_update
         ;;
+
     *)
         trap exit INT
         trap "echo" USR1

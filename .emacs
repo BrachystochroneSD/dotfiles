@@ -43,7 +43,7 @@
  '(org-agenda-files (quote ("~/Dropbox/a_faire.org")))
  '(package-selected-packages
    (quote
-    (pyim base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode ace-window)))
+    (flymake-shell pyim base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode)))
  '(send-mail-function (quote mailclient-send-it)))
 
 (custom-set-faces

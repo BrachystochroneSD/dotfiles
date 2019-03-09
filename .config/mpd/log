@@ -4139,3 +4139,29 @@ Mar 07 21:07 : exception: Failed to open "Alsa output" (alsa)
 Mar 07 21:07 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
 Mar 07 21:07 : exception: Failed to open "Alsa output" (alsa)
 Mar 07 21:07 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 08 10:48 : player: played "Siriusmo/2013 - Enthusiast/Siriusmo - 02. Congratulator.m4a"
+Mar 08 11:31 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 08 11:31 : exception: Failed to read mixer for 'Alsa output': no such mixer control: PCM
+Mar 08 23:31 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 08 23:31 : exception: Failed to read mixer for 'Alsa output': no such mixer control: PCM
+Mar 09 12:59 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 12:59 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 12:59 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 13:06 : player: played "Siriusmo/2013 - Enthusiast/Siriusmo - 03. Traenen aus Bier.m4a"
+Mar 09 13:10 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 13:10 : exception: Failed to read mixer for 'Alsa output': no such mixer control: PCM
+Mar 09 13:17 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 13:17 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 13:17 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 13:17 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 13:17 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 13:21 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 13:21 : player: played "Siriusmo/2013 - Enthusiast/Siriusmo - 04. Enthusiast.m4a"
+Mar 09 13:21 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 13:21 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 13:21 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 13:21 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 13:21 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 13:21 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 13:21 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 13:21 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy

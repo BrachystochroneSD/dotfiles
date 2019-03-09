@@ -72,7 +72,7 @@ fg-alt=${xrdb:color15:#222}
 ; font-2 = owl:size=13:antialias=false;3
 ; font-3 = Weather Icons:size=12;2
 ; font-4 = wifidemoncul:size=12;3
-; modules-right = system-usb-udev notes mails network volume weather filesystem cpu memory battery date
+; modules-right = mount-usb notes mails network volume weather filesystem cpu memory battery date
 
 ; [bar/Bar1]
 ; monitor=eDP1
@@ -129,7 +129,7 @@ font-2 = owl:size=13:antialias=true;3
 font-3 = Weather Icons:size=12;2
 font-4 = wifidemoncul:size=12;3
 modules-left = owl i3 mpd
-modules-right = update notes mails network volume weather filesys cpu memory battery date
+modules-right = mount-usb update notes mails network volume weather filesys cpu memory battery date
 tray-position = center
 tray-padding = 2
 scroll-up = i3wm-wsnext
@@ -156,12 +156,12 @@ label-mounted-underline= ${colors.green}
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.fg-alt}
 
-[module/system-usb-udev]
+[module/mount-usb]
 type = custom/script
-exec = /home/sam/.script/system-usb-udev.sh
+exec = /home/sam/.script/polybar/mount-usb.sh
 tail = true
-click-left = /home/sam/.script/system-usb-udev.sh --mount
-click-right = /home/sam/.script/system-usb-udev.sh --unmount
+click-left = /home/sam/.script/polybar/mount-usb.sh --mount
+click-right = /home/sam/.script/polybar/mount-usb.sh --unmount
 format-underline = ${colors.fg-alt}
 
 [module/i3]

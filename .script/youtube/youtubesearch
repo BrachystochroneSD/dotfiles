@@ -52,7 +52,7 @@ youtube_search(){
     echo $searchingshit > $searchhistory
     echo "Searching for "$searchingshit
 
-    if [[ ! -n $channelID ]];then
+    if [[ ! -n $channelID ]] ; then
 	youtubesearchdata=$(curl -s \
 				 -G https://www.googleapis.com/youtube/v3/search \
 				 -d 'type=video' \
@@ -77,7 +77,7 @@ youtube_search(){
     (( num= $video - 1 ))
     videoID=$(echo $youtubesearchdata | jq -r '.items['$num'].id.videoId')
 
-    echo 'https://www.youtube.com/watch?v='$videoID | xclip # clipboard to share with your friend !
+    printf 'https://www.youtube.com/watch?v='$videoID | xclip -selection clipboard # clipboard to share with your friend !
 
     res=$(echo -e "720\n1080\n360" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "Which resolution? (if avalaible)") || youtube_search
     

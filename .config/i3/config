@@ -286,11 +286,10 @@ bindsym $mod+Shift+d		gaps inner current set 15; gaps outer current set 15
 bindsym $mod+q			gaps outer current plus 5
 bindsym $mod+Shift+q		gaps outer current minus 5
 
-# usb-dev
-#TODO
-# bindsym $mod+u exec ~/.script/system-usb-udev.sh --mount
-# bindsym $mod+Shift+u exec ~/.script/system-usb-udev.sh --unmount
-#TODO
+# mount-usb
+bindsym $mod+u exec ~/.script/polybar/mount-usb.sh --mount
+bindsym $mod+Shift+u exec ~/.script/polybar/mount-usb.sh --unmount
+
 
 # update
 bindsym $mod+Ctrl+u exec st -n scripts -e sudo pacman -Syu
