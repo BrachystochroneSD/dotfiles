@@ -37,44 +37,30 @@ usb_print() {
     echo "$output"
 }
 
-usb_update() {
-    pid=$(pgrep -xf "/bin/sh /home/samrenfou/.script/system-usb-udev.sh")
-
-    if [ "$pid" != "" ]; then
-        kill -10 "$pid"
-    fi
-}
-
 case "$1" in
-    --update)
-        usb_update
-        ;;
-
     --mount)
         devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
         for mount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
 	    [[ -n $(ls /media/usb_drive1/) ]] && num=2 || num=1
-	    echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "sudo password for mount $mount on /media/usb_drive$num/" | sudo -S mount $mount /media/usb_drive$num/
-	    exec st -n fff -e fff /media/usb_drive$num/
+	    prompt=$(echo -e "Ye\nNah" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Mounting $mount on /media/usb_drive$num?")
+	    if [[ $prompt == "Ye" ]] ; then
+		echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "[sudo] password for $USER" | sudo -S mount $mount /media/usb_drive$num/ && exec st -n fff -e fff /media/usb_drive$num/ || dunstify -i owl "Wrong password"
+	    fi
         done
-        usb_update
         ;;
 
     --unmount)
         devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
 
         for unmount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .mountpoint'); do
-	    echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "sudo password for umount $unmount" | sudo -S umount $unmount
+	    prompt=$(echo -e "Ye\nNah" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Unmount $unmount?")
+	    if [[ $prompt == 'Ye' ]] ;then
+		echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "[sudo] password for $USER" | sudo -S umount $unmount || dunstify -i owl "Wrong password"
+	    fi
         done
-
-        usb_update
         ;;
 
     *)
-        trap exit INT
-        trap "echo" USR1
-
         usb_print
-
         ;;
 esac

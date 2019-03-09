@@ -4165,3 +4165,21 @@ Mar 09 13:21 : exception: nested: Failed to open ALSA device "hw:0,0": Device or
 Mar 09 13:21 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
 Mar 09 13:21 : exception: Failed to open "Alsa output" (alsa)
 Mar 09 13:21 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 19:53 : player: played "Siriusmo/2013 - Enthusiast/Siriusmo - 07. Itchy.m4a"
+Mar 09 19:53 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 19:53 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 09 19:53 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 09 23:02 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 23:02 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 23:02 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 23:02 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 23:02 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: stream 0, timescale not set
+Mar 09 23:02 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 09 23:03 : player: played "Siriusmo/2017 - Where Was I - Single/02 Always Du.m4a"
+Mar 09 23:03 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 23:03 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 23:05 : player: played "Siriusmo/2017 - Where Was I - Single/03 Where Was I_.m4a"
+Mar 09 23:05 : exception: Failed to open "Alsa output" (alsa)
+Mar 09 23:05 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 09 23:08 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 09 23:08 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
