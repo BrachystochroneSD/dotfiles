@@ -44,7 +44,7 @@ case "$1" in
 	    [[ -n $(ls /media/usb_drive1/) ]] && num=2 || num=1
 	    prompt=$(echo -e "Ye\nNah" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Mounting $mount on /media/usb_drive$num?")
 	    if [[ $prompt == "Ye" ]] ; then
-		echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "[sudo] password for $USER" | sudo -S mount $mount /media/usb_drive$num/ && exec st -n fff -e fff /media/usb_drive$num/ || dunstify -i owl "Wrong password"
+		echo "" | dmenu -nb "$color0" -nf "$color0" -sb "$color0" -sf "$color3" -p "[sudo] password for $USER" | sudo -S mount $mount /media/usb_drive$num/ -o uid=$USER -o gid=$(id -gn $USER) && exec st -n fff -e fff /media/usb_drive$num/ || dunstify -i owl "Wrong password or usb is in use"
 	    fi
         done
         ;;
