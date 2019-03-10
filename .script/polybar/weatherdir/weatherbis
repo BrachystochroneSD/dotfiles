@@ -74,10 +74,6 @@ icons() {
     echo $icon
 }
 
-round() {
-    echo $1 
-}
-
 get_datas(){
     location=$(curl -s ipinfo.io/geo | jq .loc)
     lat=$(echo $location | sed 's/,.*//' | sed 's/^.//')
@@ -127,8 +123,6 @@ checktime(){
     nummax=$(cat $forecast | jq .cnt)
     while [ $i -le $nummax ];do
 	timetest=$(cat $forecast | jq .list[$i].dt)
-
-	date -d "@$timetest"
 	
 	(( res= $1 - $timetest ))
 	if [[ $res -le 0 ]];then
