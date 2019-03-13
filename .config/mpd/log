@@ -4183,3 +4183,176 @@ Mar 09 23:05 : exception: Failed to open "Alsa output" (alsa)
 Mar 09 23:05 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
 Mar 09 23:08 : exception: Failed to play on "Pulseaudio" (pulse): suspended
 Mar 09 23:08 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 11:29 : exception: Failed to open "Alsa output" (alsa)
+Mar 10 11:29 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 10 11:31 : player: played "Siriusmo/2017 - Comic/01_MTR076_Siriusmo_COMIC.mp3"
+Mar 10 11:31 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 11:34 : player: played "Siriusmo/2017 - Comic/02_MTR076_Siriusmo_WRONG_PASSWORD.mp3"
+Mar 10 11:37 : player: played "Siriusmo/2017 - Comic/03_MTR076_Siriusmo_DOPPELKLICK_feat_MR_OIZO.mp3"
+Mar 10 11:39 : player: played "Siriusmo/2017 - Comic/04_MTR076_Siriusmo_IMPORTANT_MOVIE_SCENE.mp3"
+Mar 10 11:42 : player: played "Siriusmo/2017 - Comic/05_MTR076_Siriusmo_LA_BOUCHE_feat_DANA_and_ROMANO.mp3"
+Mar 10 11:46 : player: played "Siriusmo/2017 - Comic/06_MTR076_Siriusmo_DAGOBERTA.mp3"
+Mar 10 12:27 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 12:28 : player: played "Siriusmo/2017 - Comic/07_MTR076_Siriusmo_PATINA_feat_JAN_DRIVER.mp3"
+Mar 10 12:30 : player: played "Siriusmo/2017 - Comic/08_MTR076_Siriusmo_MOMENTO_MORI.mp3"
+Mar 10 12:34 : player: played "Siriusmo/2017 - Comic/09_MTR076_Siriusmo_GEILOMANT.mp3"
+Mar 10 12:35 : player: played "Siriusmo/2017 - Comic/10_MTR076_Siriusmo_BLEAT.mp3"
+Mar 10 12:38 : player: played "Siriusmo/2017 - Comic/11_MTR076_Siriusmo_WIXN.mp3"
+Mar 10 12:42 : player: played "Siriusmo/2017 - Comic/12_MTR076_Siriusmo_ISEGRIM.mp3"
+Mar 10 12:45 : player: played "Siriusmo/2017 - Comic/13_MTR076_Siriusmo_STOCK_UND_STEIN.mp3"
+Mar 10 12:48 : player: played "Siriusmo/2017 - Comic/14_MTR076_Siriusmo_PSYCHOFANT.mp3"
+Mar 10 12:48 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 12:50 : player: played "Siriusmo/Pearls & Embarrassments Compil/1-04 Siriusmo - The Uninvited Guest.flac"
+Mar 10 12:54 : player: played "Siriusmo/Pearls & Embarrassments Compil/1-05 Siriusmo - Wow.flac"
+Mar 10 13:25 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 13:26 : player: played "Siriusmo/Pearls & Embarrassments Compil/1-06 Siriusmo - Femuscle.flac"
+Mar 10 13:29 : player: played "Siriusmo/Pearls & Embarrassments Compil/1-10 Siriusmo - Let Me In!.flac"
+Mar 10 13:38 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 13:41 : player: played "Siriusmo/Pearls & Embarrassments Compil/1-13 Siriusmo - Rockwurst.flac"
+Mar 10 13:43 : player: played "Siriusmo/Pearls & Embarrassments Compil/1-18 Siriusmo - Katharsis Impossible.flac"
+Mar 10 23:41 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 10 23:41 : player: played "Siriusmo/Pearls & Embarrassments Compil/2-03 Siriusmo - Cuba.flac"
+Mar 10 23:41 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 10 23:41 : player: played "Siriusmo/Pearls & Embarrassments Compil/2-06 Siriusmo - Discosau.flac"
+Mar 10 23:42 : exception: Failed to open "Alsa output" (alsa)
+Mar 10 23:42 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 10 23:42 : exception: Failed to open "Alsa output" (alsa)
+Mar 10 23:42 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 10 23:43 : exception: Failed to open "Alsa output" (alsa)
+Mar 10 23:43 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 10 23:44 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 23:44 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 10 23:44 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 10 23:44 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 10 23:49 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 10 23:49 : exception: Failed to open mixer for 'Alsa output': no such mixer control: PCM
+Mar 10 23:49 : exception: Failed to play on "Pulseaudio" (pulse): suspended
+Mar 10 23:55 : player: played "Portishead/Dummy/05 Wandering Star.mp3"
+Mar 10 23:55 : exception: Bad playlist name
+Mar 10 23:57 : update: updating Portishead/Dummy/09 Pedestal.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/04 It Could Be Sweet.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/02 Sour Times.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/07 Numb.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/03 Strangers.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/01 Mysterons.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/05 Wandering Star.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/08 Roads.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/10 Biscuit.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/11 Glory Box.mp3
+Mar 10 23:57 : update: updating Portishead/Dummy/06 It's a Fire.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/09 Pedestal.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/04 It Could Be Sweet.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/02 Sour Times.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/07 Numb.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/03 Strangers.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/01 Mysterons.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/05 Wandering Star.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/08 Roads.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/10 Biscuit.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/11 Glory Box.mp3
+Mar 11 00:00 : update: updating Portishead/Dummy/06 It's a Fire.mp3
+Mar 11 13:06 : exception: Failed to read mixer for 'Alsa output': no such mixer control: PCM
+Mar 11 13:06 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 13:06 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 16:54 : player: played "Portishead/Dummy/05 Wandering Star.mp3"
+Mar 11 16:54 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 16:54 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 16:54 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 16:54 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 16:54 : player: played "Mcbaise/mcbaise - seabass - 02 Fully torqued.mp3"
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: Format mov,mp4,m4a,3gp,3g2,mj2 detected only with low score of 1, misdetection possible!
+Mar 11 22:54 : ffmpeg/mov,mp4,m4a,3gp,3g2,mj2: moov atom not found
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP III/02 Paradise Warfare.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP III/03 Run, Sally, Run!.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP III/05 Anarchy Road.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP III/01 Division Ruine.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP III/04 Turbo Killer.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP III/06 Invasion A.D..m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP II/02 Meet Matt Stryker.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP II/04 Looking For Tracy Tzu.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP II/03 Obituary.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP II/06 Hang'em All.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP II/05 Sexkiller On The Loose.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/EP II/01 Roller Mobster.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/Carpenter Brut/01 Escape From Midwich Valley.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/Carpenter Brut/02 Disco Zombi Italia.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/Carpenter Brut/03 L.A. Venice Bitch 80's.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/Carpenter Brut/04 Wake Up The President.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/Carpenter Brut/05 347 Midnight Demons.m4a
+Mar 11 22:55 : update: added Carpenter_Brut/Carpenter Brut/Carpenter Brut/06 Le Perv.m4a
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:56 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:56 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:56 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 22:57 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 11 22:57 : exception: Failed to open "Alsa output" (alsa)
+Mar 11 22:57 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 11 23:01 : player: played "Carpenter_Brut/Carpenter Brut/EP III/03 Run, Sally, Run!.m4a"
+Mar 11 23:17 : update: added IAMTHEKIDYOUKNOWWHATIMEAN/We_Love_You_Celestial.wav
+Mar 11 23:17 : update: added IAMTHEKIDYOUKNOWWHATIMEAN/Vulvasaur_Rex.wav
+Mar 11 23:17 : update: added IAMTHEKIDYOUKNOWWHATIMEAN/Run.wav
+Mar 11 23:17 : update: added IAMTHEKIDYOUKNOWWHATIMEAN/Island_PTPE.wav
+Mar 12 15:40 : exception: Failed to read mixer for 'Alsa output': no such mixer control: PCM
+Mar 12 16:36 : exception: Failed to read mixer for 'Alsa output': no such mixer control: PCM
+Mar 12 20:44 : ffmpeg/aac: Could not update timestamps for skipped samples.
+Mar 12 20:44 : exception: Failed to open "Alsa output" (alsa)
+Mar 12 20:44 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy
+Mar 12 22:43 : exception: Failed to open "Alsa output" (alsa)
+Mar 12 22:43 : exception: nested: Failed to open ALSA device "hw:0,0": Device or resource busy

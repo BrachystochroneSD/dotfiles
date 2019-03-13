@@ -19,6 +19,7 @@ set $term --no-startup-id st
 set $editor --no-startup-id ~/.script/edit ~/Dropbox/a_faire.org
 set $browser --no-startup-id firefox
 set $mailviewer --no-startup-id ~/.script/edit -e '(mu4e)'
+set $rssfeeder --no-startup-id ~/.script/edit -e '(elfeed)'
 
 set_from_resource $fg1 i3wm.color15
 set_from_resource $bg1 i3wm.color0
@@ -247,6 +248,9 @@ for_window [instance="fff"] resize set 725 500
 #---# Mail mu4e #---#
 
 bindsym $mod+Shift+m exec $mailviewer
+
+bindsym $mod+Ctrl+r exec $rssfeeder
+
 
 #NOTES#
 

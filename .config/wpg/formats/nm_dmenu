@@ -2,5 +2,5 @@
 dmenu_command = dmen
 
 [dmenu_passphrase]
-nf = #362121
-nb = #362121
+nf = #223322
+nb = #223322

@@ -3,8 +3,8 @@ audio_device_state:1:Pulseaudio
 audio_device_state:1:Alsa output
 audio_device_state:1:my_fifo
 state: pause
-current: 3
-time: 78.919000
+current: 8
+time: 12.829000
 random: 0
 repeat: 0
 single: 0
@@ -13,29 +13,13 @@ crossfade: 0
 mixrampdb: 0.000000
 mixrampdelay: -1.000000
 playlist_begin
-0:Siriusmo/2017 - Where Was I - Single/01 Comic (Single Edit).m4a
-1:Siriusmo/2017 - Where Was I - Single/02 Always Du.m4a
-2:Siriusmo/2017 - Where Was I - Single/03 Where Was I_.m4a
-3:Siriusmo/2017 - Comic/01_MTR076_Siriusmo_COMIC.mp3
-4:Siriusmo/2017 - Comic/02_MTR076_Siriusmo_WRONG_PASSWORD.mp3
-5:Siriusmo/2017 - Comic/03_MTR076_Siriusmo_DOPPELKLICK_feat_MR_OIZO.mp3
-6:Siriusmo/2017 - Comic/04_MTR076_Siriusmo_IMPORTANT_MOVIE_SCENE.mp3
-7:Siriusmo/2017 - Comic/05_MTR076_Siriusmo_LA_BOUCHE_feat_DANA_and_ROMANO.mp3
-8:Siriusmo/2017 - Comic/06_MTR076_Siriusmo_DAGOBERTA.mp3
-9:Siriusmo/2017 - Comic/07_MTR076_Siriusmo_PATINA_feat_JAN_DRIVER.mp3
-10:Siriusmo/2017 - Comic/08_MTR076_Siriusmo_MOMENTO_MORI.mp3
-11:Siriusmo/2017 - Comic/09_MTR076_Siriusmo_GEILOMANT.mp3
-12:Siriusmo/2017 - Comic/10_MTR076_Siriusmo_BLEAT.mp3
-13:Siriusmo/2017 - Comic/11_MTR076_Siriusmo_WIXN.mp3
-14:Siriusmo/2017 - Comic/12_MTR076_Siriusmo_ISEGRIM.mp3
-15:Siriusmo/2017 - Comic/13_MTR076_Siriusmo_STOCK_UND_STEIN.mp3
-16:Siriusmo/2017 - Comic/14_MTR076_Siriusmo_PSYCHOFANT.mp3
-17:Siriusmo/Pearls & Embarrassments Compil/1-04 Siriusmo - The Uninvited Guest.flac
-18:Siriusmo/Pearls & Embarrassments Compil/1-05 Siriusmo - Wow.flac
-19:Siriusmo/Pearls & Embarrassments Compil/1-06 Siriusmo - Femuscle.flac
-20:Siriusmo/Pearls & Embarrassments Compil/1-10 Siriusmo - Let Me In!.flac
-21:Siriusmo/Pearls & Embarrassments Compil/1-13 Siriusmo - Rockwurst.flac
-22:Siriusmo/Pearls & Embarrassments Compil/1-18 Siriusmo - Katharsis Impossible.flac
-23:Siriusmo/Pearls & Embarrassments Compil/2-03 Siriusmo - Cuba.flac
-24:Siriusmo/Pearls & Embarrassments Compil/2-06 Siriusmo - Discosau.flac
+0:Carpenter_Brut/Carpenter Brut/Carpenter Brut/01 Escape From Midwich Valley.m4a
+1:Carpenter_Brut/Carpenter Brut/Carpenter Brut/02 Disco Zombi Italia.m4a
+2:Carpenter_Brut/Carpenter Brut/Carpenter Brut/06 Le Perv.m4a
+3:Carpenter_Brut/Carpenter Brut/Carpenter Brut/03 L.A. Venice Bitch 80's.m4a
+4:Carpenter_Brut/Carpenter Brut/EP II/01 Roller Mobster.m4a
+5:Carpenter_Brut/Carpenter Brut/EP III/02 Paradise Warfare.m4a
+6:Carpenter_Brut/Carpenter Brut/EP III/05 Anarchy Road.m4a
+7:Carpenter_Brut/Carpenter Brut/EP III/06 Invasion A.D..m4a
+8:Carpenter_Brut/Carpenter Brut/EP III/03 Run, Sally, Run!.m4a
 playlist_end

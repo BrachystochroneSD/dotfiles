@@ -13,14 +13,14 @@ downloading(){
 
     magnetlink=$1
     i=0
-    type=$(echo -e "Music\nVideo\nFile" | dmenu -p "What's the type of the download?" -l 3) || exit 1
+    type=$(echo -e "Music\nVideo\nFile" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "What's the type of the download?" -l 3) || exit 1
 
     ######################################
     # Downloads Directory change by type #
     ######################################
 
     if [[ $type == 'Music' ]]; then
-	savedir=$(find $musicdir -maxdepth 1 | dmenu -l 10 -i) || exit 1
+	savedir=$(find $musicdir -maxdepth 1 | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 10 -i) || exit 1
     elif [[ $type == 'Video' ]]; then
 	savedir=$videodir
     else
