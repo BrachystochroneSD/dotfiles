@@ -1,6 +1,0 @@
-[dmenu]
-dmenu_command = dmen
-
-[dmenu_passphrase]
-nf = #223322
-nb = #223322
