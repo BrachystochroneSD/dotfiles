@@ -53,7 +53,7 @@ floating_modifier $mod
 
 #App launcher bindings
 bindsym $mod+z			exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
-bindsym $mod+Ctrl+z		exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
+bindsym $mod+Ctrl+z		exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
 bindsym $mod+Shift+z 		exec $browser
 bindsym $mod+Return		exec $term
 bindsym $mod+Shift+Return	exec $editor
@@ -64,13 +64,12 @@ for_window [instance="scratchterm"] resize set 625 400
 for_window [instance="scratchterm"] border pixel 5
 
 
-# for aria windows for seeding
-for_window [instance="ariawin"] floating enable
-for_window [instance="ariawin"] resize set 400 100
-for_window [instance="ariawin"] border pixel 3
-for_window [instance="ariawin"] move scratchpad
+# transmission,
+for_window [instance="transmission"] floating enable
+for_window [instance="transmission"] resize set 700 400
+for_window [instance="transmission"] border pixel 3
 
-bindsym $mod+Shift+t [instance="ariawin"] scratchpad show
+bindsym $mod+Shift+t exec $term -n transmission -e transmission-remote-cli
 
 # kill focused window
 bindsym $mod+a		kill
@@ -127,7 +126,7 @@ bindsym $mod+Tab		workspace back_and_forth
 # reload the configuration file
 bindsym $mod+Shift+c		reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r 		restart
+bindsym $mod+Ctrl+r 		restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+Escape 	   	exec i3-msg exit
 
@@ -140,14 +139,14 @@ bindsym $mod+Ctrl+l 		resize grow width 10 px or 10 ppt
 
 # change focus
 bindsym $mod+h			focus left
-bindsym $mod+k 			focus down
-bindsym $mod+j 			focus up
+bindsym $mod+k 			focus up
+bindsym $mod+j 			focus down
 bindsym $mod+l 			focus right
 
 # move focused window
 bindsym $mod+Shift+h		move left
-bindsym $mod+Shift+k 		move down
-bindsym $mod+Shift+j 		move up
+bindsym $mod+Shift+k 		move up
+bindsym $mod+Shift+j 		move down
 bindsym $mod+Shift+l 		move right
 
 bindsym $mod+Shift+Ctrl+h	move left 70 px
@@ -237,6 +236,13 @@ bindsym $mod+Ctrl+b 		exec mpc random
 bindsym Ctrl+XF86AudioRaiseVolume exec mpc volume +3
 bindsym Ctrl+XF86AudioLowerVolume exec mpc volume -3
 
+#--# # FZF # #--#
+
+bindsym $mod+Shift+f 			exec $term -n fzf -e /home/sam/.script/fzf-open.sh
+
+for_window [instance="fzf"] floating enable
+for_window [instance="fzf"] resize set 725 200
+for_window [instance="fzf"] border pixel 0
 
 #--# # FFF # #--#
 
@@ -249,7 +255,7 @@ for_window [instance="fff"] resize set 725 500
 
 bindsym $mod+Shift+m exec $mailviewer
 
-bindsym $mod+Ctrl+r exec $rssfeeder
+bindsym $mod+Shift+r exec $rssfeeder
 
 
 #NOTES#
@@ -276,14 +282,12 @@ bindsym $mod+Ctrl+s exec --no-startup-id skypeforlinux
 bindsym $mod+Ctrl+d exec --no-startup-id discord
 bindsym $mod+Ctrl+c exec --no-startup-id caprine
 
-bindsym $mod+p exec ~/.keepmenu/keepmenu
+bindsym $mod+p exec keepmenu
 
 # gaps
 
 bindsym $mod+s			gaps inner current plus 5
 bindsym $mod+Shift+s		gaps inner current minus 5
-
-bindsym $mod+Shift+f		gaps inner current set 0; gaps outer current set 0
 
 bindsym $mod+Shift+d		gaps inner current set 15; gaps outer current set 15
 

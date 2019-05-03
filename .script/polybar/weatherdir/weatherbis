@@ -121,6 +121,7 @@ echoforecast(){
 checktime(){
     i=0
     nummax=$(cat $forecast | jq .cnt)
+    [[ -z $nummax ]] && exit 
     while [ $i -le $nummax ];do
 	timetest=$(cat $forecast | jq .list[$i].dt)
 	

@@ -251,15 +251,22 @@
 (global-set-key (kbd "C-x C-j") 'my-previous-buffer)
 (global-set-key (kbd "C-c C-j") 'previous-buffer)
 
-;;;;;;;;;;;;;;;;
-;; Org-Bullet ;;
-;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;
+;; Org-Mode ;;
+;;;;;;;;;;;;;;
+
+;; Org-Bullet
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda ()
 			   (org-bullets-mode 1)
 			   (local-set-key (kbd "C-c <C-return>") 'org-open-at-point)
-			   (local-set-key (kbd "C-c C-l") 'next-buffer)))
+			   (local-set-key (kbd "C-c C-l") 'next-buffer)
+			   (local-set-key (kbd "C-,") 'forward-char)))
 
+
+;; Org-mode Agenda
+(global-set-key "\C-ca" 'org-agenda)
+(setq org-agenda-include-diary t)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Show-Paren-Mode ;;
@@ -272,6 +279,14 @@
 (global-set-key (kbd "<f8>") 'calendar)
 (setq diary-file "~/Dropbox/diary")
 
+(add-hook 'calendar-mode-hook (lambda ()
+				(local-set-key (kbd "C-,") 'calendar-forward-day)
+				(local-set-key (kbd "C-b") 'calendar-backward-day)
+				(local-set-key (kbd "C-h") 'calendar-backward-week)
+				(local-set-key (kbd "C-n") 'calendar-forward-week)
+				(local-set-key (kbd "C-S-f") 'calendar-forward-month)
+				(local-set-key (kbd "C-S-b") 'calendar-backward-month)
+				))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Autorefresh Docview ;;
@@ -279,12 +294,6 @@
 (add-hook 'DocView-mode-hook
 	  (lambda ()
 	    (auto-revert-mode)))
-
-;;;;;;;;;;;;;;;;;;;;;
-;; Org-mode Agenda ;;
-;;;;;;;;;;;;;;;;;;;;;
-(global-set-key "\C-ca" 'org-agenda)
-(setq org-agenda-include-diary t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Comment Line and Box ;;
@@ -340,7 +349,7 @@ See `elfeed-play-with-mpv'."
 ;;;;;;;;;;
 
 (set-language-environment "UTF-8")
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 (require 'mu4e)
 (global-set-key (kbd "S-<f5>") 'mu4e)
 (setq message-kill-buffer-on-exit t)
@@ -408,7 +417,7 @@ See `elfeed-play-with-mpv'."
      )
     ("umons"
      (mu4e-sent-folder "/umons/Sent")
-     (user-mail-address "120781@umons.ac.be")
+     (user-mail-address "samuel.dawant@alumni.umons.ac.be")
      (smtpmail-smtp-user "120781@umons.ac.be")
      (smtpmail-local-domain "office365.com")
      (smtpmail-default-smtp-server "outlook.office365.com")
@@ -455,12 +464,24 @@ See `elfeed-play-with-mpv'."
 	    (local-set-key (kbd "<tab>") 'shr-next-link)
 	    (local-set-key (kbd "<backtab>") 'shr-previous-link)))
 
+;; Troestler mu4e iCal
+(setq mu4e-view-use-gnus t)
+(require 'mu4e-icalendar)
+(mu4e-icalendar-setup)
+
+;; maildir in headers fields
+(setq mu4e-headers-fields
+    '( (:date          .  12)    ;; alternatively, use :human-date
+       (:maildir       .  15)
+       (:flags         .   6)       
+       (:from          .  22)
+       (:subject       .  nil)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Text Scale Adjust ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
-
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Set Moving Keys ;;
@@ -497,3 +518,10 @@ See `elfeed-play-with-mpv'."
 ;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-=") 'toggle-input-method)
+
+;;;;;;;;;;;;;;;;;;
+;; Android Mode ;;
+;;;;;;;;;;;;;;;;;;
+
+(require 'android-mode)
+(custom-set-variables '(android-mode-sdk-dir "~/.sdk/android"))

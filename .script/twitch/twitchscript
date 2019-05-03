@@ -42,7 +42,7 @@ twitchgamefunction(){
     else	
 	game=$(awk '{print $0} END { printf "Other\nAdd" }' $gamesfile | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "$noshit") || aborted
 	if [[ $game == Add ]];then
-0	    game=$(cat $gamesdb | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "Which game do you want to add on favorite?") || aborted
+	    game=$(cat $gamesdb | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "Which game do you want to add on favorite?") || aborted
 	    echo -e "$game" >>$gamesfile
 	    cert=$(echo -e "No\nYes" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "Do you want to check streams for $game?")
 	    [[ $cert == Yes ]] || aborted
