@@ -150,8 +150,8 @@ bindsym $mod+Shift+j 		move down
 bindsym $mod+Shift+l 		move right
 
 bindsym $mod+Shift+Ctrl+h	move left 70 px
-bindsym $mod+Shift+Ctrl+k 	move down 70 px
-bindsym $mod+Shift+Ctrl+j 	move up 70 px
+bindsym $mod+Shift+Ctrl+k 	move up 70 px
+bindsym $mod+Shift+Ctrl+j 	move down 70 px
 bindsym $mod+Shift+Ctrl+l 	move right 70 px
 
 # alternatively, you can use the cursor keys:
@@ -239,6 +239,7 @@ bindsym Ctrl+XF86AudioLowerVolume exec mpc volume -3
 #--# # FZF # #--#
 
 bindsym $mod+Shift+f 			exec $term -n fzf -e /home/sam/.script/fzf-open.sh
+bindsym $mod+Ctrl+f 			exec $term -n fzf -e /home/sam/.script/fzf-open.sh --hidden
 
 for_window [instance="fzf"] floating enable
 for_window [instance="fzf"] resize set 725 200
