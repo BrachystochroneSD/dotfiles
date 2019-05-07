@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mpc -q pause
+if [[ -n $(echo "$@" | grep "Music/") ]];then
+    echo "$@" | sed 's|.*Music/||' | mpc -q insert 
+    mpc -q next
+else
+    nohup mpv --player-operation-mode=pseudo-gui "$@" &>/dev/null &
+fi
