@@ -1,3 +1,12 @@
 #!/bin/bash
-# exec emacsclient --alternate-editor="" -c -e '(find-file "'"$@"'")'
-exec emacsclient --alternate-editor="" -c $@
+
+case "$1" in
+    -e)
+	shit="$2"
+	;;
+    *)
+	shit='(find-file "'"$@"'")'
+	;;
+esac
+
+exec emacsclient --alternate-editor="" -c -e "$shit"
