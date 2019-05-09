@@ -31,6 +31,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(android-mode-sdk-dir "~/.sdk/android")
  '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
  '(compilation-message-face (quote default))
@@ -43,7 +44,7 @@
  '(org-agenda-files (quote ("~/Dropbox/a_faire.org")))
  '(package-selected-packages
    (quote
-    (flymake-shell pyim base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode)))
+    (web-mode flymake-shell pyim base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode)))
  '(send-mail-function (quote mailclient-send-it)))
 
 (custom-set-faces
@@ -151,13 +152,13 @@
             (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
 
 ;;multiple-web-mode
-(require 'multi-web-mode)
-(setq mweb-default-major-mode 'html-mode)
-(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-                  (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
-(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-(multi-web-global-mode 1)
+;; (require 'multi-web-mode)
+;; (setq mweb-default-major-mode 'html-mode)
+;; (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+;;                   (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+;;                   (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+;; (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+;; (multi-web-global-mode 1)
 
 ;;;;;;;;;;;
 ;; LaTeX ;;
@@ -194,10 +195,11 @@
 
 ;;auto-insert for templates
 (auto-insert-mode)
-(setq auto-insert-directory "~/.mytemplates/") ;; dossier custom à créer
+(setq auto-insert-directory "~/.emacs.d/mytemplates/") ;; dossier custom à créer
 (setq auto-insert-query nil) ;; supprimer la demande de confirmation pour l'insertion
 
-(define-auto-insert "\.tex" "tex_template.tex")
+;; (define-auto-insert "\.tex" "tex_template.tex")
+(define-auto-insert "\.php" "php_template.php")
 
 ;; Bindings
 (add-hook 'TeX-mode-hook
@@ -524,4 +526,4 @@ See `elfeed-play-with-mpv'."
 ;;;;;;;;;;;;;;;;;;
 
 (require 'android-mode)
-(custom-set-variables '(android-mode-sdk-dir "~/.sdk/android"))
+

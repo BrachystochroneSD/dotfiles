@@ -43,15 +43,17 @@ get_channel_id(){
 
 youtube_search(){
     channelID=""
-    searchingshit=$(cat $searchhistory | awk '{print$0}END{printf "\n\nChannel option"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
+    searchingshit=$(tail -n 1 $searchhistory | awk '{print$0}END{printf "\nShow History\nChannel option"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
     if [[ $searchingshit == 'Channel option' ]];then
 	channelname=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Channel Search") || youtube_search
         get_channel_id
 	save_channel
 	
 	searchingshit=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Search on this channel:") || youtube_search
+    elif [[ $searchingshit == 'Show History' ]];then
+	     searchingshit=$(cat $searchhistory | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Search in History:") || youtube_search
     else
-	echo $searchingshit > $searchhistory
+	echo $searchingshit >> $searchhistory
 	echo "Searching for "$searchingshit
     fi
 
