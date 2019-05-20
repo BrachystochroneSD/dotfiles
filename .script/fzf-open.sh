@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 
 case $1 in
@@ -9,8 +9,8 @@ case $1 in
 	shit=$(fzf --layout=reverse --height 40%)
 	;;
 esac
-if [[ -n $shit ]];then
-    nohup xdg-open "$shit" &>/dev/null &
+if [ -n "$shit" ];then
+    nohup xdg-open "$shit" >/dev/null 2>&1 &
     echo "Opening $shit"
     sleep 1
 fi

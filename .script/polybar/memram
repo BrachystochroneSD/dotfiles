@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-memtot=$(cat /proc/meminfo | grep MemTotal | awk '{print $2}')
-memava=$(cat /proc/meminfo | grep MemAvailable | awk '{print $2}')
+memtot=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+memava=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
 
-per=$(echo 0$(echo "($memtot - $memava.) / $memtot * 100" | bc -l | awk '{print int($1+0.5)}' ))
+per=$(echo "($memtot - $memava.) / $memtot * 100" | bc -l | awk '{print int($1+0.5)}')
 
-echo :${per: -2}%
+printf ":%02d%%" "$per"

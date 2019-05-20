@@ -1,11 +1,13 @@
-#!/bin/bash
+#!/bin/sh
+
+msg=$*
 
 case "$1" in
     -e)
 	shit="$2"
 	;;
     *)
-	shit='(find-file "'"$@"'")'
+	shit='(find-file "'"$msg"'")'
 	;;
 esac
 

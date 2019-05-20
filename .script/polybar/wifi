@@ -1,19 +1,19 @@
-#!/bin/bash
+#!/bin/sh
 
 cable=$(cat /sys/class/net/enp3s0/operstate)
 
-if [[ $cable == "up" ]];then
+if [ "$cable" = "up" ];then
     echo E
 else
     wifi=$(awk 'NR==3 {print $4}' /proc/net/wireless)
     wifi="${wifi%.}"
     wifi="${wifi#-}"
-    if [[ ! $wifi == "" ]];then
-	if [[ $wifi -le 55 ]];then
+    if [ ! "$wifi" = "" ];then
+	if [ "$wifi" -le 55 ];then
 	    echo A
-	elif [[ $wifi -le 75 ]];then
+	elif [ "$wifi" -le 75 ];then
 	    echo B
-	elif [[ $wifi -le 85 ]];then
+	elif [ "$wifi" -le 85 ];then
 	    echo C
 	else
 	    echo D

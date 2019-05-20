@@ -4,12 +4,10 @@ sleepDurationSeconds=2
 
 while true;do
 
-    previousDate=$(date +%s%N | cut -b1-13)
     previousStats=$(cat /proc/stat)
 
     sleep $sleepDurationSeconds
 
-    currentDate=$(date +%s%N | cut -b1-13)
     currentStats=$(cat /proc/stat)    
 
     currentLine=$(echo "$currentStats" | grep "cpu ")
@@ -21,8 +19,6 @@ while true;do
     irq=$(echo "$currentLine" | awk -F " " '{print $7}')
     softirq=$(echo "$currentLine" | awk -F " " '{print $8}')
     steal=$(echo "$currentLine" | awk -F " " '{print $9}')
-    guest=$(echo "$currentLine" | awk -F " " '{print $10}')
-    guest_nice=$(echo "$currentLine" | awk -F " " '{print $11}')
 
     previousLine=$(echo "$previousStats" | grep "cpu ")
     prevuser=$(echo "$previousLine" | awk -F " " '{print $2}')
@@ -33,8 +29,6 @@ while true;do
     previrq=$(echo "$previousLine" | awk -F " " '{print $7}')
     prevsoftirq=$(echo "$previousLine" | awk -F " " '{print $8}')
     prevsteal=$(echo "$previousLine" | awk -F " " '{print $9}')
-    prevguest=$(echo "$previousLine" | awk -F " " '{print $10}')
-    prevguest_nice=$(echo "$previousLine" | awk -F " " '{print $11}')    
 
     PrevIdle=$((previdle + previowait))
     Idle=$((idle + iowait))
@@ -48,7 +42,7 @@ while true;do
     totald=$((Total - PrevTotal))
     idled=$((Idle - PrevIdle))
 
-    CPU_Percentage=0$(awk "BEGIN {print ($totald - $idled)/$totald*100}" | awk '{print int($1+0.5)}')
+    CPU_Percentage=$(awk "BEGIN {print ($totald - $idled)/$totald*100}" | awk '{print int($1+0.5)}')
     
-    echo :${CPU_Percentage: -2}%
+    printf ":%02d%%\n" "$CPU_Percentage"
 done

@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
 prount(){
     number=$(pacman -Qu | wc -l)
-    (( ! $number == 0 )) && echo  $number || echo ""
+     [ ! "$number" = 0 ] && echo  "$number" || echo
 }
 
 update(){
-    exec sudo pacman -Syu
+    sudo pacman -Syu
     notify-send 'Update finished successfully!'
     prount
 }

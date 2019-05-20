@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
 # This simple script count all the file of each "new" folder of my mail folder (offlineimap dependency (or equivalent Maildir shit)).
 
 
 count_mail(){
     num_mail=$(find ~/.mail -regex ".*new/.*" | wc -l)
-    [[ ! $num_mail == 0 ]] && echo " $num_mail" || echo ""
+    [ ! "$num_mail" = 0 ] && echo " $num_mail" || echo ""
 }
 
 update_mail(){
-if ping -q -c 1 -W 1 1.1.1.1 &>/dev/null; then
+if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
     offlineimap -u quiet >/dev/null
 fi
 }
@@ -17,8 +17,10 @@ fi
 
 while true; do
     update_mail
-    for i in {1..60}; do
+    i=0
+    while [ $i -lt 6 ]; do
 	count_mail
 	sleep 1
+	: $((i=i+1))
     done
 done

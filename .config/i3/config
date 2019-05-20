@@ -17,9 +17,10 @@ bindsym $mod+Shift+w           exec wpg -m
 set $mod Mod4
 set $term --no-startup-id st
 set $editor --no-startup-id ~/.script/edit ~/Dropbox/a_faire.org
-set $browser --no-startup-id firefox
+set $browser --no-startup-id qutebrowser
 set $mailviewer --no-startup-id ~/.script/edit -e '(mu4e)'
 set $rssfeeder --no-startup-id ~/.script/edit -e '(elfeed)'
+set $calendar --no-startup-id ~/.script/edit -e '(cfw:open-diary-calendar)'
 
 set_from_resource $fg1 i3wm.color15
 set_from_resource $bg1 i3wm.color0
@@ -332,3 +333,7 @@ bindsym $mod+F7 exec networkmanager_dmenu
 bindsym Print exec scrot ~/Images/screenshots/%Y-%d-%T-screenshot.png
 
 exec unclutter --timeout 2
+
+#calendar
+
+bindsym $mod+c exec $calendar

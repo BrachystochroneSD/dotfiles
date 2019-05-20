@@ -2,8 +2,8 @@
 
 . "${HOME}/.config/wpg/formats/colors.sh"
 
-url=$(xprop -id $1 | grep URI | awk '{print $3}' | sed 's/\"//g')
+url=$(xprop -id "$1" | grep URI | awk '{print $3}' | sed 's/\"//g')
 
-res=$(echo -e "720\n1080\n360" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "mpv player resolution" -w $1)
+res=$(printf "720\n1080\n360" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "mpv player resolution" -w "$1")
 
-mpv --really-quiet --ytdl-format="[height<=?"$res"]" "$url"
+mpv --really-quiet --ytdl-format="[height<=?$res]" "$url"

@@ -2,20 +2,20 @@
 
 . "${HOME}/.config/wpg/formats/colors.sh"
 
-bookmarks_file=~/.surf/bookmarks
+bookmarks_file=${HOME}/.surf/bookmarks
 
-choice=$(cat $bookmarks_file | awk '{print$0}END{printf "\nDelete bookmarks"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Load Bookmark' -i -l 10 -w $1)
+choice=$(awk '{print$0}END{printf "\nDelete bookmarks"}' < "$bookmarks_file" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Load Bookmark' -i -l 10 -w "$1")
 
-if [[ "$choice" == 'Delete bookmarks' ]]; then
-    del_choice=$(cat $bookmarks_file | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Delete :' -i -l 10 -w $1)
-    prompt=$(echo -e "No\nYes" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Are you sure?' -i -w $1)
+if [ "$choice" = "Delete bookmarks" ]; then
+    del_choice=$(dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Delete :' -i -l 10 -w "$1" < "$bookmarks_file")
+    prompt=$(printf "No\nYes" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Are you sure?' -i -w "$1")
 
-    if [[ "$prompt" == "Yes" ]] ; then
+    if [ "$prompt" = "Yes" ] ; then
         grep -Fxv "$del_choice" "$bookmarks_file" > /tmp/bm_surf
 	mv /tmp/bm_surf "$bookmarks_file"
     fi
     
-    choice=$(cat $bookmarks_file | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Load Bookmark' -i -l 10 -w $1)
+    choice=$(dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p 'Load Bookmark' -i -l 10 -w "$1" < "$bookmarks_file")
 fi
 
 echo "$choice" | awk '{print $1}'

@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 owl(){
-    bg=$(cat .fehbg | awk 'NR==2{print $3}'|sed "s/'//g" | sed 's\.*/\\g')
-    dunstify -i owl $bg
+    bg=$(awk 'NR==2{print $3}' ${HOME}/.fehbg | sed "s/'//g" | sed 's\.*/\\g')
+    dunstify -i owl "$bg"
 }
 
 case $1 in

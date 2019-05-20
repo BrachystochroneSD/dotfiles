@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # get my private api key
 . "${HOME}/.authentification/apikeys.sh"
@@ -6,19 +6,28 @@
 #parameter
 database=${HOME}/.script/gamedatabase/gamesdb
 
-curly=$(curl -s 'https://www.giantbomb.com/api/games/?api_key='$gdbapikey'&format=json&field_list=number_of_total_results&offset=0&limit=1')
+curly=$(curl -s \
+	     -G "https://www.giantbomb.com/api/games/" \
+	     -d "format=json" \
+	     -d "field_list=number_of_total_results" \
+	     -d "offset=0" \
+	     -d "api_key=$gdbapikey")
 
-number_max=$(echo $curly | jq .number_of_total_results)
-offset=$(cat $database | wc -l)
+number_max=$(jq ".number_of_total_results" "$curly")
+offset=$(wc -l $database)
 
-while [ $offset -lt $number_max ]; do
-    echo "Curl giant bomb site with offset="$offset
-    curly=$(curl -s 'https://www.giantbomb.com/api/games/?api_key='$gdbapikey'&format=json&field_list=name&offset='$offset)
-    i=0
-    gameuh=""
-    res_max=$(echo $curly | jq .number_of_page_results)
-    echo $curly | jq .results[] | jq .name | sed 's/^"\(.*\)"$/\1/' >> $database 
-    (( offset= $offset + 100 ))
+while [ "$offset" -lt "$number_max" ]; do
+    printf "Curl giant bomb site with offset=%s\n" "$offset"
+
+    curly=$(curl -s \
+	     -G "https://www.giantbomb.com/api/games/" \
+	     -d "format=json" \
+	     -d "field_list=number_of_total_results" \
+	     -d "offset=$offset" \
+	     -d "api_key=$gdbapikey")
+
+    echo "$curly" | jq .results[] | jq .name | sed 's/^"\(.*\)"$/\1/' >> $database 
+    : $(( offset= offset + 100 ))
 done
 
 echo "Database updated"

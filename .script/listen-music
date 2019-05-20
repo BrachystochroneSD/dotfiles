@@ -1,9 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
 mpc -q pause
-if [[ -n $(echo "$@" | grep "Music/") ]];then
-    echo "$@" | sed 's|.*Music/||' | mpc -q insert 
+if find "/home/sam/Music/" | grep -q "$@"
+then
+    echo "$@" | sed 's|.*Music/||' | mpc -q insert
+    mpc -q play
     mpc -q next
 else
-    nohup mpv --player-operation-mode=pseudo-gui "$@" &>/dev/null &
+    nohup mpv --player-operation-mode=pseudo-gui "$@" &
 fi

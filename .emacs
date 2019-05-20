@@ -44,7 +44,7 @@
  '(org-agenda-files (quote ("~/Dropbox/a_faire.org")))
  '(package-selected-packages
    (quote
-    (web-mode flymake-shell pyim base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode)))
+    (calfw-cal web-mode flymake-shell pyim base16-theme undo-tree tide php-mode org-bullets nginx-mode multiple-cursors multi-web-mode md-readme jdee gruvbox-theme gnuplot-mode elfeed-org auctex android-mode)))
  '(send-mail-function (quote mailclient-send-it)))
 
 (custom-set-faces
@@ -278,6 +278,7 @@
 ;;;;;;;;;;;;;;
 ;; Calendar ;;
 ;;;;;;;;;;;;;;
+
 (global-set-key (kbd "<f8>") 'calendar)
 (setq diary-file "~/Dropbox/diary")
 
@@ -289,6 +290,28 @@
 				(local-set-key (kbd "C-S-f") 'calendar-forward-month)
 				(local-set-key (kbd "C-S-b") 'calendar-backward-month)
 				))
+
+(require 'calfw)
+(require 'calfw-cal)
+
+(defun my-open-calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:cal-create-source "Green")  ; orgmode source
+    )))
+
+(setq calendar-month-name-array
+  ["Janvier" "Février" "Mars"     "Avril"   "Mai"      "Juin"
+   "Juillet"    "Août"   "Septembre" "Octobre" "Novembre" "Decembre"])
+
+;; Week days
+(setq calendar-day-name-array
+      ["Dimanche" "Lundi" "Mardi" "Mercredi" "Jeudi" "Vendredi" "Samedi"])
+
+;; First day of the week
+(setq calendar-week-start-day 1) ; 0:Sunday, 1:Monday
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Autorefresh Docview ;;
@@ -519,11 +542,13 @@ See `elfeed-play-with-mpv'."
 ;; CHINESE ;;
 ;;;;;;;;;;;;;
 
+(require 'pyim)
 (global-set-key (kbd "C-=") 'toggle-input-method)
+(set-input-method 'pyim)
+(toggle-input-method)
 
 ;;;;;;;;;;;;;;;;;;
 ;; Android Mode ;;
 ;;;;;;;;;;;;;;;;;;
 
 (require 'android-mode)
-
