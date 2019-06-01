@@ -43,13 +43,13 @@ get_channel_id(){
 
 youtube_search(){
     channelID=""
-    searchingshit=$(head -n 1 "$searchhistory" | awk '{print$0}END{printf "\nChannel option\n\nShow History\nClear History"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
+    searchingshit=$(head -n 1 "$searchhistory" | awk '{print$0}END{printf "\nChannel Search\n\nShow History\nClear History"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
 
-    if [ "$searchingshit" = "Channel option" ];then
+    if [ "$searchingshit" = "Channel Search" ];then
 	channelname=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Channel Search") || youtube_search
         get_channel_id
 	save_channel
-	
+
 	searchingshit=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Search on this channel:") || youtube_search
 
     elif [ "$searchingshit" = "Show History" ];then
@@ -66,7 +66,7 @@ youtube_search(){
     if [ -z "$channelID" ] ; then
 	youtubesearchdata=$(curl -s \
 				 -G https://www.googleapis.com/youtube/v3/search \
-				 -d "type=video" \
+				 -d "type=video,playlist" \
 				 -d "maxResults=$max_results" \
 				 -d "key=$ytapikey" \
 				 -d "order=date" \
@@ -76,7 +76,7 @@ youtube_search(){
     else
 	youtubesearchdata=$(curl -s \
 				 -G https://www.googleapis.com/youtube/v3/search \
-				 -d "type=video" \
+				 -d "type=video,playlist" \
 				 -d "order=date" \
 				 -d "maxResults=$max_results" \
 				 -d "key=$ytapikey" \
@@ -85,18 +85,20 @@ youtube_search(){
 				 --data-urlencode "q=$searchingshit"
 				 )
     fi
-    video=$(echo "$youtubesearchdata" | jq -r '.items[] | .snippet.title, .snippet.channelTitle, .snippet.publishedAt' | awk '{printf ("%.85s\n",$0)}' | awk '(NR%3==1){name=$0}(NR%3==2){date=$0}(NR%3==0){printf ("%2d: %-85s %-20s %.10s \n", NR/3, name, date, $0)}' | sed 's/|//g' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 30 -i -p 'YTSearch' | sed 's/:.*//')
+
+    video=$(echo "$youtubesearchdata" | jq -r '.items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt' | awk '{printf ("%.85s\n",$0)}' | awk '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){date=$0}(NR%4==0){printf ("%2d: %-85s %-20s %.10s \n", NR/3, play name, date, $0)}' | sed 's/|//g' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 30 -i -p 'YTSearch' | sed 's/:.*//')
     [ -z "$video" ] && youtube_search
 
     : $(( num= video - 1 ))
 
-    videoID=$(echo "$youtubesearchdata" | jq -r '.items['$num'].id.videoId')
+    choiceid="watch?v="$(echo "$youtubesearchdata" | jq -r '.items['$num'].id.videoId')
+    [ "$choiceid" = "watch?v=null" ] && choiceid="playlist?list="$(echo "$youtubesearchdata" | jq -r '.items['$num'].id.playlistId')
 
-    printf "https://www.youtube.com/watch?v=%s" "$videoID" | xclip -selection clipboard # clipboard to share with your friend !
+    printf "https://www.youtube.com/%s" "$choiceid" | xclip -selection clipboard # clipboard to share with your friend !
 
     res=$(printf "720\n1080\n360" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "Which resolution? (if avalaible)") || youtube_search
 
-    mpv --ytdl-format="[height<=?$res]" "https://www.youtube.com/watch?v=$videoID"
+    mpv --ytdl-format="[height<=?$res]" "https://www.youtube.com/$choiceid"
     exit
 }
 
