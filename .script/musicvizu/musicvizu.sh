@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 exec st -n cavaviz -e cava &
 exec st -n album -e ~/.script/musicvizu/albumshow.sh &
