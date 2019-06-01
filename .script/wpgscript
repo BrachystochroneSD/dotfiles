@@ -23,7 +23,12 @@ dunst &
 
 # animated wallpaper if gif
 
-curr_wall=$(awk 'NR==2{print $3}' "${HOME}"/.fehbg | sed "s/'//g" | sed 's\.*/\\g')
+pid=$(pgrep xwinwrap)
+[ -n "$pid" ] && kill -9 "$pid"
+
+sleep 0.5
+
+curr_wall=$(awk 'NR==2{print $3}' "${HOME}"/.fehbg | sed "s/'//g")
 
 is_gif=$(echo "$curr_wall" | sed 's/.*.gif/true/g')
 
