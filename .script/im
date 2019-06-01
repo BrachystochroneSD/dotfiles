@@ -1,0 +1,26 @@
+#!/bin/sh
+
+w3m="w3mimgdisplay"
+
+wh=$(identify -format "%w %h" "$@")
+img_w=$(echo "$wh" | awk '{printf $1}')
+img_h=$(echo "$wh" | awk '{printf $2}')
+
+win_info=$(xdotool getactivewindow getwindowgeometry --shell)
+win_w=$(echo "$win_info" | grep "WIDTH" | sed 's/WIDTH=//g')
+win_h=$(echo "$win_info" | grep "HEIGHT" | sed 's/HEIGHT=//g')
+
+ratio_comp=$(echo "$img_w*1000/$img_h - $win_w*1000/$win_h" | bc)
+
+if [ "$ratio_comp" -gt 0 ];then
+    : $((img_h=img_h*win_w/img_w))
+    : $((img_w=win_w))
+else
+    : $((img_w=img_w*win_h/img_h))
+    : $((img_h=win_h))
+fi
+
+printf '0;1;0;0;%d;%d;;;;;%s\n3;\n4\n' \
+       "$img_w" "$img_h" "$@" | "$w3m" >/dev/null 2>&1
+
+read -r null
