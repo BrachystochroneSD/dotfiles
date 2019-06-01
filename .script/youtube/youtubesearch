@@ -59,7 +59,7 @@ youtube_search(){
 	     printf "" > "$searchhistory" && youtube_search
 
     else
-	{ echo "$searchingshit"; cat "$searchhistory"; } > /tmp/youthistotmp && mv /tmp/youthistotmp "$searchhistory"
+        grep -q "^$searchingshit$" "$searchhistory" || { echo "$searchingshit"; cat "$searchhistory"; } > /tmp/youthistotmp && mv /tmp/youthistotmp "$searchhistory"
 	printf "Searching for %s\n" "$searchingshit"
     fi
 
