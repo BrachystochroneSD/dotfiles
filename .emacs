@@ -200,6 +200,7 @@
 
 ;; (define-auto-insert "\.tex" "tex_template.tex")
 (define-auto-insert "\.php" "php_template.php")
+(define-auto-insert "\.sh" "sh.sh")
 
 ;; Bindings
 (add-hook 'TeX-mode-hook
