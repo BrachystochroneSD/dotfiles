@@ -32,7 +32,8 @@ get_channel_id(){
 			 -d "part=snippet" \
 			 -d "key=$ytapikey")
     
-    chanchoice=$(echo "$channelsearch" | jq -r '.items[] | .snippet.channelTitle' | awk '{printf ("%2d: %s\n",NR,$0)}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p 'Which channel ?')
+    chanchoice=$(echo "$channelsearch" | jq -r '.items[] | .snippet.channelTitle, .snippet.description' | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 25 -i -p 'Which channel ?')
+
     channame=$(echo "$chanchoice" | sed 's/.*: //')
     chanchoice=$(echo "$chanchoice" | sed 's/:.*//')
     [ -z "$chanchoice" ] && youtube_search
