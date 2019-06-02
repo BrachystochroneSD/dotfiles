@@ -98,12 +98,12 @@ youtube_search(){
 
     res=$(printf "720\n1080\n360" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "Which resolution? (if avalaible)") || youtube_search
 
-    mpv --ytdl-format="[height<=?$res]" "https://www.youtube.com/$choiceid"
+    mpv --ytdl-format="[height<=?$res]" "https://www.youtube.com/$choiceid" || dunstify -i owl  "MPV ERROR " "Can't launch the video"
     exit
 }
 
 if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
     youtube_search
 else
-    notify-send "No internet connection"
+    dunstify -i owl "No internet connection"
 fi
