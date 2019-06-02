@@ -100,7 +100,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Electric Pair Mode ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
-(electric-pair-mode 1)  
+(electric-pair-mode 1)
 (setq electric-pair-pairs '(
                             (?\" . ?\")
                             (?\{ . ?\})
@@ -174,20 +174,20 @@
 (setq TeX-clean-confirm nil)
 
 ;;tex-command Xelatex
-(add-hook 'LaTeX-mode-hook 
+(add-hook 'LaTeX-mode-hook
           (lambda()
              (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))))
 
 ;;Binding pour le heading
-(add-hook 'TeX-mode-hook 
-	  (lambda () 
+(add-hook 'TeX-mode-hook
+	  (lambda ()
 	    (outline-minor-mode)
 	    (local-set-key (kbd "M-v") 'outline-previous-visible-heading)
 	    (local-set-key (kbd "C-v") 'outline-next-visible-heading)
 	    ))
 
-(add-hook 'LaTeX-mode-hook 
-	  (lambda () 
+(add-hook 'LaTeX-mode-hook
+	  (lambda ()
 	    (outline-minor-mode)
 	    (local-set-key (kbd "M-v") 'outline-previous-visible-heading)
 	    (local-set-key (kbd "C-v") 'outline-next-visible-heading)
@@ -421,7 +421,7 @@ See `elfeed-play-with-mpv'."
       smtpmail-smtp-service 587)
 
 
-;; Now I set a list of 
+;; Now I set a list of
 (defvar my-mu4e-account-alist
   '(("gmail"
      (mu4e-sent-folder "/gmail/Sent")
@@ -454,7 +454,7 @@ See `elfeed-play-with-mpv'."
 
 (defun my-mu4e-set-account ()
   "Set the account for composing a message.
-   This function is taken from: 
+   This function is taken from:
      https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (let* ((account
     (if mu4e-compose-parent-message
@@ -499,7 +499,7 @@ See `elfeed-play-with-mpv'."
 (setq mu4e-headers-fields
     '( (:date          .  12)    ;; alternatively, use :human-date
        (:maildir       .  15)
-       (:flags         .   6)       
+       (:flags         .   6)
        (:from          .  22)
        (:subject       .  nil)))
 
@@ -553,3 +553,6 @@ See `elfeed-play-with-mpv'."
 ;;;;;;;;;;;;;;;;;;
 
 (require 'android-mode)
+
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
