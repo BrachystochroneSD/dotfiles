@@ -339,7 +339,7 @@ tail= true
 
 [module/weather]
 type = custom/script
-exec = ~/.script/polybar/weatherdir/weatherbis
+exec = ~/.script/polybar/weatherdir/weather
 format-underline = ${colors.pink}
 format-font= 4
 interval = 1800
