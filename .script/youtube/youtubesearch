@@ -46,7 +46,7 @@ youtube_search(){
     searchingshit=$(head -n 1 "$searchhistory" | awk '{print$0}END{printf "\nChannel Search\n\nShow History\nClear History"}' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 20 -p "Youtube search:") || aborted
 
     if [ "$searchingshit" = "Channel Search" ];then
-	channelname=$(echo | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Channel Search") || youtube_search
+	channelname=$(grep "youtube.com" "$rss_file" | sed 's/\*\*\* \[\[.*\]\[//' | sed 's/\]\]//' | dmenu -l 10 -i -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -p "Channel Search") || youtube_search
         get_channel_id
 	save_channel
 
