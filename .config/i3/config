@@ -30,15 +30,15 @@ set_from_resource $bga i3wm.color8
 
 #  #---# Colors #---#  #
 
-client.focused          $bg1   $bg2   $fg1  $bg2   
-client.unfocused        $bg1   $bg1   $fg2  $bg1   
+client.focused          $bg1   $bg2   $fg1  $bg2
+client.unfocused        $bg1   $bg1   $fg2  $bg1
 client.focused_inactive $bg1   $bg1   $fg2  $bg1
 client.urgent	        $bga   $bga   $fg1  $bg1
 
 # OLDCOLOR
-# # # class               border    backgr.   text     indicator 
-# client.focused          #282828   #928374   #ebdbb2  #928374   
-# client.unfocused        #282828   #282828   #a89984  #282828   
+# # # class               border    backgr.   text     indicator
+# client.focused          #282828   #928374   #ebdbb2  #928374
+# client.unfocused        #282828   #282828   #a89984  #282828
 # client.focused_inactive #282828   #282828   #a89984  #282828
 # client.urgent	        #cc241d   #cc241d   #ebdbb2  #282828
 
@@ -185,11 +185,11 @@ bindsym Shift+XF86AudioLowerVolume exec amixer -qM set Master 10%- unmute
 bindsym XF86AudioMute 		exec amixer -q set Master 1+ toggle
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessDown	exec light -A 5 
-bindsym XF86MonBrightnessUp 	exec light -U 5 
+bindsym XF86MonBrightnessDown	exec .script/brightnessbar moins 5
+bindsym XF86MonBrightnessUp 	exec .script/brightnessbar plus 5
 
-bindsym Shift+XF86MonBrightnessDown exec light -A 10  
-bindsym Shift+XF86MonBrightnessUp   exec light -U 10 
+bindsym Shift+XF86MonBrightnessDown exec .script/brightnessbar moins 10
+bindsym Shift+XF86MonBrightnessUp   exec .script/brightnessbar plus 10
 
 #---# Music shits #---#
 
@@ -205,14 +205,14 @@ for_window [instance="ncmpcppwin"] border pixel 0
 for_window [instance="ncmpcppwin"] move right 105
 for_window [instance="ncmpcppwin"] move scratchpad
 
-for_window [instance="album"] floating enable 
+for_window [instance="album"] floating enable
 for_window [instance="album"] resize set 202 202
 for_window [instance="album"] border pixel 0
 for_window [instance="album"] move left 105
 for_window [instance="album"] move down 10
 for_window [instance="album"] move scratchpad
 
-for_window [instance="cavaviz"] floating enable 
+for_window [instance="cavaviz"] floating enable
 for_window [instance="cavaviz"] resize set 200 150
 for_window [instance="cavaviz"] border pixel 0
 for_window [instance="cavaviz"] move left 105
@@ -224,15 +224,15 @@ bindsym $mod+m [instance="album"] scratchpad show ; [instance="cavaviz"] scratch
 #bindings for MPD MPC NCMPCPP
 
 
-bindsym $mod+v			exec mpc prev 
-bindsym $mod+b 			exec mpc toggle 
-bindsym $mod+Shift+b 		exec mpc stop 
-bindsym $mod+n 			exec mpc next 
+bindsym $mod+v			exec mpc prev
+bindsym $mod+b 			exec mpc toggle
+bindsym $mod+Shift+b 		exec mpc stop
+bindsym $mod+n 			exec mpc next
 
 bindsym $mod+Shift+n 		exec mpc seek +3
-bindsym $mod+Shift+v 		exec mpc seek -3 
+bindsym $mod+Shift+v 		exec mpc seek -3
 
-bindsym $mod+Ctrl+b 		exec mpc random 
+bindsym $mod+Ctrl+b 		exec mpc random
 
 bindsym Ctrl+XF86AudioRaiseVolume exec mpc volume +3
 bindsym Ctrl+XF86AudioLowerVolume exec mpc volume -3

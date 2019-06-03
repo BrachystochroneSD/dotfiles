@@ -1,0 +1,38 @@
+#!/bin/sh
+
+check=$(cat /tmp/tmpNID)
+[ -z "$check" ] && echo 0 > /tmp/tmpNID
+notifyation(){
+    NID=$(dunstify -t 1000 -p -i bright -r "$(cat /tmp/tmpNID)" "$@")
+    echo "$NID" > /tmp/tmpNID
+}
+
+printxfoi(){
+    i=0
+    while [ $i -lt "$1" ]
+    do
+	printf "$2"
+	: $(( i= i + 1 ))
+    done
+}
+
+print_curr_level(){
+    curr_level=$(light | sed 's|\..*|/10|' | bc )
+    message="$message"$(printxfoi $((10 - curr_level)) "⬤")
+    message="$message"$(printxfoi "$curr_level" "◯")
+    notifyation "$message"
+}
+
+
+case $1 in
+    "plus")
+	light -U "$2"
+	print_curr_level
+	;;
+    "moins")
+	light -A "$2"
+	print_curr_level
+	;;
+    *)
+	print_curr_level
+esac
