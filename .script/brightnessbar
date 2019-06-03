@@ -2,10 +2,6 @@
 
 check=$(cat /tmp/tmpNID)
 [ -z "$check" ] && echo 0 > /tmp/tmpNID
-notifyation(){
-    NID=$(dunstify -t 1000 -p -i bright -r "$(cat /tmp/tmpNID)" "$@")
-    echo "$NID" > /tmp/tmpNID
-}
 
 printxfoi(){
     i=0
@@ -20,7 +16,8 @@ print_curr_level(){
     curr_level=$(light | sed 's|\..*|/10|' | bc )
     message="$message"$(printxfoi $((10 - curr_level)) "⬤")
     message="$message"$(printxfoi "$curr_level" "◯")
-    notifyation "$message"
+    NID=$(dunstify -t 1000 -p -i bright -r "$(cat /tmp/tmpNID)" "$message")
+    echo "$NID" > /tmp/tmpNID
 }
 
 

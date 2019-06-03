@@ -11,10 +11,12 @@
 
 # Parameters
 channelsfile=${HOME}/.script/twitch/datas/listchanneltwitch
-gamesfile=${HOME}/.script/twitch/datas/listgamestwitch 
+gamesfile=${HOME}/.script/twitch/datas/listgamestwitch
 gamesdb=${HOME}/.script/gamedatabase/gamesdb
 
 max_vid=100
+
+dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 
 nobodyshit(){
     echo "Nobody streaming this shit right now"
@@ -34,7 +36,7 @@ check_and_launch(){
 		      -d "client_id=$twitch_clientID" \
 		      --data-urlencode "game=$*")
     [ "$(echo "$twitchdata" | jq '._total')" = 0 ] && nobodyshit
-    stream=$(echo "$twitchdata" | jq -r '.streams[] | .channel.language, .channel.name' | awk 'NR%2{printf "%s:",$0;next;}1' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 10 -p "Which stream ?" | sed 's/.*://')
+    stream=$(echo "$twitchdata" | jq -r '.streams[] | .channel.language, .channel.name' | awk 'NR%2{printf "%s:",$0;next;}1' | $dmenucmd -i -l 10 -p "Which stream ?" | sed 's/.*://')
 
     [ -z "$stream" ] && aborted
 
@@ -42,18 +44,18 @@ check_and_launch(){
     exit
 }
 
-twitchgamefunction(){        
+twitchgamefunction(){
     if [ -n "$*" ]; then
 	check_and_launch "$*"
     else
-	game=$(awk '{print $0} END { printf "Other\nAdd" }' "$gamesfile" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "$noshit") || aborted
+	game=$(awk '{print $0} END { printf "Other\nAdd" }' "$gamesfile" | $dmenucmd -l 10 -i -p "$noshit") || aborted
 	if [ "$game" = "Add" ];then
-	    game=$(dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "Which game do you want to add on favorite?" < "$gamesdb") || aborted
+	    game=$($dmenucmd -l 10 -i -p "Which game do you want to add on favorite?" < "$gamesdb") || aborted
 	    echo "$game" >> "$gamesfile"
-	    cert=$(printf "No\nYes" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "Do you want to check streams for $game?")
+	    cert=$(printf "No\nYes" | $dmenucmd -l 10 -i -p "Do you want to check streams for $game?")
 	    [ "$cert" = "Yes" ] || aborted
 	elif [ "$game" = "Other" ]; then
-	    game=$(dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "$noshit" < "$gamesdb") || aborted
+	    game=$($dmenucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
 	fi
 	    check_and_launch "$game"
     fi
@@ -76,19 +78,19 @@ twitchlivefunction(){
 			  -d "client_id=$twitch_clientID" \
 			  -d "channel=$(cat "$channelsfile")")
 
-	stream=$(echo "$twitchdata" | jq -r '.streams[] | .channel.name' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -i -p "Which stream do you want to watch?") || aborted
+	stream=$(echo "$twitchdata" | jq -r '.streams[] | .channel.name' | $dmenucmd -l 10 -i -p "Which stream do you want to watch?") || aborted
 	exec surf -new-window "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
 	exit
     fi
 }
 
 twitchvod_search(){
-    searchingshit=$(dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -l 10 -p "TwitchVOD Channel:" < "$channelsfile") || aborted
+    searchingshit=$($dmenucmd -l 10 -p "TwitchVOD Channel:" < "$channelsfile") || aborted
     printf "Searching for video on %s\n" "$searchingshit"
     curl_choose_and_watch
 }
 
-curl_choose_and_watch(){	
+curl_choose_and_watch(){
 
     #curl the api twitch vod search for a channel
     twitchvod=$(curl -s \
@@ -102,7 +104,7 @@ curl_choose_and_watch(){
 
     #create a table with all of the videos and get the url of the chosen one
     : $(( borne_max=total_vod - max_vid ))
-    video=$(echo "$twitchvod" | jq -r '.videos[] | .title, .recorded_at' | awk -v bm=$borne_max -v offs="$offset" 'BEGIN{ if (offs > 0 ) { printf "Prev\n" } }!(NR%2){printf ("%3d: %-100s %.10s\n", FNR/2+offs, p, $0)}{p=$0}END{ if (offs < bm) { printf "Next" } }' | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 30 -p "Which video?" | sed 's/:.*//')
+    video=$(echo "$twitchvod" | jq -r '.videos[] | .title, .recorded_at' | awk -v bm=$borne_max -v offs="$offset" 'BEGIN{ if (offs > 0 ) { printf "Prev\n" } }!(NR%2){printf ("%3d: %-100s %.10s\n", FNR/2+offs, p, $0)}{p=$0}END{ if (offs < bm) { printf "Next" } }' | $dmenucmd -i -l 30 -p "Which video?" | sed 's/:.*//')
 
     if [ -z "$video" ];then
 	twitchvod_search
@@ -112,12 +114,12 @@ curl_choose_and_watch(){
     elif [ "$video" = "Prev" ];then
         : $(( offset=offset-100 ))
 	curl_choose_and_watch
-    else	
+    else
 	: $(( num=video-1-offset ))
 	videourl=$(echo "$twitchvod" | jq -r '.videos['$num'].url')
-	
+
 	# ask for the resolution and launch the video with mpv
-	res=$(printf "720\n1080\n360" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -p "Which resolution? (if avalaible)") || twitchvod_search
+	res=$(printf "720\n1080\n360" | $dmenucmd -i -p "Which resolution? (if avalaible)") || twitchvod_search
 	mpv --ytdl-format="[height<=?$res]" "$videourl" || twitchvod_search
 	exit
     fi

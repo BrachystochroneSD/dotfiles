@@ -61,7 +61,7 @@ fg-alt=${xrdb:color15:#222}
 ; background = ${colors.bg}
 ; foreground = ${colors.fg-alt}
 ; offset-x = 60%
-; offset-y= 2 
+; offset-y= 2
 ; override-redirect=true
 ; line-size = 3
 ; line-color = #cc241d
@@ -220,7 +220,7 @@ port = 6600
 format-online =  <label-song> <label-time> <toggle> <icon-random> <icon-repeat>
 
 icon-play = 
-icon-pause = 
+icon-pause =
 icon-random = 
 icon-repeat = 
 

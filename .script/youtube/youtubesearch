@@ -7,7 +7,7 @@
 . "${HOME}/.config/wpg/formats/colors.sh"
 
 #Parameters
-max_results=50
+max_results=35
 rss_file=${HOME}/.emacs.d/rss/rss.org
 searchhistory=${HOME}/.script/youtube/datas/searchhistory
 
@@ -39,10 +39,9 @@ get_channel_id(){
     chanchoice=$(echo "$channelsearch" | jq -r ".items[] | .snippet.channelTitle, .snippet.description" | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | $dmenucmd -l 25 -i -p "Which channel ?")
 
     channame=$(echo "$chanchoice" | sed 's/.*: //')
-    chanchoice=$(echo "$chanchoice" | sed 's/:.*//')
-    [ -z "$chanchoice" ] && youtube_search
-    : $(( numchan=chanchoice-1 ))
-    channelID=$(echo "$channelsearch" | jq -r ".items[$numchan].snippet.channelId")
+    channum=$(echo "$chanchoice" | sed 's/:.*/-1/' | bc)
+    [ -z "$channum" ] && youtube_search
+    channelID=$(echo "$channelsearch" | jq -r ".items[$channum].snippet.channelId")
 }
 
 youtube_search(){
@@ -70,7 +69,7 @@ youtube_search(){
 	    printf "Searching for %s\n" "$searchingshit"
     esac
 
-    if [ -z "$channelID" ] ; then
+    if [ -z "$channelID" ];then
 	youtubesearchdata=$(curl -s \
 				 -G https://www.googleapis.com/youtube/v3/search \
 				 -d "type=video,playlist" \
@@ -93,20 +92,13 @@ youtube_search(){
 			 )
     fi
 
-    choicenum=$(echo "$youtubesearchdata" \
-		    | jq -r ".items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt" \
-		    | awk '{printf ("%.85s\n",$0)}' \
-		    | awk '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){date=$0}(NR%4==0){printf ("%2d: %-85s %-20s %.10s \n", NR/4, play name, date, $0)}' \
-		    | sed 's/|//g' \
-		    | $dmenucmd -l 30 -i -p 'YTSearch' \
-		    | sed 's/:.*/ - 1/' \
-		    | bc )
+    choicenum=$(echo "$youtubesearchdata" | jq -r ".items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt" | awk '{printf ("%.85s\n",$0)}' | awk '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){date=$0}(NR%4==0){printf ("%2d: %-85s %-20s %.10s \n", NR/4, play name, date, $0)}' | sed 's/|//g' | $dmenucmd -l 30 -i -p 'YTSearch' | sed 's/:.*/ - 1/' | bc )
 
     [ -z "$choicenum" ] && youtube_search
 
     choicekind=$(echo "$youtubesearchdata" | jq -r ".items[$choicenum].id")
 
-    if [ $( echo "$choicekind" | jq -r ".kind" ) = "youtube#video" ];then
+    if [ "$( echo "$choicekind" | jq -r ".kind" )" = "youtube#video" ];then
 	link="https://www.youtube.com/watch?v=$(echo "$choicekind" | jq -r ".videoId")"
     else
 	link="https://www.youtube.com/playlist?list=$(echo "$choicekind" | jq -r ".playlistId")"
@@ -120,7 +112,7 @@ youtube_search(){
     exit
 }
 
-if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
+if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1;then
     youtube_search
 else
     $notifycmd "No internet connection"
