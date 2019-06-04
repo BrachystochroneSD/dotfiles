@@ -176,15 +176,15 @@ for_window [class="Pavucontrol"] floating enable
 bindsym $mod+XF86AudioMute 	exec pavucontrol
 
 # Amixer Audio controls
-bindsym XF86AudioRaiseVolume	exec amixer -q sset Master 5%+ unmute
-bindsym XF86AudioLowerVolume 	exec amixer -q sset Master 5%- unmute
+bindsym XF86AudioRaiseVolume	exec amixer -q sset Master 5%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym XF86AudioLowerVolume 	exec amixer -q sset Master 5%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
-bindsym Shift+XF86AudioRaiseVolume exec amixer -qM set Master 10%+ unmute
-bindsym Shift+XF86AudioLowerVolume exec amixer -qM set Master 10%- unmute
+bindsym Shift+XF86AudioRaiseVolume exec amixer -qM set Master 10%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym Shift+XF86AudioLowerVolume exec amixer -qM set Master 10%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
-bindsym XF86AudioMute 		exec amixer -q set Master 1+ toggle
+bindsym XF86AudioMute 		exec amixer -q set Master 1+ toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
-# Sreen brightness controls
+# Screen brightness controls
 bindsym XF86MonBrightnessDown	exec .script/brightnessbar moins 5
 bindsym XF86MonBrightnessUp 	exec .script/brightnessbar plus 5
 
