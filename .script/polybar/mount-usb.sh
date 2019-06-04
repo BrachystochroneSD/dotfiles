@@ -6,6 +6,8 @@
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 dmenuobf="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"
 
+devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
+
 usb_print() {
     devices=$( lsblk -Jplno LABEL,NAME,TYPE,RM,SIZE,MOUNTPOINT,VENDOR)
     output=""
@@ -15,11 +17,7 @@ usb_print() {
         unmounted=$(echo "$devices" | jq -r '.blockdevices[]  | select(.name == "'"$unmounted"'") | .vendor')
         unmounted=$(echo "$unmounted" | tr -d ' ')
 
-        if [ $counter -eq 0 ]; then
-            space=""
-        else
-            space=" "
-        fi
+        [ $counter -eq 0 ] && space="" || space=" "
         counter=$((counter + 1))
 
         output=" $output$space$unmounted "
@@ -42,7 +40,6 @@ usb_print() {
 
 case "$1" in
     --mount)
-        devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
         for mount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
 	    [ -n "$(ls /media/usb_drive1/)" ] && num=2 || num=1
 	    prompt=$(printf "Ye\nNah" | $dmenucmd -p "Mounting $mount on /media/usb_drive$num?")
@@ -53,8 +50,6 @@ case "$1" in
         ;;
 
     --unmount)
-        devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
-
         for unmount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .mountpoint'); do
 	    prompt=$(printf "Ye\nNah" | $dmenucmd -p "Unmount $unmount?")
 	    if [ "$prompt" = "Ye" ] ;then
