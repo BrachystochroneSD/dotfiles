@@ -37,8 +37,7 @@ get_channel_id(){
 			 -d "key=$ytapikey")
 
     chanchoice=$(echo "$channelsearch" | jq -r ".items[] | .snippet.channelTitle, .snippet.description" | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | $dmenucmd -l 25 -i -p "Which channel ?")
-
-    channame=$(echo "$chanchoice" | sed 's/.*: //')
+    channame=$(echo "$chanchoice" | sed -r 's/[ 0-9]+: //' | sed 's/ :.*//')
     channum=$(echo "$chanchoice" | sed 's/:.*/-1/' | bc)
     [ -z "$channum" ] && youtube_search
     channelID=$(echo "$channelsearch" | jq -r ".items[$channum].snippet.channelId")
