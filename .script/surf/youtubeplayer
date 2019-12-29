@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. "${HOME}/.config/wpg/formats/colors.sh"
+. "${HOME}/.cache/wal/colors.sh"
 
 url=$(xprop -id "$1" | grep URI | awk '{print $3}' | sed 's/\"//g')
 

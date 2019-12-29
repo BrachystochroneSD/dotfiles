@@ -9,7 +9,7 @@ nf = {color0}
 nb = {color0}
 
 [database]
-database_1 = ~/Dropbox/Samuel_Main.kdbx
+database_1 = ~/.keepassdb/Samuel_Main.kdbx
 keyfile_1 = 
 pw_cache_period_min = 360
 # autotype_default = {{USERNAME}}{{TAB}}{{PASSWORD}}

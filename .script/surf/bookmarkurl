@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. "${HOME}/.config/wpg/formats/colors.sh"
+. "${HOME}/.cache/wal/colors.sh"
 
 file=${HOME}/.surf/bookmarks
 

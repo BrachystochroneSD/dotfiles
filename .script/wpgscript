@@ -4,19 +4,19 @@
 
 #color correction for emacs
 
-hex=$(awk '/base02/' ~/.config/wpg/formats/base16-wal-theme.el | cut -d\" -f2)
+hex=$(awk '/base02/' ~/.cache/wal/base16-wal-theme.el | cut -d\" -f2)
 
 r=$(printf '%02x' $(( $((0x$(echo "$hex" | cut -c2,3))) / 2 )))
 g=$(printf '%02x' $(( $((0x$(echo "$hex" | cut -c4,5))) / 2 )))
 b=$(printf '%02x' $(( $((0x$(echo "$hex" | cut -c6,7))) / 2 )))
 
-sed "/base02/c\                                         :base02 \"#$r$g$b\"" ~/.config/wpg/formats/base16-wal-theme.el > ~/.emacs.d/base16-wal-theme.el
+sed "/base02/c\                                         :base02 \"#$r$g$b\"" ~/.cache/wal/base16-wal-theme.el > ~/.emacs.d/base16-wal-theme.el
 
 # templates for keepmenu, networkdmenu and cava
 
-cp ~/.config/wpg/formats/keepmenuconf ~/.config/keepmenu/config.ini
-cp ~/.config/wpg/formats/nm_dmenu ~/.config/networkmanager-dmenu/config.ini
-cp ~/.config/wpg/formats/cavaconf ~/.config/cava/config
+cp ~/.cache/wal/keepmenuconf ~/.config/keepmenu/config.ini
+cp ~/.cache/wal/nm_dmenu ~/.config/networkmanager-dmenu/config.ini
+cp ~/.cache/wal/cavaconf ~/.config/cava/config
 
 #dunst
 dunst &
@@ -28,8 +28,8 @@ pid=$(pgrep xwinwrap)
 
 sleep 0.5
 
-curr_wall=$(awk 'NR==2{print $3}' "${HOME}"/.fehbg | sed "s/'//g")
+curr_wall=$(grep -o "'.*'" "${HOME}"/.fehbg | sed "s/'//g")
 
-is_gif=$(echo "$curr_wall" | sed 's/.*.gif/true/g')
+is_gif=$(echo "$curr_wall" | sed 's/.*.\(gif\|webm\)/true/g')
 
 [ "$is_gif" = "true" ] && xwinwrap -ov -g 1366x768+0+0 -- mpv -wid WID "$curr_wall" --no-osc --no-osd-bar --loop-file --player-operation-mode=cplayer --no-audio --panscan=1.0 --no-input-default-bindings

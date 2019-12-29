@@ -1,27 +1,28 @@
 {
     "wallpaper": "/home/sam/.config/wpg/wallpapers/XFItacW.jpg",
     "alpha": "100",
+
     "special": {
-        "background": "#223322",
-        "foreground": "#f6edd1",
-        "cursor": "#f6edd1"
+        "background": "#1d2021",
+        "foreground": "#fbf1c7",
+        "cursor": "#fbf1c7"
     },
     "colors": {
-        "color0": "#223322",
-        "color1": "#817D9E",
-        "color2": "#57A7B8",
-        "color3": "#52A8D4",
-        "color4": "#63ABD9",
-        "color5": "#E5CF99",
-        "color6": "#ECD7A0",
-        "color7": "#f6edd1",
-        "color8": "#aca592",
-        "color9": "#817D9E",
-        "color10": "#57A7B8",
-        "color11": "#52A8D4",
-        "color12": "#63ABD9",
-        "color13": "#E5CF99",
-        "color14": "#ECD7A0",
-        "color15": "#f6edd1"
+        "color0": "#1d2021",
+        "color1": "#fb4934",
+        "color2": "#b8bb26",
+        "color3": "#fabd2f",
+        "color4": "#83a598",
+        "color5": "#d3869b",
+        "color6": "#8ec07c",
+        "color7": "#d5c4a1",
+        "color8": "#665c54",
+        "color9": "#fb4934",
+        "color10": "#b8bb26",
+        "color11": "#fabd2f",
+        "color12": "#83a598",
+        "color13": "#d3869b",
+        "color14": "#8ec07c",
+        "color15": "#fbf1c7"
     }
 }

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 owl(){
-    bg=$(awk 'NR==2{print $3}' ${HOME}/.fehbg | sed "s/'//g" | sed 's\.*/\\g')
+    bg=$(awk 'NR==2{print $0}' ${HOME}/.fehbg | sed 's\.*/\\g' | sed "s/'//g" )
     dunstify -i owl "$bg"
 }
 

@@ -4,7 +4,7 @@
 . "${HOME}/.authentification/apikeys.sh"
 
 # colors from wpgtk/pywal
-. "${HOME}/.config/wpg/formats/colors.sh"
+. "${HOME}/.cache/wal/colors.sh"
 
 #Parameters
 max_results=35
