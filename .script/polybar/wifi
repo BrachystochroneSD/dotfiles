@@ -2,23 +2,76 @@
 
 cable=$(cat /sys/class/net/enp3s0/operstate)
 
-if [ "$cable" = "up" ];then
-    echo E
-else
-    wifi=$(awk 'NR==3 {print $4}' /proc/net/wireless)
-    wifi="${wifi%.}"
-    wifi="${wifi#-}"
-    if [ ! "$wifi" = "" ];then
-	if [ "$wifi" -le 55 ];then
-	    echo A
-	elif [ "$wifi" -le 75 ];then
-	    echo B
-	elif [ "$wifi" -le 85 ];then
-	    echo C
-	else
-	    echo D
-	fi
+inversebool () {
+    [[ "$1" = 0 ]] && echo 1 || echo 0
+}
+
+getifstat () {
+    ifstat -n
+    if [[ -n $(grep wlp /tmp/.ifstat.u1000) ]];then
+        received=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $7}')
+        transmitted=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $9}')
+        received=$(( received - RX_WIFI_ZERO ))
+        transmitted=$(( transmitted - TX_WIFI_ZERO ))
+        RX="RX: $(mean $received)"
+        TX="TX: $(mean $transmitted)"
     else
-	echo 
+        RX=""
+        TX=""
     fi
-fi
+}
+
+mean () {
+    units="KMGTP"
+    nummean=$(( $(printf $1 | wc -m) / 3 ))
+    number=$(echo "$1 / (10 ^ (3 * $nummean) )" | bc -l | cut -c 1-4)
+    unit=$(echo $units | cut -c $nummean)
+    echo $number$unit
+}
+
+case $1 in
+    --help)
+        echo "Need help? Go fuck yourself!"
+        ;;
+    --setup-zero-TX)
+        TX_WIFI_ZERO=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $9}')
+        ;;
+    --setup-zero-RX)
+        RX_WIFI_ZERO=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $7}')
+        ;;
+    --reset-zero-RX)
+        TX_WIFI_ZERO=0
+        ;;
+    --reset-zero-TX)
+        RX_WIFI_ZERO=0
+        ;;
+    --toggle-received)
+        TGGL_RX=$(inversebool TGGL_RX)
+        ;;
+    --toggle-transmitted)
+        TGGL_TX=$(inversebool TGGL_TX)
+        ;;
+    *)
+        if [ "$cable" = "up" ];then
+            echo E
+        else
+            wifi=$(awk 'NR==3 {print $4}' /proc/net/wireless)
+            wifi="${wifi%.}"
+            wifi="${wifi#-}"
+            getifstat
+            if [ ! "$wifi" = "" ];then
+	        if [ "$wifi" -le 55 ];then
+	            echo A "$TX" "$RX"
+	        elif [ "$wifi" -le 75 ];then
+	            echo B "$TX" "$RX"
+	        elif [ "$wifi" -le 85 ];then
+	            echo C "$TX" "$RX"
+	        else
+	            echo D "$TX" "$RX"
+	        fi
+            else
+	        echo
+            fi
+        fi
+
+esac

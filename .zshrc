@@ -152,3 +152,16 @@ alias duha='du -ha --max-depth=1'
 alias mkpkg='makepkg -Acs'
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+
+#######
+# FEH #
+#######
+
+alias feh='feh -..'
+
+# WIFI shit
+
+export TGGL_TX=0
+export TGGL_RX=0
+export TX_WIFI_ZERO=0
+export RX_WIFI_ZERO=0
