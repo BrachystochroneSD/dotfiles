@@ -11,10 +11,10 @@ getifstat () {
     if [[ -n $(grep wlp /tmp/.ifstat.u1000) ]];then
         received=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $7}')
         transmitted=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $9}')
-        received=$(( received - RX_WIFI_ZERO ))
-        transmitted=$(( transmitted - TX_WIFI_ZERO ))
-        RX="RX: $(mean $received)"
-        TX="TX: $(mean $transmitted)"
+        received=$(( received - $(cat /tmp/wififstatrxzero 2>/dev/null || echo 0) ))
+        transmitted=$(( transmitted - $(cat /tmp/wififstattxzero 2>/dev/null || echo 0) ))
+        RX="↓$(mean $received)"
+        TX="↑$(mean $transmitted)"
     else
         RX=""
         TX=""
@@ -34,22 +34,16 @@ case $1 in
         echo "Need help? Go fuck yourself!"
         ;;
     --setup-zero-TX)
-        TX_WIFI_ZERO=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $9}')
+        grep wlp /tmp/.ifstat.u$UID | awk '{print $9}' > /tmp/wififstattxzero
         ;;
     --setup-zero-RX)
-        RX_WIFI_ZERO=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $7}')
-        ;;
-    --reset-zero-RX)
-        TX_WIFI_ZERO=0
-        ;;
-    --reset-zero-TX)
-        RX_WIFI_ZERO=0
+        grep wlp /tmp/.ifstat.u$UID | awk '{print $7}' > /tmp/wififstatrxzero
         ;;
     --toggle-received)
-        TGGL_RX=$(inversebool TGGL_RX)
+        touch /tmp/wififstattglrx
         ;;
     --toggle-transmitted)
-        TGGL_TX=$(inversebool TGGL_TX)
+        touch /tmp/wififstattgltx
         ;;
     *)
         if [ "$cable" = "up" ];then

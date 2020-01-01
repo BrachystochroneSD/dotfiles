@@ -88,6 +88,9 @@ line_find(){ find "$1" -type f | grep "$2" | xargs cat | grep "$3";}
 alias dotfiles_git='/bin/git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}'
 alias dotfiles_git_pom='/bin/git --git-dir=${HOME}/.dotfiles --work-tree=${HOME} push -u origin master'
 
+alias dgp='dotfiles_git_pom'
+alias dgs='dotfiles_git status'
+
 ###########################
 # Hdmi Port Double Screen #
 ###########################
@@ -158,10 +161,3 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 #######
 
 alias feh='feh -..'
-
-# WIFI shit
-
-export TGGL_TX=0
-export TGGL_RX=0
-export TX_WIFI_ZERO=0
-export RX_WIFI_ZERO=0
