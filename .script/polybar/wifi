@@ -1,6 +1,5 @@
 #!/bin/sh
 
-cable=$(cat /sys/class/net/enp3s0/operstate)
 
 inversebool () {
     [[ "$1" = 0 ]] && echo 1 || echo 0
@@ -8,16 +7,12 @@ inversebool () {
 
 getifstat () {
     ifstat -n
-    if [[ -n $(grep wlp /tmp/.ifstat.u1000) ]];then
-        received=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $7}')
-        transmitted=$(grep wlp /tmp/.ifstat.u$UID | awk '{print $9}')
+    if [[ -n $(grep wlp /tmp/.ifstat.u"$UID") ]];then
+        grep wlp /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}' | read received transmitted
         received=$(( received - $(cat /tmp/wififstatrxzero 2>/dev/null || echo 0) ))
         transmitted=$(( transmitted - $(cat /tmp/wififstattxzero 2>/dev/null || echo 0) ))
         RX="↓$(mean $received)"
         TX="↑$(mean $transmitted)"
-    else
-        RX=""
-        TX=""
     fi
 }
 
@@ -39,33 +34,26 @@ case $1 in
     --setup-zero-RX)
         grep wlp /tmp/.ifstat.u$UID | awk '{print $7}' > /tmp/wififstatrxzero
         ;;
-    --toggle-received)
-        touch /tmp/wififstattglrx
-        ;;
-    --toggle-transmitted)
-        touch /tmp/wififstattgltx
+    --toggle-ifstat)
+        [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
         ;;
     *)
-        if [ "$cable" = "up" ];then
-            echo E
+        if [ "$(cat /sys/class/net/enp3s0/operstate)" = "up" ];then
+            output="E"
         else
-            wifi=$(awk 'NR==3 {print $4}' /proc/net/wireless)
-            wifi="${wifi%.}"
-            wifi="${wifi#-}"
-            getifstat
+            wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
             if [ ! "$wifi" = "" ];then
 	        if [ "$wifi" -le 55 ];then
-	            echo A "$TX" "$RX"
+	            output="A"
 	        elif [ "$wifi" -le 75 ];then
-	            echo B "$TX" "$RX"
+	            output="B"
 	        elif [ "$wifi" -le 85 ];then
-	            echo C "$TX" "$RX"
+	            output="C"
 	        else
-	            echo D "$TX" "$RX"
+	            output="D"
 	        fi
-            else
-	        echo
             fi
         fi
-
+        [[ -f /tmp/wififstattglrx ]] && output="$output $RX $TX"
+        echo "$output"
 esac
