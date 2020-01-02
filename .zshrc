@@ -88,6 +88,8 @@ line_find(){ find "$1" -type f | grep "$2" | xargs cat | grep "$3";}
 alias dotfiles_git='/bin/git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}'
 alias dotfiles_git_pom='/bin/git --git-dir=${HOME}/.dotfiles --work-tree=${HOME} push -u origin master'
 
+alias dg='dotfiles_git'
+alias dga='dotfiles_git add'
 alias dgp='dotfiles_git_pom'
 alias dgs='dotfiles_git status'
 
