@@ -93,6 +93,7 @@ alias dg='dotfiles_git'
 alias dga='dotfiles_git add'
 alias dgp='dotfiles_git_pom'
 alias dgs='dotfiles_git status'
+alias dgc='dotfiles_git commit -m'
 
 ###########################
 # Hdmi Port Double Screen #
