@@ -28,11 +28,10 @@ case $1 in
     --help)
         echo "Need help? Go fuck yourself!"
         ;;
-    --setup-zero-TX)
-        grep wlp /tmp/.ifstat.u$UID | awk '{print $9}' > /tmp/wififstattxzero
-        ;;
-    --setup-zero-RX)
-        grep wlp /tmp/.ifstat.u$UID | awk '{print $7}' > /tmp/wififstatrxzero
+    --setup-zeros)
+        grep wlp /tmp/.ifstat.u$UID | awk '{print $7 " " $9}' | read rxzero txzero
+        echo $txzero > /tmp/wififstattxzero
+        echo $rxzero > /tmp/wififstatrxzero
         ;;
     --toggle-ifstat)
         [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
