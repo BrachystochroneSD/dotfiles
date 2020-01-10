@@ -95,6 +95,38 @@ alias dgp='dotfiles_git_pom'
 alias dgs='dotfiles_git status'
 alias dgc='dotfiles_git commit -m'
 
+ga () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git add "$@"
+    else
+        git add "$@"
+    fi
+}
+
+gp () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git push "$@"
+    else
+        git push "$@"
+    fi
+}
+
+gs () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git status "$@"
+    else
+        git status "$@"
+    fi
+}
+
+gc () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git commit -m "$@"
+    else
+        git commit -m "$@"
+    fi
+}
+
 ###########################
 # Hdmi Port Double Screen #
 ###########################
