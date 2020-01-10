@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/zsh
 
+ip link | awk '($1=="3:"){wifi = substr($2,0,length($2)-1)}($1=="2:"){eth=substr($2,0,length($2)-1)}END{printf wifi" "eth"\n"}' | read wifidev ethdev
 
 inversebool () {
     [[ "$1" = 0 ]] && echo 1 || echo 0
@@ -7,8 +8,8 @@ inversebool () {
 
 getifstat () {
     ifstat -n
-    if [[ -n $(grep wlp /tmp/.ifstat.u"$UID") ]];then
-        grep wlp /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}' | read received transmitted
+    if [[ -n $(grep "$wifidev" /tmp/.ifstat.u"$UID") ]];then
+        grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}' | read received transmitted
         received=$(( received - $(cat /tmp/wififstatrxzero 2>/dev/null || echo 0) ))
         transmitted=$(( transmitted - $(cat /tmp/wififstattxzero 2>/dev/null || echo 0) ))
         RX="↓$(mean $received)"
@@ -29,7 +30,7 @@ case $1 in
         echo "Need help? Go fuck yourself!"
         ;;
     --setup-zeros)
-        grep wlp /tmp/.ifstat.u$UID | awk '{print $7 " " $9}' | read rxzero txzero
+        grep "$wifidev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}' | read rxzero txzero
         echo $txzero > /tmp/wififstattxzero
         echo $rxzero > /tmp/wififstatrxzero
         ;;
@@ -37,7 +38,7 @@ case $1 in
         [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
         ;;
     *)
-        if [ "$(cat /sys/class/net/enp3s0/operstate)" = "up" ];then
+        if [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ];then
             output="E"
         else
             wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
