@@ -1,5 +1,5 @@
 #!/bin/bash
 
 wpg --theme | fzf | xargs wpg --theme
-nohup ~/.script/wpgscript > /dev/null
+"${HOME}"/.script/wpgscript > /dev/null
 exit
