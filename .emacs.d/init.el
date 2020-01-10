@@ -774,6 +774,14 @@
     ("ealm" . "~/.emacs.d/packages/ealm-master/ealm.el")
     ))
 
+(if (equal (my-system-name) "lapsd") ;; Linux bm
+    (setq my-bookmarks-alist
+          (append
+           my-bookmarks-alist
+           '(
+             ("gp" . "~/git_proj/")
+             ))))
+
 (if (equal (my-system-name) "SamuelD-PC") ;; HomePC bm
     (setq my-bookmarks-alist
           (append
