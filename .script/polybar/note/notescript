@@ -1,5 +1,6 @@
 #!/bin/sh
- 
+
+touch "${HOME}"/.notes
 num=$(grep -c "*" "${HOME}"/.notes)
 
 [ ! "$num" = 0 ] && echo " $num" || echo
