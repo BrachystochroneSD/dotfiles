@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # colors from wpgtk/pywal
-. "${HOME}/.config/wpg/formats/colors.sh"
+. "${HOME}/.config/wpg/formats/colors.sh" 2>/dev/null || exit
 
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 dmenuobf="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"

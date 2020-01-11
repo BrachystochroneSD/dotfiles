@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # get my private app ip
-. "${HOME}/.authentification/apikeys.sh"
+. "${HOME}/.authentification/apikeys.sh" 2> /dev/null || exit
 
 # parameters
 current=${HOME}/.script/polybar/weatherdir/datas/current
@@ -85,7 +85,7 @@ get_datas(){
 	 -d "lon=$long" \
 	 -d "APPID=$weatherbisappid" \
 	 -d "units=metric" > "$current"
-    
+
     curl -s \
 	 -G "http://api.openweathermap.org/data/2.5/forecast" \
 	 -d "lat=$lat" \
@@ -97,23 +97,23 @@ get_datas(){
 echocurrent(){
     icon=$(jq .weather[0].description "$current" | sed 's/"//g')
     humidity=$(jq .main.humidity "$current")
-    
+
     temp=$(jq .main.temp "$current" | awk '{print int($1+0.5)}')
-    
+
     echo "$(icons "$icon")" "$humidity"% "$temp"°C
 }
 
 echoforecast(){
     icon=$(jq .list[$1].weather[0].description "$forecast" | sed 's/"//g')
-    
+
     if [ -n "$icon" ];then
-	
+
 	humidity=$(jq .list[$1].main.humidity "$forecast" | awk '{print int($1+0.5)}')
-	
+
 	tempMin=$(jq .list[$1].main.temp_min "$forecast")
-	
+
 	tempMax=$(jq .list[$1].main.temp_max "$forecast")
-	
+
 	temp=$(echo "( $tempMin + $tempMax ) / 2" \
 		   | bc -l \
 		   | awk '{print int($1+0.5)}')
@@ -124,10 +124,10 @@ echoforecast(){
 checktime(){
     i=0
     nummax=$(jq .cnt < "$forecast")
-    [ -z "$nummax" ] && exit 
+    [ -z "$nummax" ] && exit
     while [ $i -le "$nummax" ];do
 	timetest=$(jq .list[$i].dt "$forecast")
-	
+
 	: $(( res= 1 - timetest ))
 	if [ $res -le 0 ];then
 	    : $((i= i - 1))
@@ -152,7 +152,7 @@ normal(){
 	echocurrent
     else
 	checktime "$(date +%s)"
-    fi    
+    fi
 }
 
 case "$1" in
