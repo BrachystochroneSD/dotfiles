@@ -2,6 +2,12 @@
 
 # This simple script count all the file of each "new" (ignoring the junk) folder of my mail folder (offlineimap dependency (or equivalent Maildir shit)).
 
+maildir="${HOME}/.mail"
+ofimapf="${HOME}/.offlineimaprc"
+
+[[ ! -d "$maildir" ]] && mkdir "$maildir"
+
+[[ ! -f "$ofimpaf" ]] && exit
 
 count_mail(){
     num_mail=$(find ~/.mail -regex ".*/I[nN][bB][oO][xX]/new/.*" | wc -l)
@@ -13,7 +19,6 @@ if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
     offlineimap -u quiet >/dev/null
 fi
 }
-
 
 while true; do
     update_mail
