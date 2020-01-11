@@ -18,7 +18,7 @@ bindsym $mod+Shift+w           exec wpg -m
 #  #----Definitions----#  #
 set $mod Mod4
 set $term --no-startup-id st
-set $editor --no-startup-id ~/.script/edit ~/NextcloudFiles/a_faire.org
+set $editor --no-startup-id emacsclient --alternate-editor="" -c
 set $browser --no-startup-id firefox
 set $mailviewer --no-startup-id ~/.script/edit -e '(mu4e)'
 set $rssfeeder --no-startup-id ~/.script/edit -e '(elfeed)'
@@ -301,7 +301,6 @@ bindsym $mod+Shift+q		gaps outer current minus 5
 # mount-usb
 bindsym $mod+u exec ~/.script/polybar/mount-usb.sh --mount
 bindsym $mod+Shift+u exec ~/.script/polybar/mount-usb.sh --unmount
-
 
 # update
 bindsym $mod+Ctrl+u exec st -n scripts -e sudo pacman -Syu
