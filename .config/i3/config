@@ -319,7 +319,7 @@ bindsym $mod+Ctrl+n exec nextcloud
 exec redshift
 
 #compton
-exec --no-startup-id compton
+exec --no-startup-id picom
 
 #recording
 for_window [instance="record"] floating enable
