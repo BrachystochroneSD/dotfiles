@@ -7,6 +7,11 @@
 current=${HOME}/.script/polybar/weatherdir/datas/current
 forecast=${HOME}/.script/polybar/weatherdir/datas/forecast
 
+mkdir -p "${HOME}"/.script/polybar/weatherdir/datas
+
+[[ ! -f "$current" ]] && touch "$current"
+[[ ! -f "$forecast" ]] && touch "$forecast"
+
 icons() {
     case $1 in
         "clear sky") icon="";;
