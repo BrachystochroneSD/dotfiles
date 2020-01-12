@@ -53,3 +53,6 @@ nmap µ $
 vmap µ $
 
 imap <C-BS> <C-w>
+
+" autocmd
+autocmd BufWritePre * %s/\s\+$//e
