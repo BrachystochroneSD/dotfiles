@@ -1,19 +1,10 @@
+#-----------------------------------------------#
+# config i3
+#-----------------------------------------------#
+
 for_window [class="^.*"] border pixel 3
 gaps inner 15
 gaps outer 15
-
-bar {
-    i3bar_command $HOME/.config/polybar/launch.sh
-}
-
-#  #----Keyboard layout----#  #
-exec setxkbmap -layout be
-
-#--# # WPG # #--#
-
-bindsym $mod+Ctrl+Shift+w 			exec $term -n fzf -e .script/wpg_theme
-
-bindsym $mod+Shift+w           exec wpg -m
 
 #  #----Definitions----#  #
 set $mod Mod4
@@ -35,37 +26,167 @@ set_from_resource $bga i3wm.color8
 client.focused          $bg1   $bg2   $fg1  $bg2
 client.unfocused        $bg1   $bg1   $fg2  $bg1
 client.focused_inactive $bg1   $bg1   $fg2  $bg1
-client.urgent	        $bga   $bga   $fg1  $bg1
-
-# OLDCOLOR
-# # # class               border    backgr.   text     indicator
-# client.focused          #282828   #928374   #ebdbb2  #928374
-# client.unfocused        #282828   #282828   #a89984  #282828
-# client.focused_inactive #282828   #282828   #a89984  #282828
-# client.urgent	        #cc241d   #cc241d   #ebdbb2  #282828
+client.urgent           $bga   $bga   $fg1  $bg1
 
 hide_edge_borders both
 
 # #font
 font pango:Mono-Bold 8
 
-
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+#-----------------------------------------------#
+# bindings i3
+#-----------------------------------------------#
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f                  fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+e                  layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space        floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space              focus mode_toggle
+
+# switch to workspace
+bindsym $mod+ampersand           workspace 1
+bindsym $mod+eacute              workspace 2
+bindsym $mod+quotedbl            workspace 3
+bindsym $mod+apostrophe          workspace 4
+bindsym $mod+parenleft           workspace 5
+bindsym $mod+section             workspace 6
+bindsym $mod+egrave              workspace 7
+bindsym $mod+exclam              workspace 8
+bindsym $mod+ccedilla            workspace 9
+bindsym $mod+agrave              workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+ampersand     move container to workspace 1
+bindsym $mod+Shift+eacute        move container to workspace 2
+bindsym $mod+Shift+quotedbl      move container to workspace 3
+bindsym $mod+Shift+apostrophe    move container to workspace 4
+bindsym $mod+Shift+5             move container to workspace 5
+bindsym $mod+Shift+section       move container to workspace 6
+bindsym $mod+Shift+egrave        move container to workspace 7
+bindsym $mod+Shift+exclam        move container to workspace 8
+bindsym $mod+Shift+ccedilla      move container to workspace 9
+bindsym $mod+Shift+agrave        move container to workspace 10
+
+bindsym $mod+Tab                workspace back_and_forth
+
+# reload the configuration file
+bindsym $mod+Shift+c            reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Ctrl+r             restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+Escape               exec i3-msg exit
+
+
+#rebinds pour le focus, le mouvement et le resize windows
+bindsym $mod+Ctrl+h             resize shrink width 10 px or 10 ppt
+bindsym $mod+Ctrl+k             resize grow height 10 px or 10 ppt
+bindsym $mod+Ctrl+j             resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+l             resize grow width 10 px or 10 ppt
+
+# change focus
+bindsym $mod+h                  focus left
+bindsym $mod+k                  focus up
+bindsym $mod+j                  focus down
+bindsym $mod+l                  focus right
+
+# move focused window
+bindsym $mod+Shift+h            move left
+bindsym $mod+Shift+k            move up
+bindsym $mod+Shift+j            move down
+bindsym $mod+Shift+l            move right
+
+bindsym $mod+Shift+Ctrl+h       move left 70 px
+bindsym $mod+Shift+Ctrl+k       move up 70 px
+bindsym $mod+Shift+Ctrl+j       move down 70 px
+bindsym $mod+Shift+Ctrl+l       move right 70 px
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left               focus left
+bindsym $mod+Down               focus down
+bindsym $mod+Up                 focus up
+bindsym $mod+Right              focus right
+
+bindsym $mod+Shift+Left         move left 40 px
+bindsym $mod+Shift+Down         move down 40 px
+bindsym $mod+Shift+Up           move up 40 px
+bindsym $mod+Shift+Right        move right 40 px
+
+bindsym $mod+Ctrl+Left          resize shrink width 10 px or 10 ppt
+bindsym $mod+Ctrl+Up            resize grow height 10 px or 10 ppt
+bindsym $mod+Ctrl+Down          resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+Right         resize grow width 10 px or 10 ppt
+
+# gaps
+
+bindsym $mod+s                  gaps inner current plus 5
+bindsym $mod+Shift+s            gaps inner current minus 5
+
+bindsym $mod+Shift+d            gaps inner current set 15; gaps outer current set 15
+
+bindsym $mod+q                  gaps outer current plus 5
+bindsym $mod+Shift+q            gaps outer current minus 5
+
+
+# kill focused window
+bindsym $mod+a                  kill
+
+bindsym $mod+i                  split toggle
+
+
+#-----------------------------------------------#
+# launch
+#-----------------------------------------------#
+
+bar {
+    i3bar_command $HOME/.config/polybar/launch.sh
+}
+
+#  #----Keyboard layout----#  #
+exec setxkbmap -layout be
+
+#Nextcloud
+exec --no-startup-id nextcloud --background
+bindsym $mod+Ctrl+n exec nextcloud
+
+#redshift
+exec redshift
+
+#compton
+exec --no-startup-id picom
+
+#unclutter
+exec unclutter --timeout 2
+
+#-----------------------------------------------#
+# bindings general
+#-----------------------------------------------#
+
+#--# # WPG # #--#
+
+bindsym $mod+Ctrl+Shift+w                       exec $term -n fzf -e .script/wpg_theme
+
+bindsym $mod+Shift+w           exec wpg -m
 
 #App launcher bindings
-bindsym $mod+z			exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
-bindsym $mod+Ctrl+z		exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
-bindsym $mod+Shift+z 		exec $browser
-bindsym $mod+Return		exec $term
-bindsym $mod+Shift+Return	exec $editor
-bindsym $mod+Ctrl+Return	exec $term -n scratchterm
+bindsym $mod+z                  exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
+bindsym $mod+Ctrl+z             exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
+bindsym $mod+Shift+z            exec $browser
+bindsym $mod+Return             exec $term
+bindsym $mod+Shift+Return       exec $editor
+bindsym $mod+Ctrl+Return        exec $term -n scratchterm
 
 for_window [instance="scratchterm"] floating enable
 for_window [instance="scratchterm"] resize set 625 400
 for_window [instance="scratchterm"] border pixel 5
-
 
 # transmission,
 for_window [instance="transmission"] floating enable
@@ -74,121 +195,25 @@ for_window [instance="transmission"] border pixel 3
 
 bindsym $mod+Shift+t exec $term -n transmission -e transmission-remote-cli
 
-# kill focused window
-bindsym $mod+a		kill
-
-# start dmenu (a program launcher)
-bindsym $mod+d			exec dmenu_run -nb "$bg1" -nf "$fg1" -sb "$bg1" -sf "$bg2" -i
-
-
-# # split in horizontal orientation
-# bindsym $mod+u			split h
-# # # split in vertical orientation
-bindsym $mod+i			split toggle
-
-
-
-# enter fullscreen mode for the focused container
-bindsym $mod+f 	   	    	fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+e 	   	  	layout toggle split
-
-# toggle tiling / floating
-bindsym $mod+Shift+space	floating toggle
-
-# change focus between tiling / floating windows
-bindsym $mod+space     	      	focus mode_toggle
-
-# switch to workspace
-bindsym $mod+ampersand		 workspace 1
-bindsym $mod+eacute	  	 workspace 2
-bindsym $mod+quotedbl	       	 workspace 3
-bindsym $mod+apostrophe		 workspace 4
-bindsym $mod+parenleft	 	 workspace 5
-bindsym $mod+section    	 workspace 6
-bindsym $mod+egrave   		 workspace 7
-bindsym $mod+exclam  		 workspace 8
-bindsym $mod+ccedilla	       	 workspace 9
-bindsym $mod+agrave    		 workspace 10
-
-# move focused container to workspace
-bindsym $mod+Shift+ampersand	 move container to workspace 1
-bindsym $mod+Shift+eacute 	 move container to workspace 2
-bindsym $mod+Shift+quotedbl 	 move container to workspace 3
-bindsym $mod+Shift+apostrophe 	 move container to workspace 4
-bindsym $mod+Shift+5 		 move container to workspace 5
-bindsym $mod+Shift+section 	 move container to workspace 6
-bindsym $mod+Shift+egrave 	 move container to workspace 7
-bindsym $mod+Shift+exclam 	 move container to workspace 8
-bindsym $mod+Shift+ccedilla 	 move container to workspace 9
-bindsym $mod+Shift+agrave 	 move container to workspace 10
-
-bindsym $mod+Tab		workspace back_and_forth
-
-# reload the configuration file
-bindsym $mod+Shift+c		reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Ctrl+r 		restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+Escape 	   	exec i3-msg exit
-
-
-#rebinds pour le focus, le mouvement et le resize windows
-bindsym $mod+Ctrl+h 	   	resize shrink width 10 px or 10 ppt
-bindsym $mod+Ctrl+k 		resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+j 		resize shrink height 10 px or 10 ppt
-bindsym $mod+Ctrl+l 		resize grow width 10 px or 10 ppt
-
-# change focus
-bindsym $mod+h			focus left
-bindsym $mod+k 			focus up
-bindsym $mod+j 			focus down
-bindsym $mod+l 			focus right
-
-# move focused window
-bindsym $mod+Shift+h		move left
-bindsym $mod+Shift+k 		move up
-bindsym $mod+Shift+j 		move down
-bindsym $mod+Shift+l 		move right
-
-bindsym $mod+Shift+Ctrl+h	move left 70 px
-bindsym $mod+Shift+Ctrl+k 	move up 70 px
-bindsym $mod+Shift+Ctrl+j 	move down 70 px
-bindsym $mod+Shift+Ctrl+l 	move right 70 px
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left    	     	focus left
-bindsym $mod+Down 		focus down
-bindsym $mod+Up 		focus up
-bindsym $mod+Right 		focus right
-
-bindsym $mod+Shift+Left 	move left 40 px
-bindsym $mod+Shift+Down 	move down 40 px
-bindsym $mod+Shift+Up 		move up 40 px
-bindsym $mod+Shift+Right 	move right 40 px
-
-bindsym $mod+Ctrl+Left 		resize shrink width 10 px or 10 ppt
-bindsym $mod+Ctrl+Up 		resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+Down 		resize shrink height 10 px or 10 ppt
-bindsym $mod+Ctrl+Right 	resize grow width 10 px or 10 ppt
+# start dmenu
+bindsym $mod+d                  exec dmenu_run -nb "$bg1" -nf "$fg1" -sb "$bg1" -sf "$bg2" -i
 
 #pavucontrol
 for_window [class="Pavucontrol"] floating enable
-bindsym $mod+XF86AudioMute 	exec pavucontrol
+bindsym $mod+XF86AudioMute      exec pavucontrol
 
 # Amixer Audio controls
-bindsym XF86AudioRaiseVolume	exec amixer -q sset Master 5%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-bindsym XF86AudioLowerVolume 	exec amixer -q sset Master 5%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym XF86AudioRaiseVolume    exec amixer -q sset Master 5%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym XF86AudioLowerVolume    exec amixer -q sset Master 5%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
 bindsym Shift+XF86AudioRaiseVolume exec amixer -qM set Master 10%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 bindsym Shift+XF86AudioLowerVolume exec amixer -qM set Master 10%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
-bindsym XF86AudioMute 		exec amixer -q set Master 1+ toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym XF86AudioMute           exec amixer -q set Master 1+ toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
 # Screen brightness controls
-bindsym XF86MonBrightnessDown	exec .script/brightnessbar moins 5
-bindsym XF86MonBrightnessUp 	exec .script/brightnessbar plus 5
+bindsym XF86MonBrightnessDown   exec .script/brightnessbar moins 5
+bindsym XF86MonBrightnessUp     exec .script/brightnessbar plus 5
 
 bindsym Shift+XF86MonBrightnessDown exec .script/brightnessbar moins 10
 bindsym Shift+XF86MonBrightnessUp   exec .script/brightnessbar plus 10
@@ -198,8 +223,8 @@ bindsym Shift+XF86MonBrightnessUp   exec .script/brightnessbar plus 10
 exec ~/.script/musicvizu/musicvizu.sh
 exec mpd
 
-bindsym $mod+Ctrl+Shift+m 	  exec mpd
-bindsym $mod+Ctrl+m 	  	  exec ~/.script/musicvizu/musicvizu.sh
+bindsym $mod+Ctrl+Shift+m         exec mpd
+bindsym $mod+Ctrl+m               exec ~/.script/musicvizu/musicvizu.sh
 
 for_window [instance="ncmpcppwin"] floating enable
 for_window [instance="ncmpcppwin"] resize set 625 400
@@ -224,36 +249,27 @@ for_window [instance="cavaviz"] move scratchpad
 bindsym $mod+m [instance="album"] scratchpad show ; [instance="cavaviz"] scratchpad show ; [instance="ncmpcppwin"] scratchpad show
 
 #bindings for MPD MPC NCMPCPP
+bindsym $mod+v                  exec mpc prev
+bindsym $mod+b                  exec mpc toggle
+bindsym $mod+Shift+b            exec mpc stop
+bindsym $mod+n                  exec mpc next
 
+bindsym $mod+Shift+n            exec mpc seek +3
+bindsym $mod+Shift+v            exec mpc seek -3
 
-bindsym $mod+v			exec mpc prev
-bindsym $mod+b 			exec mpc toggle
-bindsym $mod+Shift+b 		exec mpc stop
-bindsym $mod+n 			exec mpc next
-
-bindsym $mod+Shift+n 		exec mpc seek +3
-bindsym $mod+Shift+v 		exec mpc seek -3
-
-bindsym $mod+Ctrl+b 		exec mpc random
+bindsym $mod+Ctrl+b             exec mpc random
 
 bindsym Ctrl+XF86AudioRaiseVolume exec mpc volume +3
 bindsym Ctrl+XF86AudioLowerVolume exec mpc volume -3
 
 #--# # FZF # #--#
 
-bindsym $mod+Shift+f 			exec $term -n fzf -e /home/sam/.script/fzf-open.sh
-bindsym $mod+Ctrl+f 			exec $term -n fzf -e /home/sam/.script/fzf-open.sh --hidden
+bindsym $mod+Shift+f                    exec $term -n fzf -e /home/sam/.script/fzf-open.sh
+bindsym $mod+Ctrl+f                     exec $term -n fzf -e /home/sam/.script/fzf-open.sh --hidden
 
 for_window [instance="fzf"] floating enable
 for_window [instance="fzf"] resize set 725 200
 for_window [instance="fzf"] border pixel 0
-
-#--# # FFF # #--#
-
-bindsym $mod+r 			exec $term -n fff -e fff
-
-for_window [instance="fff"] floating enable
-for_window [instance="fff"] resize set 725 500
 
 #---# Mail mu4e #---#
 
@@ -271,13 +287,9 @@ for_window [instance="scripts"] border pixel 5
 bindsym $mod+t exec $term -n scripts -e vim ~/.notes
 
 #Twitch#
-
-
 bindsym $mod+Ctrl+t exec ~/.script/twitch/twitchmenu.sh
 
-
-#youtube#
-
+#Youtube#
 bindsym $mod+Shift+y exec ~/.script/youtube/youtubesearch
 
 #---# Social media #---#
@@ -286,17 +298,8 @@ bindsym $mod+Ctrl+s exec --no-startup-id skypeforlinux
 bindsym $mod+Ctrl+d exec --no-startup-id discord
 bindsym $mod+Ctrl+c exec --no-startup-id caprine
 
+# keepass
 bindsym $mod+p exec keepmenu
-
-# gaps
-
-bindsym $mod+s			gaps inner current plus 5
-bindsym $mod+Shift+s		gaps inner current minus 5
-
-bindsym $mod+Shift+d		gaps inner current set 15; gaps outer current set 15
-
-bindsym $mod+q			gaps outer current plus 5
-bindsym $mod+Shift+q		gaps outer current minus 5
 
 # mount-usb
 bindsym $mod+u exec ~/.script/polybar/mount-usb.sh --mount
@@ -304,21 +307,6 @@ bindsym $mod+Shift+u exec ~/.script/polybar/mount-usb.sh --unmount
 
 # update
 bindsym $mod+Ctrl+u exec st -n scripts -e sudo pacman -Syu
-
-#  #----Launch Deamons-----#  #
-
-#Dropbox
-#exec --no-startup-id dropbox start
-
-#Nextcloud
-exec --no-startup-id nextcloud --background
-bindsym $mod+Ctrl+n exec nextcloud
-
-#redshift
-exec redshift
-
-#compton
-exec --no-startup-id picom
 
 #recording
 for_window [instance="record"] floating enable
@@ -337,8 +325,5 @@ bindsym $mod+F7 exec networkmanager_dmenu
 
 bindsym Print exec scrot ~/Images/screenshots/%Y-%d-%T-screenshot.png
 
-exec unclutter --timeout 2
-
 #calendar
-
 bindsym $mod+c exec $calendar
