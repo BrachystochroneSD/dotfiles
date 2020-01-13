@@ -197,3 +197,19 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 #######
 
 alias feh='feh -..'
+
+
+# AUR install
+
+installAUR () {
+    lastdir="$PWD"
+    aurdir="${HOME}/aur_install_dir"
+    mkdir -p "$aurdir"
+    echo "Installing $1 in $aurdir"...
+    cd "$aurdir"
+    git clone "https://aur.archlinux.org/$1.git"
+    cd "$1"
+    makepkg -si
+    cd "$lastdir"
+}
+
