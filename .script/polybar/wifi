@@ -1,6 +1,7 @@
-#!/bin/zsh
+#!/bin/sh
 
-ip link | awk '($1=="3:"){wifi = substr($2,0,length($2)-1)}($1=="2:"){eth=substr($2,0,length($2)-1)}END{printf wifi" "eth"\n"}' | read wifidev ethdev
+ethdev=$(ip link | grep -E "[123]: e.*: " | sed 's/[123]: \(e.*\): .*/\1/')
+wifidev=$(ip link | grep -E "[123]: w.*: " | sed 's/[123]: \(w.*\): .*/\1/')
 
 inversebool () {
     [[ "$1" = 0 ]] && echo 1 || echo 0
@@ -38,9 +39,8 @@ case $1 in
         [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
         ;;
     *)
-        if [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ];then
-            output="E"
-        else
+	[[ ! -z "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
+       	if [[ ! -z "$wifidev" ]];then
             wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
             if [ ! "$wifi" = "" ];then
 	        if [ "$wifi" -le 55 ];then
@@ -53,7 +53,7 @@ case $1 in
 	            output="D"
 	        fi
             fi
-        fi
+	fi
         [[ -f /tmp/wififstattglrx ]] && output="$output $RX $TX"
         echo "$output"
 esac
