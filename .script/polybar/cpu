@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo ':00%'
 sleepDurationSeconds=2
 
@@ -8,7 +8,7 @@ while true;do
 
     sleep $sleepDurationSeconds
 
-    currentStats=$(cat /proc/stat)    
+    currentStats=$(cat /proc/stat)
 
     currentLine=$(echo "$currentStats" | grep "cpu ")
     user=$(echo "$currentLine" | awk -F " " '{print $2}')
@@ -43,6 +43,6 @@ while true;do
     idled=$((Idle - PrevIdle))
 
     CPU_Percentage=$(awk "BEGIN {print ($totald - $idled)/$totald*100}" | awk '{print int($1+0.5)}')
-    
+
     printf ":%02d%%\n" "$CPU_Percentage"
 done
