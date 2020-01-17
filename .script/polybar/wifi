@@ -39,10 +39,10 @@ case $1 in
         [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
         ;;
     *)
-	[[ ! -z "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
-       	if [[ ! -z "$wifidev" ]];then
+	[[ -n "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
+       	if [[ -n "$wifidev" ]];then
             wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
-            if [ ! "$wifi" = "" ];then
+            if [ -n "$wifi" ];then
 	        if [ "$wifi" -le 55 ];then
 	            output="A"
 	        elif [ "$wifi" -le 75 ];then

@@ -9,7 +9,7 @@ dmenuobf="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"
 devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
 
 aborted () {
-    [[ ! -z "$1" ]] && dunstify -i owl "$1"
+    [[ -n "$1" ]] && dunstify -i owl "$1"
     echo "$1"
     exit
 }
