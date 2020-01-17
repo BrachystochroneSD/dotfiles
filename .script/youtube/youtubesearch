@@ -9,7 +9,8 @@
 #Parameters
 max_results=35
 rss_file=${HOME}/.emacs.d/rss/rss.org
-searchhistory=${HOME}/.script/youtube/datas/searchhistory
+searchhistory=${HOME}/.script/youtube/searchhistory
+touch $searchhistory
 
 #Commands
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
