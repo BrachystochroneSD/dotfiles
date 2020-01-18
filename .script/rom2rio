@@ -1,0 +1,6 @@
+#!/bin/sh
+
+from=$(echo "" | dmenu -p "rome2rio from:")
+to=$(echo "" | dmenu -p "rome2rio to:")
+
+firefox "https://www.rome2rio.com/fr/map/$from/$to"
