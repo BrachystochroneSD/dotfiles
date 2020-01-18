@@ -1560,9 +1560,9 @@ for renaming."
   (add-hook 'mu4e-headers-mode-hook 'my-mu4e-header-hook)
 
   ;; Troestler mu4e iCal
-  (setq mu4e-view-use-gnus t)
-  (require 'mu4e-icalendar)
-  (mu4e-icalendar-setup)
+  ;; (setq mu4e-view-use-gnus t)
+  ;; (require 'mu4e-icalendar)
+  ;; (mu4e-icalendar-setup)
 
   ;; maildir in headers fields
   (setq mu4e-headers-fields
@@ -1751,6 +1751,7 @@ for renaming."
 ;; (setq evil-magit-use-y-for-yank nil)
 (require 'evil-magit)
 
+(global-set-key (kbd "M-²") 'magit)
 
 ;;;;;;;;;;;;;
 ;; COMPANY ;;
