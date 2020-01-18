@@ -199,6 +199,14 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 alias feh='feh -..'
 
 
+# MOUNT WINDONWS
+
+alias winmount='sudo mount /dev/sda3 /media/winmount'
+
+# MPD
+
+alias mpdwin='mpd ${HOME}/.config/mpd/win.conf'
+
 # AUR install
 
 installAUR () {
