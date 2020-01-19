@@ -170,6 +170,10 @@ exec unclutter --timeout 2
 # bindings general
 #-----------------------------------------------#
 
+#--# # Rome2rio # #--#
+
+bindsym $mod+g                       exec ~/.script/rom2rio
+
 #--# # WPG # #--#
 
 bindsym $mod+Ctrl+Shift+w                       exec $term -n fzf -e .script/wpg_theme

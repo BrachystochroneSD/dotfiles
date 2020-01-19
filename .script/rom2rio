@@ -1,6 +1,14 @@
 #!/bin/sh
 
-from=$(echo "" | dmenu -p "rome2rio from:")
-to=$(echo "" | dmenu -p "rome2rio to:")
+# colors from wpgtk/pywal
+. "${HOME}/.cache/wal/colors.sh"
 
-firefox "https://www.rome2rio.com/fr/map/$from/$to"
+dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+choose="init" # initiate choose to be non zero
+
+until [ -z "$choose" ];do
+    choose=$(echo "" | $dmenucmd -i -p "Rome2Rio (RET to send): ") || exit
+    search="$search"/"$choose"
+done
+
+firefox "https://www.rome2rio.com/fr/map/$search"
