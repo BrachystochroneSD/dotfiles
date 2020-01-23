@@ -186,7 +186,7 @@ alias cpr='cp -rv'
 alias srczshrc='. /home/sam/.zshrc'
 
 alias youtube2mp3='youtube-dl -x --embed-thumbnail --audio-format mp3'
-alias duha='du -ha --max-depth=1'
+alias filesize='du -h --max-depth=1 | sort -hr'
 
 alias mkpkg='makepkg -Acs'
 
@@ -205,7 +205,7 @@ alias winmount='sudo mount /dev/sda3 /media/winmount'
 
 # MPD
 
-alias mpdwin='mpd ${HOME}/.config/mpd/win.conf'
+alias mpdwin='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_window.conf ${HOME}/.config/mpd/mpd.conf && mpd'
 
 # AUR install
 
@@ -220,4 +220,3 @@ installAUR () {
     makepkg -si
     cd "$lastdir"
 }
-

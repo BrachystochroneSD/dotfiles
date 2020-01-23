@@ -1,8 +1,8 @@
 #!/bin/sh
 
 w3m="w3mimgdisplay"
-MUSIC_DIR=${HOME}/Music
-backup_img=${HOME}/Images/owl.png #when no cover img found
+MUSIC_DIR=$(grep music_dir ${HOME}/.config/mpd/mpd.conf | sed 's|.*"\(.*\)/".*|\1|;s/\\//g')
+backup_img=${HOME}/.config/wpg/mywalls/owl.png #when no cover img found
 
 while true;do
     src=""
@@ -21,5 +21,5 @@ while true;do
            "$src" | "$w3m" >/dev/null 2>&1
 
     sleep 1
-    
+
 done
