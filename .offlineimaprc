@@ -23,6 +23,7 @@ nametrans =  lambda foldername: re.sub('\[Gmail\].Tous\ les\ messages', 'All', r
 [Account Outlook]
 localrepository = Localoutlook
 remoterepository = DoneOutlook
+maxage = 365
 
 [Repository Localoutlook]
 type = Maildir
