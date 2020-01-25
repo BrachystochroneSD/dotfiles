@@ -964,11 +964,33 @@ See `elfeed-play-with-vlc'."
         (elfeed-show-visit)))
     (elfeed-search-untag-all-unread)))
 
+
 (define-key elfeed-search-mode-map "b" 'elfeed-visit-or-play-video)
+(define-key elfeed-search-mode-map "B" 'elfeed-search-browse-url)
+
+(define-key elfeed-search-mode-map "d" 'my-elfeed-read-regex)
+(define-key elfeed-search-mode-map "D" 'my-elfeed-mark-all-author-as-read)
 
 (defun my-vlc-launc-and-quit (link)
   "Launch a link with vlc and then quit after the end of the video"
   (start-process "my-vlc-quit" nil "vlc" link "vlc://quit"))
+
+(defun my-elfeed-read-regex (regex)
+  (interactive
+   (list
+    (read-string "Mark as read: "
+                 (elfeed-meta (car (elfeed-search-selected)) :author))))
+  (save-excursion
+    (beginning-of-buffer)
+    (while (re-search-forward regex nil t)
+      (elfeed-search-untag-all-unread))
+    (elfeed-search-update--force)
+    (message "Done")))
+
+(defun my-elfeed-mark-all-author-as-read ()
+  (interactive)
+  (my-elfeed-read-regex
+   (elfeed-meta (car (elfeed-search-selected)) :author)))
 
 ;;;;;;;;;;;;;;;
 ;; TIME MODE ;;
