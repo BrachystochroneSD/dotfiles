@@ -4,10 +4,7 @@
 . "${HOME}/.authentification/apikeys.sh"
 
 # colors from wpgtk/pywal
-. "${HOME}/.config/wpg/formats/colors.sh"
-
-. "/home/sam/.authentification/apikeys.sh"
-. "/home/sam/.config/wpg/formats/colors.sh"
+. "${HOME}/.cache/wal/colors.sh"
 
 # Parameters
 channelsfile=${HOME}/.script/twitch/datas/listchanneltwitch
@@ -18,9 +15,16 @@ max_vid=100
 
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 
+# TODO: remove and replace to echoerror
 nobodyshit(){
     echo "Nobody streaming this shit right now"
     noshit="No streams. Choose an other game:"
+    twitchgamefunction
+}
+
+echoerror () {
+    echo "$*"
+    noshit="$*. Choose an other game:"
     twitchgamefunction
 }
 
@@ -29,58 +33,69 @@ aborted(){
     exit
 }
 
+get_game_id () {
+    twitchdata=$(curl -s \
+                      -H "Client-ID: $twitch_clientID" \
+                      -G "https://api.twitch.tv/helix/games" \
+                      --data-urlencode "name=$*")
+    [ "$(echo "$twitchdata" | jq '.data | length')" = 0 ] && echoerror "Game $* not found"
+    echo "$twitchdata" | jq -r '.data[] | .id'
+}
+
 check_and_launch(){
     echo "Checking connected streams for $* ..."
     twitchdata=$(curl -s \
-		      -G "https://api.twitch.tv/kraken/streams" \
-		      -d "client_id=$twitch_clientID" \
-		      --data-urlencode "game=$*")
-    [ "$(echo "$twitchdata" | jq '._total')" = 0 ] && nobodyshit
-    stream=$(echo "$twitchdata" | jq -r '.streams[] | .channel.language, .channel.name' | awk 'NR%2{printf "%s:",$0;next;}1' | $dmenucmd -i -l 10 -p "Which stream ?" | sed 's/.*://')
+                      -H "Client-ID: $twitch_clientID" \
+                      -G "https://api.twitch.tv/helix/streams" \
+                      --data-urlencode "game_id=$(get_game_id $*)")
+    [ "$(echo "$twitchdata" | jq '.data | length')" = 0 ] && nobodyshit
+    stream=$(echo "$twitchdata" | jq -r '.data[] | .language, .user_name' | awk 'NR%2{printf "%s:",$0;next;}1' | $dmenucmd -i -l 10 -p "Which stream ?" | sed 's/.*://')
 
     [ -z "$stream" ] && aborted
 
+    echo $stream
     exec surf "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
     exit
 }
 
 twitchgamefunction(){
     if [ -n "$*" ]; then
-	check_and_launch "$*"
+        check_and_launch "$*"
     else
-	game=$(awk '{print $0} END { printf "Other\nAdd" }' "$gamesfile" | $dmenucmd -l 10 -i -p "$noshit") || aborted
-	if [ "$game" = "Add" ];then
-	    game=$($dmenucmd -l 10 -i -p "Which game do you want to add on favorite?" < "$gamesdb") || aborted
-	    echo "$game" >> "$gamesfile"
-	    cert=$(printf "No\nYes" | $dmenucmd -l 10 -i -p "Do you want to check streams for $game?")
-	    [ "$cert" = "Yes" ] || aborted
-	elif [ "$game" = "Other" ]; then
-	    game=$($dmenucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
-	fi
-	    check_and_launch "$game"
+        game=$(awk '{print $0} END { printf "Other\nAdd" }' "$gamesfile" | $dmenucmd -l 10 -i -p "$noshit") || aborted
+        if [ "$game" = "Add" ];then
+            game=$($dmenucmd -l 10 -i -p "Which game do you want to add on favorite?" < "$gamesdb") || aborted
+            echo "$game" >> "$gamesfile"
+            cert=$(printf "No\nYes" | $dmenucmd -l 10 -i -p "Do you want to check streams for $game?")
+            [ "$cert" = "Yes" ] || aborted
+        elif [ "$game" = "Other" ]; then
+            game=$($dmenucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
+        fi
+            check_and_launch "$game"
     fi
 }
 
 twitchlivefunction(){
     if [ -n "$*" ]; then
-	echo "Checking if $* is live ..."
-	test=$(curl -s \
-		    -G "https://api.twitch.tv/kraken/streams/$*"\
-		    -d "client_id=$twitch_clientID" \
-		   | jq ".stream._id")
-
-	[ ! "$test" = "null" ] && (exec surf "https://www.twitch.tv/popout/$*/chat?darkpopout" & mpv "https://www.twitch.tv/$*") || echo "$* doesn't stream right now"
-	exit
+        echo "Checking if $* is live ..."
+        test=$(curl -s \
+                    -H "Client-ID: $twitch_clientID" \
+                    -G "https://api.twitch.tv/helix/streams" \
+                    -d "user_login=$*" | jq '.data | length')
+        [ ! "$test" = 0 ] && (exec surf "https://www.twitch.tv/popout/$*/chat?darkpopout" & mpv "https://www.twitch.tv/$*") || echo "$* doesn't stream right now"
+        exit
     else
-	echo "Checking connected streams ..."
-	twitchdata=$(curl -s \
-			  -G "https://api.twitch.tv/kraken/streams" \
-			  -d "client_id=$twitch_clientID" \
-			  -d "channel=$(cat "$channelsfile")")
+        echo "Checking connected streams ..."
+        userlogins=$(awk '{printf "user_login="$1"&"}' "$channelsfile")
+        twitchdata=$(curl -s \
+                          -H "Client-ID: $twitch_clientID" \
+                          -G "https://api.twitch.tv/helix/streams" \
+                          -d "$userlogins")
 
-	stream=$(echo "$twitchdata" | jq -r '.streams[] | .channel.name' | $dmenucmd -l 10 -i -p "Which stream do you want to watch?") || aborted
-	exec surf -new-window "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
-	exit
+        echo $twitchdata | jq
+        stream=$(echo "$twitchdata" | jq -r '.data[] | .user_name' | $dmenucmd -l 10 -i -p "Which stream do you want to watch?") || aborted
+        exec surf -new-window "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
+        exit
     fi
 }
 
@@ -94,10 +109,10 @@ curl_choose_and_watch(){
 
     #curl the api twitch vod search for a channel
     twitchvod=$(curl -s \
-		     -G "https://api.twitch.tv/kraken/channels/$searchingshit/videos" \
- 		     -d "client_id=$twitch_clientID" \
-		     -d "limit=$max_vid" \
-		     -d "offset=$offset" )
+                     -H "Client-ID: $twitch_clientID" \
+                     -G "https://api.twitch.tv/helix/channels/$searchingshit/videos" \
+                     -d "limit=$max_vid" \
+                     -d "offset=$offset" )
 
     total_vod=$(echo "$twitchvod" | jq '._total')
     [ "$total_vod" = "null" ] || [ "$total_vod" = 0 ] && twitchvod_search
@@ -107,40 +122,40 @@ curl_choose_and_watch(){
     video=$(echo "$twitchvod" | jq -r '.videos[] | .title, .recorded_at' | awk -v bm=$borne_max -v offs="$offset" 'BEGIN{ if (offs > 0 ) { printf "Prev\n" } }!(NR%2){printf ("%3d: %-100s %.10s\n", FNR/2+offs, p, $0)}{p=$0}END{ if (offs < bm) { printf "Next" } }' | $dmenucmd -i -l 30 -p "Which video?" | sed 's/:.*//')
 
     if [ -z "$video" ];then
-	twitchvod_search
+        twitchvod_search
     elif [ "$video" = "Next" ];then
-	: $(( offset=offset+100 ))
-	curl_choose_and_watch
+        : $(( offset=offset+100 ))
+        curl_choose_and_watch
     elif [ "$video" = "Prev" ];then
         : $(( offset=offset-100 ))
-	curl_choose_and_watch
+        curl_choose_and_watch
     else
-	: $(( num=video-1-offset ))
-	videourl=$(echo "$twitchvod" | jq -r '.videos['$num'].url')
+        : $(( num=video-1-offset ))
+        videourl=$(echo "$twitchvod" | jq -r '.videos['$num'].url')
 
-	# ask for the resolution and launch the video with mpv
-	res=$(printf "720\n1080\n360" | $dmenucmd -i -p "Which resolution? (if avalaible)") || twitchvod_search
-	mpv --ytdl-format="[height<=?$res]" "$videourl" || twitchvod_search
-	exit
+        # ask for the resolution and launch the video with mpv
+        res=$(printf "720\n1080\n360" | $dmenucmd -i -p "Which resolution? (if avalaible)") || twitchvod_search
+        mpv --ytdl-format="[height<=?$res]" "$videourl" || twitchvod_search
+        exit
     fi
 }
 
 if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
     case $1 in
-	--live)
-	    twitchlivefunction "$2"
-	    ;;
-	--game)
-	    noshit="Choose a game"
-	    twitchgamefunction "${@#$1}"
-	    ;;
-	--vod)
-	    offset=0
-	    twitchvod_search
-	    ;;
-	*)
-	    printf "This is the twitch script featuring dmenu and mpv! Heres the options available : \n     --live   To check if your favorites streamers are live\n     --game   To check available streams of a desired game\n     --vod    To check for VOD on a desired channel"
-	    ;;
+        --live)
+            twitchlivefunction "$2"
+            ;;
+        --game)
+            noshit="Choose a game"
+            twitchgamefunction "${@#$1}"
+            ;;
+        --vod)
+            offset=0
+            twitchvod_search
+            ;;
+        *)
+            printf "This is the twitch script featuring dmenu and mpv! Heres the options available : \n     --live   To check if your favorites streamers are live\n     --game   To check available streams of a desired game\n     --vod    To check for VOD on a desired channel"
+            ;;
     esac
 else
     echo "No internet connection"
