@@ -8,7 +8,7 @@
 
 #Parameters
 max_results=35
-rss_file=${HOME}/.emacs.d/rss/rss.org
+rss_file=${HOME}/.emacs.d/elfeed.org
 searchhistory=${HOME}/.script/youtube/searchhistory
 touch $searchhistory
 
