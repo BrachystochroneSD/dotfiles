@@ -193,6 +193,9 @@ for_window [instance="scratchterm"] resize set 625 400
 for_window [instance="scratchterm"] border pixel 5
 
 # transmission,
+for_window [instance="qjackctl"] floating enable
+
+# transmission,
 for_window [instance="transmission"] floating enable
 for_window [instance="transmission"] resize set 700 400
 for_window [instance="transmission"] border pixel 3
