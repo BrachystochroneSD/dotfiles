@@ -11,7 +11,7 @@ PS1="%B%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[red]%}%M%{$fg[blue]%}:%{$fg[magenta]
 stty -ixon
 
 autoload -U compinit
-zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' menu select
 compinit
 _comp_options+=(globdots)
 
@@ -220,3 +220,4 @@ installAUR () {
     makepkg -si
     cd "$lastdir"
 }
+alias tandemconnect='ssh a757288.tstbks.run5@ztc1.dbb.tandem.banksys.be'
