@@ -3,6 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq visible-bell nil)
+(setq ring-bell-function 'ignore)
 ;; (setq display-line-numbers 'relative)
 (global-display-line-numbers-mode)
 (tool-bar-mode 0)
@@ -1149,6 +1150,9 @@ See `elfeed-play-with-vlc'."
       (add-to-list 'exec-path (replace-regexp-in-string "/" "\\\\" (expand-file-name "c:/Users/a757288/Documents/Programmes/miktex/texmfs/install/miktex/bin/x64" )))))
 
 ;;AucteX "me fait pas chier avec tes messages de confirmation quand je compile"
+
+(add-to-list 'TeX-view-program-selection '(output-pdf "mupdf") )
+(add-to-list 'TeX-view-program-list '("mupdf" "mupdf %o") )
 (setq TeX-save-query nil)
 (setq TeX-clean-confirm nil)
 
