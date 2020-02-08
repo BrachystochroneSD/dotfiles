@@ -11,7 +11,7 @@ PS1="%B%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[red]%}%M%{$fg[blue]%}:%{$fg[magenta]
 stty -ixon
 
 autoload -U compinit
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' menu select
+zstyle ':completion:*' menu select
 compinit
 _comp_options+=(globdots)
 
@@ -40,7 +40,7 @@ alias diff='diff --color=auto'
 # Basics Aliases #
 ##################
 
-alias ll='ls -alF'
+alias ll='ls -halF'
 alias la='ls -A'
 alias l='ls -CF'
 alias ls='ls --color=auto'
@@ -71,6 +71,10 @@ e(){ /bin/nohup /home/sam/.script/edit2 "$@" &>/dev/null &}
 
 alias zenocloud="ssh pi@www.zenocyne.com"
 alias zenocloudbis="ssh pi@192.168.0.102"
+
+#zenocloud
+
+alias zenomount='sudo mount -t davfs https://nextcloud.zenocyne.com/remote.php/webdav/ ${HOME}/zenocloud'
 
 ##################
 # Custom scripts #
@@ -220,4 +224,3 @@ installAUR () {
     makepkg -si
     cd "$lastdir"
 }
-alias tandemconnect='ssh a757288.tstbks.run5@ztc1.dbb.tandem.banksys.be'

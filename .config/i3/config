@@ -84,6 +84,7 @@ bindsym $mod+Shift+c            reload
 bindsym $mod+Ctrl+r             restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+Escape               exec i3-msg exit
+bindsym $mod+Ctrl+Escape               exec poweroff
 
 
 #rebinds pour le focus, le mouvement et le resize windows
@@ -181,9 +182,9 @@ bindsym $mod+Ctrl+Shift+w                       exec $term -n fzf -e .script/wpg
 bindsym $mod+Shift+w           exec wpg -m
 
 #App launcher bindings
-bindsym $mod+z                  exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
-bindsym $mod+Ctrl+z             exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-2.0/surf-open.sh web.tabliss.io
-bindsym $mod+Shift+z            exec $browser
+bindsym $mod+z                  exec $browser
+#bindsym $mod+Ctrl+z             exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
+#bindsym $mod+Shift+z            exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
 bindsym $mod+Return             exec $term
 bindsym $mod+Shift+Return       exec $editor
 bindsym $mod+Ctrl+Return        exec $term -n scratchterm
