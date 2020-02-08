@@ -3,6 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq visible-bell nil)
+(setq ring-bell-function 'ignore)
 ;; (setq display-line-numbers 'relative)
 (global-display-line-numbers-mode)
 (tool-bar-mode 0)
@@ -1149,6 +1150,9 @@ See `elfeed-play-with-vlc'."
       (add-to-list 'exec-path (replace-regexp-in-string "/" "\\\\" (expand-file-name "c:/Users/a757288/Documents/Programmes/miktex/texmfs/install/miktex/bin/x64" )))))
 
 ;;AucteX "me fait pas chier avec tes messages de confirmation quand je compile"
+
+(add-to-list 'TeX-view-program-selection '(output-pdf "mupdf") )
+(add-to-list 'TeX-view-program-list '("mupdf" "mupdf %o") )
 (setq TeX-save-query nil)
 (setq TeX-clean-confirm nil)
 
@@ -1445,7 +1449,7 @@ for renaming."
 (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
 (set-language-environment 'utf-8)
 (setq locale-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
+(set-default-coding-systems 'unix)
 (set-terminal-coding-system 'utf-8)
 (set-selection-coding-system
  (if (eq system-type 'windows-nt)
@@ -1619,7 +1623,7 @@ for renaming."
   ;; (require 'filenotify)
 
   ;; (file-notify-add-watch
-  ;;  "~/.emacs.d/base16-wal-theme.el" '(change) 'theme-callback)
+  ;;  "~/.emacs.d/themes/base16-wal-theme.el" '(change) 'theme-callback)
   )
 
 ;;;;;;;;;;;;
