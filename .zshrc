@@ -210,6 +210,7 @@ alias winmount='sudo mount /dev/sda3 /media/winmount'
 # MPD
 
 alias mpdwin='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_window.conf ${HOME}/.config/mpd/mpd.conf && mpd'
+alias mpddefault='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_default.conf ${HOME}/.config/mpd/mpd.conf && mpd'
 
 # AUR install
 
@@ -223,4 +224,14 @@ installAUR () {
     cd "$1"
     makepkg -si
     cd "$lastdir"
+}
+
+# git clone
+
+clonegit () {
+	repo="$1"
+	[ -n "$2" ] && cd "$2"
+	[ -n "$3" ] && user="$3"  || user="BrachystochroneSD"
+	git clone --depth 1 "git@github.com:$user/$repo.git"
+	cd "$repo"
 }
