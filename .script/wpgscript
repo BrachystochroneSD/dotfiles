@@ -10,7 +10,7 @@ r=$(printf '%02x' $(( $((0x$(echo "$hex" | cut -c2,3))) / 2 )))
 g=$(printf '%02x' $(( $((0x$(echo "$hex" | cut -c4,5))) / 2 )))
 b=$(printf '%02x' $(( $((0x$(echo "$hex" | cut -c6,7))) / 2 )))
 
-sed "/base02/c\                                         :base02 \"#$r$g$b\"" ~/.cache/wal/base16-wal-theme.el > ~/.emacs.d/base16-wal-theme.el
+sed "/base02/c\                                         :base02 \"#$r$g$b\"" ~/.cache/wal/base16-wal-theme.el > ~/.emacs.d/themes/base16-wal-theme.el
 
 # templates for keepmenu, networkdmenu and cava
 
