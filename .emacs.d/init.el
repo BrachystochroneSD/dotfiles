@@ -1619,7 +1619,7 @@ for renaming."
   ;; (require 'filenotify)
 
   ;; (file-notify-add-watch
-  ;;  "~/.emacs.d/base16-wal-theme.el" '(change) 'theme-callback)
+  ;;  "~/.emacs.d/themes/base16-wal-theme.el" '(change) 'theme-callback)
   )
 
 ;;;;;;;;;;;;

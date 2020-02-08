@@ -15,6 +15,8 @@ zstyle ':completion:*' menu select
 compinit
 _comp_options+=(globdots)
 
+local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
+
 #aliases:
 
 alias ls='ls --color=auto'
