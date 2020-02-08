@@ -53,8 +53,7 @@ check_and_launch(){
 
     [ -z "$stream" ] && aborted
 
-    echo $stream
-    exec surf "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
+    exec surf "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$(echo $stream | tr [A-Z] [a-z])"
     exit
 }
 
@@ -92,7 +91,6 @@ twitchlivefunction(){
                           -G "https://api.twitch.tv/helix/streams" \
                           -d "$userlogins")
 
-        echo $twitchdata | jq
         stream=$(echo "$twitchdata" | jq -r '.data[] | .user_name' | $dmenucmd -l 10 -i -p "Which stream do you want to watch?") || aborted
         exec surf -new-window "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
         exit
