@@ -1151,8 +1151,7 @@ See `elfeed-play-with-vlc'."
 
 ;;AucteX "me fait pas chier avec tes messages de confirmation quand je compile"
 
-(add-to-list 'TeX-view-program-selection '(output-pdf "mupdf") )
-(add-to-list 'TeX-view-program-list '("mupdf" "mupdf %o") )
+
 (setq TeX-save-query nil)
 (setq TeX-clean-confirm nil)
 
@@ -1276,6 +1275,8 @@ for renaming."
 
 (defun my-TeX-LaTeX-mode-hook-setup ()
   (interactive)
+  (add-to-list 'TeX-view-program-selection '(output-pdf "mupdf") )
+  (add-to-list 'TeX-view-program-list '("mupdf" "mupdf %o"))
   (local-set-key (kbd "<C-return>") 'LaTeX-insert-item)
   (local-set-key (kbd "<M-return>") 'LaTeX-close-environment)
   (outline-minor-mode)
@@ -1449,7 +1450,7 @@ for renaming."
 (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
 (set-language-environment 'utf-8)
 (setq locale-coding-system 'utf-8)
-(set-default-coding-systems 'unix)
+(set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-selection-coding-system
  (if (eq system-type 'windows-nt)
