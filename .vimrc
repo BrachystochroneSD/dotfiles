@@ -45,7 +45,7 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 
 " custom bindings
 nmap <C-z> u
-nmap <C-M-z> <C-r> 
+nmap <C-M-z> <C-r>
 
 nmap ù ^
 vmap ù ^
@@ -56,3 +56,7 @@ imap <C-BS> <C-w>
 
 " autocmd
 autocmd BufWritePre * %s/\s\+$//e
+
+" clipboard
+
+vmap <C-y> :!xclip -f -sel clip<CR>
