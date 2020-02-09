@@ -45,18 +45,20 @@
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("2b9dc43b786e36f68a9fd4b36dd050509a0e32fe3b0a803310661edb7402b8b6" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
+    ("c306e0ef591df6383f666287d0d55767c2c24f3ca137e1c7785c43f08d23c9e8" "2b9dc43b786e36f68a9fd4b36dd050509a0e32fe3b0a803310661edb7402b8b6" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
     (gh auctex company eglot dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
+ '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
  '(send-mail-function (quote mailclient-send-it)))
 
 
 ;;dir packages ajouté
 (add-to-list 'load-path "~/.emacs.d/packages/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(add-to-list 'load-path "~/.emacs.d/themes")
 
 ;;;;;;;;;;;;;;;;;
 ;; AUTO-INSERT ;;
@@ -74,36 +76,49 @@
   (substring (shell-command-to-string "hostname") 0 -1)
   )
 
-;;;;;;;;;;;;;
-;; Gruvbox ;;
-;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Base16 Wal and Gruvbox theme on The Fly ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun refresh-theme ()
+  (progn
+    (load-theme 'base16-wal t)))
+
+(defun theme-callback (event)
+  (when (equal my-current-theme 'base16-wal)
+    (refresh-theme)))
+
+(require 'filenotify)
+
+(file-notify-add-watch
+ "~/.emacs.d/themes/base16-wal-theme.el" '(change) 'theme-callback)
 
 (load-theme 'gruvbox-dark-medium)
 
-(defvar *haba-theme-dark* 'gruvbox-dark-medium)
-(defvar *haba-theme-light* 'gruvbox-light-medium)
-(defvar *haba-current-theme* *haba-theme-dark*)
+(defvar my-theme-gruv 'gruvbox-dark-medium)
+(defvar my-theme-wal 'base16-wal)
+(defvar my-current-theme my-theme-gruv)
 
 ;; disable other themes before loading new one
 (defadvice load-theme (before theme-dont-propagate activate)
   "Disable theme before loading new one."
   (mapc #'disable-theme custom-enabled-themes))
 
-(defun haba/next-theme (theme)
+(defun my-next-theme (theme)
   (if (eq theme 'default)
-      (disable-theme *haba-current-theme*)
+      (disable-theme my-current-theme)
     (progn
       (load-theme theme t)))
-  (setq *haba-current-theme* theme))
+  (setq my-current-theme theme))
 
-(defun haba/toggle-theme ()
+(defun my-toggle-theme ()
   (interactive)
-  (cond ((eq *haba-current-theme* *haba-theme-dark*)
-         (haba/next-theme *haba-theme-light*))
-        ((eq *haba-current-theme* *haba-theme-light*)
-         (haba/next-theme *haba-theme-dark*))))
+  (cond ((eq my-current-theme my-theme-gruv)
+         (my-next-theme my-theme-wal))
+        ((eq my-current-theme my-theme-wal)
+         (my-next-theme my-theme-gruv))))
 
-(global-set-key (kbd "<f10>") 'haba/toggle-theme)
+(global-set-key (kbd "<f10>") 'my-toggle-theme)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Bindings ;;
@@ -1443,20 +1458,20 @@ for renaming."
 ;; PYIM ;;
 ;;;;;;;;;;
 
-(require 'pyim)
-(set-input-method 'pyim)
-(global-set-key (kbd "C-=") 'toggle-input-method)
+;; (require 'pyim)
+;; (set-input-method 'pyim)
+;; (global-set-key (kbd "C-=") 'toggle-input-method)
 
-(setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
-(set-language-environment 'utf-8)
-(setq locale-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-selection-coding-system
- (if (eq system-type 'windows-nt)
-     'utf-16-le  ;; https://rufflewind.com/2014-07-20/pasting-unicode-in-emacs-on-windows
-   'utf-8))
-(prefer-coding-system 'utf-8)
+;; (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
+;; (set-language-environment 'utf-8)
+;; (setq locale-coding-system 'utf-8)
+;; (set-default-coding-systems 'utf-8)
+;; (set-terminal-coding-system 'utf-8)
+;; (set-selection-coding-system
+;;  (if (eq system-type 'windows-nt)
+;;      'utf-16-le  ;; https://rufflewind.com/2014-07-20/pasting-unicode-in-emacs-on-windows
+;;    'utf-8))
+;; (prefer-coding-system 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MU4E for LINUX ONLY ;;
@@ -1607,24 +1622,6 @@ for renaming."
         (mu4e-headers-mark-or-move-to-trash))
       (mu4e-mark-execute-all t)))
 
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Base16 Wal theme on The Fly ;;
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-  ;; (load-theme 'base16-wal t)
-
-  ;; (defun refresh-theme ()
-  ;;   (progn
-  ;;     (load-theme 'base16-wal t)))
-
-  ;; (defun theme-callback (event)
-  ;;   (refresh-theme))
-
-  ;; (require 'filenotify)
-
-  ;; (file-notify-add-watch
-  ;;  "~/.emacs.d/themes/base16-wal-theme.el" '(change) 'theme-callback)
   )
 
 ;;;;;;;;;;;;
