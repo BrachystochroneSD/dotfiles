@@ -2,22 +2,22 @@
 
 ;; colours generated dynamically by wal
 (defun set-wal-colors () (setq base16-wal-colors
-			       '(:base00 "#2c2c2c"
-					 :base01 "#2c2c2c"
-                                         :base02 "#494c45"
-					 :base03 "#d0c57a"
-					 :base04 "#c77369"
-					 :base05 "#825969"
-					 :base06 "#938e8f"
-					 :base07 "#ddddb5"
-					 :base08 "#4e4e4e"
-					 :base09 "#c77369"
-					 :base0A "#93988a"
-					 :base0B "#d0c57a"
-					 :base0C "#747f89"
-					 :base0D "#825969"
-					 :base0E "#938e8f"
-					 :base0F "#ededb7")))
+			       '(:base00 "#362121"
+					 :base01 "#362121"
+                                         :base02 "#645d32"
+					 :base03 "#E77B9B"
+					 :base04 "#DA9D68"
+					 :base05 "#E5AF9B"
+					 :base06 "#E7CEA7"
+					 :base07 "#e4d1e0"
+					 :base08 "#9f929c"
+					 :base09 "#DA9D68"
+					 :base0A "#C9BA65"
+					 :base0B "#E77B9B"
+					 :base0C "#A88683"
+					 :base0D "#E5AF9B"
+					 :base0E "#E7CEA7"
+					 :base0F "#e4d1e0")))
 
 (defvar base16-wal-colors nil "All colors for base16-wal are defined here.")
 (set-wal-colors)
