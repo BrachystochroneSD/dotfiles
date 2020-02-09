@@ -98,8 +98,18 @@ alias dotfiles_git_pom='/bin/git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}
 alias dg='dotfiles_git'
 alias dga='dotfiles_git add'
 alias dgp='dotfiles_git_pom'
+alias dgpl='dotfiles_git pull origin master'
 alias dgs='dotfiles_git status'
+alias dgsh='dotfiles_git show'
 alias dgc='dotfiles_git commit -m'
+
+gd () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git diff "$@"
+    else
+        git diff "$@"
+    fi
+}
 
 ga () {
     if [[ "$PWD" = "$HOME" ]]; then
@@ -109,11 +119,27 @@ ga () {
     fi
 }
 
+gpl () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git pull "$@"
+    else
+        git pull "$@"
+    fi
+}
+
 gp () {
     if [[ "$PWD" = "$HOME" ]]; then
         dotfiles_git push "$@"
     else
         git push "$@"
+    fi
+}
+
+gsh () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git show "$@"
+    else
+        git show "$@"
     fi
 }
 
