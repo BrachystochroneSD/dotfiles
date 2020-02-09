@@ -1,7 +1,7 @@
 #!/bin/sh
 
-ethdev=$(ip link | grep -E "[123]: e.*: " | sed 's/[123]: \(e.*\): .*/\1/')
-wifidev=$(ip link | grep -E "[123]: w.*: " | sed 's/[123]: \(w.*\): .*/\1/')
+ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
+wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
 
 inversebool () {
     [[ "$1" = 0 ]] && echo 1 || echo 0
