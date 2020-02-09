@@ -12,6 +12,9 @@
 [colors]
 
 bg=${xrdb:color0:#222}
+bgal=${env:colorbg_alow}
+bgam=${env:colorbg_amedium}
+
 red=${xrdb:color6:#222}
 green=${xrdb:color4:#222}
 yellow=${xrdb:color9:#222}
@@ -115,7 +118,7 @@ fg-alt=${xrdb:color15:#222}
 width = 100%
 height = 24
 fixed-center = false
-background = ${colors.bg}
+background = ${colors.bgal}
 foreground = ${colors.fg-alt}
 line-size = 3
 line-color = #cc241d
@@ -178,7 +181,7 @@ label-mode-background = ${colors.bg}
 
 ; focused = Active workspace on focused monitor
 label-focused = %index%
-label-focused-background = ${colors.bg}
+label-focused-background = ${colors.bgam}
 ;label-focused-background = ${module/bspwm.label-focused-background}
 label-focused-underline = ${colors.red}
 label-focused-padding = 2
@@ -283,8 +286,8 @@ ramp-volume-2 =
 
 [module/battery]
 type = internal/battery
-battery = BAT1
-adapter = ACAD
+battery = BAT0
+adapter = AC
 full-at = 99
 
 format-charging = <animation-charging> <label-charging>
