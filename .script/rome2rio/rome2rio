@@ -2,12 +2,15 @@
 
 # colors from wpgtk/pywal
 . "${HOME}/.cache/wal/colors.sh"
+favfile="${HOME}/.script/rome2rio/r2rfav"
+
+touch "$favfile"
 
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 choose="init" # initiate choose to be non zero
 
 until [ -z "$choose" ];do
-    choose=$(echo "" | $dmenucmd -i -p "Rome2Rio (RET to send): ") || exit
+    choose=$(cat "$favfile" | $dmenucmd -l 10 -i -p "Rome2Rio (S-RET to send): ") || exit
     search="$search"/"$choose"
 done
 
