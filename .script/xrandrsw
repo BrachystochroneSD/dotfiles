@@ -1,0 +1,53 @@
+#!/bin/sh
+
+xrandrout=$(xrandr)
+internal=LVDS-1
+
+
+turn_on_devices () {
+    con_off_devices=$(echo "$xrandrout" | grep " connected " | grep -v "$internal" | grep -v "+" | awk '{print $1}')
+    numline=$(echo "$con_off_devices" | wc -l)
+
+    if [ "$numline" = 0 ]; then
+        echo "No output devices"
+    elif [ "$numline" -gt 1 ];then
+        chosenone=$(echo "$con_off_devices" | dmenu -p "Choose which devices to enable: ")
+    else
+        chosenone="$con_off_devices"
+    fi
+
+    if [ -n "$chosenone" ];then
+        xrandr --output "$chosenone" --auto --right-of "$internal"
+        "${HOME}"/.fehbg
+    else
+        echo "no devices to turn on"
+    fi
+}
+
+turn_off_devices () {
+    con_on_devices=$(echo "$xrandrout" | grep " connected " | grep -v "$internal" | grep "+" | awk '{print $1}')
+    numline=$(echo "$con_on_devices" | wc -l)
+    if [ "$numline" = 0 ]; then
+        echo "No output devices"
+    elif [ "$numline" -gt 1 ];then
+        chosenone=$(echo "$con_on_devices" | dmenu -p "Choose which devices to enable: ")
+    else
+        chosenone="$con_on_devices"
+    fi
+
+    if [ -n "$chosenone" ];then
+        xrandr --output "$chosenone" --off
+        "${HOME}"/.fehbg
+    else
+        echo "no devices to turn off"
+    fi
+}
+
+case $1 in
+    --on)
+        turn_on_devices ;;
+    --off)
+        turn_off_devices ;;
+    *)
+        echo "need --on or --off options"
+esac
