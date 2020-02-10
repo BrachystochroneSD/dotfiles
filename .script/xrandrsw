@@ -1,8 +1,21 @@
 #!/bin/sh
 
+# colors from wpgtk/pywal
+. "${HOME}/.cache/wal/colors.sh"
+
+dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+notifycmd="dunstify -i owl"
+
 xrandrout=$(xrandr)
 internal=LVDS-1
 
+
+abort () {
+    [ -n "$1" ] && echo "Error: $1"
+    echo "Aborted!"
+    $notifycmd "script aborted"
+    exit 0
+}
 
 turn_on_devices () {
     con_off_devices=$(echo "$xrandrout" | grep " connected " | grep -v "$internal" | grep -v "+" | awk '{print $1}')
@@ -10,8 +23,9 @@ turn_on_devices () {
 
     if [ "$numline" = 0 ]; then
         echo "No output devices"
+        $notifycmd "No output devices"
     elif [ "$numline" -gt 1 ];then
-        chosenone=$(echo "$con_off_devices" | dmenu -p "Choose which devices to enable: ")
+        chosenone=$(echo "$con_off_devices" | $dmenucmd -p "Choose which devices to enable: ")
     else
         chosenone="$con_off_devices"
     fi
@@ -21,6 +35,7 @@ turn_on_devices () {
         "${HOME}"/.fehbg
     else
         echo "no devices to turn on"
+        $notifycmd "no devices to turn on"
     fi
 }
 
@@ -29,8 +44,9 @@ turn_off_devices () {
     numline=$(echo "$con_on_devices" | wc -l)
     if [ "$numline" = 0 ]; then
         echo "No output devices"
+        $notifycmd "No output devices"
     elif [ "$numline" -gt 1 ];then
-        chosenone=$(echo "$con_on_devices" | dmenu -p "Choose which devices to enable: ")
+        chosenone=$(echo "$con_on_devices" | $dmenucmd -p "Choose which devices to enable: ")
     else
         chosenone="$con_on_devices"
     fi
@@ -40,14 +56,18 @@ turn_off_devices () {
         "${HOME}"/.fehbg
     else
         echo "no devices to turn off"
+        $notifycmd "no devices to turn off"
     fi
 }
 
-case $1 in
-    --on)
+menu=$(printf "on\noff" | $dmenucmd -i -l 2 -p "Xrandr Script: " ) || abort
+
+case $menu in
+    on)
         turn_on_devices ;;
-    --off)
+    off)
         turn_off_devices ;;
     *)
-        echo "need --on or --off options"
+        echo "need on or off options"
+        $notifycmd "need on or off options"
 esac

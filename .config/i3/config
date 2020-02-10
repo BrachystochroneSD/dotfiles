@@ -171,9 +171,13 @@ exec unclutter --timeout 2
 # bindings general
 #-----------------------------------------------#
 
+#--# # xrandr # #--#
+
+bindsym $mod+Shift+Ctrl+d                       exec ~/.script/xrandrsw
+
 #--# # Rome2rio # #--#
 
-bindsym $mod+g                       exec ~/.script/rom2rio
+bindsym $mod+g                       exec ~/.script/rome2rio/rome2rio
 
 #--# # WPG # #--#
 
