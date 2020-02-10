@@ -774,29 +774,41 @@
 ;;;;;;;;;;;;;;;;;;
 
 (defvar my-bookmarks-alist ;; General bm
-  `(("doc" . ,(concat "c:/Users/" (getenv "username") "/Documents/"))
-    ("downloads" . ,(concat "c:/Users/" (getenv "username") "/Downloads/"))
-    ("notes" . "~/.emacs.d/orgfiles/notes/")
+  `(("notes" . "~/.emacs.d/orgfiles/notes/")
     ("notesgeneral" . "~/.emacs.d/orgfiles/notes/general.org")
-    ("desktop" . ,(concat "c:/Users/" (getenv "username") "/Desktop/"))
-    ("images" . ,(concat "c:/Users/" (getenv "username") "/Pictures/"))
     ("packages" . "~/.emacs.d/packages/")
     ("tandemacs" . "~/.emacs.d/packages/tandemacs.el")
     ("hpns" . "~/.emacs.d/packages/hpns-trace-mode.el")
     ("emacs" . "~/.emacs.d/init.el")
     ("buffbackup" . "~/.bufferbackup/")
     ("home" . "~/")
-    ("todo" . ,(concat "c:/Users/" (getenv "username") "/Documents/todolist.org"))
     ("ealm" . "~/.emacs.d/packages/ealm-master/ealm.el")
     ))
 
-(if (equal (my-system-name) "lapsd") ;; Linux bm
-    (setq my-bookmarks-alist
-          (append
-           my-bookmarks-alist
-           '(
-             ("gp" . "~/git_proj/")
-             ))))
+;; windows bindings
+
+(cond
+ ((equal system-type 'gnu/linux) ;; Linux bm
+  (setq my-bookmarks-alist
+        (append
+         my-bookmarks-alist
+         '(
+           ("scripts" . "~/.script/")
+           ("doc" . "~/Documents/")
+           ("downloads" . "~/Downloads/")
+           ("desktop" . "~/Desktop/")
+           ("images" . "~/Images/")))))
+
+ ((equal system-type 'window-nt)
+  (setq my-bookmarks-alist
+        (append
+         my-bookmarks-alist
+         '(("todo" . ,(concat "c:/Users/" (getenv "username") "/Documents/todolist.org"))
+           ("doc" . ,(concat "c:/Users/" (getenv "username") "/Documents/"))
+           ("downloads" . ,(concat "c:/Users/" (getenv "username") "/Downloads/"))
+           ("desktop" . ,(concat "c:/Users/" (getenv "username") "/Desktop/"))
+           ("images" . ,(concat "c:/Users/" (getenv "username") "/Pictures/"))))))
+ )
 
 (if (equal (my-system-name) "SamuelD-PC") ;; HomePC bm
     (setq my-bookmarks-alist

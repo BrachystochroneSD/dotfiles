@@ -2,6 +2,7 @@ SAVEHIST=10
 HISTFILE=~/.zsh_history
 
 
+local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
 #color
 
 autoload -U colors && colors
@@ -15,7 +16,6 @@ zstyle ':completion:*' menu select
 compinit
 _comp_options+=(globdots)
 
-local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
 
 #aliases:
 
@@ -222,7 +222,6 @@ alias filesize='du -h --max-depth=1 | sort -hr'
 
 alias mkpkg='makepkg -Acs'
 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 
 #######
 # FEH #
@@ -263,3 +262,5 @@ clonegit () {
 	git clone --depth 1 "git@github.com:$user/$repo.git"
 	cd "$repo"
 }
+
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
