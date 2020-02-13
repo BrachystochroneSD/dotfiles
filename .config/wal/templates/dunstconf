@@ -1,6 +1,7 @@
 [colors]
-	background = "{color0}"
-	foreground = "{color15}"
+	background = '{color0}'
+	foreground = '{color15}'
+	frame = '{color9}'
 
 [global]
     ### Display ###
@@ -18,7 +19,7 @@
     horizontal_padding = 12
     frame_width = 0
 
-    frame_color = "{active}"
+    frame_color = 0
     separator_color = auto
     sort = yes
     idle_threshold = 120
@@ -88,5 +89,5 @@
 [urgency_critical]
     background = colors.background
     foreground = colors.foreground
-    frame_color = "{color9}"
+    frame_color = colors.frame
     timeout = 0
