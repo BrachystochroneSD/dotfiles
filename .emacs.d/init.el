@@ -793,6 +793,7 @@
         (append
          my-bookmarks-alist
          '(
+           ("zshrc" . "~/.zshrc")
            ("scripts" . "~/.script/")
            ("doc" . "~/Documents/")
            ("downloads" . "~/Downloads/")
