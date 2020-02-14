@@ -229,8 +229,8 @@ alias winmount='sudo mount /dev/sda3 /media/winmount'
 
 # MPD
 
-alias mpdwin='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_window.conf ${HOME}/.config/mpd/mpd.conf && mpd'
 alias mpddefault='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_default.conf ${HOME}/.config/mpd/mpd.conf && mpd'
+alias mpdstream='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_stream.conf ${HOME}/.config/mpd/mpd.conf && mpd'
 
 # AUR install
 
