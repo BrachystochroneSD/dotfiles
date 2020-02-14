@@ -2,8 +2,11 @@ SAVEHIST=10
 HISTFILE=~/.zsh_history
 
 
+##############
+# ZSH CONFIG #
+##############
+
 local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
-#color
 
 autoload -U colors && colors
 
@@ -16,12 +19,13 @@ zstyle ':completion:*' menu select
 compinit
 _comp_options+=(globdots)
 
-
-#aliases:
+##################
+# Basics Aliases #
+##################
 
 alias ls='ls --color=auto'
 alias la='ls -A'
-alias ll='ls -alF'
+alias ll='ls -halF'
 alias l='ls -CF'
 
 alias grep='grep --color=auto'
@@ -29,27 +33,13 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 
-#-----------------------------------------------#
-#     _    _     ___    _    ____  _____ ____   #
-#    / \  | |   |_ _|  / \  / ___|| ____/ ___|  #
-#   / _ \ | |    | |  / _ \ \___ \|  _| \___ \  #
-#  / ___ \| |___ | | / ___ \ ___) | |___ ___) | #
-# /_/   \_\_____|___/_/   \_\____/|_____|____/  #
-#                                               #
-#-----------------------------------------------#
-
-##################
-# Basics Aliases #
-##################
-
-alias ll='ls -halF'
-alias la='ls -A'
-alias l='ls -CF'
-alias ls='ls --color=auto'
-alias cl="clear"
 alias ska="sudo killall"
 
 alias xclipb='xclip -selection clipboard'
+
+alias cpr='cp -rv'
+alias ytb2mp3='youtube-dl -x --embed-thumbnail --audio-format mp3'
+alias filesize='du -h --max-depth=1 | sort -hr'
 
 ##########
 # PACMAN #
@@ -57,51 +47,72 @@ alias xclipb='xclip -selection clipboard'
 
 alias sp='sudo pacman'
 alias sps='sp -S'
-alias spsyyu='sp -Syyu'
-
-#########
-# EMACS #
-#########
-
-alias emacstty="~/.script/edit -t"
-alias emacsconfig="~/.script/edit -t ~/.emacs"
-e(){ /bin/nohup /home/sam/.script/edit2 "$@" &>/dev/null &}
+alias spu='sp -Syyu'
 
 ############
 # ZENOCYNE #
 ############
 
-alias zenocloud="ssh pi@www.zenocyne.com"
-alias zenocloudbis="ssh pi@192.168.0.102"
+zenocyne () {
+    if grep zenocyne /etc/hosts | grep -q "#" ;then
+        ssh pi@www.zenocyne.com
+    else
+        ssh pi@192.168.0.102
+    fi
+}
 
 #zenocloud
-
 alias zenomount='sudo mount -t davfs https://nextcloud.zenocyne.com/remote.php/webdav/ ${HOME}/zenocloud'
 
 ##################
 # Custom scripts #
 ##################
 
-alias twitch="~/.script/twitch/twitchscript"
-alias gamedbupdate="~/.script/gamedatabase/gamedbupdate"
-alias yts="~/.script/youtube/youtubesearch"
+alias twitch='~/.script/twitch/twitchscript'
+alias gamedbupdate='~/.script/gamedatabase/gamedbupdate'
+alias yts='~/.script/youtube/youtubesearch'
+alias im='~/.script/im'
+alias xmen='~/.script/xrandrsw'
 
-line_find(){ find "$1" -type f | grep "$2" | xargs cat | grep "$3";}
-
-##########
-# GITHUB #
-##########
+#######
+# GIT #
+#######
 
 alias dotfiles_git='/bin/git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}'
-alias dotfiles_git_pom='/bin/git --git-dir=${HOME}/.dotfiles --work-tree=${HOME} push -u origin master'
 
 alias dg='dotfiles_git'
-alias dga='dotfiles_git add'
-alias dgp='dotfiles_git_pom'
-alias dgpl='dotfiles_git pull origin master'
-alias dgs='dotfiles_git status'
-alias dgsh='dotfiles_git show'
-alias dgc='dotfiles_git commit -m'
+
+grs () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git restore "$@"
+    else
+        git restore "$@"
+    fi
+}
+
+grv () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git revert "$@"
+    else
+        git revert "$@"
+    fi
+}
+
+grc () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git rm --cached "$@"
+    else
+        git rm --cached "$@"
+    fi
+}
+
+gr () {
+    if [[ "$PWD" = "$HOME" ]]; then
+        dotfiles_git rm "$@"
+    else
+        git rm "$@"
+    fi
+}
 
 gd () {
     if [[ "$PWD" = "$HOME" ]]; then
@@ -159,13 +170,6 @@ gc () {
     fi
 }
 
-###########################
-# Hdmi Port Double Screen #
-###########################
-
-alias hdmiScreen='xrandr --output HDMI1 --auto --left-of eDP1&& ~/.script/owl --owl'
-alias hdmiScreenoff='xrandr --output HDMI1 --off'
-
 #########
 # IONIC #
 #########
@@ -182,27 +186,23 @@ alias keysignation="jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keys
 alias dmenu='dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3"'
 
 ############
-# APM SHIT #
+# OBSOLETE #
 ############
 
-alias apm_shit="sudo hdparm -B 254 /dev/sda"
+# alias apm_shit="sudo hdparm -B 254 /dev/sda"
 
-####################
-# ANDROID SDK PATH #
-####################
-
-PATH=$PATH:~/.sdk/android/tools
+# PATH=$PATH:~/.sdk/android/tools
 
 #######
 # FZF #
 #######
 
-# GO TO
+# Goto
 g(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -not -path '*/\.*' -type d | fzf )" ;}
 gh(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -type d | fzf )" ;}
 # copy to
 c(){ cp "$@" "$(find /home/sam -type d | fzf)";}
-#move to
+# move to
 m(){ mv "$@" "$(find /home/sam -type d | fzf)";}
 # search
 f(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1
@@ -213,15 +213,8 @@ f(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1
 	 sleep 1
      fi
    }
-
-alias cpr='cp -rv'
-alias srczshrc='. /home/sam/.zshrc'
-
-alias youtube2mp3='youtube-dl -x --embed-thumbnail --audio-format mp3'
-alias filesize='du -h --max-depth=1 | sort -hr'
-
-alias mkpkg='makepkg -Acs'
-
+# edit
+e(){ /bin/nohup /home/sam/.script/edit2 "$@" &>/dev/null &}
 
 #######
 # FEH #
