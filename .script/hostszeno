@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# todo : make it work with nmcli | head -n 1
+
+check=$(grep "#.*zenocyne.com" /etc/hosts)
+
+if [[ -n $check ]];then
+	sed -i 's/#\(.*nextcloud.zenocyne.com\)/\1/' /etc/hosts
+else
+	sed -i 's/\(.*nextcloud.zenocyne.com\)/#\1/' /etc/hosts
+fi
