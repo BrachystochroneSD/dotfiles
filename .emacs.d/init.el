@@ -993,9 +993,10 @@ See `elfeed-play-with-vlc'."
         (elfeed-show-visit)))
     (elfeed-search-untag-all-unread)))
 
-
 (define-key elfeed-search-mode-map "b" 'elfeed-visit-or-play-video)
 (define-key elfeed-search-mode-map "B" 'elfeed-search-browse-url)
+
+(define-key elfeed-search-mode-map "c" 'my-elfeed-copy-url)
 
 (define-key elfeed-search-mode-map "d" 'my-elfeed-read-regex)
 (define-key elfeed-search-mode-map "D" 'my-elfeed-mark-all-author-as-read)
@@ -1020,6 +1021,12 @@ See `elfeed-play-with-vlc'."
   (interactive)
   (my-elfeed-read-regex
    (elfeed-meta (car (elfeed-search-selected)) :author)))
+
+(defun my-elfeed-copy-url ()
+  (interactive)
+  (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single))))
+    (message "%s copied in the clipboard." (elfeed-entry-link entry))
+    (kill-new (elfeed-entry-link entry))))
 
 ;;;;;;;;;;;;;;;
 ;; TIME MODE ;;
