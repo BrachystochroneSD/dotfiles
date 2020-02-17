@@ -42,6 +42,7 @@ alias xclipb='xclip -selection clipboard'
 alias cpr='cp -rv'
 alias ytb2mp3='youtube-dl -x --embed-thumbnail --audio-format mp3'
 alias filesize='du -h --max-depth=1 | sort -hr'
+alias fsz='filesize'
 
 ##########
 # PACMAN #
