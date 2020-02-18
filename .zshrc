@@ -28,6 +28,8 @@ alias la='ls -A'
 alias ll='ls -halF'
 alias l='ls -CF'
 
+alias :c='cd ..'
+
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -40,6 +42,7 @@ alias xclipb='xclip -selection clipboard'
 alias cpr='cp -rv'
 alias ytb2mp3='youtube-dl -x --embed-thumbnail --audio-format mp3'
 alias filesize='du -h --max-depth=1 | sort -hr'
+alias fsz='filesize'
 
 ##########
 # PACMAN #

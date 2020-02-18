@@ -1,7 +1,7 @@
 [colors]
-	background = '{color0}'
-	foreground = '{color15}'
-	frame = '{color9}'
+	background = "{color0}"
+	foreground = "{color15}"
+	frame = "{color9}"
 
 [global]
     ### Display ###
