@@ -73,6 +73,8 @@ alias gamedbupdate='~/.script/gamedatabase/gamedbupdate'
 alias yts='~/.script/youtube/youtubesearch'
 alias im='~/.script/im'
 alias xmen='~/.script/xrandrsw'
+xop () { nohup xdg-open "$1" >/dev/null 2>&1 &}
+alias fop='~/.script/fzf-open.sh'
 
 #######
 # GIT #

@@ -10,7 +10,8 @@ gaps outer 15
 set $mod Mod4
 set $term --no-startup-id st
 set $editor --no-startup-id emacsclient --alternate-editor="" -c
-set $browser --no-startup-id firefox
+set $browser --no-startup-id brave
+set $browser2 --no-startup-id firefox
 set $mailviewer --no-startup-id ~/.script/edit -e '(mu4e)'
 set $rssfeeder --no-startup-id ~/.script/edit -e '(elfeed)'
 set $calendar --no-startup-id ~/.script/edit -e '(cfw:open-diary-calendar)'
@@ -187,6 +188,7 @@ bindsym $mod+Shift+w           exec wpg -m
 
 #App launcher bindings
 bindsym $mod+z                  exec $browser
+bindsym $mod+Ctrt+z             exec $browser2
 #bindsym $mod+Ctrl+z             exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
 #bindsym $mod+Shift+z            exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
 bindsym $mod+Return             exec $term
@@ -205,7 +207,7 @@ for_window [instance="transmission"] floating enable
 for_window [instance="transmission"] resize set 700 400
 for_window [instance="transmission"] border pixel 3
 
-bindsym $mod+Shift+t exec $term -n transmission -e transmission-remote-cli
+bindsym $mod+Shift+t exec $term -n transmission -e tremc
 
 # start dmenu
 bindsym $mod+d                  exec dmenu_run -nb "$bg1" -nf "$fg1" -sb "$bg1" -sf "$bg2" -i
