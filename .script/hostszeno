@@ -2,10 +2,10 @@
 
 # todo : make it work with nmcli | head -n 1
 
-check=$(grep "#.*zenocyne.com" /etc/hosts)
-
-if [[ -n $check ]];then
-	sed -i 's/#\(.*nextcloud.zenocyne.com\)/\1/' /etc/hosts
+if grep -q "#.*zenocyne.com" /etc/hosts; then
+	echo Intralink enabled
+	sed -i 's/#\(.*zenocyne.com\)/\1/' /etc/hosts
 else
-	sed -i 's/\(.*nextcloud.zenocyne.com\)/#\1/' /etc/hosts
+	echo Intralink disabled
+	sed -i 's/\(.*zenocyne.com\)/#\1/' /etc/hosts
 fi

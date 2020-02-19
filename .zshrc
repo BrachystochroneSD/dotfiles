@@ -64,6 +64,9 @@ zenocyne () {
     fi
 }
 
+#zenohost
+alias zenohost="sudo ${HOME}/.script/hostszeno"
+
 #zenocloud
 alias zenomount='sudo mount -t davfs https://nextcloud.zenocyne.com/remote.php/webdav/ ${HOME}/zenocloud'
 
