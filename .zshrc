@@ -1,10 +1,9 @@
-SAVEHIST=10
-HISTFILE=~/.zsh_history
-
-
 ##############
 # ZSH CONFIG #
 ##############
+
+SAVEHIST=10
+HISTFILE=~/.zsh_history
 
 local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
 
@@ -15,7 +14,8 @@ PS1="%B%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[red]%}%M%{$fg[blue]%}:%{$fg[magenta]
 stty -ixon
 
 autoload -U compinit
-zstyle ':completion:*' menu select
+# zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 compinit
 _comp_options+=(globdots)
 
