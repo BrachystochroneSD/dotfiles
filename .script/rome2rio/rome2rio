@@ -14,4 +14,4 @@ until [ -z "$choose" ];do
     search="$search"/"$choose"
 done
 
-firefox "https://www.rome2rio.com/fr/map/$search"
+xdg-open "https://www.rome2rio.com/fr/map/$search"

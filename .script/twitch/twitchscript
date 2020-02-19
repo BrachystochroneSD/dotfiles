@@ -15,20 +15,13 @@ max_vid=100
 
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 
-# TODO: remove and replace to echoerror
-nobodyshit(){
-    echo "Nobody streaming this shit right now"
-    noshit="No streams. Choose an other game:"
-    twitchgamefunction
-}
-
 echoerror () {
     echo "$*"
     noshit="$*. Choose an other game:"
     twitchgamefunction
 }
 
-aborted(){
+aborted () {
     echo "Aborted"
     exit
 }
@@ -48,12 +41,12 @@ check_and_launch(){
                       -H "Client-ID: $twitch_clientID" \
                       -G "https://api.twitch.tv/helix/streams" \
                       --data-urlencode "game_id=$(get_game_id $*)")
-    [ "$(echo "$twitchdata" | jq '.data | length')" = 0 ] && nobodyshit
+    [ "$(echo "$twitchdata" | jq '.data | length')" = 0 ] && echoerror "No streams"
     stream=$(echo "$twitchdata" | jq -r '.data[] | .language, .user_name' | awk 'NR%2{printf "%s:",$0;next;}1' | $dmenucmd -i -l 10 -p "Which stream ?" | sed 's/.*://')
 
     [ -z "$stream" ] && aborted
 
-    exec surf "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$(echo $stream | tr [A-Z] [a-z])"
+    exec xdg-open "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$(echo $stream | tr [A-Z] [a-z])"
     exit
 }
 
@@ -81,7 +74,7 @@ twitchlivefunction(){
                     -H "Client-ID: $twitch_clientID" \
                     -G "https://api.twitch.tv/helix/streams" \
                     -d "user_login=$*" | jq '.data | length')
-        [ ! "$test" = 0 ] && (exec surf "https://www.twitch.tv/popout/$*/chat?darkpopout" & mpv "https://www.twitch.tv/$*") || echo "$* doesn't stream right now"
+        [ ! "$test" = 0 ] && (exec xdg-open "https://www.twitch.tv/popout/$*/chat?darkpopout" & mpv "https://www.twitch.tv/$*") || echo "$* doesn't stream right now"
         exit
     else
         echo "Checking connected streams ..."
@@ -92,7 +85,7 @@ twitchlivefunction(){
                           -d "$userlogins")
 
         stream=$(echo "$twitchdata" | jq -r '.data[] | .user_name' | $dmenucmd -l 10 -i -p "Which stream do you want to watch?") || aborted
-        exec surf -new-window "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
+        exec xdg-open -new-window "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
         exit
     fi
 }
