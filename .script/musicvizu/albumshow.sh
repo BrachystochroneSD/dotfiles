@@ -12,6 +12,8 @@ while true;do
     if [ -n "$album_dir" ] ; then
 	album_dir="$MUSIC_DIR/$album_dir"
 	covers="$(find "$album_dir" -type d -exec find {} -maxdepth 1 -type f -iregex ".*/.*\(${album}\|cover\|folder\|artwork\|front\).*[.]\(jpe?g\|png\|gif\|bmp\)" \; )"
+	nosmall=$(echo "$covers" | grep -v "Small")
+	[ -n "$nosmall" ] && covers="$nosmall"
 	src="$(printf "$covers" | head -n1)"
     fi
     [ -z "$src" ] && src=$backup_img
