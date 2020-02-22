@@ -197,7 +197,6 @@ bindsym $mod+Ctrl+Return        exec $term -n scratchterm
 
 for_window [instance="scratchterm"] floating enable
 for_window [instance="scratchterm"] resize set 625 400
-for_window [instance="scratchterm"] border pixel 5
 
 # transmission,
 for_window [instance="qjackctl"] floating enable
@@ -205,7 +204,6 @@ for_window [instance="qjackctl"] floating enable
 # transmission,
 for_window [instance="transmission"] floating enable
 for_window [instance="transmission"] resize set 700 400
-for_window [instance="transmission"] border pixel 3
 
 bindsym $mod+Shift+t exec $term -n transmission -e tremc
 
@@ -246,20 +244,17 @@ bindsym $mod+Ctrl+m               exec ~/.script/musicvizu/musicvizu.sh
 
 for_window [instance="ncmpcppwin"] floating enable
 for_window [instance="ncmpcppwin"] resize set 625 400
-for_window [instance="ncmpcppwin"] border pixel 0
 for_window [instance="ncmpcppwin"] move right 105
 for_window [instance="ncmpcppwin"] move scratchpad
 
 for_window [instance="album"] floating enable
 for_window [instance="album"] resize set 202 202
-for_window [instance="album"] border pixel 0
 for_window [instance="album"] move left 105
 for_window [instance="album"] move down 10
 for_window [instance="album"] move scratchpad
 
 for_window [instance="cavaviz"] floating enable
 for_window [instance="cavaviz"] resize set 200 150
-for_window [instance="cavaviz"] border pixel 0
 for_window [instance="cavaviz"] move left 105
 for_window [instance="cavaviz"] move down 230
 for_window [instance="cavaviz"] move scratchpad
@@ -287,7 +282,6 @@ bindsym $mod+Ctrl+f                     exec $term -n fzf -e /home/sam/.script/f
 
 for_window [instance="fzf"] floating enable
 for_window [instance="fzf"] resize set 725 200
-for_window [instance="fzf"] border pixel 0
 
 #---# Mail mu4e #---#
 
@@ -300,7 +294,6 @@ bindsym $mod+Shift+r exec $rssfeeder
 
 for_window [instance="scripts"] floating enable
 for_window [instance="scripts"] resize set 625 450
-for_window [instance="scripts"] border pixel 5
 
 bindsym $mod+t exec $term -n scripts -e vim ~/.notes
 
@@ -329,7 +322,6 @@ bindsym $mod+Ctrl+u exec st -n scripts -e sudo pacman -Syu
 #recording
 for_window [instance="record"] floating enable
 for_window [instance="record"] resize set 625 400
-for_window [instance="record"] border pixel 5
 
 bindsym $mod+Shift+Ctrl+y exec $term -n record -e ffmpeg -f x11grab -s 1366x768 -i :0.0 ~/Vidéos/record.mkv
 
@@ -337,7 +329,6 @@ bindsym $mod+Shift+Ctrl+y exec $term -n record -e ffmpeg -f x11grab -s 1366x768 
 
 for_window [instance="wifi"] floating enable
 for_window [instance="wifi"] resize set 625 400
-for_window [instance="wifi"] border pixel 5
 
 bindsym $mod+F7 exec networkmanager_dmenu
 
