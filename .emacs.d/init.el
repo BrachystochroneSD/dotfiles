@@ -1639,7 +1639,7 @@ for renaming."
     (save-excursion
       (beginning-of-buffer)
       (while (re-search-forward "/Junk" nil t)
-        (mu4e-headers-mark-or-move-to-trash))
+        (mu4e-headers-mark-for-delete))
       (mu4e-mark-execute-all t)))
 
   )
@@ -1648,11 +1648,50 @@ for renaming."
 ;; PYTHON ;;
 ;;;;;;;;;;;;
 
+(defun my-python-get-args-from-line ()
+  (re-search-backward "def __init__")
+  (let (( args (buffer-substring
+                (progn
+                  (re-search-forward "(self,")
+                  (point))
+                (progn
+                  (re-search-forward ")")
+                  (forward-char -1)
+                  (point)))))
+    (split-string args ",")))
+
+(defun my-python-newline ()
+  (interactive)
+  (cond
+   ((looking-back "def __init__(.*):")
+    (my-python-init-basic-class))
+   ((looking-back "class .*:")
+    (newline nil t)
+    (insert "def __init__(self,):")
+    (forward-char -2))
+   (t
+    (newline nil t))))
+
+(defun my-python-init-basic-class ()
+  (interactive)
+  (let ((args (my-python-get-args-from-line)))
+    (end-of-line)
+    (dolist (arg args)
+      (newline nil t)
+      (insert (format "self.%s=%s" arg arg)))))
+
 (defun my-python-create-package ()
   (interactive)
   (let (( pack_name (read-string "Package name: ") ))
     (make-directory pack_name)
     (write-region "" "" (expand-file-name "__init__.py" pack_name))))
+
+(defun my-python-hook ()
+  (interactive)
+  (local-set-key (kbd "C-<return>") 'my-python-newline)
+  )
+
+(add-hook 'python-mode-hook 'my-python-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; INSERT BRACKETS ;;
