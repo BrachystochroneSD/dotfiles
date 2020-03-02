@@ -671,7 +671,7 @@
 
 (defun my-dired-jump ()
   (interactive)
-  (split-window-horizontally (max 15 (min 30 (/ (window-width) 3.))))
+  (split-window-horizontally (max 15 (min 20 (/ (window-width) 3.))))
   (dired-jump))
 
 (global-set-key (kbd "C-à") 'dired-jump)
@@ -736,6 +736,8 @@
   ;; (dired-hide-dotfiles-mode)
   (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
   (dired-hide-details-mode)
+  (display-line-numbers-mode 0)
+  (text-scale-decrease 2)
   (local-unset-key (kbd "C-M-n"))
   (local-set-key (kbd "C-x C-f") 'my-dired-find-file)
   (local-set-key (kbd "/") 'isearch-forward)
@@ -1505,6 +1507,8 @@ for renaming."
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-confirm-quit nil)
 
+  (setq mu4e-attachment-dir "/home/sam/Downloads")
+
   (setq
    mu4e-view-show-images t
    mu4e-view-image-max-width 1000)
@@ -1954,7 +1958,7 @@ for renaming."
 ;; GH ;;
 ;;;;;;;;
 
-(defun my-create-new-repo (user reponame)
+(defun my-git-create-new-repo (user reponame)
   (interactive
    (list
     (read-string "Username: " "BrachystochroneSD")
