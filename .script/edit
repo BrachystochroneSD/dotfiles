@@ -11,4 +11,4 @@ case "$1" in
 	;;
 esac
 
-exec emacsclient --alternate-editor="" -c -e "$shit"
+exec emacsclient --alternate-editor="" -c -e "$shit" &

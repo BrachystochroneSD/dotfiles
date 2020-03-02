@@ -6,6 +6,7 @@ set smarttab
 set encoding=utf-8
 set wrap linebreak
 set autowrite
+set expandtab tabstop=4 shiftwidth=4
 
 call plug#begin('~/.vim/plugins')
  Plug 'terryma/vim-multiple-cursors'
@@ -35,9 +36,9 @@ imap <C-x><C-s> <Esc>:w<CR>i
 
 " monter/descendre la ligne courante ou la sélection avec J et K
 nnoremap J :m .+1<CR>==
-nnoremap K :m .-2<CR>==
+nnoremap K :m .-3<CR>==
 vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+vnoremap k :m '<-2<cr>gv=gv
 
 let &t_SI.="\e[5 q" "SI = INSERT mode
 let &t_SR.="\e[4 q" "SR = REPLACE mode
@@ -56,7 +57,9 @@ imap <C-BS> <C-w>
 
 " autocmd
 autocmd BufWritePre * %s/\s\+$//e
+autocmd BufWritePre * :retab
 
 " clipboard
 
 vmap <C-y> :!xclip -f -sel clip<CR>
+

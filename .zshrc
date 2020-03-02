@@ -60,7 +60,7 @@ zenocyne () {
     if grep zenocyne /etc/hosts | grep -q "#" ;then
         ssh pi@www.zenocyne.com
     else
-        ssh pi@192.168.0.102
+        ssh pi@192.168.1.102
     fi
 }
 
