@@ -57,6 +57,7 @@ imap <C-BS> <C-w>
 
 " autocmd
 autocmd BufWritePre * %s/\s\+$//e
+autocmd BufWritePre * :retab
 
 " clipboard
 
