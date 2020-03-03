@@ -646,7 +646,7 @@
              (set-buffer-modified-p nil)
              (kill-buffer-and-window)
              (find-file file)
-             (split-window-horizontally (max 15 (min 30 (/ (window-width) 3.))))
+             (split-window-horizontally (max 15 (min 20 (/ (window-width) 3.))))
              (switch-to-buffer currbuff)))
           ((and
             (equal major-mode 'dired-mode)
@@ -654,7 +654,7 @@
             (not (window-left (car (window-list)))))
            (delete-other-windows)
            (find-file file)
-           (split-window-horizontally (max 15 (min 30 (/ (window-width) 3.))))
+           (split-window-horizontally (max 15 (min 20 (/ (window-width) 3.))))
            (previous-buffer))
           (t
            (find-file file)))))
@@ -669,6 +669,30 @@
            switch-to-buffer-preserve-window-point)))
     (my-dired-find-file-internal (dired-get-file-for-visit))))
 
+(defun search-is-that-right-buffer (filename)
+  (let ((file (concat (file-name-base filename) "." (file-name-extension filename)))
+        (dir (file-name-directory filename)))
+    (and (equal major-mode 'dired-mode)
+         (and (re-search-forward dir (beginning-of-buffer) t)
+              (re-search-forward file nil t ))))
+  )
+
+(defun search-for-filename-in-dired-buffers (filename)
+  (message "TODO")
+  (interactive)
+  (let ((buffres)
+        (buffname (buffer-name))
+        (file (concat (file-name-base filename) "." (file-name-extension filename)))
+        (dir (file-name-directory filename)))
+    (next-buffer)
+    (while (and (or (re-search-forward dir (beginning-of-buffer) t)
+                    (not (equal major-mode 'dired-mode)))
+            (not (equal buffname (buffer-name))))
+      (next-buffer))
+    (setq buffres (buffer-name))
+    (switch-to-buffer buffname)
+      buffres))
+
 (defun my-dired-jump ()
   (interactive)
   (split-window-horizontally (max 15 (min 20 (/ (window-width) 3.))))
@@ -681,7 +705,7 @@
 (defun my-dired-kill-subdir ()
   (interactive)
   (if (equal (dired-current-directory) (expand-file-name default-directory))
-      (my-kill-current-buffer)
+      (kill-buffer-and-window)
     (dired-kill-subdir)
     (pop-to-mark-command)
     (recenter-top-bottom (line-number-at-pos))))
@@ -749,7 +773,7 @@
   (local-set-key (kbd "<tab>") 'dired-hide-subdir)
   (local-set-key (kbd "K") 'dired-prev-subdir)
   (local-set-key (kbd "q") 'my-dired-kill-subdir)
-  (local-set-key (kbd "Q") 'my-kill-current-buffer)
+  (local-set-key (kbd "Q") 'kill-buffer-and-window)
   (local-set-key (kbd "O") 'dired-find-file-other-window)
   (local-set-key (kbd "M-o") 'my-dired-open-choice)
   (local-set-key (kbd "l") 'my-dired-open-file)
@@ -1693,6 +1717,7 @@ for renaming."
 (defun my-python-hook ()
   (interactive)
   (local-set-key (kbd "C-<return>") 'my-python-newline)
+  (hs-minor-mode)
   )
 
 (add-hook 'python-mode-hook 'my-python-hook)
@@ -1953,7 +1978,6 @@ for renaming."
         (replace-match "<svg "))
       (kill-new (buffer-string)))))
 
-
 ;;;;;;;;
 ;; GH ;;
 ;;;;;;;;
@@ -1967,3 +1991,9 @@ for renaming."
    (format "curl -u %s:%s https://api.github.com/user/repos -d '{\"name\":\"%s\"}'"
            user (read-passwd "Git Hub Password: ") reponame))
   (format "git@github.com:%s/%s.git" user reponame))
+
+(defun emergency-percent ()
+  (interactive)
+  (insert "%"))
+
+(define-key evil-insert-state-map (kbd "C-M-µ") 'emergency-percent)
