@@ -1557,6 +1557,7 @@ for renaming."
   (defun shr-render-current-buffer ()
     (shr-render-region (point-min) (point-max)))
 
+  (add-to-list 'mu4e-view-actions '("view in browser" . mu4e-action-view-in-browser))
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-html2text-command 'shr-render-current-buffer)
 
@@ -1718,6 +1719,7 @@ for renaming."
   (interactive)
   (local-set-key (kbd "C-<return>") 'my-python-newline)
   (hs-minor-mode)
+  (eglot)
   )
 
 (add-hook 'python-mode-hook 'my-python-hook)
@@ -1996,4 +1998,6 @@ for renaming."
   (interactive)
   (insert "%"))
 
+(define-key evil-normal-state-map (kbd "£") 'evil-jump-item)
+(define-key evil-visual-state-map (kbd "£") 'evil-jump-item)
 (define-key evil-insert-state-map (kbd "C-M-µ") 'emergency-percent)
