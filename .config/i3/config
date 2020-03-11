@@ -8,6 +8,7 @@ gaps outer 15
 
 #  #----Definitions----#  #
 set $mod Mod4
+set $alt Mod1
 set $term --no-startup-id st
 set $editor --no-startup-id emacsclient --alternate-editor="" -c
 set $browser --no-startup-id brave
@@ -157,7 +158,8 @@ exec setxkbmap -layout be
 
 #Nextcloud
 exec --no-startup-id nextcloud --background
-bindsym $mod+Ctrl+n exec nextcloud
+bindsym $mod+Ctrl+n         exec nextcloud
+bindsym $mod+$alt+n         exec killall nextcloud
 
 #redshift
 exec redshift
@@ -188,7 +190,7 @@ bindsym $mod+Shift+w            exec wpg -m
 
 #App launcher bindings
 bindsym $mod+z                  exec $browser
-bindsym $mod+Ctrt+z             exec $browser2
+bindsym $mod+Ctrl+z             exec $browser2
 #bindsym $mod+Ctrl+z             exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
 #bindsym $mod+Shift+z            exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
 bindsym $mod+Return             exec $term
@@ -310,7 +312,7 @@ bindsym $mod+Shift+y        exec ~/.script/youtube/youtubesearch
 
 bindsym $mod+Ctrl+s         exec --no-startup-id skypeforlinux
 bindsym $mod+Ctrl+d         exec --no-startup-id discord
-bindsym $mod+Ctrl+Shift+d   exec killall Discord
+bindsym $mod+$alt+d         exec killall Discord
 bindsym $mod+Ctrl+c         exec --no-startup-id caprine
 
 # keepass
