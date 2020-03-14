@@ -28,6 +28,7 @@ alias la='ls -A'
 alias ll='ls -halF'
 alias l='ls -CF'
 
+alias untar='tar -xvf'
 alias :c='cd ..'
 
 alias grep='grep --color=auto'
@@ -63,6 +64,8 @@ zenocyne () {
         ssh pi@192.168.1.102
     fi
 }
+
+alias printerpi='ssh pi@192.168.1.105'
 
 #zenohost
 alias zenohost="sudo ${HOME}/.script/hostszeno"
@@ -216,9 +219,9 @@ m(){ mv "$@" "$(find /home/sam -type d | fzf)";}
 f(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1
      shit=$(find $search -type f | fzf --layout=reverse --height 40% )
      if [[ -n $shit ]];then
-	 nohup xdg-open "$shit" &>/dev/null &
-	 echo "Opening $shit"
-	 sleep 1
+     nohup xdg-open "$shit" &>/dev/null &
+     echo "Opening $shit"
+     sleep 1
      fi
    }
 # edit
@@ -257,11 +260,11 @@ installAUR () {
 # git clone
 
 clonegit () {
-	repo="$1"
-	[ -n "$2" ] && cd "$2"
-	[ -n "$3" ] && user="$3"  || user="BrachystochroneSD"
-	git clone --depth 1 "git@github.com:$user/$repo.git"
-	cd "$repo"
+    repo="$1"
+    [ -n "$2" ] && cd "$2"
+    [ -n "$3" ] && user="$3"  || user="BrachystochroneSD"
+    git clone --depth 1 "git@github.com:$user/$repo.git"
+    cd "$repo"
 }
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null

@@ -8,6 +8,7 @@ gaps outer 15
 
 #  #----Definitions----#  #
 set $mod Mod4
+set $alt Mod1
 set $term --no-startup-id st
 set $editor --no-startup-id emacsclient --alternate-editor="" -c
 set $browser --no-startup-id brave
@@ -77,15 +78,15 @@ bindsym $mod+Shift+exclam        move container to workspace 8
 bindsym $mod+Shift+ccedilla      move container to workspace 9
 bindsym $mod+Shift+agrave        move container to workspace 10
 
-bindsym $mod+Tab                workspace back_and_forth
+bindsym $mod+Tab                 workspace back_and_forth
 
 # reload the configuration file
 bindsym $mod+Shift+c            reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Ctrl+r             restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+Escape               exec i3-msg exit
-bindsym $mod+Ctrl+Escape               exec poweroff
+bindsym $mod+Shift+Escape       exec i3-msg exit
+bindsym $mod+Ctrl+Escape        exec poweroff
 
 
 #rebinds pour le focus, le mouvement et le resize windows
@@ -157,7 +158,8 @@ exec setxkbmap -layout be
 
 #Nextcloud
 exec --no-startup-id nextcloud --background
-bindsym $mod+Ctrl+n exec nextcloud
+bindsym $mod+Ctrl+n         exec nextcloud
+bindsym $mod+$alt+n         exec killall nextcloud
 
 #redshift
 exec redshift
@@ -174,21 +176,21 @@ exec unclutter --timeout 2
 
 #--# # xrandr # #--#
 
-bindsym $mod+Shift+Ctrl+d                       exec ~/.script/xrandrsw
+bindsym $mod+Shift+Ctrl+d       exec ~/.script/xrandrsw
 
 #--# # Rome2rio # #--#
 
-bindsym $mod+g                       exec ~/.script/rome2rio/rome2rio
+bindsym $mod+g                  exec ~/.script/rome2rio/rome2rio
 
 #--# # WPG # #--#
 
-bindsym $mod+Ctrl+Shift+w                       exec $term -n fzf -e .script/wpg_theme
+bindsym $mod+Ctrl+Shift+w       exec $term -n fzf -e .script/wpg_theme
 
-bindsym $mod+Shift+w           exec wpg -m
+bindsym $mod+Shift+w            exec wpg -m
 
 #App launcher bindings
 bindsym $mod+z                  exec $browser
-bindsym $mod+Ctrt+z             exec $browser2
+bindsym $mod+Ctrl+z             exec $browser2
 #bindsym $mod+Ctrl+z             exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
 #bindsym $mod+Shift+z            exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
 bindsym $mod+Return             exec $term
@@ -205,34 +207,34 @@ for_window [instance="qjackctl"] floating enable
 for_window [instance="transmission"] floating enable
 for_window [instance="transmission"] resize set 700 400
 
-bindsym $mod+Shift+t exec $term -n transmission -e tremc
+bindsym $mod+Shift+t                exec $term -n transmission -e tremc
 
 # start dmenu
-bindsym $mod+d                  exec dmenu_run -nb "$bg1" -nf "$fg1" -sb "$bg1" -sf "$bg2" -i
+bindsym $mod+d                      exec dmenu_run -nb "$bg1" -nf "$fg1" -sb "$bg1" -sf "$bg2" -i
 
 #pavucontrol
 for_window [class="Pavucontrol"] floating enable
-bindsym $mod+XF86AudioMute      exec pavucontrol
+bindsym $mod+XF86AudioMute          exec pavucontrol
 
 # Amixer Audio controls
 
 set $pactlunmute pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo false
 set $pactlmictggl pactl set-source-mute alsa_input.pci-0000_00_1b.0.analog-stereo toggle
 
-bindsym XF86AudioMicMute exec $pactlmictggl
+bindsym XF86AudioMicMute            exec $pactlmictggl
 
-bindsym XF86AudioRaiseVolume    exec $pactlunmute && amixer -q set Master 5%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-bindsym XF86AudioLowerVolume    exec $pactlunmute && amixer -q set Master 5%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym XF86AudioRaiseVolume        exec $pactlunmute && amixer -q set Master 5%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym XF86AudioLowerVolume        exec $pactlunmute && amixer -q set Master 5%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
-bindsym Shift+XF86AudioRaiseVolume exec $pactlunmute && amixer -qM set Master 10%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-bindsym Shift+XF86AudioLowerVolume exec $pactlunmute && amixer -qM set Master 10%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym Shift+XF86AudioRaiseVolume  exec $pactlunmute && amixer -qM set Master 10%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym Shift+XF86AudioLowerVolume  exec $pactlunmute && amixer -qM set Master 10%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
 # bindsym XF86AudioMute           exec amixer -q set Master 1+ toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-bindsym XF86AudioMute           exec pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+bindsym XF86AudioMute               exec pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 
 # Screen brightness controls
-bindsym XF86MonBrightnessDown   exec .script/brightnessbar moins 5
-bindsym XF86MonBrightnessUp     exec .script/brightnessbar plus 5
+bindsym XF86MonBrightnessDown       exec .script/brightnessbar moins 5
+bindsym XF86MonBrightnessUp         exec .script/brightnessbar plus 5
 
 bindsym Shift+XF86MonBrightnessDown exec .script/brightnessbar moins 10
 bindsym Shift+XF86MonBrightnessUp   exec .script/brightnessbar plus 10
@@ -265,32 +267,32 @@ for_window [instance="cavaviz"] move scratchpad
 bindsym $mod+m [instance="album"] scratchpad show ; [instance="cavaviz"] scratchpad show ; [instance="ncmpcppwin"] scratchpad show
 
 #bindings for MPD MPC NCMPCPP
-bindsym $mod+v                  exec mpc prev
-bindsym $mod+b                  exec mpc toggle
-bindsym $mod+Shift+b            exec mpc stop
-bindsym $mod+n                  exec mpc next
+bindsym $mod+v                      exec mpc prev
+bindsym $mod+b                      exec mpc toggle
+bindsym $mod+Shift+b                exec mpc stop
+bindsym $mod+n                      exec mpc next
 
-bindsym $mod+Shift+n            exec mpc seek +3
-bindsym $mod+Shift+v            exec mpc seek -3
+bindsym $mod+Shift+n                exec mpc seek +3
+bindsym $mod+Shift+v                exec mpc seek -3
 
-bindsym $mod+Ctrl+b             exec mpc random
+bindsym $mod+Ctrl+b                 exec mpc random
 
-bindsym Ctrl+XF86AudioRaiseVolume exec mpc volume +3
-bindsym Ctrl+XF86AudioLowerVolume exec mpc volume -3
+bindsym Ctrl+XF86AudioRaiseVolume   exec mpc volume +3
+bindsym Ctrl+XF86AudioLowerVolume   exec mpc volume -3
 
 #--# # FZF # #--#
 
-bindsym $mod+Shift+f                    exec $term -n fzf -e /home/sam/.script/fzf-open.sh
-bindsym $mod+Ctrl+f                     exec $term -n fzf -e /home/sam/.script/fzf-open.sh --hidden
+bindsym $mod+Shift+f        exec $term -n fzf -e /home/sam/.script/fzf-open.sh
+bindsym $mod+Ctrl+f         exec $term -n fzf -e /home/sam/.script/fzf-open.sh --hidden
 
 for_window [instance="fzf"] floating enable
 for_window [instance="fzf"] resize set 725 200
 
 #---# Mail mu4e #---#
 
-bindsym $mod+Shift+m exec $mailviewer
+bindsym $mod+Shift+m        exec $mailviewer
 
-bindsym $mod+Shift+r exec $rssfeeder
+bindsym $mod+Shift+r        exec $rssfeeder
 
 
 #NOTES#
@@ -298,29 +300,30 @@ bindsym $mod+Shift+r exec $rssfeeder
 for_window [instance="scripts"] floating enable
 for_window [instance="scripts"] resize set 625 450
 
-bindsym $mod+t exec $term -n scripts -e vim ~/.notes
+bindsym $mod+t              exec $term -n scripts -e vim ~/.notes
 
 #Twitch#
-bindsym $mod+Ctrl+t exec ~/.script/twitch/twitchmenu.sh
+bindsym $mod+Ctrl+t         exec ~/.script/twitch/twitchmenu.sh
 
 #Youtube#
-bindsym $mod+Shift+y exec ~/.script/youtube/youtubesearch
+bindsym $mod+Shift+y        exec ~/.script/youtube/youtubesearch
 
 #---# Social media #---#
 
-bindsym $mod+Ctrl+s exec --no-startup-id skypeforlinux
-bindsym $mod+Ctrl+d exec --no-startup-id discord
-bindsym $mod+Ctrl+c exec --no-startup-id caprine
+bindsym $mod+Ctrl+s         exec --no-startup-id skypeforlinux
+bindsym $mod+Ctrl+d         exec --no-startup-id discord
+bindsym $mod+$alt+d         exec killall Discord
+bindsym $mod+Ctrl+c         exec --no-startup-id caprine
 
 # keepass
-bindsym $mod+p exec keepmenu
+bindsym $mod+p              exec keepmenu
 
 # mount-usb
-bindsym $mod+u exec ~/.script/polybar/mount-usb.sh --mount
-bindsym $mod+Shift+u exec ~/.script/polybar/mount-usb.sh --unmount
+bindsym $mod+u              exec ~/.script/polybar/mount-usb.sh --mount
+bindsym $mod+Shift+u        exec ~/.script/polybar/mount-usb.sh --unmount
 
 # update
-bindsym $mod+Ctrl+u exec st -n scripts -e sudo pacman -Syu
+bindsym $mod+Ctrl+u         exec st -n scripts -e sudo pacman -Syu
 
 #recording
 for_window [instance="record"] floating enable
