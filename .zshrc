@@ -265,3 +265,4 @@ clonegit () {
 }
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+alias bellwarn='paplay /usr/share/sounds/freedesktop/stereo/bell.oga'
