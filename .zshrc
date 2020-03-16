@@ -247,7 +247,7 @@ alias mpdstream='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_stream
 
 installAUR () {
     lastdir="$PWD"
-    aurdir="${HOME}/aur_install_dir"
+    aurdir="${HOME}/Documents/aur_install_dir"
     mkdir -p "$aurdir"
     echo "Installing $1 in $aurdir"...
     cd "$aurdir"
