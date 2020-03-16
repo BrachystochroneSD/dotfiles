@@ -1718,9 +1718,7 @@ for renaming."
 (defun my-python-hook ()
   (interactive)
   (local-set-key (kbd "C-<return>") 'my-python-newline)
-  (hs-minor-mode)
-  (eglot)
-  )
+  (hs-minor-mode))
 
 (add-hook 'python-mode-hook 'my-python-hook)
 

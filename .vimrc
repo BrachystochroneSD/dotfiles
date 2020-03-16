@@ -38,7 +38,7 @@ imap <C-x><C-s> <Esc>:w<CR>i
 nnoremap J :m .+1<CR>==
 nnoremap K :m .-3<CR>==
 vnoremap J :m '>+1<CR>gv=gv
-vnoremap k :m '<-2<cr>gv=gv
+vnoremap K :m '<-2<cr>gv=gv
 
 let &t_SI.="\e[5 q" "SI = INSERT mode
 let &t_SR.="\e[4 q" "SR = REPLACE mode
