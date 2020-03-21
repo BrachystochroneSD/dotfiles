@@ -155,6 +155,7 @@ bar {
 
 #  #----Keyboard layout----#  #
 exec setxkbmap -layout be
+bindsym $alt+Shift+Tab      exec ./.script/klaysw
 
 #Nextcloud
 exec --no-startup-id nextcloud --background

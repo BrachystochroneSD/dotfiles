@@ -1,0 +1,3 @@
+#!/bin/sh
+
+setxkbmap -print | grep -q azerty && setxkbmap -layout us || setxkbmap -layout be
