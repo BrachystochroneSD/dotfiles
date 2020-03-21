@@ -30,6 +30,7 @@ alias l='ls -CF'
 
 alias untar='tar -xvf'
 alias :c='cd ..'
+alias drag='dragon-drag-and-drop --and-exit'
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -247,7 +248,7 @@ alias mpdstream='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_stream
 
 installAUR () {
     lastdir="$PWD"
-    aurdir="${HOME}/Documents/aur_install_dir"
+    aurdir="${HOME}/Downloads/aur_install_dir"
     mkdir -p "$aurdir"
     echo "Installing $1 in $aurdir"...
     cd "$aurdir"
