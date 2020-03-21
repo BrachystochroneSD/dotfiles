@@ -974,6 +974,7 @@
   (local-set-key (kbd "h") 'delete-other-windows)
   (local-set-key (kbd "/") 'isearch-forward)
   (local-set-key (kbd "?") 'isearch-backward)
+  (local-set-key (kbd "q") 'delete-frame)
   )
 
 (add-hook 'elfeed-search-mode-hook 'my-elfeed-search-hook-setup)
