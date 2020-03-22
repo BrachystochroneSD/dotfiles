@@ -59,11 +59,7 @@ alias spu='sp -Syyu'
 ############
 
 zenocyne () {
-    if grep zenocyne /etc/hosts | grep -q "#" ;then
-        ssh pi@www.zenocyne.com
-    else
-        ssh pi@192.168.1.102
-    fi
+    ssh pi@192.168.1.102
 }
 
 alias printerpi='ssh pi@192.168.1.105'
