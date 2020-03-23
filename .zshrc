@@ -58,9 +58,8 @@ alias spu='sp -Syyu'
 # ZENOCYNE #
 ############
 
-zenocyne () {
-    ssh pi@192.168.1.102
-}
+alias zenocyne='ssh pi@192.168.1.102'
+alias deskrem='ssh sam@192.168.1.103'
 
 alias printerpi='ssh pi@192.168.1.105'
 
