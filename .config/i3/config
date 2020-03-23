@@ -242,11 +242,12 @@ bindsym Shift+XF86MonBrightnessUp   exec .script/brightnessbar plus 10
 
 #---# Music shits #---#
 
-exec ~/.script/musicvizu/musicvizu.sh
+exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh
 exec mpd
 
 bindsym $mod+Ctrl+Shift+m         exec mpd
-bindsym $mod+Ctrl+m               exec ~/.script/musicvizu/musicvizu.sh
+bindsym $mod+Ctrl+m               exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh
+bindsym $mod+$alt+m               exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh t
 
 for_window [instance="ncmpcppwin"] floating enable
 for_window [instance="ncmpcppwin"] resize set 625 400
