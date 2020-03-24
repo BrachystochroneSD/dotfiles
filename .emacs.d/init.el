@@ -209,9 +209,9 @@
 
 
 
-(set-default-font "Inconsolata-15:regular")
+(set-default-font "firacode-14:regular")
 (add-to-list 'default-frame-alist
-             '(font . "Inconsolata-15:regular"))
+             '(font . "firacode-14:regular"))
   ;; (progn
   ;;   (set-default-font "Consolas-14:regular")
   ;;   (add-to-list 'default-frame-alist
