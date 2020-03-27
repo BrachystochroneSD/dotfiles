@@ -6,15 +6,15 @@ backup_img=${HOME}/.config/wpg/mywalls/owl.png #when no cover img found
 
 while true;do
     src=""
-    album=$(mpc --format %album% current)
-    file=$(mpc --format %file% current)
+    album=$(mpc --format %album% current 2>/dev/null)
+    file=$(mpc --format %file% current 2>/dev/null)
     album_dir="${file%/*}"
     if [ -n "$album_dir" ] ; then
-	album_dir="$MUSIC_DIR/$album_dir"
-	covers="$(find "$album_dir" -type d -exec find {} -maxdepth 1 -type f -iregex ".*/.*\(${album}\|cover\|folder\|artwork\|front\).*[.]\(jpe?g\|png\|gif\|bmp\)" \; )"
-	nosmall=$(echo "$covers" | grep -v "Small")
-	[ -n "$nosmall" ] && covers="$nosmall"
-	src="$(printf "$covers" | head -n1)"
+        album_dir="$MUSIC_DIR/$album_dir"
+        covers="$(find "$album_dir" -type d -exec find {} -maxdepth 1 -type f -iregex ".*/.*\(${album}\|cover\|folder\|artwork\|front\).*[.]\(jpe?g\|png\|gif\|bmp\)" \; )"
+        nosmall=$(echo "$covers" | grep -v "Small")
+        [ -n "$nosmall" ] && covers="$nosmall"
+        src="$(printf "$covers" | head -n1)"
     fi
     [ -z "$src" ] && src=$backup_img
 
