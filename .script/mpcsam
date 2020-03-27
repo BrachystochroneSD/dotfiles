@@ -1,0 +1,18 @@
+#!/bin/sh
+
+ip="192.168.1.103"
+mhf="/tmp/mpchost"
+[ -f "$mhf" ] && host="$(cat "$mhf")" || host="127.0.0.1"
+
+mpc_cmd="mpc -h $host"
+
+case $1 in
+    --prev) $mpc_cmd prev ;;
+    --toggle) $mpc_cmd toggle ;;
+    --stop) $mpc_cmd stop ;;
+    --next) $mpc_cmd next ;;
+    --seek) $mpc_cmd seek "$2" ;;
+    --random) $mpc_cmd random ;;
+    --volume) $mpc_cmd volume "$2" ;;
+    --tggl-host) [ -f "$mhf" ] && rm "$mhf" || echo "$ip" > "$mhf" ;;
+esac

@@ -269,18 +269,20 @@ for_window [instance="cavaviz"] move scratchpad
 bindsym $mod+m [instance="album"] scratchpad show ; [instance="cavaviz"] scratchpad show ; [instance="ncmpcppwin"] scratchpad show
 
 #bindings for MPD MPC NCMPCPP
-bindsym $mod+v                      exec mpc prev
-bindsym $mod+b                      exec mpc toggle
-bindsym $mod+Shift+b                exec mpc stop
-bindsym $mod+n                      exec mpc next
+bindsym $mod+v                      exec ~/.script/mpcsam --prev
+bindsym $mod+b                      exec ~/.script/mpcsam --toggle
+bindsym $mod+Shift+b                exec ~/.script/mpcsam --stop
+bindsym $mod+n                      exec ~/.script/mpcsam --next
 
-bindsym $mod+Shift+n                exec mpc seek +3
-bindsym $mod+Shift+v                exec mpc seek -3
+bindsym $mod+Shift+n                exec ~/.script/mpcsam --seek +3
+bindsym $mod+Shift+v                exec ~/.script/mpcsam --seek -3
 
-bindsym $mod+Ctrl+b                 exec mpc random
+bindsym $mod+Ctrl+b                 exec ~/.script/mpcsam --random
 
-bindsym Ctrl+XF86AudioRaiseVolume   exec mpc volume +3
-bindsym Ctrl+XF86AudioLowerVolume   exec mpc volume -3
+bindsym $mod+$alt+b                 exec ~/.script/mpcsam --tggl-host
+
+bindsym Ctrl+XF86AudioRaiseVolume   exec ~/.script/mpcsam --volume +3
+bindsym Ctrl+XF86AudioLowerVolume   exec ~/.script/mpcsam --volume -3
 
 #--# # FZF # #--#
 
