@@ -75,19 +75,21 @@ youtube_search(){
 				 -d "type=video,playlist" \
 				 -d "maxResults=$max_results" \
 				 -d "key=$ytapikey" \
-				 -d "order=date" \
 				 -d "part=snippet" \
+                                 -d "relevanceLanguage=en" \
+                                 -d "relevanceLanguage=fr" \
 				 --data-urlencode "q=$searchingshit"
 			 )
     else
 	youtubesearchdata=$(curl -s \
 				 -G https://www.googleapis.com/youtube/v3/search \
 				 -d "type=video,playlist" \
-				 -d "order=date" \
 				 -d "maxResults=$max_results" \
 				 -d "key=$ytapikey" \
 				 -d "part=snippet" \
 				 -d "channelId=$channelID" \
+                                 -d "relevanceLanguage=en" \
+                                 -d "relevanceLanguage=fr" \
 				 --data-urlencode "q=$searchingshit"
 			 )
     fi
