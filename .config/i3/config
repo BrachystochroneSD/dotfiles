@@ -206,7 +206,7 @@ for_window [instance="qjackctl"] floating enable
 
 # transmission,
 for_window [instance="transmission"] floating enable
-for_window [instance="transmission"] resize set 700 400
+for_window [instance="transmission"] resize set 800 400
 
 bindsym $mod+Shift+t                exec $term -n transmission -e tremc
 
