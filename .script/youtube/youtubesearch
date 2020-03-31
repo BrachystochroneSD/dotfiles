@@ -46,7 +46,7 @@ get_channel_id(){
 
 youtube_search(){
     channelID=""
-    searchingshit=$(head -n 1 "$searchhistory" | awk '{print$0}END{printf "\nChannel Search\n\nShow History\nClear History"}' | $dmenucmd -i -l 20 -p "Youtube search:") || aborted
+    searchingshit=$(head -n 1 "$searchhistory" | awk '{print$0}END{printf "\nChannel Search\nOrder\nShow History\nClear History"}' | $dmenucmd -i -l 20 -p "Youtube search:") || aborted
 
     case "$searchingshit" in
 	"Channel Search")
@@ -55,6 +55,8 @@ youtube_search(){
 	    save_channel
 	    searchingshit=$(echo | $dmenucmd -i -l 20 -p "Search on this channel:") || youtube_search
 	    ;;
+
+        "Order") sort=$(echo -e "relevance\ndate\nrating\ntitle\nviewCount" | $dmenucmd -i -l 20 -p "Sort by: "); youtube_search ;;
 
 	"Show History")
 	    searchingshit=$( $dmenucmd -i -l 20 -p "Search in History:" < "$searchhistory" ) || youtube_search
@@ -69,6 +71,8 @@ youtube_search(){
 	    printf "Searching for %s\n" "$searchingshit"
     esac
 
+    [ -z "$sort" ] && sort="relevance"
+
     if [ -z "$channelID" ];then
 	youtubesearchdata=$(curl -s \
 				 -G https://www.googleapis.com/youtube/v3/search \
@@ -76,6 +80,7 @@ youtube_search(){
 				 -d "maxResults=$max_results" \
 				 -d "key=$ytapikey" \
 				 -d "part=snippet" \
+			         -d "order=$sort" \
                                  -d "relevanceLanguage=en" \
                                  -d "relevanceLanguage=fr" \
 				 --data-urlencode "q=$searchingshit"
@@ -87,6 +92,7 @@ youtube_search(){
 				 -d "maxResults=$max_results" \
 				 -d "key=$ytapikey" \
 				 -d "part=snippet" \
+			         -d "order=$sort" \
 				 -d "channelId=$channelID" \
                                  -d "relevanceLanguage=en" \
                                  -d "relevanceLanguage=fr" \
