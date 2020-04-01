@@ -27,6 +27,25 @@ aborted () {
     exit
 }
 
+get_user_id () {
+    input="$*"
+    if echo "$input" | grep -q "^[0-9]*$";then
+        curl_data=$(curl -s \
+                         -H "Client-ID: $twitch_clientID" \
+                         -G "https://api.twitch.tv/helix/users" \
+                         --data-urlencode "id=$*")
+        output=$(echo "$curl_data" | jq -r '.data[] | .login')
+    else
+        curl_data=$(curl -s \
+                         -H "Client-ID: $twitch_clientID" \
+                         -G "https://api.twitch.tv/helix/users" \
+                         --data-urlencode "login=$*")
+        output=$(echo "$curl_data" | jq -r '.data[] | .id')
+    fi
+    [ -n "$output" ] && echo "$output" || echoerror "Nothing found for $*"
+}
+
+
 get_game_info () {
     input="$*"
     if echo "$input" | grep -q "^[0-9]*$";then
@@ -122,16 +141,16 @@ curl_choose_and_watch(){
     #curl the api twitch vod search for a channel
     twitchvod=$(curl -s \
                      -H "Client-ID: $twitch_clientID" \
-                     -G "https://api.twitch.tv/helix/channels/$searchingshit/videos" \
-                     -d "limit=$max_vid" \
-                     -d "offset=$offset" )
+                     -G "https://api.twitch.tv/helix/videos" \
+                     -d "user_id=$(get_user_id $searchingshit)" \
+                     -d "first=$max_vid" )
 
-    total_vod=$(echo "$twitchvod" | jq '._total')
+    total_vod=$(echo "$twitchvod" | jq -r '.data | length')
     [ "$total_vod" = "null" ] || [ "$total_vod" = 0 ] && twitchvod_search
 
     #create a table with all of the videos and get the url of the chosen one
     : $(( borne_max=total_vod - max_vid ))
-    video=$(echo "$twitchvod" | jq -r '.videos[] | .title, .recorded_at' | awk -v bm=$borne_max -v offs="$offset" 'BEGIN{ if (offs > 0 ) { printf "Prev\n" } }!(NR%2){printf ("%3d: %-100s %.10s\n", FNR/2+offs, p, $0)}{p=$0}END{ if (offs < bm) { printf "Next" } }' | $dmenucmd -i -l 30 -p "Which video?" | sed 's/:.*//')
+    video=$(echo "$twitchvod" | jq -r '.data[] | .title, .created_at' | awk -v bm=$borne_max -v offs="$offset" 'BEGIN{ if (offs > 0 ) { printf "Prev\n" } }!(NR%2){printf ("%3d: %-100s %.10s\n", FNR/2+offs, p, $0)}{p=$0}END{ if (offs < bm) { printf "Next" } }' | $dmenucmd -i -l 30 -p "Which video?" | sed 's/:.*//')
 
     if [ -z "$video" ];then
         twitchvod_search
@@ -143,7 +162,7 @@ curl_choose_and_watch(){
         curl_choose_and_watch
     else
         : $(( num=video-1-offset ))
-        videourl=$(echo "$twitchvod" | jq -r '.videos['$num'].url')
+        videourl=$(echo "$twitchvod" | jq -r '.data['$num'].url')
 
         # ask for the resolution and launch the video with mpv
         res=$(printf "720\n1080\n360" | $dmenucmd -i -p "Which resolution? (if avalaible)") || twitchvod_search
