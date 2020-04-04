@@ -7,14 +7,18 @@
 . "${HOME}/.cache/wal/colors.sh"
 
 # Parameters
-channelsfile=${HOME}/.script/twitch/datas/listchanneltwitch
-gamesfile=${HOME}/.script/twitch/datas/listgamestwitch
-gamesdb=${HOME}/.script/gamedatabase/gamesdb
+scriptdir="${HOME}/.script/twitch"
+channelsfile="$scriptdir/datas/listchanneltwitch"
+laststreamfile="$scriptdir/datas/lastchannelviewed"
+gamesfile="$scriptdir/datas/listgamestwitch"
+gamesdb="${HOME}/.script/gamedatabase/gamesdb"
 chat_command="brave -new-window"
 
 max_vid=100
 
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+
+touch "$laststreamfile"
 
 echoerror () {
     echo "$*"
@@ -64,7 +68,7 @@ get_game_info () {
     [ -n "$output" ] && echo "$output" || echoerror "Nothing found for $*"
 }
 
-check_and_launch(){
+check_and_launch () {
     game_name="$*"
     echo "Checking connected streams for $* ..."
     twitchdata=$(curl -s \
@@ -76,13 +80,15 @@ check_and_launch(){
     [ -z "$stream_list" ] && echoerror "No streams"
     stream=$(echo "$stream_list" | $dmenucmd -i -l 10 -p "Which stream ?") || aborted
     stream=$(echo "$stream" | sed 's/.*://')
+    echo "$stream" > "$laststreamfile"
     exec $chat_command "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$(echo $stream | tr [A-Z] [a-z])"
     exit
 }
 
 twitchgamefunction () {
-    game=$(awk '{print $0} END { printf "Other\nAdd" }' "$gamesfile" | $dmenucmd -l 10 -i -p "$noshit") || aborted
-    if [ "$game" = "Add" ];then
+    laststreamer=$(cat "$laststreamfile")
+    game=$(echo -e "$(cat $gamesfile)\n\nOther\nAdd Game\nAdd last streamer $laststreamer" | $dmenucmd -l 15 -i -p "$noshit") || aborted
+    if [ "$game" = "Add Game" ]; then
         local dprompt="Which game do you want to add on favorite?"
         game=$($dmenucmd -l 10 -i -p "$dprompt" < "$gamesdb") || aborted
         echo "$game" >> "$gamesfile"
@@ -91,6 +97,9 @@ twitchgamefunction () {
         cert=$(printf "No\nYes" | $dmenucmd -l 10 -i -p "$dprompt")
         [ "$cert" = "Yes" ] || aborted
 
+    elif [ "$game" = "Add last streamer $laststreamer" ]; then
+         cat "$laststreamfile" >> "$channelsfile"
+         twitchgamefunction
     elif [ "$game" = "Other" ]; then
         game=$($dmenucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
     fi
