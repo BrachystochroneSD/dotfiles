@@ -35,7 +35,7 @@ font-2 = owl:size=13:antialias=true;3
 font-3 = Weather Icons:size=12;2
 font-4 = wifidemoncul:size=12;3
 modules-left = owl i3 mpd
-modules-right = mount-usb update notes mails network volume weather filesys cpu memory battery date
+modules-right = mount-usb update notes mails network volume weather filesys cpu temperature memory battery date
 tray-position = center
 tray-padding = 2
 scroll-up = i3wm-wsnext
