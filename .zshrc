@@ -265,3 +265,7 @@ clonegit () {
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 alias bellwarn='paplay /usr/share/sounds/freedesktop/stereo/bell.oga'
+
+flac2mp3 () {
+    ffmpeg -i "$1" -ab 320k -map_metadata 0 -id3v2_version 3 "$2"
+}

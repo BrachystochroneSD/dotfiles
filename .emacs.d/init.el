@@ -1036,13 +1036,14 @@ See `elfeed-play-with-vlc'."
   (interactive
    (list
     (read-string "Mark as read: "
-                 (elfeed-meta (car (elfeed-search-selected)) :author))))
-  (save-excursion
-    (beginning-of-buffer)
-    (while (re-search-forward regex nil t)
-      (elfeed-search-untag-all-unread))
-    (elfeed-search-update--force)
-    (message "Done")))
+                 (elfeed-feed-title (elfeed-entry-feed (car(elfeed-search-selected)))))))
+  (setq cur_line (line-number-at-pos))
+  (beginning-of-buffer)
+  (while (re-search-forward regex nil t)
+    (elfeed-search-untag-all-unread))
+  (elfeed-search-update--force)
+  (message "Done")
+  (goto-line cur_line))
 
 (defun my-elfeed-mark-all-author-as-read ()
   (interactive)
