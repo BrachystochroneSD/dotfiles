@@ -35,8 +35,8 @@ map <C-x><C-c> <Esc>:wq<CR>
 imap <C-x><C-s> <Esc>:w<CR>i
 
 " monter/descendre la ligne courante ou la sélection avec J et K
+nnoremap K :m .-2<CR>==
 nnoremap J :m .+1<CR>==
-nnoremap K :m .-3<CR>==
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<cr>gv=gv
 
