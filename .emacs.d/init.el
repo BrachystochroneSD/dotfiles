@@ -207,8 +207,6 @@
                             (horizontal-scroll-bars . nil)
                             (fullscreen . maximized)))
 
-
-
 (set-default-font "firacode-14:regular")
 (add-to-list 'default-frame-alist
              '(font . "firacode-14:regular"))
@@ -506,8 +504,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Text Scale Adjust ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
+
+(defun my-text-scale-adjust (height)
+  (set-face-attribute 'default nil :height height))
+
+(defun my-text-scale-decrease (incr)
+  (interactive (list 10))
+  (let ((currheight (face-attribute 'default :height)))
+    (my-text-scale-adjust (- currheight incr))))
+
+(defun my-text-scale-increase (incr)
+  (interactive (list 10))
+  (let ((currheight (face-attribute 'default :height)))
+    (my-text-scale-adjust (+ currheight incr))))
+
+(global-set-key (kbd "C-+") 'my-text-scale-increase)
+(global-set-key (kbd "C--") 'my-text-scale-decrease)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Set Moving Keys ;;
