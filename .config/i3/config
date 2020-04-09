@@ -90,10 +90,20 @@ bindsym $mod+Ctrl+Escape        exec poweroff
 
 
 #rebinds pour le focus, le mouvement et le resize windows
-bindsym $mod+Ctrl+h             resize shrink width 10 px or 10 ppt
-bindsym $mod+Ctrl+k             resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+j             resize shrink height 10 px or 10 ppt
-bindsym $mod+Ctrl+l             resize grow width 10 px or 10 ppt
+bindsym $mod+Ctrl+h             resize shrink width  10 px or 10 ppt
+bindsym $mod+Ctrl+j             resize grow height   10 px or 10 ppt
+bindsym $mod+Ctrl+k             resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+l             resize grow width    10 px or 10 ppt
+
+bindsym $mod+$alt+h             resize shrink width  30 px or 30 ppt
+bindsym $mod+$alt+j             resize grow height   30 px or 30 ppt
+bindsym $mod+$alt+k             resize shrink height 30 px or 30 ppt
+bindsym $mod+$alt+l             resize grow width    30 px or 30 ppt
+
+bindsym $mod+Ctrl+$alt+h        resize shrink width  60 px or 60 ppt
+bindsym $mod+Ctrl+$alt+j        resize grow height   60 px or 60 ppt
+bindsym $mod+Ctrl+$alt+k        resize shrink height 60 px or 60 ppt
+bindsym $mod+Ctrl+$alt+l        resize grow width    60 px or 60 ppt
 
 # change focus
 bindsym $mod+h                  focus left
