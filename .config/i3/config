@@ -325,6 +325,7 @@ bindsym $mod+Shift+y        exec ~/.script/youtube/youtubesearch
 #---# Social media #---#
 
 bindsym $mod+Ctrl+s         exec --no-startup-id skypeforlinux
+bindsym $mod+$alt+s         exec killall skypeforlinux
 bindsym $mod+Ctrl+d         exec --no-startup-id discord
 bindsym $mod+$alt+d         exec killall Discord
 bindsym $mod+Ctrl+c         exec --no-startup-id caprine
