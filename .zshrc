@@ -241,12 +241,12 @@ alias mpdstream='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_stream
 
 # AUR install
 
-installAUR () {
+auwlr () {
     lastdir="$PWD"
-    aurdir="${HOME}/Downloads/aur_install_dir"
-    mkdir -p "$aurdir"
-    echo "Installing $1 in $aurdir"...
-    cd "$aurdir"
+    aulwr_cache="${HOME}/.cache/aulwr"
+    mkdir -p "$aulwr_cache"
+    echo "Installing $1 in $aulwr_cache"...
+    cd "$aulwr_cache"
     git clone "https://aur.archlinux.org/$1.git"
     cd "$1"
     makepkg -si
@@ -265,6 +265,10 @@ clonegit () {
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 alias bellwarn='paplay /usr/share/sounds/freedesktop/stereo/bell.oga'
+
+mp42mov () {
+    ffmpeg -i "$1" -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a pcm_s16le -f mov "$(echo $1 | sed 's/.[^.]$//')".mov
+}
 
 flac2mp3 () {
     ffmpeg -i "$1" -ab 320k -map_metadata 0 -id3v2_version 3 "$2"
