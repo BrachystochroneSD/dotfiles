@@ -2029,6 +2029,14 @@ for renaming."
            user (read-passwd "Git Hub Password: ") reponame))
   (format "git@github.com:%s/%s.git" user reponame))
 
+(defun my-git-init-and-remote (user reponame)
+  (interactive
+   (list
+    (read-string "Username: " "BrachystochroneSD")
+    (read-string "Repo name: ")))
+  (magit-init default-directory)
+  (magit-remote-add "origin" (my-git-create-new-repo user reponame)))
+
 (defun emergency-percent ()
   (interactive)
   (insert "%"))
