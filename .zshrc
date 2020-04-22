@@ -266,12 +266,18 @@ clonegit () {
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 alias bellwarn='paplay /usr/share/sounds/freedesktop/stereo/bell.oga'
 
+# FFMPEG
+
 mp42mov () {
     ffmpeg -i "$1" -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a pcm_s16le -f mov "$(echo $1 | sed 's/.[^.]$//')".mov
 }
 
 flac2mp3 () {
     ffmpeg -i "$1" -ab 320k -map_metadata 0 -id3v2_version 3 "$2"
+}
+
+videocompress () {
+    ffmpeg -i "$1" -b 800k "$1"
 }
 
 # systemctl
