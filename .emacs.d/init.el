@@ -26,7 +26,7 @@
 (add-to-list 'package-archives
              '("marmalade" . "https://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
-	     '("melpa" . "https://melpa.milkbox.net/packages/") t)
+         '("melpa" . "https://melpa.milkbox.net/packages/") t)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -236,7 +236,7 @@
   (interactive)
   (previous-buffer)
   (if (or (equal "dired-mode" (symbol-name major-mode))
-	  (equal (substring (buffer-name) 0 1) "*"))
+      (equal (substring (buffer-name) 0 1) "*"))
       (my-previous-buffer)))
 
 (global-set-key (kbd "C-x C-<left>") 'my-previous-buffer)
@@ -566,9 +566,9 @@
   (interactive)
   (let ((hex (or x (read-string "Hex value: "))))
     (message (format "R:%d G:%d B:%d"
-		     (string-to-number (substring hex 0 -4) 16)
-		     (string-to-number (substring hex 2 -2) 16)
-		     (string-to-number (substring hex 4 6) 16)))))
+             (string-to-number (substring hex 0 -4) 16)
+             (string-to-number (substring hex 2 -2) 16)
+             (string-to-number (substring hex 4 6) 16)))))
 
 (defun hextodec (&optional x)
   (interactive)
@@ -645,8 +645,8 @@
            (browse-url-default-browser file))
           ((string-match "\\(pdf\\|djvu\\|ps\\|dvi\\)$" file-extension)
            (org-open-file file))
-	  ((string-match (regexp-opt my-org-extension-list) file-extension)
-	   (org-open-file-with-system file))
+      ((string-match (regexp-opt my-org-extension-list) file-extension)
+       (org-open-file-with-system file))
           ((and
             (not bm)
             (file-directory-p (dired-get-file-for-visit)))
@@ -755,7 +755,7 @@
 
 (defun my-dired-find-file-read-args (prompt mustmatch)
   (list (read-file-name prompt (dired-current-directory) nil mustmatch)
-	t))
+    t))
 
 (defun my-dired-find-file (filename &optional wildcards)
   "find file with the current directory"
@@ -764,7 +764,7 @@
                         (confirm-nonexistent-file-or-buffer)))
   (let ((value (find-file-noselect filename nil nil wildcards)))
     (if (listp value)
-	(mapcar 'pop-to-buffer-same-window (nreverse value))
+    (mapcar 'pop-to-buffer-same-window (nreverse value))
       (pop-to-buffer-same-window value))))
 
 (defun my-dired-mode-hook ()
@@ -949,7 +949,7 @@
 (defun my-next-scratch ()
   (interactive)
   (set-frame-parameter (selected-frame) 'buffer-predicate (lambda (buf)
-							    (string-match "*scratch*" (buffer-name buf))))
+                                (string-match "*scratch*" (buffer-name buf))))
   (next-buffer)
   (set-frame-parameter (selected-frame) 'buffer-predicate nil))
 
@@ -1582,8 +1582,8 @@ for renaming."
           ("/umons/Inbox"       . ?U)
           ("/gmail/INBOX"       . ?G)
           ("/sent"              . ?s)
-          ("/trash"	        . ?t)
-          ("/drafts"	        . ?d)))
+          ("/trash"         . ?t)
+          ("/drafts"            . ?d)))
 
   ;; allow for updating mail using 'U' in the main view:
   (setq mu4e-get-mail-command "offlineimap")
