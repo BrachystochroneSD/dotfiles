@@ -283,3 +283,11 @@ videocompress () {
 # systemctl
 
 alias sysus='systemctl --user'
+
+# KTECH
+
+texcheck () {
+    ktech "$1" shitktech.png && feh shitktech.png && rm shitktech.png
+}
+
+myop () { nohup "$1" > /dev/null 2>&1 & }
