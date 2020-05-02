@@ -50,7 +50,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (gh auctex company eglot dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
+    (lua-mode gh auctex company eglot dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
  '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
  '(send-mail-function (quote mailclient-send-it)))
 
@@ -800,12 +800,12 @@
 ;; IMAGE-VIEWER ;;
 ;;;;;;;;;;;;;;;;;;
 
-(defun my-image-viewer-hook ()
-  (interactive)
-  (eimp-mode)
-  (eimp-fit-image-to-window nil))
+;; (defun my-image-viewer-hook ()
+  ;; (interactive)
+  ;; (eimp-mode)
+  ;; (eimp-fit-image-to-window nil))
 
-(add-hook 'image-mode-hook 'my-image-viewer-hook)
+;; (add-hook 'image-mode-hook 'my-image-viewer-hook)
 
 ;;;;;;;;;;;;;;;;;;
 ;; MY BOOKMARKS ;;
@@ -2044,3 +2044,9 @@ for renaming."
 (define-key evil-normal-state-map (kbd "£") 'evil-jump-item)
 (define-key evil-visual-state-map (kbd "£") 'evil-jump-item)
 (define-key evil-insert-state-map (kbd "C-M-µ") 'emergency-percent)
+
+;;;;;;;;;;;;;;
+;; LUA-MODE ;;
+;;;;;;;;;;;;;;
+
+(setq lua-indent-level 4)
