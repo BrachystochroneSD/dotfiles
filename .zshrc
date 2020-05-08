@@ -58,10 +58,6 @@ alias spu='sp -Syyu'
 # ZENOCYNE #
 ############
 
-alias zenocyne='ssh pi@192.168.1.102'
-
-alias printerpi='ssh pi@192.168.1.105'
-
 #zenohost
 alias zenohost="sudo ${HOME}/.script/hostszeno"
 
