@@ -151,6 +151,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Electric Pair Mode ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
+
 (electric-pair-mode 1)
 (setq electric-pair-pairs '((?\" . ?\")
                             (?\{ . ?\})
@@ -159,7 +160,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Bindings For Windows Move ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (global-set-key (kbd "C-M-y") 'other-frame)
 
@@ -389,9 +389,6 @@
   (local-set-key (kbd "C-*") 'my-org-insert-bold-star)
   (local-set-key (kbd "C-c <C-return>") 'org-open-at-point)
   (local-set-key (kbd "C-,") 'forward-char)
-  (local-set-key (kbd "C-c g") 'org-jira-browse-jira-at-point)
-  (local-set-key (kbd "C-c i c") 'org-jira-get-pantimamt-from-next-cact)
-  (local-set-key (kbd "C-c i h") 'org-jira-get-pantimamt-from-next-hlmu)
   (local-set-key (kbd "C-<tab>") 'mode-line-other-buffer)
   (local-unset-key (kbd "M-h"))
   (local-set-key (kbd "M-h") 'backward-paragraph))
@@ -401,94 +398,6 @@
 ;; Org-mode Agenda
 (global-set-key "\C-ca" 'org-agenda)
 (setq org-agenda-include-diary t)
-
-(setq org-todo-keywords '((sequence "TODO" "STANDBY" "|" "DONE")))
-
-(defun org-jira-html-link (jira)
-  (browse-url-default-browser (format "https://jira.worldline.com/browse/%s" jira))
-  )
-
-(defun org-jira-break-long-lines ()
-  (interactive)
-  (save-excursion
-    (beginning-of-buffer)
-    (while (not (eobp))
-      (end-of-line)
-      (when (< 70 (current-column))
-        (beginning-of-line)
-        (forward-char 70)
-        (newline)
-        (insert "        ")
-        (previous-logical-line))
-      (next-logical-line))))
-
-(defun org-jira-browse-jira-at-point ()
-  (interactive)
-  (superword-mode)
-  (let ((word (word-at-point)))
-    (if (string-match "BELHPNSFO-[0-9]+" word)
-        (org-jira-html-link word)
-      (message "no jira name at point")))
-  (superword-mode))
-
-(defun org-jira-insert-pantimamt (pan date amount)
-  (insert (format "- *PAN:* %s" PAN))
-  (org-meta-return)
-  (insert (format "*DATETIME:* %s" DATE))
-  (org-meta-return)
-  (insert (format "*AMOUNT:* %s" AMOUNT)))
-
-(defun org-jira-get-pantimamt-from-next-hlmu ()
-  (interactive)
-  (save-excursion
-    (re-search-forward
-     "No type DC *+: \\([0-9]\\{3\\}\\) \\([0-9]\\{7\\}\\) [0-9][0-9] \\([0-9][0-9]\\)")
-    (setq PAN (format "6703%s%s%s"
-                      (match-string 1)
-                      (match-string 2)
-                      (match-string 3)))
-    (re-search-forward "Date and Hour *: \\([0-3][0-9]-[01][0-9]-[0-9][0-9] [0-9:]+\\)")
-    (setq DATE (match-string 1))
-    (re-search-forward "Amount *: +\\([0-9,]+ \\(EUR\\|USD\\)\\)")
-    (setq AMOUNT (match-string 1))
-    )
-  (org-jira-insert-pantimamt PAN DATE AMOUNT))
-
-(defun org-jira-get-pantimamt-from-next-cact ()
-  (interactive)
-  (save-excursion
-    (re-search-forward "Card id. +: \\([0-9]+\\)")
-    (setq PAN (match-string 1))
-    (re-search-forward "Date +: +\\([0-3][0-9]/[01][0-9]/20[0-9][0-9] [0-9:]+\\)")
-    (setq DATE (match-string 1))
-    (re-search-forward "Acq. am\\(oun\\)?t *: +\\([0-9,]+ \\(EUR\\|USD\\)\\)")
-    (setq AMOUNT (match-string 2))
-    )
-  (org-jira-insert-pantimamt PAN DATE AMOUNT)
-  )
-
-;;TODO
-(defun org-jira-create-file (jiranum)
-  (interactive)
-  (write-file (format "~/.emacs.d/orgfiles/Projects/%s/%s-%s/org-file.org"
-                      (completing-read "Directory: " (append '("new") (directory-files "~/.emacs.d/orgfiles/Projects" nil "[^.]")))
-                      jiranum
-                      (read-string "short description of the project"))))
-
-(defun org-jira-create-new-org-file ()
-  (interactive)
-  (switch-to-buffer "*org-jira-new*")
-  (org-mode)
-  (let ((jiranum (read-string "Title: " "BELHPNSFO_") ))
-    (insert (format "#+TITLE: Test Document of %s\n"
-                    jiranum))
-    (insert "#+AUTHOR: Samuel Dawant\n")
-    (insert "#+OPTIONS: H:5 num:t")
-    (insert (format "#+LATEX_HEADER: \\setdocnum{CAD\\_%s}\n" (replace-regexp-in-string "_" "\\\\_" jiranum)))
-    (insert "#+LATEX_HEADER: \\setreference{JIRA}\n")
-    (insert "#+LATEX_HEADER: \\setrelease{BKS20.04}\n")
-    (local-set-key (kbd "C-c C-c") (lambda () (interactive) (org-jira-create-file jiranum))))
-  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Autorefresh Docview ;;
@@ -607,18 +516,9 @@
   (interactive)
   (message (hex2bin (word-at-point))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; HPNS TRACE MODE (Work in progress) ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(autoload 'hpns-trace-mode "hpns-trace-mode" "for shit" t)
-(add-to-list 'auto-mode-alist '("\\.hptr\\'" . hpns-trace-mode))
-
 ;;;;;;;;;;;
 ;; DIRED ;;
 ;;;;;;;;;;;
-
 
 (setq dired-listing-switches "-alh")
 (require 'browse-url)
@@ -797,89 +697,21 @@
 (add-hook 'dired-mode-hook 'my-dired-mode-hook)
 
 ;;;;;;;;;;;;;;;;;;
-;; IMAGE-VIEWER ;;
-;;;;;;;;;;;;;;;;;;
-
-;; (defun my-image-viewer-hook ()
-;;   (interactive)
-;;   (eimp-mode)
-;;   (eimp-fit-image-to-window nil))
-
-;; (add-hook 'image-mode-hook 'my-image-viewer-hook)
-
-;;;;;;;;;;;;;;;;;;
 ;; MY BOOKMARKS ;;
 ;;;;;;;;;;;;;;;;;;
 
+(global-set-key (kbd "<f5>") (lambda () (interactive) (find-file "~/Documents/Administrative/a_faire.org")))
+
 (defvar my-bookmarks-alist ;; General bm
-  `(("notes" . "~/.emacs.d/orgfiles/notes/")
-    ("notesgeneral" . "~/.emacs.d/orgfiles/notes/general.org")
-    ("packages" . "~/.emacs.d/packages/")
-    ("tandemacs" . "~/.emacs.d/packages/tandemacs.el")
-    ("hpns" . "~/.emacs.d/packages/hpns-trace-mode.el")
+  `(("packages" . "~/.emacs.d/packages/")
     ("emacs" . "~/.emacs.d/init.el")
-    ("buffbackup" . "~/.bufferbackup/")
     ("home" . "~/")
-    ("ealm" . "~/.emacs.d/packages/ealm-master/ealm.el")
+    ("zshrc" . "~/.zshrc")
+    ("scripts" . "~/.script/")
+    ("doc" . "~/Documents/")
+    ("downloads" . "~/Downloads/")
+    ("images" . "~/Images/")
     ))
-
-;; windows bindings
-
-(cond
- ((equal system-type 'gnu/linux) ;; Linux bm
-  (setq my-bookmarks-alist
-        (append
-         my-bookmarks-alist
-         '(
-           ("zshrc" . "~/.zshrc")
-           ("scripts" . "~/.script/")
-           ("doc" . "~/Documents/")
-           ("downloads" . "~/Downloads/")
-           ("desktop" . "~/Desktop/")
-           ("images" . "~/Images/")))))
-
- ((equal system-type 'window-nt)
-  (setq my-bookmarks-alist
-        (append
-         my-bookmarks-alist
-         '(("todo" . ,(concat "c:/Users/" (getenv "username") "/Documents/todolist.org"))
-           ("doc" . ,(concat "c:/Users/" (getenv "username") "/Documents/"))
-           ("downloads" . ,(concat "c:/Users/" (getenv "username") "/Downloads/"))
-           ("desktop" . ,(concat "c:/Users/" (getenv "username") "/Desktop/"))
-           ("images" . ,(concat "c:/Users/" (getenv "username") "/Pictures/"))))))
- )
-
-(if (equal (my-system-name) "SamuelD-PC") ;; HomePC bm
-    (setq my-bookmarks-alist
-          (append
-           my-bookmarks-alist
-           '(("NCfiles" . "c:/Users/Samuel D/Documents/MY_ACTUAL_DOCUMENTS/NCFiles/")
-             ("canon77D" . "c:/Users/Samuel D/Pictures/Canon77D/100CANON/")
-             ))))
-
-(if (equal (my-system-name) "EBEBRPCL1226") ;; eWL bm
-    (setq my-bookmarks-alist
-          (append
-           my-bookmarks-alist
-           '(("macrotacl" . "c:/Users/a757288/Documents/tacl_programs/SDAMACRO.tacl")
-             ("meetings" . "~/.emacs.d/orgfiles/meetings/")
-             ("manualstacl2" . "c:/Users/a757288/Documents/manuals/tacl2.pdf")
-             ("manualstacl" . "c:/Users/a757288/Documents/manuals/tacl.pdf")
-             ("chainpincredit" . "c:/Users/a757288/Documents/manuals/chainpincredit.pdf")
-             ("cardstcc" . "//cursa/div/TCC/PUB EXT/Certification/CARDS/test cards and tools TCC.xlsm")
-             ("projets" . "~/.emacs.d/orgfiles/Projects/")
-             ("latexwl" . "c:/Users/a757288/Documents/Programmes/miktex/texmfs/install/tex/latex/worldline/wlreport.cls")
-             ("chainhce" . "c:/Users/a757288/Documents/manuals/chain scheme HCE transactions.pdf")
-             ("chainbcmc" . "c:/Users/a757288/Documents/manuals/chain scheme BCMC EMV.pdf")
-             ("chainatm" . "c:/Users/a757288/Documents/manuals/chain atm.pdf")
-             ("netsupport" . "c:/Program Files (x86)/NetSupport/NetSupport Manager/PCICTLUI.EXE")
-             ("manuals" . "c:/Users/a757288/Documents/manuals/")
-             ("cards" . "//cursa/div/TCC/PUB EXT/Certification/CARDS/")
-             ("tracedb" . "c:/Users/a757288/Documents/tracesdb/")
-             ("tacl" . "c:/Users/a757288/Documents/tacl_programs/")
-             ("tabula" . "c:/Users/a757288/Documents/Programmes/tabula/tabula.exe")
-             ("dvl" . "c:/Users/a757288/Documents/Programmes/GUI(s) Dvl/WLP-DVL.htm")
-             ("bapof" . "c:/Users/a757288/Documents/Programmes/Bapof/bapof.exe")))))
 
 (defun my-bookmarks (alias)
   (interactive
@@ -920,19 +752,6 @@
 (global-set-key (kbd "C-M-ç") 'my-bookmarks-remove-bm)
 (global-set-key (kbd "M-ç") 'my-bookmarks-add-bm)
 
-;;;;;;;;;;;;;;;;;;;;
-;; TANDEM COMMAND ;;
-;;;;;;;;;;;;;;;;;;;;
-
-(require 'tandemacs)
-;; (require 'eshell) (eshell is required in tandemacs)
-
-(global-set-key (kbd "<f11>") 'eshell)
-(global-set-key (kbd "<S-f11>") (lambda ()(interactive)(eshell 3)))
-(global-set-key (kbd "<C-f11>") (lambda ()(interactive)(eshell 4)))
-(global-set-key (kbd "<M-f11>") (lambda ()(interactive)(eshell 5)))
-
-(global-set-key (kbd "<f5>") (lambda () (interactive) (find-file "c:/Users/a757288/Documents/todolist.org")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SCRATCH MANAGEMENT ;;
@@ -1115,59 +934,6 @@ See `elfeed-play-with-vlc'."
 (global-set-key (kbd "<M-f9>") (lambda () (interactive) (my-make-it-transparentier -10)))
 (global-set-key (kbd "<C-M-f9>") (lambda () (interactive) (my-make-it-transparentier 10)))
 
-;;;;;;;;;;;;;;;
-;; TACL MODE ;;
-;;;;;;;;;;;;;;;
-
-(require 'tacl-mode)
-
-(setq tacl-indent-offset 2)
-
-(define-auto-insert "\.tacl" "tacl_template.tacl")
-
-(add-to-list 'auto-mode-alist '("\\.tacl\\'" . tacl-mode))
-
-(defun my-tacl-return ()
-  (interactive)
-  (save-excursion (re-search-backward "\\(#[A-Za-z]+ ?\\|== ?\\|>> ?\\)"))
-  (insert (format "\n%s" (match-string 0)))
-  (indent-for-tab-command))
-
-(defun my-send-file-to-my-dir-in-tandem ()
-  (interactive)
-  (save-buffer)
-  (my-pscp-send-command (buffer-file-name) (replace-regexp-in-string ".tacl" "" (buffer-name))))
-
-(defun my-pscp-send-command (in out)
-  (shell-command (format "pscp.exe -l dawant.tstbks.run3 -pw \"mYbXSe:=:G^Rde:LB0:u\" %s dvl2.tandem.banksys.be:/G/BCT7/DZPRISDA/%s" in out) ))
-
-(defun tacl-mode-hook-setup ()
-  (local-set-key (kbd "C-c s") 'my-send-file-to-my-dir-in-tandem)
-  (local-set-key (kbd "C-M-x") 'my-send-file-to-my-dir-in-tandem)
-  (local-set-key (kbd "C-<return>") 'my-tacl-return)
-  (add-hook 'completion-at-point-functions 'tacl-completion-at-point nil 'local))
-
-(add-hook 'tacl-mode-hook 'tacl-mode-hook-setup)
-
-;;;;;;;;;;
-;; EALM ;;
-;;;;;;;;;;
-
-(add-to-list 'load-path "~/.emacs.d/packages/ealm-master/")
-
-(autoload 'ealm-mode "ealm-mode" "For ALM test construction" t)
-(add-to-list 'auto-mode-alist '("\\.ealm\\'" . ealm-mode))
-
-(defun my-ealm-mode-hook ()
-  (interactive)
-  (add-hook 'completion-at-point-functions 'ealm-completion-at-point nil 'local)
-  (local-set-key (kbd "<C-return>") 'ealm-insert-new-step)
-  (local-unset-key (kbd "C-c <C-return>"))
-  (local-set-key (kbd "C-c <C-return>") 'ealm-ref-goto-ref)
-  )
-
-(add-hook 'ealm-mode-hook 'my-ealm-mode-hook)
-
 ;; ;;;;;;;;;;;;;;;;;;;;;;
 ;; ;; UNDO KILL BUFFER ;;
 ;; ;;;;;;;;;;;;;;;;;;;;;;
@@ -1195,57 +961,9 @@ See `elfeed-play-with-vlc'."
 ;; (add-hook 'kill-buffer-hook 'kill-buffer-hook-setup)
 ;; (global-set-key (kbd "C-S-z") 'my-undo-kill-buffer)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;Windows;SSH/PuTTY;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;Pour windows only, utilisation du ssh avec plink
-(when (equal (my-system-name) "SamuelD-PC")
-  (require 'tramp)
-  (modify-coding-system-alist 'process "plink" 'utf-8-unix)
-  (setq tramp-default-method "plink"
-        tramp-completion-without-shell-p t)
-  (setq tramp-verbose 10)
-  (setq tramp-debug-buffer t)
-
-  (let ((path (getenv "PATH"))
-        (plink (expand-file-name "PuTTY" (getenv "ProgramFiles(x86)"))))
-    (setenv "PATH" (concat plink path-separator path)))
-
-  (add-to-list 'exec-path "C:/Program Files (x86)/PuTTY/")
-  (add-to-list 'exec-path (expand-file-name "PuTTY" (getenv "ProgramFiles(x86)")))
-
-  (defadvice sql-mysql (around sql-mysql-around activate)
-    "SSH to linux, then connect"
-    (let ((default-directory "/plink:ZenoCloud:"))
-      ad-do-it))
-
-  (defun zenocyne-connect ()
-    "connecte aux serveur zenocyne"
-    (interactive)
-    (find-file "/plink:ZenoCloud:/var/www/")
-    )
-
-  (defun my-shell-raspberry ()
-    (interactive)
-    (let ((default-directory "/plink:pi@192.168.0.104:"))
-      (eshell)))
-  )
-
 ;;;;;;;;;;;;
 ;; AuCTeX ;;
 ;;;;;;;;;;;;
-
-;; Path environement variable only for work pc
-
-(if (equal (my-system-name) "EBEBRPCL1226")
-    (progn
-      (let ((path (getenv "PATH"))
-            (miktex (replace-regexp-in-string "/" "\\\\" (expand-file-name "c:/Users/a757288/Documents/Programmes/miktex/texmfs/install/miktex/bin/x64" ))))
-        (setenv "PATH" (concat miktex path-separator path)))
-
-      (add-to-list 'exec-path (replace-regexp-in-string "/" "\\\\" (expand-file-name "c:/Users/a757288/Documents/Programmes/miktex/texmfs/install/miktex/bin/x64" )))))
 
 ;;AucteX "me fait pas chier avec tes messages de confirmation quand je compile"
 
@@ -1397,31 +1115,6 @@ for renaming."
 
 (add-hook 'LaTeX-mode-hook #'visual-line-mode)
 
-;;;;;;;;;;;;;;;
-;; ENCODING  ;;
-;;;;;;;;;;;;;;;
-
-;; (prefer-coding-system 'dos-)
-;; (set-default-coding-systems 'dos)
-;; (set-language-environment ')
-;; (set-selection-coding-system 'dos)
-
-;; /plink:dawant.tstbks.run3@dvl2.tandem.banksys.be:/G/syst02/macros
-
-;; psftp.exe dawant.tstbks.run3@dvl2.tandem.banksys.be
-
-(defvar my-mail-file (concat "c:/Users/" (getenv "username") "Documents/mailhtml/mail.html"))
-
-(defun my-html-mail-creator (string)
-  (with-temp-file my-mail-file
-    (insert "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">\n<head><meta charset=\"utf-8\"/></head>\n<body>\n")
-    (insert string)
-    (insert "</body>\n</html>")))
-
-(defun my-mail-this-buffer ()
-  (interactive)
-  (my-html-mail-creator (buffer-substring (point-min) (point-max))))
-
 ;; random defun
 
 (defun my-bool-test-defun (condition)
@@ -1432,6 +1125,7 @@ for renaming."
 ;;;;;;;;;;;;;;;
 ;; EVIL MODE ;;
 ;;;;;;;;;;;;;;;
+
 (add-to-list 'load-path "~/.emacs.d/packages/evil-master")
 
 (setq evil-want-C-u-scroll t)
@@ -1490,7 +1184,6 @@ for renaming."
 (define-key evil-visual-state-map (kbd "K") 'previous-line)
 
 (define-key evil-normal-state-map (kbd "C-M-j") 'evil-join)
-
 
 ;; evil mode-line gruvbox colors
 
@@ -1829,45 +1522,6 @@ for renaming."
 
 (global-set-key (kbd "M-\"") 'insert-quotes)
 
-;;;;;;;;;;;;;;;;;;;;;
-;; CARD MANAGEMENT ;;
-;;;;;;;;;;;;;;;;;;;;;
-
-(when (equal (my-system-name) "EBEBRPCL1226")
-  (defun tandemacs-mas-create-card (pan expdate bank env)
-    (interactive
-     (list
-      (read-string "Pan: ")
-      (read-string "Expiration Date: ")
-      (read-string "Bank: ")
-      (read-string "Environement: ")))
-    (kill-new (format "(path),(description),002,014,023,035,052,055\nCardProfiles_User.SDA.%1$s %3$s %4$s,%1$s,%1$s,%2$s,002,%1$sD%2$s221000001162309,8080,820239008407A00000000430609F10120315A08003240000000000000000000000FF" pan expdate bank env)))
-
-
-
-  (defun copy-pan-for-hlmu ()
-    (interactive)
-    (let ((word (word-at-point) ))
-      (if (string-match "6703\\([0-9]\\)\\{13\\}" word)
-          (progn
-            (message "PAN saved in kill-ring")
-            (kill-new (format "%s%s%s" (substring word 4 14) "  " (substring word 14 16))))
-        (message "No PAN at point"))
-      ))
-
-  (defun my-card-windows ()
-    "Show the cards in a little windows on the left"
-    (interactive)
-    (split-window-horizontally -40)
-    (windmove-right)
-    (find-file "~/.cards"))
-
-  (global-set-key (kbd "<f7>") 'copy-pan-for-hlmu)
-  (global-set-key (kbd "<f8>") 'my-card-windows)
-
-  )
-
-
 ;; TODO MSICELANOUS
 (defun delete-doublon (&optional pos)
   (interactive)
@@ -1927,7 +1581,6 @@ for renaming."
 
 ;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
 (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
-(add-to-list 'eglot-server-programs '(nxml-mode . ("java" "-jar" "c:/Users/Samuel D/Documents/Programmes/bin/org.eclipse.lsp4xml-uber.jar")))
 (add-to-list 'eglot-server-programs '(css-mode . ("css-languageserver" "--stdio")))
 (add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
 
