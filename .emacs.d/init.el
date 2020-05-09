@@ -4,7 +4,7 @@
 
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
-;; (setq display-line-numbers 'relative)
+(setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
