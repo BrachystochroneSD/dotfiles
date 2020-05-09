@@ -22,5 +22,8 @@ cp ~/.cache/wal/dunstconf ~/.config/dunst/dunstrc
 #dunst
 dunst &
 
+#polybar
+~/.config/polybar/launch.sh
+
 # animated wallpaper if gif
 ~/.script/bganim
