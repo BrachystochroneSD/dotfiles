@@ -19,6 +19,9 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 compinit
 _comp_options+=(globdots)
 
+# fix for tramp emacs
+[ $TERM = "dumb" ] && unsetopt zle $$ PS1='$ '
+
 ##################
 # Basics Aliases #
 ##################
