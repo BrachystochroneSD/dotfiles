@@ -81,7 +81,8 @@ check_and_launch () {
                       -G "https://api.twitch.tv/helix/streams" \
                       --data-urlencode "game_id=$(get_game_info $game_name)")
 
-    stream_list=$(echo "$twitchdata" | jq -r '.data[] | .language, .user_name' | awk 'NR%2{printf "%s:",$0;next;}1')
+    echo "$twitchdata" | jq
+    stream_list=$(echo "$twitchdata" | jq -r '.data[] | .language, .user_name, .title, .viewer_count' | awk '(NR%4==1){lg=$0}(NR%4==2){name=$0}(NR%4==3){title=$0}(NR%4==0){printf "%s:%s %s %s\n",lg,name,title,$0}')
     [ -z "$stream_list" ] && echoerror "No streams"
 
     if [ -n "$QUIETOPT" ]; then
@@ -95,7 +96,8 @@ check_and_launch () {
         stream=$(echo "$stream_list" | $dmenucmd -i -l 10 -p "Which stream ?") || aborted
     fi
 
-    stream=$(echo "$stream" | sed 's/.*://')
+    stream=$(echo "$stream" | sed 's/.*:\([^ ]*\).*/\1/')
+    echo "$stream"
     echo "$stream" > "$laststreamfile"
     [ -z "$QUIETOPT" ] && exec $chat_command "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$(echo $stream | tr [A-Z] [a-z])"
     exit
