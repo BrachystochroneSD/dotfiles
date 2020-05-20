@@ -16,10 +16,17 @@ touch $searchhistory
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 notifycmd="dunstify -i owl"
 
+COLS=$(tput cols)
+
 aborted(){
     echo "Aborted"
     exit
 }
+
+htmltoascii () {
+    cat | sed 's/&amp;/\&/g; s/&lt;/</g; s/&gt;/>/g; s/&quot;/\"/g; s/&\#39;/'"'"'/g'
+}
+    # echo $(cat | sed 's/&nbsp;/ /g; s/&amp;/\&/g; s/&lt;/\</g; s/&gt;/\>/g; s/&quot;/\"/g; s/#&#39;/\'"'"'/g; s/&ldquo;/\"/g; s/&rdquo;/\"/g;')
 
 save_channel(){
     # Save a channel on a rss.org file
@@ -100,7 +107,8 @@ youtube_search(){
 			 )
     fi
 
-    choicenum=$(echo "$youtubesearchdata" | jq -r ".items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt" | awk '{printf ("%.85s\n",$0)}' | awk '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){date=$0}(NR%4==0){printf ("%2d: %-85s %-20s %.10s \n", NR/4, play name, date, $0)}' | sed 's/|//g' | $dmenucmd -l 30 -i -p 'YTSearch' | sed 's/:.*/ - 1/' | bc )
+    testcold=$(echo "$COLS" / 2.2 | bc)
+    choicenum=$(echo "$youtubesearchdata"| jq -r ".items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt" | htmltoascii | awk -v cols="$testcold" '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){chan=$0}(NR%4==0){printf ("%2d: %-" cols "s %-15s %.10s \n", NR/4, substr(play name,0,cols), substr(chan,0,15), $0)}' | sed 's/|//g' | $dmenucmd -l 30 -i | sed 's/:.*/ - 1/' | bc )
 
     [ -z "$choicenum" ] && youtube_search
 
