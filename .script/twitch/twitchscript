@@ -81,7 +81,7 @@ check_and_launch () {
                       -G "https://api.twitch.tv/helix/streams" \
                       --data-urlencode "game_id=$(get_game_info $game_name)")
 
-    stream_list=$(echo "$twitchdata" | jq -r '.data[] | .language, .user_name, .title, .viewer_count' | awk '(NR%4==1){lg=$0}(NR%4==2){name=$0}(NR%4==3){title=$0}(NR%4==0){printf "%s:%s \"%s\" %s\n",lg,name,title,$0}')
+    stream_list=$(echo "$twitchdata" | sed 's/\\n//g' | jq -r '.data[] | .language, .user_name, .title, .viewer_count' | awk '(NR%4==1){lg=$0}(NR%4==2){name=$0}(NR%4==3){title=$0}(NR%4==0){printf "%s:%s \"%s\" %s\n",lg,name,title,$0}')
     [ -z "$stream_list" ] && echoerror "No streams"
 
     if [ -n "$QUIETOPT" ]; then
