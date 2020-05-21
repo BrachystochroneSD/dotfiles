@@ -1,118 +1,112 @@
 #!/bin/sh
 
-# get my private ytapikey
-. "${HOME}/.authentification/apikeys.sh"
-
-# colors from wpgtk/pywal
-. "${HOME}/.cache/wal/colors.sh"
-
-#Parameters
-max_results=35
-rss_file=${HOME}/.emacs.d/elfeed.org
-searchhistory=${HOME}/.script/youtube/searchhistory
-touch $searchhistory
-
-#Commands
-dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
-notifycmd="dunstify -i owl"
-
-COLS=$(tput cols)
-
-aborted(){
-    echo "Aborted"
-    exit
+error_print() {
+    echo "$1"
+    $NOTIFY_CMD "$1"
+    exit 1
 }
 
-htmltoascii () {
+html_to_ascii() {
+    # sed 's/&nbsp;/ /g; s/&amp;/\&/g; s/&lt;/\</g; s/&gt;/\>/g; s/&quot;/\"/g; s/#&#39;/\'"'"'/g; s/&ldquo;/\"/g; s/&rdquo;/\"/g;'
     cat | sed 's/&amp;/\&/g; s/&lt;/</g; s/&gt;/>/g; s/&quot;/\"/g; s/&\#39;/'"'"'/g'
 }
-    # echo $(cat | sed 's/&nbsp;/ /g; s/&amp;/\&/g; s/&lt;/\</g; s/&gt;/\>/g; s/&quot;/\"/g; s/#&#39;/\'"'"'/g; s/&ldquo;/\"/g; s/&rdquo;/\"/g;')
 
-save_channel(){
-    # Save a channel on a rss.org file
-    check=$(grep "$channelID" "$rss_file")
-    [ -z "$check" ] && save_or_not=$(printf "No\nYes" | $dmenucmd -i -p "Save this channel ?")
-    [ "$save_or_not" = "Yes" ] && printf "*** [[https://www.youtube.com/feeds/videos.xml?channel_id=%s][%s]]\n" "$channelID" "$channame" >> "$rss_file"
+check_internet_connection() {
+    ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1 || error_print "No internet connection"
 }
 
-get_channel_id(){
+get_channel_infos() {
+    channel_name=$(grep "youtube.com" "$RSSFILE" | sed 's/\*\*\* \[\[.*\]\[//' | sed 's/\]\]//' | $DMENU_CMD -l 10 -i -p "Channel Search") || get_search_query
     channelsearch=$(curl -s \
 			 -G https://www.googleapis.com/youtube/v3/search \
-			 --data-urlencode "q=$channelname" \
+			 --data-urlencode "q=$channel_name" \
 			 -d "type=channel" \
 			 -d "maxResults=25" \
 			 -d "part=snippet" \
 			 -d "key=$ytapikey")
 
-    chanchoice=$(echo "$channelsearch" | jq -r ".items[] | .snippet.channelTitle, .snippet.description" | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | $dmenucmd -l 25 -i -p "Which channel ?")
-    channame=$(echo "$chanchoice" | sed -r 's/[ 0-9]+: //' | sed 's/ :.*//')
-    channum=$(echo "$chanchoice" | sed 's/:.*/-1/' | bc)
-    [ -z "$channum" ] && youtube_search
-    channelID=$(echo "$channelsearch" | jq -r ".items[$channum].snippet.channelId")
+    chanchoice=$(echo "$channelsearch" | jq -r ".items[] | .snippet.channelTitle, .snippet.description" | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | $DMENU_CMD -l 25 -i -p "Which channel ?") || get_search_query
+    local channum=$(echo "$chanchoice" | sed 's/:.*/-1/' | bc)
+
+    channel_id=$(echo "$channelsearch" | jq -r ".items[$channum].snippet.channelId")
+
+    # Ask for saving the channel and save it on rss.org file
+    ! grep -q "$channel_id" "$RSSFILE" && local save_or_not=$(printf "No\nYes" | $DMENU_CMD -i -p "Save this channel ?")
+    [ "$save_or_not" = "Yes" ] && printf "*** [[https://www.youtube.com/feeds/videos.xml?channel_id=%s][%s]]\n" "$channel_id" "$channel_name" >> "$RSSFILE"
+
 }
 
-youtube_search(){
-    channelID=""
-    searchingshit=$(head -n 1 "$searchhistory" | awk '{print$0}END{printf "\nChannel Search\nOrder\nShow History\nClear History"}' | $dmenucmd -i -l 20 -p "Youtube search:") || aborted
+get_search_query() {
+    channel_id="" # reset channel_id
+    local menu_entry=$(head -n 1 "$HISTORY_FILE" | awk '{print$0}END{printf "\nChannel Search\nOrder\nShow History\nClear History"}' | $DMENU_CMD -i -l 20 -p "Youtube search:")
+    [ -z "$menu_entry" ] && error_print "Youtube search aborted"
 
-    case "$searchingshit" in
+    case "$menu_entry" in
+
 	"Channel Search")
-	    channelname=$(grep "youtube.com" "$rss_file" | sed 's/\*\*\* \[\[.*\]\[//' | sed 's/\]\]//' | $dmenucmd -l 10 -i -p "Channel Search") || youtube_search
-            get_channel_id
-	    save_channel
-	    searchingshit=$(echo | $dmenucmd -i -l 20 -p "Search on this channel:") || youtube_search
+            get_channel_infos
+	    search_query=$(echo | $DMENU_CMD -i -l 20 -p "Search on this channel:") || get_search_query
 	    ;;
 
-        "Order") sort=$(echo -e "relevance\ndate\nrating\ntitle\nviewCount" | $dmenucmd -i -l 20 -p "Sort by: "); youtube_search ;;
+        "Order")
+            sort=$(echo -e "relevance\ndate\nrating\ntitle\nviewCount" | $DMENU_CMD -i -l 20 -p "Sort by: ")
+            get_search_query
+            ;;
 
 	"Show History")
-	    searchingshit=$( $dmenucmd -i -l 20 -p "Search in History:" < "$searchhistory" ) || youtube_search
+	    search_query=$($DMENU_CMD -i -l 20 -p "Search in History:" < "$HISTORY_FILE" ) || get_search_query
 	    ;;
 
 	"Clear History")
-	    printf "" > "$searchhistory" && youtube_search
+	    printf "" > "$HISTORY_FILE"
+            get_search_query
 	    ;;
 
 	*)
-            grep -q "^$searchingshit$" "$searchhistory" || { echo "$searchingshit"; cat "$searchhistory"; } > /tmp/youthistotmp && mv /tmp/youthistotmp "$searchhistory"
-	    printf "Searching for %s\n" "$searchingshit"
+            search_query="$menu_entry"
+            ! grep -q "^$search_query$" "$HISTORY_FILE" && { echo "$search_query"; cat "$HISTORY_FILE"; } > /tmp/youthistotmp && mv /tmp/youthistotmp "$HISTORY_FILE"
+	    printf "Searching for %s\n" "$search_query"
     esac
+}
 
-    [ -z "$sort" ] && sort="relevance"
+mpv_launch() {
 
-    if [ -z "$channelID" ];then
-	youtubesearchdata=$(curl -s \
-				 -G https://www.googleapis.com/youtube/v3/search \
-				 -d "type=video,playlist" \
-				 -d "maxResults=$max_results" \
-				 -d "key=$ytapikey" \
-				 -d "part=snippet" \
-			         -d "order=$sort" \
+    local yt_fetch
+    [ -z "$sort" ] && sort="relevance" # take default
+
+    if [ -z "$channel_id" ]; then
+        yt_fetch=$(curl -s \
+                                 -G https://www.googleapis.com/youtube/v3/search \
+                                 -d "type=video,playlist" \
+                                 -d "maxResults=$MAX_RESULTS" \
+                                 -d "key=$ytapikey" \
+                                 -d "part=snippet" \
+                                 -d "order=$sort" \
                                  -d "relevanceLanguage=en" \
                                  -d "relevanceLanguage=fr" \
-				 --data-urlencode "q=$searchingshit"
-			 )
+                                 --data-urlencode "q=$search_query"
+                         )
     else
-	youtubesearchdata=$(curl -s \
-				 -G https://www.googleapis.com/youtube/v3/search \
-				 -d "type=video,playlist" \
-				 -d "maxResults=$max_results" \
-				 -d "key=$ytapikey" \
-				 -d "part=snippet" \
-			         -d "order=$sort" \
-				 -d "channelId=$channelID" \
+        yt_fetch=$(curl -s \
+                                 -G https://www.googleapis.com/youtube/v3/search \
+                                 -d "type=video,playlist" \
+                                 -d "maxResults=$MAX_RESULTS" \
+                                 -d "key=$ytapikey" \
+                                 -d "part=snippet" \
+                                 -d "order=$sort" \
                                  -d "relevanceLanguage=en" \
                                  -d "relevanceLanguage=fr" \
-				 --data-urlencode "q=$searchingshit"
-			 )
+                                 -d "channelId=$channel_id" \
+                                 --data-urlencode "q=$search_query"
+                         )
     fi
 
     testcold=$(echo "$COLS" / 2.2 | bc)
-    choicenum=$(echo "$youtubesearchdata"| jq -r ".items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt" | htmltoascii | awk -v cols="$testcold" '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){chan=$0}(NR%4==0){printf ("%2d: %-" cols "s %-15s %.10s \n", NR/4, substr(play name,0,cols), substr(chan,0,15), $0)}' | sed 's/|//g' | $dmenucmd -l 30 -i | sed 's/:.*/ - 1/' | bc )
+    choicenum=$(echo "$yt_fetch" | jq -r ".items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt" | html_to_ascii | awk -v cols="$testcold" '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){chan=$0}(NR%4==0){printf ("%2d: %-" cols "s %-15s %.10s \n", NR/4, substr(play name,0,cols), substr(chan,0,15), $0)}' | sed 's/|//g' | $DMENU_CMD -l 30 -i | sed 's/:.*/ - 1/' | bc )
 
-    [ -z "$choicenum" ] && youtube_search
+    [ -z "$choicenum" ] && get_search_query
 
-    choicekind=$(echo "$youtubesearchdata" | jq -r ".items[$choicenum].id")
+    choicekind=$(echo "$yt_fetch" | jq -r ".items[$choicenum].id")
 
     if [ "$( echo "$choicekind" | jq -r ".kind" )" = "youtube#video" ];then
 	link="https://www.youtube.com/watch?v=$(echo "$choicekind" | jq -r ".videoId")"
@@ -122,14 +116,35 @@ youtube_search(){
 
     echo "$link" | xclip -selection clipboard # clipboard to share with your friend !
 
-    res=$(printf "720\n1080\n360" | $dmenucmd -i -p "Which resolution? (if avalaible)") || youtube_search
+    res=$(printf "720\n1080\n360" | $DMENU_CMD -i -p "Which resolution? (if avalaible)") || get_search_query
 
-    mpv --ytdl-format="[height<=?$res]" "$link" || $notifycmd  "MPV ERROR " "Can't launch the video"
+    mpv --ytdl-format="[height<=?$res]" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch the video"
     exit
 }
 
-if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1;then
-    youtube_search
-else
-    $notifycmd "No internet connection"
-fi
+main() {
+    # get my private ytapikey
+    . "${HOME}/.authentification/apikeys.sh"
+
+    # colors from wpgtk/pywal
+    . "${HOME}/.cache/wal/colors.sh"
+
+    #Parameters
+    MAX_RESULTS=35
+    RSSFILE="${HOME}/.emacs.d/elfeed.org"
+    HISTORY_FILE="${HOME}/.script/youtube/searchhistory" && touch "$HISTORY_FILE"
+
+    #Commands
+    DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+    NOTIFY_CMD="dunstify -i owl"
+
+    COLS=$(tput cols)
+
+    check_internet_connection
+    get_search_query
+    mpv_launch
+
+}
+
+
+main
