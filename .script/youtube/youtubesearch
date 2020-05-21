@@ -132,19 +132,19 @@ main() {
     #Parameters
     MAX_RESULTS=35
     RSSFILE="${HOME}/.emacs.d/elfeed.org"
-    HISTORY_FILE="${HOME}/.script/youtube/searchhistory" && touch "$HISTORY_FILE"
+    HISTORY_FILE="${HOME}/.script/youtube/searchhistory"
+    touch "$HISTORY_FILE"
 
     #Commands
     DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
     NOTIFY_CMD="dunstify -i owl"
 
-    COLS=$(tput cols)
+    COLS=250
 
     check_internet_connection
     get_search_query
     mpv_launch
 
 }
-
 
 main
