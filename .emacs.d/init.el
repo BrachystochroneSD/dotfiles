@@ -1695,3 +1695,32 @@ for renaming."
 ;;;;;;;;;;;;;;
 
 (setq lua-indent-level 4)
+
+;;;;;;;;;;;;;;;
+;; HTML-MODE ;;
+;;;;;;;;;;;;;;;
+
+(defun my-sgml-delete-tag ()
+  (interactive)
+  (sgml-delete-tag 1)
+  (indent-region (point-min) (point-max))
+  )
+
+(defun sgml-skip-toggle-tag ()
+  (interactive)
+  (unless (looking-at "<")
+    (re-search-backward "<")
+    )
+  (forward-char 2)
+  (if (looking-back "</")
+      (sgml-skip-tag-backward 1)
+    (sgml-skip-tag-forward 1))
+  )
+
+(defun my-html-mode-hook ()
+  (interactive)
+  (local-set-key (kbd "C-c C-g") 'sgml-skip-toggle-tag)
+  (local-set-key (kbd "C-c C-d") 'my-sgml-delete-tag)
+  )
+
+(add-hook 'mhtml-mode-hook 'my-html-mode-hook)
