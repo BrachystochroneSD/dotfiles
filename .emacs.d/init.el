@@ -50,7 +50,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (lua-mode gh auctex company eglot dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
+    (php-mode lua-mode gh auctex company eglot dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
  '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
  '(send-mail-function (quote mailclient-send-it)))
 
@@ -809,6 +809,18 @@
     (string-match "\\@\\([0-9]+\\)-weeks-ago" curr-filter)
     (elfeed-search-set-filter (replace-regexp-in-string "[0-9]+" (number-to-string (1- (string-to-number (match-string 1 curr-filter)))) curr-filter))))
 
+(defun my-elfeed-scroll-up ()
+  (interactive)
+  (other-window 1)
+  (unless (eobp) (scroll-up-command))
+  (other-window 1))
+
+(defun my-elfeed-scroll-down ()
+  (interactive)
+  (other-window 1)
+  (unless (bobp) (scroll-down-command))
+  (other-window 1))
+
 (defun my-elfeed-open ()
   (interactive)
   (split-window-horizontally)
@@ -829,6 +841,8 @@
   (local-set-key (kbd "/") 'isearch-forward)
   (local-set-key (kbd "?") 'isearch-backward)
   (local-set-key (kbd "q") 'delete-frame)
+  (local-set-key (kbd "C-n") 'my-elfeed-scroll-up)
+  (local-set-key (kbd "C-p") 'my-elfeed-scroll-down)
   )
 
 (add-hook 'elfeed-search-mode-hook 'my-elfeed-search-hook-setup)
@@ -1719,7 +1733,7 @@ for renaming."
 
 (defun my-html-mode-hook ()
   (interactive)
-  (local-set-key (kbd "C-c C-g") 'sgml-skip-toggle-tag)
+  (local-set-key (kbd "C-c C-p") 'sgml-skip-toggle-tag)
   (local-set-key (kbd "C-c C-d") 'my-sgml-delete-tag)
   )
 
