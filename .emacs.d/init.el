@@ -40,6 +40,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-term-color-vector
+   [unspecified "#10180d" "#94a19a" "#A3C348" "#9DC248" "#B6CDB9" "#B0D2C1" "#B6CDB9" "#B6CDB9"] t)
  '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
  '(compilation-message-face (quote default))
@@ -123,6 +125,8 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Bindings ;;
 ;;;;;;;;;;;;;;;;;;;;;
+
+(global-set-key (kbd "<f8>") 'toggle-truncate-lines)
 
 (global-set-key (kbd "M-<left>") 'move-beginning-of-line)
 (global-set-key (kbd "M-<right>") 'move-end-of-line)
@@ -1580,23 +1584,23 @@ for renaming."
   (define-key company-search-map (kbd "C-p") 'company-select-previous))
 
 
-(require 'eglot)
+;; (require 'eglot)
 
-(define-key eglot-mode-map (kbd "M-*") 'xref-find-definitions)
-(define-key eglot-mode-map (kbd "C-c h") 'eglot-help-at-point)
+;; (define-key eglot-mode-map (kbd "M-*") 'xref-find-definitions)
+;; (define-key eglot-mode-map (kbd "C-c h") 'eglot-help-at-point)
 
-;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
-(add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
-(add-to-list 'eglot-server-programs '(css-mode . ("css-languageserver" "--stdio")))
-(add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
+;; ;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
+;; (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
+;; (add-to-list 'eglot-server-programs '(css-mode . ("css-languageserver" "--stdio")))
+;; (add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
 
-(setq eglot-events-buffer-size 2000)
-(setq eglot-put-doc-in-help-buffer t)
-(setq eglot-auto-display-help-buffer nil)
+;; (setq eglot-events-buffer-size 2000)
+;; (setq eglot-put-doc-in-help-buffer t)
+;; (setq eglot-auto-display-help-buffer nil)
 
-;; disable feature
-(add-to-list 'eglot-ignored-server-capabilites :documentHighlightProvider)
-(add-to-list 'eglot-ignored-server-capabilites :hoverProvider)
+;; ;; disable feature
+;; (add-to-list 'eglot-ignored-server-capabilites :documentHighlightProvider)
+;; (add-to-list 'eglot-ignored-server-capabilites :hoverProvider)
 
 ;; (defun eglot--update-doc (string hint)
 ;;   "Put updated documentation STRING where it belongs.
