@@ -1,21 +1,21 @@
 #!/bin/sh
 
-error_print() {
+error_print () {
     echo "$1"
     $NOTIFY_CMD "$1"
     exit 1
 }
 
-html_to_ascii() {
+html_to_ascii () {
     # sed 's/&nbsp;/ /g; s/&amp;/\&/g; s/&lt;/\</g; s/&gt;/\>/g; s/&quot;/\"/g; s/#&#39;/\'"'"'/g; s/&ldquo;/\"/g; s/&rdquo;/\"/g;'
     cat | sed 's/&amp;/\&/g; s/&lt;/</g; s/&gt;/>/g; s/&quot;/\"/g; s/&\#39;/'"'"'/g'
 }
 
-check_internet_connection() {
+check_internet_connection () {
     ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1 || error_print "No internet connection"
 }
 
-get_channel_infos() {
+get_channel_infos () {
     channel_name=$(grep "youtube.com" "$RSSFILE" | sed 's/\*\*\* \[\[.*\]\[//' | sed 's/\]\]//' | $DMENU_CMD -l 10 -i -p "Channel Search") || get_search_query
     channelsearch=$(curl -s \
 			 -G https://www.googleapis.com/youtube/v3/search \
@@ -36,7 +36,7 @@ get_channel_infos() {
 
 }
 
-get_search_query() {
+get_search_query () {
     channel_id="" # reset channel_id
     local menu_entry=$(head -n 1 "$HISTORY_FILE" | awk '{print$0}END{printf "\nChannel Search\nOrder\nShow History\nClear History"}' | $DMENU_CMD -i -l 20 -p "Youtube search:")
     [ -z "$menu_entry" ] && error_print "Youtube search aborted"
@@ -69,7 +69,7 @@ get_search_query() {
     esac
 }
 
-mpv_launch() {
+mpv_launch () {
 
     local yt_fetch
     [ -z "$sort" ] && sort="relevance" # take default
@@ -122,7 +122,7 @@ mpv_launch() {
     exit
 }
 
-main() {
+main () {
     # get my private ytapikey
     . "${HOME}/.authentification/apikeys.sh"
 
@@ -144,7 +144,6 @@ main() {
     check_internet_connection
     get_search_query
     mpv_launch
-
 }
 
 main
