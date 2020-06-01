@@ -5,9 +5,15 @@ owl(){
     dunstify -i owl "$bg"
 }
 
+owlremove() {
+    #TODO
+    bg=$(awk 'NR==2{print $0}' ${HOME}/.fehbg | sed 's\.*/\\g' | sed "s/'//g" )
+    bg="${HOME}/Images/wallpapers/$bg"
+    dunstify -i owl "$bg"
+}
+
 case $1 in
-    --owl)
-	owl
-	;;
+    --owl) owl ;;
+    --owlrem) owlremove ;;
 esac
 echo A

@@ -46,7 +46,7 @@ type = custom/script
 exec = ~/.script/polybar/owl
 label = %{T3}A%{T-}
 click-left = exec ~/.script/polybar/owl --owl
-click-right = exec dmenu_run
+click-right = exec ~/.script/polybar/owl --owlrem
 interval = 4242424242
 
 [module/blank]
