@@ -219,13 +219,13 @@ delete_streamer() {
 
 twitchmenu() {
     laststreamer=$(cat "$laststreamfile")
-    choice=$(printf "Lives streamers\nStreams by game\nVOD of fav streamers\n\nAdd last streamer $laststreamer\nDelete streamer" | $dmenucmd -i -l 10 -p "Twitch Menu :")
+    choice=$(printf "Lives streamers\nStreams by game\nVOD of fav streamers\n\nAdd last streamer: $laststreamer\nDelete streamer" | $dmenucmd -i -l 10 -p "Twitch Menu :")
 
     case "$choice" in
         "Lives streamers") "${HOME}"/.script/twitch/twitchscript --live ;;
         "Streams by game") "${HOME}"/.script/twitch/twitchscript --game ;;
         "VOD of fav streamers") "${HOME}"/.script/twitch/twitchscript --vod ;;
-        "Add last streamer $laststreamer") cat "$laststreamfile" >> "$channelsfile" ;;
+        "Add last streamer: $laststreamer") cat "$laststreamfile" >> "$channelsfile" ;;
         "Delete streamer") delete_streamer ;;
         *) aborted ;;
     esac
