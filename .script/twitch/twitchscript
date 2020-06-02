@@ -107,7 +107,6 @@ check_and_launch () {
 }
 
 twitchgamefunction () {
-    laststreamer=$(cat "$laststreamfile")
 
     if [ -n "$QUIETOPT" ]; then
         quietlist=$(cat "$gamesfile" | awk '{print NR" -> "$0}')
@@ -116,26 +115,25 @@ twitchgamefunction () {
         read listnum
         game=$(echo "$quietlist" | grep "^$listnum -> .*" | sed "s/^$listnum -> //")
     else
-        game=$(echo -e "$(cat $gamesfile)\n\nOther\nAdd Game\nAdd last streamer $laststreamer" | $dmenucmd -l 15 -i -p "$noshit") || aborted
+        game=$(echo -e "$(cat $gamesfile)\n\nOther\nAdd Game" | $dmenucmd -l 15 -i -p "$noshit") || aborted
     fi
 
-    if [ "$game" = "Add Game" ]; then
-        local dprompt="Which game do you want to add on favorite?"
-        game=$($dmenucmd -l 10 -i -p "$dprompt" < "$gamesdb") || aborted
-        echo "$game" >> "$gamesfile"
+    case "$game" in
+        "Add Game")
+            local dprompt="Which game do you want to add on favorite?"
+            game=$($dmenucmd -l 10 -i -p "$dprompt" < "$gamesdb") || aborted
+            echo "$game" >> "$gamesfile"
 
-        local dprompt="Do you want to check streams for $game?"
-        cert=$(printf "No\nYes" | $dmenucmd -l 10 -i -p "$dprompt")
-        [ "$cert" = "Yes" ] || aborted
-
-    elif [ "$game" = "Add last streamer $laststreamer" ]; then
-         cat "$laststreamfile" >> "$channelsfile"
-         twitchgamefunction
-    elif [ "$game" = "Other" ]; then
-        game=$($dmenucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
-    fi
-
-    check_and_launch "$game"
+            local dprompt="Do you want to check streams for $game?"
+            cert=$(printf "No\nYes" | $dmenucmd -l 10 -i -p "$dprompt")
+            [ "$cert" = "Yes" ] || aborted
+            ;;
+        "Other")
+            game=$($dmenucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
+            ;;
+        *)
+            check_and_launch "$game" ;;
+    esac
 }
 
 twitchlivefunction () {
@@ -174,13 +172,12 @@ twitchlivefunction () {
 }
 
 twitchvod_search(){
-    searchingshit=$($dmenucmd -l 10 -p "TwitchVOD Channel:" < "$channelsfile") || aborted
+    searchingshit=$(sort "$channelsfile" | $dmenucmd -l 10 -p "TwitchVOD Channel:") || aborted
     printf "Searching for video on %s\n" "$searchingshit"
     curl_choose_and_watch
 }
 
 curl_choose_and_watch(){
-
     #curl the api twitch vod search for a channel
     twitchvod=$(curl -s \
                      -H "Client-ID: $twitch_clientID" \
@@ -215,15 +212,22 @@ curl_choose_and_watch(){
     fi
 }
 
-twitchmenu() {
+delete_streamer() {
+    streamer_to_delete=$(sort "$channelsfile" | $dmenucmd -i -l 10 -p "Delete streamer: ")
+    grep -v "$streamer_to_delete" "$channelsfile" > /tmp/chanshit && mv /tmp/chanshit "$channelsfile"
+}
 
-    choice=$(printf "LIVE\nGAME\nVOD" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 10 -p "Twitch Menu :")
+twitchmenu() {
+    laststreamer=$(cat "$laststreamfile")
+    choice=$(printf "Lives streamers\nStreams by game\nVOD of fav streamers\n\nAdd last streamer $laststreamer\nDelete streamer" | $dmenucmd -i -l 10 -p "Twitch Menu :")
 
     case "$choice" in
-        LIVE) "${HOME}"/.script/twitch/twitchscript --live ;;
-        GAME) "${HOME}"/.script/twitch/twitchscript --game ;;
-        VOD) "${HOME}"/.script/twitch/twitchscript --vod ;;
-        *) aborted "Only LIVE GAME or VOD supported" ;;
+        "Lives streamers") "${HOME}"/.script/twitch/twitchscript --live ;;
+        "Streams by game") "${HOME}"/.script/twitch/twitchscript --game ;;
+        "VOD of fav streamers") "${HOME}"/.script/twitch/twitchscript --vod ;;
+        "Add last streamer $laststreamer") cat "$laststreamfile" >> "$channelsfile" ;;
+        "Delete streamer") delete_streamer ;;
+        *) aborted ;;
     esac
 }
 
