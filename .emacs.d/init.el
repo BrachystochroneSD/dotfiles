@@ -1718,11 +1718,35 @@ for renaming."
 ;; HTML-MODE ;;
 ;;;;;;;;;;;;;;;
 
+(defun my-sgml-mark-whole-tag ()
+  (interactive)
+  (sgml-skip-tag-forward 1)
+  (end-of-line)
+  (set-mark (point))
+  (forward-char)
+  (sgml-skip-tag-backward 1))
+
+(defun my-sgml-tag (tag)
+  (interactive
+   (list (read-string "which tag (default div)" nil nil "div")))
+  (if (looking-back "\\\n[\t ]*<[^>]*")
+      (progn
+        (beginning-of-line-text)
+        (setq pointbeg (point))
+        (insert (format "<%s>\n" tag))
+        (save-excursion
+          (sgml-skip-tag-forward 1)
+          (insert (format "\n</%s>" tag))
+          (setq pointend (point))
+          (indent-region pointbeg pointend))
+        (backward-char 2))
+    (insert (format "<%s></%s>" tag tag))
+    (re-search-backward "<")))
+
 (defun my-sgml-delete-tag ()
   (interactive)
   (sgml-delete-tag 1)
-  (indent-region (point-min) (point-max))
-  )
+  (indent-region (point-min) (point-max)))
 
 (defun sgml-skip-toggle-tag ()
   (interactive)
@@ -1738,7 +1762,7 @@ for renaming."
 (defun my-html-mode-hook ()
   (interactive)
   (local-set-key (kbd "C-c C-p") 'sgml-skip-toggle-tag)
-  (local-set-key (kbd "C-c C-d") 'my-sgml-delete-tag)
-  )
+  (local-set-key (kbd "C-c C-t") 'my-sgml-tag)
+  (local-set-key (kbd "C-c C-d") 'my-sgml-delete-tag))
 
-(add-hook 'mhtml-mode-hook 'my-html-mode-hook)
+(add-hook 'html-mode-hook 'my-html-mode-hook)
