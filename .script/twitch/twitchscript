@@ -27,8 +27,13 @@ echoerror () {
 }
 
 aborted () {
+    [ -n "$1" ] && echo "Error: $1"
     echo "Aborted"
     exit 1
+}
+
+check_internet() {
+    ! ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1 && aborted "No internet connection"
 }
 
 get_user_id () {
@@ -48,7 +53,7 @@ get_user_id () {
                          --data-urlencode "login=$*")
         output=$(echo "$curl_data" | jq -r '.data[] | .id')
     fi
-    [ -n "$output" ] && echo "$output" || echoerror "Nothing found for $*"
+    [ -n "$output" ] && echo "$output" || aborted "Nothing found for $*"
 }
 
 
@@ -210,9 +215,24 @@ curl_choose_and_watch(){
     fi
 }
 
-! ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1 && echo "No internet connection" && exit
+twitchmenu() {
+
+    choice=$(printf "LIVE\nGAME\nVOD" | dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3" -i -l 10 -p "Twitch Menu :")
+
+    case "$choice" in
+        LIVE) "${HOME}"/.script/twitch/twitchscript --live ;;
+        GAME) "${HOME}"/.script/twitch/twitchscript --game ;;
+        VOD) "${HOME}"/.script/twitch/twitchscript --vod ;;
+        *) aborted "Only LIVE GAME or VOD supported" ;;
+    esac
+}
+
+check_internet
 
 case $1 in
+    --menu)
+        twitchmenu
+        ;;
     --live)
         twitchlivefunction "$2" ;;
     --game)

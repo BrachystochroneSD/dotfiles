@@ -317,7 +317,7 @@ for_window [instance="scripts"] resize set 625 450
 bindsym $mod+t              exec $term -n scripts -e vim ~/.notes
 
 #Twitch#
-bindsym $mod+Ctrl+t         exec ~/.script/twitch/twitchmenu.sh
+bindsym $mod+Ctrl+t         exec ~/.script/twitch/twitchscript --menu
 
 #Youtube#
 bindsym $mod+Shift+y        exec ~/.script/youtube/youtubesearch
