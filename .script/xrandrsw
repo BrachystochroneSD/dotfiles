@@ -31,7 +31,14 @@ turn_on_devices () {
     fi
 
     if [ -n "$chosenone" ];then
-        xrandr --output "$chosenone" --auto --right-of "$internal"
+        leftorright=$(echo -e "left\nright" | $dmenucmd -p "Left or Right of main display?")
+        if [ "$leftorright" == "right" ];then
+            xrandr --output "$chosenone" --auto --right-of "$internal"
+        elif [ "$leftorright" == "left" ];then
+            xrandr --output "$chosenone" --auto --left-of "$internal"
+        else
+            abort "choose leftorright"
+        fi
         "${HOME}"/.fehbg
     else
         echo "no devices to turn on"
