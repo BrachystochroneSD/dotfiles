@@ -16,9 +16,24 @@ chat_command="brave -new-window"
 
 max_vid=100
 
-dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+[ -n "$QUIETOPT" ] && menucmd="fzfcmd" || menucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+
 
 touch "$laststreamfile"
+
+fzfcmd(){
+    local prompt
+    local iflag
+    while getopts "ip:l:" opt; do
+        case $opt in
+            p) prompt=$OPTARG ;;
+            l) lflag=shit ;;
+            i) iflag="-i";;
+        esac
+    done
+    [ -z "$prompt" ] && prompt=">"
+    fzf --prompt="$prompt" "$iflag"
+}
 
 echoerror () {
     echo "$*"
@@ -33,7 +48,8 @@ aborted () {
 }
 
 check_internet() {
-    ! ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1 && aborted "No internet connection"
+    echo bite
+    # ! ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1 && aborted "No internet connection"
 }
 
 get_user_id () {
@@ -89,16 +105,7 @@ check_and_launch () {
     stream_list=$(echo "$twitchdata" | sed 's/\\n//g' | jq -r '.data[] | .language, .user_name, .title, .viewer_count' | awk '(NR%4==1){lg=$0}(NR%4==2){name=$0}(NR%4==3){title=$0}(NR%4==0){printf "%s:%s \"%s\" %s\n",lg,name,title,$0}')
     [ -z "$stream_list" ] && echoerror "No streams"
 
-    if [ -n "$QUIETOPT" ]; then
-        stream_list_bis=$(echo "$stream_list" | awk '{print NR" "$0}')
-        echo "$stream_list_bis"
-        echo ""
-        echo "Choose a stream (number):"
-        read streamnum
-        stream=$(echo "$stream_list_bis" | grep "^$streamnum [a-z][a-z]:.*")
-    else
-        stream=$(echo "$stream_list" | $dmenucmd -i -l 10 -p "Streams:") || aborted
-    fi
+    stream=$(echo "$stream_list" | $menucmd -i -l 10 -p "Streams:") || aborted
 
     stream=$(echo "$stream" | sed 's/.*:\([^ ]*\).*/\1/')
     echo "$stream" > "$laststreamfile"
@@ -107,29 +114,20 @@ check_and_launch () {
 }
 
 twitchgamefunction () {
-
-    if [ -n "$QUIETOPT" ]; then
-        quietlist=$(cat "$gamesfile" | awk '{print NR" -> "$0}')
-        echo "$quietlist"
-        echo -e "\nChoose a number"
-        read listnum
-        game=$(echo "$quietlist" | grep "^$listnum -> .*" | sed "s/^$listnum -> //")
-    else
-        game=$(echo -e "$(cat $gamesfile)\n\nOther\nAdd Game" | $dmenucmd -l 15 -i -p "$noshit") || aborted
-    fi
+    game=$(echo -e "$(cat $gamesfile)\n\nOther\nAdd Game" | $menucmd -l 15 -i -p "$noshit") || aborted
 
     case "$game" in
         "Add Game")
-            local dprompt="Which game do you want to add on favorite?"
-            game=$($dmenucmd -l 10 -i -p "$dprompt" < "$gamesdb") || aborted
+            local dprompt="Add game: "
+            game=$($menucmd -l 10 -i -p "$dprompt" < "$gamesdb") || aborted
             echo "$game" >> "$gamesfile"
 
             local dprompt="Do you want to check streams for $game?"
-            cert=$(printf "No\nYes" | $dmenucmd -l 10 -i -p "$dprompt")
+            cert=$(printf "No\nYes" | $menucmd -l 10 -i -p "$dprompt")
             [ "$cert" = "Yes" ] || aborted
             ;;
         "Other")
-            game=$($dmenucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
+            game=$($menucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
             ;;
         *)
             check_and_launch "$game" ;;
@@ -164,7 +162,7 @@ twitchlivefunction () {
         game_dico=$(echo "$curl_data" | jq -r '.data[] | .id,.name' | awk 'NR%2{printf "%s ",$0;next;}1')
 
         streams_test=$(echo "$twitchdata" | jq -r '.data[] | .user_name, .game_id')
-        stream=$(echo "$streams_test" | while read a;do echo "$a" | grep -q "^[0-9]*$" && echo "$game_dico" | grep "$a" | sed 's/^[0-9]* //' || echo "$a";done | awk 'NR%2{printf "%14s : ",$0;next;}1' | $dmenucmd -l 10 -i -p "Which stream do you want to watch?") || aborted
+        stream=$(echo "$streams_test" | while read a;do echo "$a" | grep -q "^[0-9]*$" && echo "$game_dico" | grep "$a" | sed 's/^[0-9]* //' || echo "$a";done | awk 'NR%2{printf "%14s : ",$0;next;}1' | $menucmd -l 10 -i -p "Streams: ") || aborted
         stream=$(echo "$stream" | sed 's/ *\([^ ]*\).*/\1/')
         [ -z "$QUIETOPT" ] && exec $chat_command "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
         exit
@@ -172,7 +170,7 @@ twitchlivefunction () {
 }
 
 twitchvod_search(){
-    searchingshit=$(sort "$channelsfile" | $dmenucmd -l 10 -p "TwitchVOD Channel:") || aborted
+    searchingshit=$(sort "$channelsfile" | $menucmd -l 10 -p "TwitchVOD Channel:") || aborted
     printf "Searching for video on %s\n" "$searchingshit"
     curl_choose_and_watch
 }
@@ -191,7 +189,7 @@ curl_choose_and_watch(){
 
     #create a table with all of the videos and get the url of the chosen one
     : $(( borne_max=total_vod - max_vid ))
-    video=$(echo "$twitchvod" | jq -r '.data[] | .title, .created_at' | awk -v bm=$borne_max -v offs="$offset" 'BEGIN{ if (offs > 0 ) { printf "Prev\n" } }!(NR%2){printf ("%3d: %-100s %.10s\n", FNR/2+offs, p, $0)}{p=$0}END{ if (offs < bm) { printf "Next" } }' | $dmenucmd -i -l 30 -p "Which video?" | sed 's/:.*//')
+    video=$(echo "$twitchvod" | jq -r '.data[] | .title, .created_at' | awk -v bm=$borne_max -v offs="$offset" 'BEGIN{ if (offs > 0 ) { printf "Prev\n" } }!(NR%2){printf ("%3d: %-100s %.10s\n", FNR/2+offs, p, $0)}{p=$0}END{ if (offs < bm) { printf "Next" } }' | $menucmd -i -l 30 -p "Which video?" | sed 's/:.*//')
 
     if [ -z "$video" ];then
         twitchvod_search
@@ -206,25 +204,25 @@ curl_choose_and_watch(){
         videourl=$(echo "$twitchvod" | jq -r '.data['$num'].url')
 
         # ask for the resolution and launch the video with mpv
-        res=$(printf "720\n1080\n360" | $dmenucmd -i -p "Which resolution? (if avalaible)") || twitchvod_search
+        res=$(printf "720\n1080\n360" | $menucmd -i -p "Which resolution? (if avalaible)") || twitchvod_search
         mpv --ytdl-format="[height<=?$res]" "$videourl" || twitchvod_search
         exit
     fi
 }
 
 delete_streamer() {
-    streamer_to_delete=$(sort "$channelsfile" | $dmenucmd -i -l 10 -p "Delete streamer: ")
+    streamer_to_delete=$(sort "$channelsfile" | $menucmd -i -l 10 -p "Delete streamer: ")
     grep -v "$streamer_to_delete" "$channelsfile" > /tmp/chanshit && mv /tmp/chanshit "$channelsfile"
 }
 
 twitchmenu() {
     laststreamer=$(cat "$laststreamfile")
-    choice=$(printf "Lives streamers\nStreams by game\nVOD of fav streamers\n\nAdd last streamer: $laststreamer\nDelete streamer" | $dmenucmd -i -l 10 -p "Twitch Menu :")
+    choice=$(printf "LIVE\nGAMES\nVOD\n\nAdd last streamer: $laststreamer\nDelete streamer" | $menucmd -i -l 10 -p "Twitch Menu :")
 
     case "$choice" in
-        "Lives streamers") "${HOME}"/.script/twitch/twitchscript --live ;;
-        "Streams by game") "${HOME}"/.script/twitch/twitchscript --game ;;
-        "VOD of fav streamers") "${HOME}"/.script/twitch/twitchscript --vod ;;
+        "LIVE") "${HOME}"/.script/twitch/twitchscript --live ;;
+        "GAMES") "${HOME}"/.script/twitch/twitchscript --game ;;
+        "VOD") "${HOME}"/.script/twitch/twitchscript --vod ;;
         "Add last streamer: $laststreamer") cat "$laststreamfile" >> "$channelsfile" ;;
         "Delete streamer") delete_streamer ;;
         *) aborted ;;
@@ -241,7 +239,7 @@ case $1 in
         twitchlivefunction "$2" ;;
     --game)
         args=$(echo "$*" | sed "s/$1 *//")
-        noshit="Choose a game"
+        noshit="Choose a game: "
         [ -n "$args" ] && check_and_launch "$args"
         twitchgamefunction ;;
     --vod)
