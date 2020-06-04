@@ -172,7 +172,7 @@ twitchlivefunction () {
 }
 
 twitchvod_search(){
-    searchingshit=$(sort "$channelsfile" | $menucmd -l 10 -p "TwitchVOD Channel: ") || aborted
+    searchingshit=$(sort "$channelsfile" | $menucmd -i -l 10 -p "TwitchVOD Channel: ") || aborted
     printf "Searching for video on %s\n" "$searchingshit"
     curl_choose_and_watch
 }
