@@ -127,6 +127,7 @@
 ;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "<f8>") 'toggle-truncate-lines)
+(global-set-key (kbd "<C-f8>") 'visual-line-mode)
 
 (global-set-key (kbd "M-<left>") 'move-beginning-of-line)
 (global-set-key (kbd "M-<right>") 'move-end-of-line)
