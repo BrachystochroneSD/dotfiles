@@ -42,7 +42,7 @@ alias diff='diff --color=auto'
 
 alias ska="sudo killall"
 
-alias xclipb='xclip -selection clipboard'
+alias xcb='xclip -selection clipboard'
 
 alias cpr='cp -rv'
 alias ytb2mp3='youtube-dl -x --embed-thumbnail --audio-format mp3'
