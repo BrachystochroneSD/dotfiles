@@ -239,17 +239,7 @@ alias mpdstream='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_stream
 
 # AUR install
 
-auwlr () {
-    lastdir="$PWD"
-    aulwr_cache="${HOME}/.cache/aulwr"
-    mkdir -p "$aulwr_cache"
-    echo "Installing $1 in $aulwr_cache"...
-    cd "$aulwr_cache"
-    git clone "https://aur.archlinux.org/$1.git"
-    cd "$1"
-    makepkg -si
-    cd "$lastdir"
-}
+alias auwlr='${HOME}/.script/auwlr'
 
 # git clone
 
