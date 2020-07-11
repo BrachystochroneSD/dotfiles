@@ -1,5 +1,7 @@
 #!/bin/sh
 
+auth_file="${HOME}/.authentification/apikeys.sh"
+
 # get my private twitch_clientID
 . "${HOME}/.authentification/apikeys.sh"
 
@@ -23,6 +25,19 @@ else
 fi
 
 touch "$laststreamfile"
+
+get_token(){
+    curl -sX POST https://id.twitch.tv/oauth2/token \
+         --data "client_id=$twitch_clientID" \
+         --data "client_secret=$twitch_secret" \
+         --data "grant_type=client_credentials"
+}
+
+refresh_access_token(){
+    local token=$(get_token | jq -r '.access_token')
+    sed -i "s/\(^twitch_access_token=\).*/\1$token/" "$auth_file"
+}
+
 
 fzfcmd(){
     local prompt
@@ -254,5 +269,6 @@ case $1 in
     --vod)
         offset=0
         twitchvod_search ;;
-    *) echo "usage: twitchscript --live (stream name), --vod, --game (game)" ;;
+    --refresh-token) refresh_access_token ;;
+    *) echo "usage: twitchscript --live (stream name), --vod, --game (game) or --refresh-token" ;;
 esac
