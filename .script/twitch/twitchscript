@@ -145,7 +145,7 @@ twitchgamefunction () {
             ;;
         "Other")
             game=$($menucmd -l 10 -i -p "$noshit" < "$gamesdb") || aborted
-            ;;
+            check_and_launch "$game" ;;
         *)
             check_and_launch "$game" ;;
     esac
