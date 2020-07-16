@@ -2,7 +2,9 @@
 
 prount(){
     number=$(pacman -Qu | wc -l)
-     [ ! "$number" = 0 ] && echo  "$number" || echo
+    [ -f "${HOME}/.cache/auwlr/auwlr_upgrade_list" ] && AUR=$(wc -l <"${HOME}/.cache/auwlr/auwlr_upgrade_list")
+    [ -n "$AUR" -a ! "$AUR" = 0 ] && AUR="(+$AUR)"
+    [ ! "$number" = 0 ] && echo  "$number$AUR" || echo
 }
 
 update(){

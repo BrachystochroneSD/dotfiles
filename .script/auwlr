@@ -1,0 +1,99 @@
+#!/bin/sh
+
+auwlr_cache="${HOME}/.cache/auwlr"
+auwlr_update_list="${HOME}/.cache/auwlr/auwlr_update_list"
+auwlr_upgrade_list="${HOME}/.cache/auwlr/auwlr_upgrade_list"
+
+print_help() {
+    echo "Usage: auwlr -QS"
+}
+
+update_package() {
+    curr_version="$1"
+    package="$2"
+    git_clone_or_pull "$package" > /dev/null 2>&1
+    [ ! -f "$auwlr_cache/$package/PKGBUILD" ] && exit 1
+    pkg_epoch=$(grep "^epoch=" "$auwlr_cache/$package/PKGBUILD" | sed 's/epoch=//')
+    pkg_ver=$(grep "^pkgver=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgver=//')
+    pkg_rel=$(grep "^pkgrel=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgrel=//')
+    [ -n "$pkg_epoch" ] && pkg_epoch="$pkg_epoch:"
+    [ -n "$pkg_rel" ] && pkg_rel="-$pkg_rel"
+    package_version="$pkg_epoch$pkg_ver$pkg_rel"
+    [ ! "$curr_version" = "$package_version" ] && echo "$package $curr_version -> $package_version"
+}
+
+
+auwlr_update() {
+    rm -f "$auwlr_update_list"
+    pacman -Qm | while read pkg ver; do
+        result=$(update_package "$ver" "$pkg")
+        [ -n "$result" ] && echo "$result" >> "$auwlr_update_list"
+    done
+    [ -d "$auwlr_update_list" ] && cat "$auwlr_update_list" || echo "Everything is up to date!"
+}
+
+auwlr_build() {
+    [ ! -f "$auwlr_update_list" ] && echo "Nothing to be upgraded, update first" && exit 1
+    count=$(wc -l <"$auwlr_update_list")
+    printf "\nPackages ($count) "
+    sed 's/->.*//;s/ /-/' "$auwlr_update_list"  | tr '\n' ' '
+    printf "\n\n:: Proceed with build? [y/N]"
+    read conf
+    if [ "$conf" = "y" ];then
+        while read pkg shits;do
+            cd "$auwlr_cache/$pkg"
+            makepkg -sfc && {
+                makepkg --packagelist >> "$auwlr_upgrade_list"
+                grep -v "$pkg" "$auwlr_update_list" > /tmp/auwlrshit && mv /tmp/auwlrshit "$auwlr_update_list"
+            }
+        done < "$auwlr_update_list"
+        rm "$auwlr_update_list"
+    else
+        echo "Auwlr Upgrade Aborted"
+        exit 1
+    fi
+}
+
+auwlr_upgrade() {
+    [ ! -f "$auwlr_upgrade_list" ] && echo "Nothing to Upgrade, do a --build before" && exit 1
+    sudo pacman -U $(cat .cache/auwlr/auwlr_upgrade_list| tr "\n" " " )
+    rm "$auwlr_upgrade_list"
+}
+
+git_clone_or_pull() {
+    mkdir -p "$auwlr_cache"
+    cd "$auwlr_cache"
+    if [ -d "$1" ];then
+        cd "$1"
+        echo "Pulling/Update $1 in $auwlr_cache"...
+        git pull origin master
+    else
+        echo "Installing $1 in $auwlr_cache"...
+        git clone "https://aur.archlinux.org/$1.git"
+        cd "$1"
+    fi
+}
+
+auwlr_install() {
+    lastdir="$PWD"
+    git_clone_or_pull "$2"
+    makepkg -sifc
+    cd "$lastdir"
+}
+
+# [ -n "$upg_bool" ] && auwlr_upgrade TODO
+# [ -n "$upd_bool" ] && auwlr_update
+
+case $1 in
+    -Q)
+        pacman -Qm
+        cache_size=$(du -h "$auwlr_cache" --max-depth=0)
+        echo "Cache size: ${cache_size%%/*}"
+        ;;
+    --install) auwlr_install "$2" ;;
+    --update) auwlr_update ;;
+    --build) auwlr_build ;;
+    --upgrade) auwlr_upgrade ;;
+    *)
+        print_help ;;
+esac
