@@ -115,7 +115,7 @@ while getopts "QSyu" opt; do
     esac
 done
 
-if [ -n "install_bool" ]; then
+if [ -n "$install_bool" ]; then
     auwlr_install "${@#$1}"
     [ -n "$upd_bool" ] && auwlr_update
     [ -n "$upg_bool" ] && auwlr_build
