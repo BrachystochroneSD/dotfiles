@@ -5,59 +5,15 @@ auwlr_update_list="${HOME}/.cache/auwlr/auwlr_update_list"
 auwlr_upgrade_list="${HOME}/.cache/auwlr/auwlr_upgrade_list"
 
 print_help() {
-    echo "Usage: auwlr -QS"
-}
-
-update_package() {
-    curr_version="$1"
-    package="$2"
-    git_clone_or_pull "$package" > /dev/null 2>&1
-    [ ! -f "$auwlr_cache/$package/PKGBUILD" ] && exit 1
-    pkg_epoch=$(grep "^epoch=" "$auwlr_cache/$package/PKGBUILD" | sed 's/epoch=//')
-    pkg_ver=$(grep "^pkgver=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgver=//')
-    pkg_rel=$(grep "^pkgrel=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgrel=//')
-    [ -n "$pkg_epoch" ] && pkg_epoch="$pkg_epoch:"
-    [ -n "$pkg_rel" ] && pkg_rel="-$pkg_rel"
-    package_version="$pkg_epoch$pkg_ver$pkg_rel"
-    [ ! "$curr_version" = "$package_version" ] && echo "$package $curr_version -> $package_version"
-}
-
-
-auwlr_update() {
-    rm -f "$auwlr_update_list"
-    pacman -Qm | while read pkg ver; do
-        result=$(update_package "$ver" "$pkg")
-        [ -n "$result" ] && echo "$result" >> "$auwlr_update_list"
-    done
-    [ -d "$auwlr_update_list" ] && cat "$auwlr_update_list" || echo "Everything is up to date!"
-}
-
-auwlr_build() {
-    [ ! -f "$auwlr_update_list" ] && echo "Nothing to be upgraded, update first" && exit 1
-    count=$(wc -l <"$auwlr_update_list")
-    printf "\nPackages ($count) "
-    sed 's/->.*//;s/ /-/' "$auwlr_update_list"  | tr '\n' ' '
-    printf "\n\n:: Proceed with build? [y/N]"
-    read conf
-    if [ "$conf" = "y" ];then
-        while read pkg shits;do
-            cd "$auwlr_cache/$pkg"
-            makepkg -sfc && {
-                makepkg --packagelist >> "$auwlr_upgrade_list"
-                grep -v "$pkg" "$auwlr_update_list" > /tmp/auwlrshit && mv /tmp/auwlrshit "$auwlr_update_list"
-            }
-        done < "$auwlr_update_list"
-        rm "$auwlr_update_list"
-    else
-        echo "Auwlr Upgrade Aborted"
-        exit 1
-    fi
-}
-
-auwlr_upgrade() {
-    [ ! -f "$auwlr_upgrade_list" ] && echo "Nothing to Upgrade, do a --build before" && exit 1
-    sudo pacman -U $(cat .cache/auwlr/auwlr_upgrade_list| tr "\n" " " )
-    rm "$auwlr_upgrade_list"
+    echo "usage: auwlr <operation> [...]"
+    echo "operations:"
+    echo "    auwlr -h: print this help"
+    echo "    auwlr -Q: print all packages installed with AUR"
+    echo "              and the size of the cache"
+    echo "    auwlr -S [options] [package(s)]"
+    echo "           options are:"
+    echo "               -y : update installed AUR packages with git"
+    echo "               -u : upgrade installed packages and build them"
 }
 
 git_clone_or_pull() {
@@ -74,26 +30,99 @@ git_clone_or_pull() {
     fi
 }
 
+update_package() {
+    curr_version="$1"
+    package="$2"
+    git_clone_or_pull "$package" > /dev/null 2>&1
+    [ ! -f "$auwlr_cache/$package/PKGBUILD" ] && exit 1
+    pkg_epoch=$(grep "^epoch=" "$auwlr_cache/$package/PKGBUILD" | sed 's/epoch=//')
+    pkg_ver=$(grep "^pkgver=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgver=//')
+    pkg_rel=$(grep "^pkgrel=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgrel=//')
+    [ -n "$pkg_epoch" ] && pkg_epoch="$pkg_epoch:"
+    [ -n "$pkg_rel" ] && pkg_rel="-$pkg_rel"
+    package_version="$pkg_epoch$pkg_ver$pkg_rel"
+    [ ! "$curr_version" = "$package_version" ] && echo "$package $curr_version -> $package_version"
+}
+
+auwlr_update() {
+    echo "Checking version of installed packages"
+    rm -f "$auwlr_update_list"
+    pacman -Qm | while read pkg ver; do
+        result=$(update_package "$ver" "$pkg")
+        [ -n "$result" ] && echo "$result" >> "$auwlr_update_list"
+        printf "."
+    done
+    echo
+    [ -f "$auwlr_update_list" ] && cat "$auwlr_update_list" || echo "Everything is up to date!"
+}
+
+auwlr_build() {
+    [ ! -f "$auwlr_update_list" ] && echo "Nothing to be upgraded, update first" && exit 1
+    count=$(wc -l <"$auwlr_update_list")
+    printf "\nPackages ($count) "
+    sed 's/ .* -> /-/' "$auwlr_update_list"  | tr '\n' ' '
+    printf "\n\n:: Proceed with build? [y/N]"
+    read conf
+    if [ "$conf" = "y" ];then
+        while read pkg shits;do
+            cd "$auwlr_cache/$pkg"
+            makepkg -sfc && {
+                makepkg --packagelist >> "$auwlr_upgrade_list"
+                grep -v "$pkg" "$auwlr_update_list" > /tmp/auwlrshit && mv /tmp/auwlrshit "$auwlr_update_list"
+            } || exit 1
+        done < "$auwlr_update_list"
+        rm "$auwlr_update_list"
+    else
+        echo "Auwlr Upgrade Aborted"
+        exit 1
+    fi
+}
+
+auwlr_upgrade() {
+    [ ! -f "$auwlr_upgrade_list" ] && echo "Nothing to install or upgrade, use -Sy first" && exit 1
+    sudo pacman -U $(cat .cache/auwlr/auwlr_upgrade_list| tr "\n" " " )
+    rm "$auwlr_upgrade_list"
+}
+
 auwlr_install() {
     lastdir="$PWD"
-    git_clone_or_pull "$2"
-    makepkg -sifc
+    list_packages="$@"
+    while [ -n "$list_packages" ]; do
+        pkg="${list_packages##* }"
+        echo "Building $pkg"
+        git_clone_or_pull "$pkg" > /dev/null 2>&1
+        cd "$auwlr_cache/$pkg"
+        makepkg -sfc && {
+            makepkg --packagelist >> "$auwlr_upgrade_list"
+        } || exit 1
+        list_packages="${list_packages% *}"
+    done
     cd "$lastdir"
 }
 
-# [ -n "$upg_bool" ] && auwlr_upgrade TODO
-# [ -n "$upd_bool" ] && auwlr_update
+while getopts "QSyu" opt; do
+    case $opt in
+        Q)
+            pacman -Qm
+            cache_size=$(du -h "$auwlr_cache" --max-depth=0 2>/dev/null)
+            echo "Cache size: ${cache_size%%/*}"
+            exit 0
+            ;;
+        S) install_bool=t ;;
+        y) upd_bool=t ;;
+        u) upg_bool=t ;;
+        *) print_help ;;
+    esac
+done
 
-case $1 in
-    -Q)
-        pacman -Qm
-        cache_size=$(du -h "$auwlr_cache" --max-depth=0)
-        echo "Cache size: ${cache_size%%/*}"
-        ;;
-    --install) auwlr_install "$2" ;;
-    --update) auwlr_update ;;
-    --build) auwlr_build ;;
-    --upgrade) auwlr_upgrade ;;
-    *)
-        print_help ;;
-esac
+if [ -n "install_bool" ]; then
+    auwlr_install "${@#$1}"
+    [ -n "$upd_bool" ] && auwlr_update
+    [ -n "$upg_bool" ] && auwlr_build
+    auwlr_upgrade
+    exit 0
+else
+    echo "Options y and u need to be used with S"
+    print_help
+    exit 1
+fi
