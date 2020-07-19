@@ -52,7 +52,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (php-mode lua-mode gh auctex company eglot dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
+    (eglot php-mode lua-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
  '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
  '(send-mail-function (quote mailclient-send-it)))
 
@@ -1584,49 +1584,52 @@ for renaming."
   (define-key company-search-map (kbd "C-n") 'company-select-next)
   (define-key company-search-map (kbd "C-p") 'company-select-previous))
 
+;;;;;;;;;;;
+;; EGLOT ;;
+;;;;;;;;;;;
 
-;; (require 'eglot)
+(require 'eglot)
 
-;; (define-key eglot-mode-map (kbd "M-*") 'xref-find-definitions)
-;; (define-key eglot-mode-map (kbd "C-c h") 'eglot-help-at-point)
+(define-key eglot-mode-map (kbd "M-*") 'xref-find-definitions)
+(define-key eglot-mode-map (kbd "C-c h") 'eglot-help-at-point)
 
 ;; ;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
 ;; (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
 ;; (add-to-list 'eglot-server-programs '(css-mode . ("css-languageserver" "--stdio")))
 ;; (add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
 
-;; (setq eglot-events-buffer-size 2000)
-;; (setq eglot-put-doc-in-help-buffer t)
-;; (setq eglot-auto-display-help-buffer nil)
+(setq eglot-events-buffer-size 2000)
+(setq eglot-put-doc-in-help-buffer t)
+(setq eglot-auto-display-help-buffer nil)
 
-;; ;; disable feature
-;; (add-to-list 'eglot-ignored-server-capabilites :documentHighlightProvider)
-;; (add-to-list 'eglot-ignored-server-capabilites :hoverProvider)
+;; disable feature
+(add-to-list 'eglot-ignored-server-capabilites :documentHighlightProvider)
+(add-to-list 'eglot-ignored-server-capabilites :hoverProvider)
 
-;; (defun eglot--update-doc (string hint)
-;;   "Put updated documentation STRING where it belongs.
-;; Honours `eglot-put-doc-in-help-buffer'.  HINT is used to
-;; potentially rename EGLOT's help buffer."
-;;   (if (or (eq t eglot-put-doc-in-help-buffer)
-;;           (and eglot-put-doc-in-help-buffer
-;;                (funcall eglot-put-doc-in-help-buffer string)))
-;;       (with-current-buffer (eglot--help-buffer)
-;;         (rename-buffer (format "*eglot-help for %s*" hint))
-;;         (let ((inhibit-read-only t))
-;;           (erase-buffer)
-;;           (insert string)
-;;           (goto-char (point-min))
-;;           (if eglot-auto-display-help-buffer
-;;               (display-buffer (current-buffer))
-;;             (unless (get-buffer-window (current-buffer))
-;;               (eglot--message
-;;                "%s"
-;;                (truncate-string-to-width
-;;                 (replace-regexp-in-string "\\(.*\\)\n.*" "\\1" string)
-;;                 (frame-width) nil nil "...")
-;;                (buffer-name eglot--help-buffer))))
-;;           (help-mode)))
-;;     (eldoc-message string)))
+(defun eglot--update-doc (string hint)
+  "Put updated documentation STRING where it belongs.
+Honours `eglot-put-doc-in-help-buffer'.  HINT is used to
+potentially rename EGLOT's help buffer."
+  (if (or (eq t eglot-put-doc-in-help-buffer)
+          (and eglot-put-doc-in-help-buffer
+               (funcall eglot-put-doc-in-help-buffer string)))
+      (with-current-buffer (eglot--help-buffer)
+        (rename-buffer (format "*eglot-help for %s*" hint))
+        (let ((inhibit-read-only t))
+          (erase-buffer)
+          (insert string)
+          (goto-char (point-min))
+          (if eglot-auto-display-help-buffer
+              (display-buffer (current-buffer))
+            (unless (get-buffer-window (current-buffer))
+              (eglot--message
+               "%s"
+               (truncate-string-to-width
+                (replace-regexp-in-string "\\(.*\\)\n.*" "\\1" string)
+                (frame-width) nil nil "...")
+               (buffer-name eglot--help-buffer))))
+          (help-mode)))
+    (eldoc-message string)))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; FOLDING/OUTLINE ;;
