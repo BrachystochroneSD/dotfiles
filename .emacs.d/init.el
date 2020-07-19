@@ -1140,7 +1140,6 @@ for renaming."
 (add-to-list 'load-path "~/.emacs.d/packages/evil-master")
 
 (setq evil-want-C-u-scroll t)
-(setq evil-want-fine-undo t)
 (require 'evil)
 (evil-mode 1)
 
