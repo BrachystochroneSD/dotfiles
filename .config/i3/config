@@ -355,6 +355,5 @@ bindsym $mod+F7 exec networkmanager_dmenu
 
 bindsym Print exec scrot ~/Images/screenshots/%Y-%d-%T-screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
 
-
-#calendar
-bindsym $mod+c exec $calendar
+# xdotools autoclicker
+bindsym $mod c exec xdotool click --repeat 500 --delay 10 1
