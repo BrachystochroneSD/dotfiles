@@ -22,11 +22,11 @@
   (interactive)
   (kill-buffer (current-buffer)))
 
+(require 'package)
 (package-initialize)
-(add-to-list 'package-archives
-             '("marmalade" . "https://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
-         '("melpa" . "https://melpa.milkbox.net/packages/") t)
+;; (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -52,7 +52,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (eglot php-mode lua-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
+    (fzf eglot php-mode lua-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
  '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
  '(send-mail-function (quote mailclient-send-it)))
 
