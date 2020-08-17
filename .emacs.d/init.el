@@ -1311,6 +1311,7 @@ for renaming."
         user-mail-address "samueld@mailo.com"
         smtpmail-default-smtp-server "mail.mailo.com"
         smtpmail-smtp-server "mail.mailo.com"
+        mu4e-headers-skip-duplicates t
         smtpmail-smtp-service 465)
         ;; smtpmail-smtp-service 587)
 
@@ -1351,7 +1352,7 @@ for renaming."
        (smtpmail-local-domain "mailo.com")
        (smtpmail-default-smtp-server "mail.mailo.com")
        (smtpmail-smtp-server "mail.mailo.com")
-       (smtpmail-smtp-service 587)
+       (smtpmail-smtp-service 465)
        )))
 
   (defun my-mu4e-set-account ()
@@ -1396,6 +1397,8 @@ for renaming."
   (defun my-mu4e-header-hook ()
     (interactive)
     (local-set-key (kbd "X") (lambda () (interactive) (mu4e-mark-execute-all t)))
+    (local-set-key (kbd "M-D") 'my-mu4e-delete-from)
+    (local-set-key (kbd "C-D") 'my-mu4e-delete-subject)
     (local-set-key (kbd "C-j") 'my-mu4e-delete-junk))
 
   (add-hook 'mu4e-view-mode-hook 'my-mu4e-view-hook)
@@ -1414,13 +1417,26 @@ for renaming."
            (:from          .  22)
            (:subject       .  nil)))
 
-  (defun my-mu4e-delete-junk ()
-    (interactive)
+  (defun my-mu4e-mark-as-delete-regexp (regexp)
+    (interactive
+     (list (read-string "my-mu4e-mark-as-delete-regexp: ")))
     (save-excursion
       (beginning-of-buffer)
-      (while (re-search-forward "/Junk" nil t)
-        (mu4e-headers-mark-for-delete))
-      (mu4e-mark-execute-all t)))
+      (while (re-search-forward regexp nil t)
+        (mu4e-headers-mark-for-delete))))
+
+  (defun my-mu4e-delete-junk ()
+    (interactive)
+    (my-mu4e-mark-as-delete-regexp "/Junk")
+    (mu4e-mark-execute-all t))
+
+  (defun my-mu4e-delete-from ()
+    (interactive)
+    (my-mu4e-mark-as-delete-regexp (caar (mu4e-field-at-point :from))))
+
+  (defun my-mu4e-delete-subject ()
+    (interactive)
+    (my-mu4e-mark-as-delete-regexp (mu4e-field-at-point :subject)))
 
   )
 
