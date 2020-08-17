@@ -212,7 +212,7 @@
                             (horizontal-scroll-bars . nil)
                             (fullscreen . maximized)))
 
-(set-default-font "firacode-14:regular")
+(set-frame-font "firacode-14:regular")
 (add-to-list 'default-frame-alist
              '(font . "firacode-14:regular"))
   ;; (progn
@@ -1283,6 +1283,7 @@ for renaming."
   (setq mu4e-maildir-shortcuts
         '(("/outlook/Inbox"     . ?O)
           ("/umons/Inbox"       . ?U)
+          ("/mailo/Inbox"       . ?M)
           ("/gmail/INBOX"       . ?G)
           ("/sent"              . ?s)
           ("/trash"         . ?t)
@@ -1307,10 +1308,11 @@ for renaming."
   (setq mu4e-sent-folder "/sent"
         mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
         mu4e-drafts-folder "/drafts"
-        user-mail-address "samrenfou@hotmail.com"
-        smtpmail-default-smtp-server "smtp.office365.com"
-        smtpmail-smtp-server "smtp.office365.com"
-        smtpmail-smtp-service 587)
+        user-mail-address "samueld@mailo.com"
+        smtpmail-default-smtp-server "mail.mailo.com"
+        smtpmail-smtp-server "mail.mailo.com"
+        smtpmail-smtp-service 465)
+        ;; smtpmail-smtp-service 587)
 
 
   ;; Now I set a list of
@@ -1341,6 +1343,15 @@ for renaming."
        (smtpmail-default-smtp-server "outlook.office365.com")
        (smtpmail-smtp-server "outlook.office365.com")
        (smtpmail-smtp-service 587)
+       )
+      ("mailo"
+       (mu4e-sent-folder "/mailo/Sent")
+       (user-mail-address "samueld@mailo.com")
+       (smtpmail-smtp-user "samueld@mailo.com")
+       (smtpmail-local-domain "mailo.com")
+       (smtpmail-default-smtp-server "mail.mailo.com")
+       (smtpmail-smtp-server "mail.mailo.com")
+       (smtpmail-smtp-service 587)
        )))
 
   (defun my-mu4e-set-account ()
@@ -1369,7 +1380,7 @@ for renaming."
   (add-to-list 'mu4e-bookmarks
                (make-mu4e-bookmark
                 :name "sents"
-                :query "maildir:/outlook/Sent OR maildir:/umons/Sent OR maildir:/gmail/Sent"
+                :query "maildir:/outlook/Sent OR maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
                 :key ?i))
 
   (define-key mu4e-main-mode-map "u" 'mu4e-update-index)
