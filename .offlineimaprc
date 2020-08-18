@@ -1,5 +1,5 @@
 [general]
-accounts = Outlook, Gmail, Umons
+accounts = Outlook, Gmail, Umons, Mailo
 pythonfile = ~/.authentification/offlineimap.py
 socktimeout = 10
 
@@ -16,7 +16,7 @@ type = Gmail
 remoteuser = mrsamrenfou@gmail.com
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 ssl_version = tls1_2
-remotepasseval=get_password_emacs("imap.gmail.com", "mrsamrenfou@gmail.com", "993")
+remotepasseval = get_password_emacs("imap.gmail.com", "mrsamrenfou@gmail.com", "993")
 folderfilter = lambda foldername: foldername not in ['Trash','[Gmail]/Corbeille','[Gmail]/Tous les messages','[Gmail]/Brouillons','[Gmail]/Suivis','[Gmail]/Important']
 nametrans =  lambda foldername: re.sub('\[Gmail\].Tous\ les\ messages', 'All', re.sub('\[Gmail\].Messages\ envoy&AOk-s', 'Sent', re.sub('\[Gmail\].Spam', 'Junk', foldername)))
 
@@ -31,11 +31,11 @@ localfolders = ~/.mail/outlook
 
 [Repository DoneOutlook]
 type = IMAP
-remotehost=outlook.office365.com
+remotehost = outlook.office365.com
 remoteuser = samrenfou@hotmail.com
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 ssl_version = tls1_2
-remotepasseval=get_password_emacs("outlook.office365.com", "samrenfou@hotmail.com", "993")
+remotepasseval = get_password_emacs("outlook.office365.com", "samrenfou@hotmail.com", "993")
 folderfilter = lambda foldername: foldername in ["Inbox","Junk","Sent"]
 
 [Account Umons]
@@ -48,11 +48,11 @@ localfolders = ~/.mail/umons
 
 [Repository DoneUmons]
 type = IMAP
-remotehost=outlook.office365.com
-remoteuser=120781@umons.ac.be
+remotehost = outlook.office365.com
+remoteuser = 120781@umons.ac.be
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 ssl_version = tls1_2
-remotepasseval=get_password_emacs("outlook.office365.com", "120781@umons.ac.be", "993")
+remotepasseval = get_password_emacs("outlook.office365.com", "120781@umons.ac.be", "993")
 folderfilter = lambda foldername: foldername in ['Courrier ind&AOk-sirable','INBOX','&AMk-l&AOk-ments envoy&AOk-s']
 nametrans =  lambda foldername:  re.sub('Courrier ind&AOk-sirable', 'Junk', re.sub('INBOX', 'Inbox', re.sub('&AMk-l&AOk-ments envoy&AOk-s', 'Sent', foldername)))
 
@@ -66,9 +66,7 @@ localfolders = ~/.mail/mailo
 
 [Repository DoneMailo]
 type = IMAP
-remotehost=mail.mailo.com
-remoteuser=samueld@mailo.com
+remotehost = mail.mailo.com
+remoteuser = samueld@mailo.com
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-ssl_version = tls1_2
-remotepasseval=get_password_emacs("mail.mailo.com", "samueld@mailo.com", "993")
-folderfilter = lambda foldername: foldername in ["Inbox","Junk","Sent"]
+remotepasseval = get_password_emacs("mail.mailo.com", "samueld@mailo.com", "993")
