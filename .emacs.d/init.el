@@ -1309,10 +1309,10 @@ for renaming."
         mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
         mu4e-drafts-folder "/drafts"
         user-mail-address "samueld@mailo.com"
+        user-full-name "\"Samuel D\""
         smtpmail-default-smtp-server "mail.mailo.com"
         smtpmail-smtp-server "mail.mailo.com"
         mu4e-headers-skip-duplicates t
-        ;; smtpmail-smtp-service 465)
         smtpmail-smtp-service 587)
 
 
@@ -1321,6 +1321,7 @@ for renaming."
     '(("gmail"
        (mu4e-sent-folder "/gmail/Sent")
        (user-mail-address "mrsamrenfou@gmail.com")
+       (user-full-name "\"Samuel D\"")
        (smtpmail-smtp-user "mrsamrenfou@gmail.com")
        (smtpmail-local-domain "gmail.com")
        (smtpmail-default-smtp-server "smtp.gmail.com")
@@ -1330,6 +1331,7 @@ for renaming."
       ("outlook"
        (mu4e-sent-folder "/outlook/Sent")
        (user-mail-address "samrenfou@hotmail.com")
+       (user-full-name "\"Samuel D\"")
        (smtpmail-smtp-user "samrenfou@hotmail.com")
        (smtpmail-local-domain "office365.com")
        (smtpmail-default-smtp-server "outlook.office365.com")
@@ -1339,6 +1341,7 @@ for renaming."
       ("umons"
        (mu4e-sent-folder "/umons/Sent")
        (user-mail-address "samuel.dawant@alumni.umons.ac.be")
+       (user-full-name "\"Samuel Dawant\"")
        (smtpmail-smtp-user "120781@umons.ac.be")
        (smtpmail-local-domain "office365.com")
        (smtpmail-default-smtp-server "outlook.office365.com")
@@ -1348,6 +1351,7 @@ for renaming."
       ("mailo"
        (mu4e-sent-folder "/mailo/Sent")
        (user-mail-address "samueld@mailo.com")
+       (user-full-name "\"Samuel D\"")
        (smtpmail-smtp-user "samueld@mailo.com")
        (smtpmail-local-domain "mailo.com")
        (smtpmail-default-smtp-server "mail.mailo.com")
@@ -1408,7 +1412,7 @@ for renaming."
 
   (add-hook 'mu4e-view-mode-hook 'my-mu4e-view-hook)
   (add-hook 'mu4e-headers-mode-hook 'my-mu4e-header-hook)
-  (add-hook 'mu4e-compose-mode-hook 'my-mu4e-compose-mode-hook)
+  (add-hook 'mu4e-compose-mode-hook 'my-mu4e-compose-hook)
 
   ;; Troestler mu4e iCal
   ;; (setq mu4e-view-use-gnus t)
