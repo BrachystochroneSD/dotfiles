@@ -1312,8 +1312,8 @@ for renaming."
         smtpmail-default-smtp-server "mail.mailo.com"
         smtpmail-smtp-server "mail.mailo.com"
         mu4e-headers-skip-duplicates t
-        smtpmail-smtp-service 465)
-        ;; smtpmail-smtp-service 587)
+        ;; smtpmail-smtp-service 465)
+        smtpmail-smtp-service 587)
 
 
   ;; Now I set a list of
@@ -1352,7 +1352,7 @@ for renaming."
        (smtpmail-local-domain "mailo.com")
        (smtpmail-default-smtp-server "mail.mailo.com")
        (smtpmail-smtp-server "mail.mailo.com")
-       (smtpmail-smtp-service 465)
+       (smtpmail-smtp-service 587)
        )))
 
   (defun my-mu4e-set-account ()
@@ -1388,6 +1388,11 @@ for renaming."
 
   (setq shr-color-visible-luminance-min 80)
 
+  (defun my-mu4e-compose-hook ()
+    (interactive)
+    (local-set-key (kbd "<tab>") 'my-mu4e-tab)
+    (define-key evil-insert-state-map (kbd "<tab>") 'my-mu4e-tab))
+
   (defun my-mu4e-view-hook ()
     (interactive)
     (local-set-key (kbd "<tab>") 'shr-next-link)
@@ -1403,6 +1408,7 @@ for renaming."
 
   (add-hook 'mu4e-view-mode-hook 'my-mu4e-view-hook)
   (add-hook 'mu4e-headers-mode-hook 'my-mu4e-header-hook)
+  (add-hook 'mu4e-compose-mode-hook 'my-mu4e-compose-mode-hook)
 
   ;; Troestler mu4e iCal
   ;; (setq mu4e-view-use-gnus t)
@@ -1437,6 +1443,17 @@ for renaming."
   (defun my-mu4e-delete-subject ()
     (interactive)
     (my-mu4e-mark-as-delete-regexp (mu4e-field-at-point :subject)))
+
+  (defun my-mu4e-tab ()
+    (interactive)
+    (cond
+     ((looking-back "^To:.*")
+      (re-search-forward "Subject: *"))
+     ((looking-back "^Subject:.*")
+      (re-search-forward "--text follows this line--\n"))
+     (t
+      (message-tab)))
+    )
 
   )
 
