@@ -1318,9 +1318,9 @@ for renaming."
    mu4e-attachment-dir "/home/sam/Downloads"
 
    ;; Setup Shortcuts
-   mu4e-maildir-shortcuts '(("/outlook/Inbox"     . ?O)
+   mu4e-maildir-shortcuts '(("/mailo/Inbox"       . ?M)
+                            ;; ("/outlook/Inbox"     . ?O)
                             ("/umons/Inbox"       . ?U)
-                            ("/mailo/Inbox"       . ?M)
                             ("/gmail/INBOX"       . ?G)
                             ("/sent"              . ?s)
                             ("/trash"             . ?t)
@@ -1331,26 +1331,26 @@ for renaming."
    )
 
   (defvar my-mu4e-account-alist
-    '(("gmail"
-       (mu4e-sent-folder "/gmail/Sent")
-       (user-mail-address "mrsamrenfou@gmail.com")
+    '(("mailo"
+       (mu4e-sent-folder "/mailo/Sent")
+       (user-mail-address "samueld@mailo.com")
        (user-full-name "\"Samuel D\"")
-       (smtpmail-smtp-user "mrsamrenfou@gmail.com")
-       (smtpmail-local-domain "gmail.com")
-       (smtpmail-default-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-user "samueld@mailo.com")
+       (smtpmail-local-domain "mailo.com")
+       (smtpmail-default-smtp-server "mail.mailo.com")
+       (smtpmail-smtp-server "mail.mailo.com")
        (smtpmail-smtp-service 587)
        )
-      ("outlook"
-       (mu4e-sent-folder "/outlook/Sent")
-       (user-mail-address "samrenfou@hotmail.com")
-       (user-full-name "\"Samuel D\"")
-       (smtpmail-smtp-user "samrenfou@hotmail.com")
-       (smtpmail-local-domain "office365.com")
-       (smtpmail-default-smtp-server "outlook.office365.com")
-       (smtpmail-smtp-server "outlook.office365.com")
-       (smtpmail-smtp-service 587)
-       )
+      ;; ("outlook"
+      ;;  (mu4e-sent-folder "/outlook/Sent")
+      ;;  (user-mail-address "samrenfou@hotmail.com")
+      ;;  (user-full-name "\"Samuel D\"")
+      ;;  (smtpmail-smtp-user "samrenfou@hotmail.com")
+      ;;  (smtpmail-local-domain "office365.com")
+      ;;  (smtpmail-default-smtp-server "outlook.office365.com")
+      ;;  (smtpmail-smtp-server "outlook.office365.com")
+      ;;  (smtpmail-smtp-service 587)
+      ;;  )
       ("umons"
        (mu4e-sent-folder "/umons/Sent")
        (user-mail-address "samuel.dawant@alumni.umons.ac.be")
@@ -1361,14 +1361,14 @@ for renaming."
        (smtpmail-smtp-server "outlook.office365.com")
        (smtpmail-smtp-service 587)
        )
-      ("mailo"
-       (mu4e-sent-folder "/mailo/Sent")
-       (user-mail-address "samueld@mailo.com")
+      ("gmail"
+       (mu4e-sent-folder "/gmail/Sent")
+       (user-mail-address "mrsamrenfou@gmail.com")
        (user-full-name "\"Samuel D\"")
-       (smtpmail-smtp-user "samueld@mailo.com")
-       (smtpmail-local-domain "mailo.com")
-       (smtpmail-default-smtp-server "mail.mailo.com")
-       (smtpmail-smtp-server "mail.mailo.com")
+       (smtpmail-smtp-user "mrsamrenfou@gmail.com")
+       (smtpmail-local-domain "gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
        (smtpmail-smtp-service 587)
        )))
 
@@ -1398,7 +1398,7 @@ for renaming."
   (add-to-list 'mu4e-bookmarks
                (make-mu4e-bookmark
                 :name "sents"
-                :query "maildir:/outlook/Sent OR maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
+                :query "maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
                 :key ?i))
 
   (define-key mu4e-main-mode-map "u" 'mu4e-update-index)

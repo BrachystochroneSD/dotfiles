@@ -1,5 +1,5 @@
 [general]
-accounts = Outlook, Gmail, Umons, Mailo
+accounts = Mailo, Umons, Gmail
 pythonfile = ~/.authentification/offlineimap.py
 socktimeout = 10
 
