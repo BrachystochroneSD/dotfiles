@@ -1264,59 +1264,72 @@ for renaming."
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (equal system-type 'gnu/linux)
+
   (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
   (require 'mu4e)
+  (require 'shr)
+  (require 'smtpmail)
+
+  ;; Global invoke key
   (global-set-key (kbd "S-<f5>") 'mu4e)
-  (setq message-kill-buffer-on-exit t)
-  (setq mu4e-context-policy 'pick-first)
-  (setq mu4e-confirm-quit nil)
-
-  (setq mu4e-attachment-dir "/home/sam/Downloads")
-
-  (setq
-   mu4e-view-show-images t
-   mu4e-view-image-max-width 1000)
-
-  (setq mu4e-maildir (expand-file-name "~/.mail"))
-
-  ;; Setup Shortcuts
-  (setq mu4e-maildir-shortcuts
-        '(("/outlook/Inbox"     . ?O)
-          ("/umons/Inbox"       . ?U)
-          ("/mailo/Inbox"       . ?M)
-          ("/gmail/INBOX"       . ?G)
-          ("/sent"              . ?s)
-          ("/trash"         . ?t)
-          ("/drafts"            . ?d)))
-
-  ;; allow for updating mail using 'U' in the main view:
-  (setq mu4e-get-mail-command "offlineimap")
 
   ;; html mail
-  (require 'shr)
 
   (defun shr-render-current-buffer ()
     (shr-render-region (point-min) (point-max)))
 
   (add-to-list 'mu4e-view-actions '("view in browser" . mu4e-action-view-in-browser))
-  (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-html2text-command 'shr-render-current-buffer)
 
-  ;; I have my "default" parameters from Gmail
-  (require 'smtpmail)
-  (setq message-send-mail-function 'smtpmail-send-it)
-  (setq mu4e-sent-folder "/sent"
-        mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
-        mu4e-drafts-folder "/drafts"
-        user-mail-address "samueld@mailo.com"
-        user-full-name "\"Samuel D\""
-        smtpmail-default-smtp-server "mail.mailo.com"
-        smtpmail-smtp-server "mail.mailo.com"
-        mu4e-headers-skip-duplicates t
-        smtpmail-smtp-service 587)
 
+  (setq
+   ;; General
+   message-kill-buffer-on-exit t
+   mu4e-context-policy 'pick-first
+   mu4e-confirm-quit nil
+   mu4e-compose-dont-reply-to-self t
+   mu4e-save-multiple-attachments-without-asking t
+   mu4e-headers-skip-duplicates t
 
-  ;; Now I set a list of
+   ;; images
+   mu4e-view-show-images t
+   mu4e-view-image-max-width 1000
+
+   ;; ACCOUNT
+   user-mail-address "samueld@mailo.com"
+   user-full-name "Samuel D"
+
+   ;; SMTP
+   smtpmail-default-smtp-server "mail.mailo.com"
+   smtpmail-smtp-server "mail.mailo.com"
+   smtpmail-smtp-service 587
+
+   ;; sync
+   mu4e-get-mail-command "offlineimap"
+   mu4e-maildir (expand-file-name "~/.mail")
+
+   ;; Sent
+   mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
+   message-send-mail-function 'smtpmail-send-it
+
+   ;; Folders
+   mu4e-sent-folder "/sent"
+   mu4e-drafts-folder "/drafts"
+   mu4e-attachment-dir "/home/sam/Downloads"
+
+   ;; Setup Shortcuts
+   mu4e-maildir-shortcuts '(("/outlook/Inbox"     . ?O)
+                            ("/umons/Inbox"       . ?U)
+                            ("/mailo/Inbox"       . ?M)
+                            ("/gmail/INBOX"       . ?G)
+                            ("/sent"              . ?s)
+                            ("/trash"             . ?t)
+                            ("/drafts"            . ?d))
+
+   ;; luminance for dark theme
+   shr-color-visible-luminance-min 80
+   )
+
   (defvar my-mu4e-account-alist
     '(("gmail"
        (mu4e-sent-folder "/gmail/Sent")
@@ -1390,12 +1403,15 @@ for renaming."
 
   (define-key mu4e-main-mode-map "u" 'mu4e-update-index)
 
-  (setq shr-color-visible-luminance-min 80)
+  (defun samueld\attach-pub-key ()
+    (interactive)
+    (mml-attach-file "~/.gnupg/mailo.pub.acs"))
 
   (defun my-mu4e-compose-hook ()
     (interactive)
-    (local-set-key (kbd "<tab>") 'my-mu4e-tab)
-    (define-key evil-insert-state-map (kbd "<tab>") 'my-mu4e-tab))
+    (local-set-key (kbd "<tab>") 'samueld\mu4e-tab)
+    (local-set-key (kbd "C-c k") 'samueld\attach-pub-key)
+    (define-key evil-insert-state-map (kbd "<tab>") 'samueld\mu4e-tab))
 
   (defun my-mu4e-view-hook ()
     (interactive)
@@ -1410,9 +1426,14 @@ for renaming."
     (local-set-key (kbd "C-D") 'my-mu4e-delete-subject)
     (local-set-key (kbd "C-j") 'my-mu4e-delete-junk))
 
+  (defun my-mu4e-main-hook ()
+    (interactive)
+    (local-set-key (kbd "M-C") 'brachystochronesd/compose-encrypted))
+
   (add-hook 'mu4e-view-mode-hook 'my-mu4e-view-hook)
   (add-hook 'mu4e-headers-mode-hook 'my-mu4e-header-hook)
   (add-hook 'mu4e-compose-mode-hook 'my-mu4e-compose-hook)
+  (add-hook 'mu4e-main-mode-hook 'my-mu4e-main-hook)
 
   ;; Troestler mu4e iCal
   ;; (setq mu4e-view-use-gnus t)
@@ -1448,16 +1469,51 @@ for renaming."
     (interactive)
     (my-mu4e-mark-as-delete-regexp (mu4e-field-at-point :subject)))
 
-  (defun my-mu4e-tab ()
+  (defun samueld\mu4e-tab ()
     (interactive)
     (cond
      ((looking-back "^To:.*")
       (re-search-forward "Subject: *"))
      ((looking-back "^Subject:.*")
-      (re-search-forward "--text follows this line--\n"))
+      (goto-char (point-max)))
      (t
       (message-tab)))
     )
+
+  ;; Encryption by Ambrevar
+
+  ;; (setq mml-secure-smime-sign-with-sender )
+  (setq mm-sign-option nil)
+  (setq mml-secure-openpgp-sign-with-sender t)
+
+  (defvar ambrevar/mu4e-compose-signed-p t)
+
+  (defvar ambrevar/mu4e-compose-signed-and-crypted-p nil)
+
+  (defun ambrevar/mu4e-compose-maybe-signed-and-crypted ()
+    "Maybe sign or encrypt+sign message.
+Message is signed or encrypted+signed when replying to a signed or encrypted
+message, respectively.
+Alternatively, message is signed or encrypted+signed if
+`ambrevar/mu4e-compose-signed-p' or `ambrevar/mu4e-compose-signed-and-crypted-p' is
+non-nil, respectively.
+This function is suitable for `mu4e-compose-mode-hook'."
+    (let ((msg mu4e-compose-parent-message))
+      (cond
+       ((or ambrevar/mu4e-compose-signed-and-crypted-p
+            (and msg (member 'encrypted (mu4e-message-field msg :flags))))
+        (mml-secure-message-sign-encrypt))
+       ((or ambrevar/mu4e-compose-signed-p
+            (and msg (member 'signed (mu4e-message-field msg :flags))))
+        (mml-secure-message-sign-pgpmime)))))
+
+  (defun brachystochronesd/compose-encrypted ()
+    (interactive)
+    (let ((ambrevar/mu4e-compose-signed-and-crypted-p t))
+      (mu4e-compose-new)
+      ))
+
+  (add-hook 'mu4e-compose-mode-hook 'ambrevar/mu4e-compose-maybe-signed-and-crypted)
 
   )
 
