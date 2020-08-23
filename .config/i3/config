@@ -353,7 +353,7 @@ for_window [instance="wifi"] resize set 625 400
 
 bindsym $mod+F7 exec networkmanager_dmenu
 
-bindsym Print exec scrot ~/Images/screenshots/%Y-%d-%T-screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
+bindsym Print exec scrot ~/Images/screenshots/%Y-%m-%d_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
 
 # xdotools autoclicker
 bindsym $mod c exec xdotool click --repeat 500 --delay 10 1
