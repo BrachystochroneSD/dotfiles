@@ -1,0 +1,232 @@
+# For the benefit of emacs users: -*- shell-script -*-
+###########################
+# xbindkeys configuration #
+###########################
+#
+# Version: 1.8.7
+#
+# If you edit this file, do not forget to uncomment any lines
+# that you change.
+# The pound(#) symbol may be used anywhere for comments.
+#
+# To specify a key, you can use 'xbindkeys --key' or
+# 'xbindkeys --multikey' and put one of the two lines in this file.
+#
+# The format of a command line is:
+#    "command to start"
+#       associated key
+#
+#
+# A list of keys is in /usr/include/X11/keysym.h and in
+# /usr/include/X11/keysymdef.h
+# The XK_ is not needed.
+#
+# List of modifier:
+#   Release, Control, Shift, Mod1 (Alt), Mod2 (NumLock),
+#   Mod3 (CapsLock), Mod4, Mod5 (Scroll).
+#
+
+# The release modifier is not a standard X modifier, but you can
+# use it if you want to catch release events instead of press events
+
+# Poweroff
+"poweroff"
+    Mod4 + Control + Escape
+
+# Terminal
+"st"
+    Mod4 + Return
+
+"st -n floatingwin"
+    Mod4 + Control + Return
+
+# Emacs
+"emacsclient --alternate-editor=\"\" -c"
+    Mod4 + Shift + Return
+
+# Browser
+"brave"
+    Mod4 + z
+
+#--# # xrandr # #--#
+
+"~/.script/xrandrsw"
+    Mod4 + Shift + Control + d
+
+# switch keyboard layout
+"~/.script/klaysw"
+    Control + Shift + Tab
+
+# nextcloud
+"nextcloud"
+    Mod4 + Control + n
+
+"killall nextcloud"
+    Mod4 + Mod1 + n
+
+#--# # Rome2rio # #--#
+
+"~/.script/rome2rio/rome2rio"
+    Mod4 + g
+
+#--# # WPG # #--#
+
+"st -n fzf -e .script/wpg_theme"
+    Mod4 + Control + Shift + w
+
+"wpg -m"
+    Mod4 + Shift + w
+
+#App launcher bindings
+
+"st -n transmission -e tremc"
+    Mod4 + Shift + t
+
+# start dmenu
+"~/.script/my_dmenu_run -i"
+    Mod4 + d
+
+#pavucontrol
+"pavucontrol"
+    Mod4 + XF86AudioMute
+
+# Amixer Audio controls
+"pactl set-source-mute alsa_input.pci-0000_00_1b.0.analog-stereo toggle"
+    XF86AudioMicMute
+
+"pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo false && amixer -q set Master 5%+  unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
+    XF86AudioRaiseVolume
+
+"pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo false && amixer -q set Master 5%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
+    XF86AudioLowerVolume
+
+"pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo false && amixer -qM set Master 10%+  unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
+    Shift + XF86AudioRaiseVolume
+
+"pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo false && amixer -qM set Master 10%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
+    Shift + XF86AudioLowerVolume
+
+# "amixer -q set Master 1+ toggle && sleep 0.05"
+#     XF86AudioMute
+"pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga"
+    XF86AudioMute
+
+# Screen brightness controls
+"~/.script/brightnessbar moins 5"
+    XF86MonBrightnessDown
+"~/.script/brightnessbar plus 5"
+    XF86MonBrightnessUp
+
+"~/.script/brightnessbar moins 10"
+    Shift + XF86MonBrightnessDown
+"~/.script/brightnessbar plus 10"
+    Shift + XF86MonBrightnessUp
+
+#---# Music shits #---#
+
+"mpd"
+    Mod4 + Control + Shift + m
+"st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh"
+    Mod4 + Control + m
+"st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh t"
+    Mod4 + Mod1 + m
+
+#bindings for MPD MPC NCMPCPP
+"~/.script/mpcsam --prev"
+    Mod4 + v
+"~/.script/mpcsam --toggle"
+    Mod4 + b
+"~/.script/mpcsam --stop"
+    Mod4 + Shift + b
+"~/.script/mpcsam --next"
+    Mod4 + n
+
+"~/.script/mpcsam --seek  +3"
+    Mod4 + Shift + n
+"~/.script/mpcsam --seek -3"
+    Mod4 + Shift + v
+
+"~/.script/mpcsam --random"
+    Mod4 + Control + b
+
+"~/.script/mpcsam --tggl-host"
+    Mod4 + Mod1 + b
+
+"~/.script/mpcsam --volume  +3"
+    Control + XF86AudioRaiseVolume
+"~/.script/mpcsam --volume -3"
+    Control + XF86AudioLowerVolume
+
+#--# # FZF # #--#
+
+"st -n fzf -e /home/sam/.script/fzf-open.sh"
+    Mod4 + Shift + f
+"st -n fzf -e /home/sam/.script/fzf-open.sh --hidden"
+    Mod4 + Control + f
+
+
+#---# Mail mu4e #---#
+
+"~/.script/edit -e '(mu4e)'"
+    Mod4 + Shift + m
+
+"~/.script/edit -e '(elfeed)'"
+    Mod4 + Shift + r
+
+
+#NOTES#
+
+"st -n floatingwin -e vim ~/.notes"
+    Mod4 + t
+
+#Twitch#
+"~/.script/twitch/twitchscript --menu"
+    Mod4 + Control + t
+
+#Youtube#
+"~/.script/youtube/youtubesearch"
+    Mod4 + Shift + y
+
+#---# Social media #---#
+
+"skypeforlinux"
+    Mod4 + Control + s
+"killall skypeforlinux"
+    Mod4 + Mod1 + s
+"discord"
+    Mod4 + Control + d
+"killall Discord"
+    Mod4 + Mod1 + d
+"caprine"
+    Mod4 + Control + c
+
+# keepass
+"keepmenu"
+    Mod4 + p
+
+# mount-usb
+"~/.script/polybar/mount-usb.sh --mount"
+    Mod4 + u
+"~/.script/polybar/mount-usb.sh --unmount"
+    Mod4 + Shift + u
+
+# update
+"st -n floatingwin -e sudo pacman -Syu"
+    Mod4 + Control + u
+
+#recording
+
+"st -n floatingwin -e ffmpeg -f x11grab -s 1366x768 -i :0.0 ~/Movies/record.mkv"
+    Mod4 + Shift + Control + y
+
+#wifi bind
+
+"networkmanager_dmenu"
+    Mod4 + F7
+
+"scrot ~/Images/screenshots/%Y-%d-%m_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
+     Print
+
+##################################
+# End of xbindkeys configuration #
+##################################

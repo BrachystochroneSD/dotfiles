@@ -1,0 +1,5 @@
+#!/usr/bin/sh
+
+. "${HOME}/.cache/wal/colors.sh"
+
+dmenu_run -nb $color0 -nf $color15 -sb $color0 -sf $color3
