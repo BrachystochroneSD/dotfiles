@@ -221,3 +221,62 @@ bindsym $mod+m [instance="album"] scratchpad show ; [instance="cavaviz"] scratch
 
 for_window [instance="fzf"] floating enable
 for_window [instance="fzf"] resize set 725 200
+<<<<<<< HEAD
+=======
+
+#---# Mail mu4e #---#
+
+bindsym $mod+Shift+m        exec $mailviewer
+
+bindsym $mod+Shift+r        exec $rssfeeder
+
+
+#NOTES#
+
+for_window [instance="scripts"] floating enable
+for_window [instance="scripts"] resize set 625 450
+
+bindsym $mod+t              exec $term -n scripts -e vim ~/.notes
+
+#Twitch#
+bindsym $mod+Ctrl+t         exec ~/.script/twitch/twitchscript --menu
+
+#Youtube#
+bindsym $mod+Shift+y        exec ~/.script/youtube/youtubesearch
+
+#---# Social media #---#
+
+bindsym $mod+Ctrl+s         exec --no-startup-id skypeforlinux
+bindsym $mod+$alt+s         exec killall skypeforlinux
+bindsym $mod+Ctrl+d         exec --no-startup-id discord
+bindsym $mod+$alt+d         exec killall Discord
+bindsym $mod+Ctrl+c         exec --no-startup-id caprine
+
+# keepass
+bindsym $mod+p              exec keepmenu
+
+# mount-usb
+bindsym $mod+u              exec ~/.script/polybar/mount-usb.sh --mount
+bindsym $mod+Shift+u        exec ~/.script/polybar/mount-usb.sh --unmount
+
+# update
+bindsym $mod+Ctrl+u         exec st -n scripts -e sudo pacman -Syu
+
+#recording
+for_window [instance="record"] floating enable
+for_window [instance="record"] resize set 625 400
+
+bindsym $mod+Shift+Ctrl+y exec $term -n record -e ffmpeg -f x11grab -s 1366x768 -i :0.0 ~/Vidéos/record.mkv
+
+#wifi bind
+
+for_window [instance="wifi"] floating enable
+for_window [instance="wifi"] resize set 625 400
+
+bindsym $mod+F7 exec networkmanager_dmenu
+
+bindsym Print exec scrot ~/Images/screenshots/%Y-%m-%d_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
+
+# xdotools autoclicker
+bindsym $mod c exec xdotool click --repeat 500 --delay 10 1
+>>>>>>> 5f3467c8ed59d5e5c3a058bb734e06f98f5ab544
