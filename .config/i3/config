@@ -9,25 +9,6 @@ gaps outer 15
 #  #----Definitions----#  #
 set $mod Mod4
 set $alt Mod1
-set $term --no-startup-id st
-set $editor --no-startup-id emacsclient --alternate-editor="" -c
-set $browser --no-startup-id brave
-set $mailviewer --no-startup-id ~/.script/edit -e '(mu4e)'
-set $rssfeeder --no-startup-id ~/.script/edit -e '(elfeed)'
-set $calendar --no-startup-id ~/.script/edit -e '(cfw:open-diary-calendar)'
-
-set_from_resource $fg1 i3wm.color15
-set_from_resource $bg1 i3wm.color0
-set_from_resource $fg2 i3wm.color7
-set_from_resource $bg2 i3wm.color3
-set_from_resource $bga i3wm.color8
-
-#  #---# Colors #---#  #
-
-client.focused          $bg1   $bg2   $fg1  $bg2
-client.unfocused        $bg1   $bg1   $fg2  $bg1
-client.focused_inactive $bg1   $bg1   $fg2  $bg1
-client.urgent           $bga   $bga   $fg1  $bg1
 
 hide_edge_borders both
 
@@ -165,28 +146,8 @@ bar {
 # Music mpd #
 
 exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh
-exec mpd
 
-
-#  #----Keyboard layout----#  #
-exec setxkbmap -layout be
-bindsym $alt+Shift+Tab      exec ./.script/klaysw
-
-#Nextcloud
-exec --no-startup-id nextcloud --background
-bindsym $mod+Ctrl+n         exec nextcloud
-bindsym $mod+$alt+n         exec killall nextcloud
-
-#redshift
-exec redshift
-
-#compton
-exec --no-startup-id picom
-
-#unclutter
-exec unclutter --timeout 2
-
-# windows configs
+# windows configs #
 
 #general floating windows
 for_window [instance="floatingwin"] floating enable
