@@ -142,10 +142,6 @@ bar {
     i3bar_command $HOME/.config/polybar/launch.sh
 }
 
-# Music mpd #
-
-exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh
-
 # windows configs #
 
 #general floating windows
