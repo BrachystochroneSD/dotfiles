@@ -42,19 +42,17 @@
  ;; If there is more than one, they won't work right.
  '(ansi-term-color-vector
    [unspecified "#10180d" "#94a19a" "#A3C348" "#9DC248" "#B6CDB9" "#B0D2C1" "#B6CDB9" "#B6CDB9"] t)
- '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
- '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
- '(compilation-message-face (quote default))
+ '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
+ '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
+ '(compilation-message-face 'default)
  '(custom-safe-themes
-   (quote
-    ("c306e0ef591df6383f666287d0d55767c2c24f3ca137e1c7785c43f08d23c9e8" "2b9dc43b786e36f68a9fd4b36dd050509a0e32fe3b0a803310661edb7402b8b6" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default)))
+   '("c306e0ef591df6383f666287d0d55767c2c24f3ca137e1c7785c43f08d23c9e8" "2b9dc43b786e36f68a9fd4b36dd050509a0e32fe3b0a803310661edb7402b8b6" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default))
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   (quote
-    (fzf eglot php-mode lua-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim)))
- '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#282828")))
- '(send-mail-function (quote mailclient-send-it)))
+   '(lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+ '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
+ '(send-mail-function 'mailclient-send-it))
 
 
 ;;dir packages ajouté
