@@ -46,7 +46,7 @@ floating_modifier $mod
 bindsym $mod+f                  fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+e                  layout toggle split
+# bindsym $mod+e                  layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space        floating toggle
@@ -143,7 +143,8 @@ bindsym $mod+Ctrl+Right         resize grow width 10 px or 10 ppt
 bindsym $mod+s                  gaps inner current plus 5
 bindsym $mod+Shift+s            gaps inner current minus 5
 
-bindsym $mod+Shift+d            gaps inner current set 15; gaps outer current set 15
+bindsym $mod+Shift+e            gaps inner current set 15; gaps outer current set 15
+bindsym $mod+e                  gaps inner current set 0; gaps outer current set 0
 
 bindsym $mod+q                  gaps outer current plus 5
 bindsym $mod+Shift+q            gaps outer current minus 5
