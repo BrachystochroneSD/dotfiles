@@ -12,7 +12,6 @@ set $alt Mod1
 set $term --no-startup-id st
 set $editor --no-startup-id emacsclient --alternate-editor="" -c
 set $browser --no-startup-id brave
-set $browser2 --no-startup-id firefox
 set $mailviewer --no-startup-id ~/.script/edit -e '(mu4e)'
 set $rssfeeder --no-startup-id ~/.script/edit -e '(elfeed)'
 set $calendar --no-startup-id ~/.script/edit -e '(cfw:open-diary-calendar)'
@@ -163,6 +162,12 @@ bar {
     i3bar_command $HOME/.config/polybar/launch.sh
 }
 
+# Music mpd #
+
+exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh
+exec mpd
+
+
 #  #----Keyboard layout----#  #
 exec setxkbmap -layout be
 bindsym $alt+Shift+Tab      exec ./.script/klaysw
@@ -181,84 +186,20 @@ exec --no-startup-id picom
 #unclutter
 exec unclutter --timeout 2
 
-#-----------------------------------------------#
-# bindings general
-#-----------------------------------------------#
+# windows configs
 
-#--# # xrandr # #--#
-
-bindsym $mod+Shift+Ctrl+d       exec ~/.script/xrandrsw
-
-#--# # Rome2rio # #--#
-
-bindsym $mod+g                  exec ~/.script/rome2rio/rome2rio
-
-#--# # WPG # #--#
-
-bindsym $mod+Ctrl+Shift+w       exec $term -n fzf -e .script/wpg_theme
-
-bindsym $mod+Shift+w            exec wpg -m
-
-#App launcher bindings
-bindsym $mod+z                  exec $browser
-bindsym $mod+Ctrl+z             exec $browser2
-#bindsym $mod+Ctrl+z             exec killall surf ; exec rm -f /tmp/tabbed-surf.xid ; exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
-#bindsym $mod+Shift+z            exec ~/.config/surf-3.0/surf-open.sh web.tabliss.io
-bindsym $mod+Return             exec $term
-bindsym $mod+Shift+Return       exec $editor
-bindsym $mod+Ctrl+Return        exec $term -n scratchterm
-
-for_window [instance="scratchterm"] floating enable
-for_window [instance="scratchterm"] resize set 625 400
-
-# transmission,
-for_window [instance="qjackctl"] floating enable
+#general floating windows
+for_window [instance="floatingwin"] floating enable
+for_window [instance="floatingwin"] resize set 625 450
 
 # transmission,
 for_window [instance="transmission"] floating enable
 for_window [instance="transmission"] resize set 800 400
 
-bindsym $mod+Shift+t                exec $term -n transmission -e tremc
-
-# start dmenu
-bindsym $mod+d                      exec dmenu_run -nb "$bg1" -nf "$fg1" -sb "$bg1" -sf "$bg2" -i
-
 #pavucontrol
 for_window [class="Pavucontrol"] floating enable
-bindsym $mod+XF86AudioMute          exec pavucontrol
 
-# Amixer Audio controls
-
-set $pactlunmute pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo false
-set $pactlmictggl pactl set-source-mute alsa_input.pci-0000_00_1b.0.analog-stereo toggle
-
-bindsym XF86AudioMicMute            exec $pactlmictggl
-
-bindsym XF86AudioRaiseVolume        exec $pactlunmute && amixer -q set Master 5%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-bindsym XF86AudioLowerVolume        exec $pactlunmute && amixer -q set Master 5%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-
-bindsym Shift+XF86AudioRaiseVolume  exec $pactlunmute && amixer -qM set Master 10%+ unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-bindsym Shift+XF86AudioLowerVolume  exec $pactlunmute && amixer -qM set Master 10%- unmute && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-
-# bindsym XF86AudioMute           exec amixer -q set Master 1+ toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-bindsym XF86AudioMute               exec pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle && sleep 0.05 && paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
-
-# Screen brightness controls
-bindsym XF86MonBrightnessDown       exec .script/brightnessbar moins 5
-bindsym XF86MonBrightnessUp         exec .script/brightnessbar plus 5
-
-bindsym Shift+XF86MonBrightnessDown exec .script/brightnessbar moins 10
-bindsym Shift+XF86MonBrightnessUp   exec .script/brightnessbar plus 10
-
-#---# Music shits #---#
-
-exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh
-exec mpd
-
-bindsym $mod+Ctrl+Shift+m         exec mpd
-bindsym $mod+Ctrl+m               exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh
-bindsym $mod+$alt+m               exec st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh t
-
+#music shit
 for_window [instance="ncmpcppwin"] floating enable
 for_window [instance="ncmpcppwin"] resize set 625 400
 for_window [instance="ncmpcppwin"] move right 105
@@ -278,82 +219,5 @@ for_window [instance="cavaviz"] move scratchpad
 
 bindsym $mod+m [instance="album"] scratchpad show ; [instance="cavaviz"] scratchpad show ; [instance="ncmpcppwin"] scratchpad show
 
-#bindings for MPD MPC NCMPCPP
-bindsym $mod+v                      exec ~/.script/mpcsam --prev
-bindsym $mod+b                      exec ~/.script/mpcsam --toggle
-bindsym $mod+Shift+b                exec ~/.script/mpcsam --stop
-bindsym $mod+n                      exec ~/.script/mpcsam --next
-
-bindsym $mod+Shift+n                exec ~/.script/mpcsam --seek +3
-bindsym $mod+Shift+v                exec ~/.script/mpcsam --seek -3
-
-bindsym $mod+Ctrl+b                 exec ~/.script/mpcsam --random
-
-bindsym $mod+$alt+b                 exec ~/.script/mpcsam --tggl-host
-
-bindsym Ctrl+XF86AudioRaiseVolume   exec ~/.script/mpcsam --volume +3
-bindsym Ctrl+XF86AudioLowerVolume   exec ~/.script/mpcsam --volume -3
-
-#--# # FZF # #--#
-
-bindsym $mod+Shift+f        exec $term -n fzf -e /home/sam/.script/fzf-open.sh
-bindsym $mod+Ctrl+f         exec $term -n fzf -e /home/sam/.script/fzf-open.sh --hidden
-
 for_window [instance="fzf"] floating enable
 for_window [instance="fzf"] resize set 725 200
-
-#---# Mail mu4e #---#
-
-bindsym $mod+Shift+m        exec $mailviewer
-
-bindsym $mod+Shift+r        exec $rssfeeder
-
-
-#NOTES#
-
-for_window [instance="scripts"] floating enable
-for_window [instance="scripts"] resize set 625 450
-
-bindsym $mod+t              exec $term -n scripts -e vim ~/.notes
-
-#Twitch#
-bindsym $mod+Ctrl+t         exec ~/.script/twitch/twitchscript --menu
-
-#Youtube#
-bindsym $mod+Shift+y        exec ~/.script/youtube/youtubesearch
-
-#---# Social media #---#
-
-bindsym $mod+Ctrl+s         exec --no-startup-id skypeforlinux
-bindsym $mod+$alt+s         exec killall skypeforlinux
-bindsym $mod+Ctrl+d         exec --no-startup-id discord
-bindsym $mod+$alt+d         exec killall Discord
-bindsym $mod+Ctrl+c         exec --no-startup-id caprine
-
-# keepass
-bindsym $mod+p              exec keepmenu
-
-# mount-usb
-bindsym $mod+u              exec ~/.script/polybar/mount-usb.sh --mount
-bindsym $mod+Shift+u        exec ~/.script/polybar/mount-usb.sh --unmount
-
-# update
-bindsym $mod+Ctrl+u         exec st -n scripts -e sudo pacman -Syu
-
-#recording
-for_window [instance="record"] floating enable
-for_window [instance="record"] resize set 625 400
-
-bindsym $mod+Shift+Ctrl+y exec $term -n record -e ffmpeg -f x11grab -s 1366x768 -i :0.0 ~/Vidéos/record.mkv
-
-#wifi bind
-
-for_window [instance="wifi"] floating enable
-for_window [instance="wifi"] resize set 625 400
-
-bindsym $mod+F7 exec networkmanager_dmenu
-
-bindsym Print exec scrot ~/Images/screenshots/%Y-%d-%T-screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
-
-# xdotools autoclicker
-bindsym $mod c exec xdotool click --repeat 500 --delay 10 1
