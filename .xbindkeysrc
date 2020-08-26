@@ -49,6 +49,18 @@
 "~/.script/xrandrsw"
     Mod4 + Shift + Control + d
 
+# switch keyboard layout
+"~/.script/klaysw"
+    Mod1 + Shift + Tab
+
+# nextcloud
+"nextcloud"
+    Mod4 + Ctrl + n
+
+"killall nextcloud"
+    Mod4 + Mod1 + n
+
+
 #--# # Rome2rio # #--#
 
 "~/.script/rome2rio/rome2rio"
