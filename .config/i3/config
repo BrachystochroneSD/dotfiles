@@ -66,7 +66,6 @@ bindsym $mod+Shift+c            reload
 bindsym $mod+Ctrl+r             restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+Escape       exec i3-msg exit
-bindsym $mod+Ctrl+Escape        exec poweroff
 
 
 #rebinds pour le focus, le mouvement et le resize windows
