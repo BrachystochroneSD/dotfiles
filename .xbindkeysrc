@@ -51,15 +51,14 @@
 
 # switch keyboard layout
 "~/.script/klaysw"
-    Mod1 + Shift + Tab
+    Control + Shift + Tab
 
 # nextcloud
 "nextcloud"
-    Mod4 + Ctrl + n
+    Mod4 + Control + n
 
 "killall nextcloud"
     Mod4 + Mod1 + n
-
 
 #--# # Rome2rio # #--#
 
@@ -80,7 +79,7 @@
     Mod4 + Shift + t
 
 # start dmenu
-"dmenu_run -i" # TODO Here
+"~/.script/my_dmenu_run -i"
     Mod4 + d
 
 #pavucontrol
