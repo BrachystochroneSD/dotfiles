@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
-w3m="w3mimgdisplay"
+source "`ueberzug library`"
+
 MUSIC_DIR=$(grep music_dir ${HOME}/.config/mpd/mpd.conf | sed 's|.*"\(.*\)/".*|\1|;s/\\//g' | sed "s|~|${HOME}|")
 backup_img=${HOME}/.config/wpg/mywalls/owl.png #when no cover img found
 
@@ -18,10 +19,15 @@ while true;do
     fi
     [ -z "$src" ] && src=$backup_img
 
-    # Display the image.
-    printf '0;1;0;0;192;192;;;;;%s\n3;\n4\n' \
-           "$src" | "$w3m" >/dev/null 2>&1
+    # Display the image. TODO
 
+    ImageLayer 0< <(
+        ImageLayer::add [identifier]="preview" \
+                        [x]="0" \
+                        [y]="0" \
+                        [max_width]="30" \
+                        [path]="$src"
+    )
     sleep 1
 
 done
