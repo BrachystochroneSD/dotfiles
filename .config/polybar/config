@@ -80,7 +80,7 @@ format = <label-tags> <label-layout> <label-floating>
 ; socket-path = /tmp/dwm.sock
 
 ; Left-click to view tag, right-click to toggle tag view
-enable-tags-click = false
+enable-tags-click = true
 ; Scroll to cycle between available tags
 enable-tags-scroll = false
 ; If true and enable-tags-scroll = true, scrolling will view all tags regardless if occupied
@@ -90,7 +90,7 @@ tags-scroll-reverse = false
 ; If true and enable-tags-scroll = true, wrap active tag when scrolling
 tags-scroll-wrap = false
 ; Left-click to set secondary layout, right-click to switch to previous layout
-enable-layout-click = false
+enable-layout-click = true
 ; Scroll to cycle between available layouts
 enable-layout-scroll = false
 ; Wrap when scrolling and reaching beginning/end of layouts
@@ -129,8 +129,8 @@ label-floating = F
 
 ; focused = Selected tag on focused monitor
 label-focused = %name%
-label-focused-background = ${colors.bgal}
-label-focused-underline= ${colors.green}
+label-focused-background = ${colors.bgam}
+label-focused-underline = ${colors.red}
 label-focused-padding = 2
 
 ; unfocused = Unselected tag on unselected monitor
@@ -139,8 +139,8 @@ label-unfocused-padding = 2
 
 ; visible = Unselected tag, but occupied tag on any monitor
 label-visible = %name%
-label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${colors.yellow}
+; label-visible-background = ${self.label-focused-background}
+; label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Unselected tag with window that has urgency hint set
@@ -177,7 +177,6 @@ label-mode-background = ${colors.bgal}
 ; focused = Active workspace on focused monitor
 label-focused = %index%
 label-focused-background = ${colors.bgam}
-;label-focused-background = ${module/bspwm.label-focused-background}
 label-focused-underline = ${colors.red}
 label-focused-padding = 2
 

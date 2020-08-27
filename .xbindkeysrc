@@ -48,6 +48,11 @@
 "brave"
     Mod4 + z
 
+#--# # polybar # #--#
+
+"~/.config/polybar/launch.sh"
+    Mod4 + Control + r
+
 #--# # xrandr # #--#
 
 "~/.script/xrandrsw"
