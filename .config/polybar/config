@@ -20,7 +20,7 @@ fg-alt=${xrdb:color15:#222}
 [bar/Bar]
 width = 100%
 height = 24
-fixed-center = false
+fixed-center = true
 background = ${colors.bgal}
 foreground = ${colors.fg-alt}
 line-size = 3
@@ -35,9 +35,10 @@ font-2 = owl:size=13:antialias=true;3
 font-3 = Weather Icons:size=12;2
 font-4 = wifidemoncul:size=12;3
 modules-left = owl i3 dwm mpd
+modules-center = dwm-win-name
 modules-right = mount-usb update notes mails network volume weather filesys cpu temperature memory battery date
-tray-position = center
-tray-padding = 2
+tray-position = right
+tray-padding = 0
 scroll-up = i3wm-wsnext
 scroll-down = i3wm-wsprev
 
@@ -63,9 +64,18 @@ label-mounted-underline= ${colors.green}
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.fg-alt}
 
+[module/dwm-win-name]
+type = internal/dwm
+format = <label-title>
+label-title = %title%
+label-title-padding = 2
+label-title-foreground = ${colors.bgal}
+label-title-background = ${colors.yellow-alt}
+label-title-maxlen = 30
+
 [module/dwm]
 type = internal/dwm
-format = <label-tags> <label-layout> <label-floating> <label-title>
+format = <label-tags> <label-layout> <label-floating>
 ; Path to dwm socket (default: /tmp/dwm.sock)
 ; socket-path = /tmp/dwm.sock
 
