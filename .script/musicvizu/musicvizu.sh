@@ -1,10 +1,9 @@
 #!/bin/sh
 
-
-exec st -n cavaviz -e cava &
-pid="$pid\n$!"
-exec st -n album -e ~/.script/musicvizu/albumshow.sh &
-pid="$pid\n$!"
-[ -n "$1" ] && ncmpcpp -s playlist -h 192.168.1.103 || ncmpcpp -s playlist
-
-echo -e "$pid" | tail -n2 | while read a;do kill $a;done
+exec st 2>/dev/null -n cavaviz -e cava &
+exec st -n album -e ~/.script/musicvizu/albumshow.sh & 2>/dev/null
+if [ -n "$1" ];then
+    st -n ncmpcpp -s playlist -h 192.168.1.103
+else
+    st -n ncmpcppwin -e ncmpcpp -s playlist
+fi
