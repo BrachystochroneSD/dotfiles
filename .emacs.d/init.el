@@ -1696,7 +1696,7 @@ This function is suitable for `mu4e-compose-mode-hook'."
 
 ;; ;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
 ;; (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
-;; (add-to-list 'eglot-server-programs '(css-mode . ("css-languageserver" "--stdio")))
+(add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server" "")))
 ;; (add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
 
 (setq eglot-events-buffer-size 2000)

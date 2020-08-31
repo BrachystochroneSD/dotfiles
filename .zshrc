@@ -279,4 +279,4 @@ texcheck () {
 }
 
 myop () { nohup "$1" > /dev/null 2>&1 & }
-alias makesuck='rm config.h && make && sudo make install'
+alias makesuck='rm config.h; make && sudo make install'
