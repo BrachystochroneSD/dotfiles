@@ -23,14 +23,14 @@ height = 24
 fixed-center = true
 background = ${colors.bgal}
 foreground = ${colors.fg-alt}
-line-size = 3
+line-size = 1
 line-color = #cc241d
 padding-left = 2
 padding-right = 2
 module-margin-left = 1
 module-margin-right = 1
-font-0 = ionicons:pixelsize=12;1
-font-1 = Monofur:fontformat=truetype:size=10:antialias=true;0
+font-0 = ionicons:pixelsize=12;3
+font-1 = Firacode:fontformat=truetype:size=10:antialias=true:weight=bold;3
 font-2 = owl:size=13:antialias=true;3
 font-3 = Weather Icons:size=12;2
 font-4 = wifidemoncul:size=12;3
@@ -129,13 +129,13 @@ label-floating = F
 
 ; focused = Selected tag on focused monitor
 label-focused = %name%
-label-focused-background = ${colors.bgam}
-label-focused-underline = ${colors.red}
-label-focused-padding = 2
+label-focused-background = ${colors.red}
+label-focused-foreground = ${colors.bgam}
+label-focused-padding = 1
 
 ; unfocused = Unselected tag on unselected monitor
 label-unfocused = %name%
-label-unfocused-padding = 2
+label-unfocused-padding = 1
 
 ; visible = Unselected tag, but occupied tag on any monitor
 label-visible = %name%
@@ -146,13 +146,13 @@ label-visible-padding = ${self.label-focused-padding}
 ; urgent = Unselected tag with window that has urgency hint set
 label-urgent = %name%
 label-urgent-background = ${colors.red}
-label-urgent-padding = 2
+label-urgent-padding = 1
 
 ; empty = Unselected and unoccupied tag
 ; This can be set to an empty string to hide empty tags
 label-empty =
-label-empty-background = ${colors.bg}
-label-empty-padding = 2
+label-empty-foreground = ${colors.bgam}
+label-empty-padding = 1
 
 [module/mount-usb]
 type = custom/script
@@ -363,8 +363,9 @@ format-underline = ${colors.yellow}
 type = custom/script
 exec = ~/.script/polybar/update
 format-foreground = ${colors.fg-alt}
-interval = 1000
 format-underline = ${colors.red}
+; format-background = ${colors.red}
+interval = 1000
 
 
 [settings]
