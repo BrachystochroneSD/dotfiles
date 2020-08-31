@@ -32,8 +32,9 @@ module-margin-right = 1
 font-0 = ionicons:pixelsize=12;3
 font-1 = Firacode:fontformat=truetype:size=10:antialias=true:weight=bold;3
 font-2 = owl:size=13:antialias=true;3
-font-3 = Weather Icons:size=12;2
+font-3 = Weather Icons:size=12:weight=bold;2
 font-4 = wifidemoncul:size=12;3
+locale = fr_BE.UTF-8
 modules-left = owl i3 dwm mpd
 modules-center = dwm-win-name
 modules-right = mount-usb update notes mails network volume weather filesys cpu temperature memory battery date
@@ -116,9 +117,9 @@ label-title-maxlen = 30
 ; Available tokens:
 ;   %symbol%
 label-layout = %symbol%
-label-layout-padding = 2
-label-layout-foreground = ${colors.fg}
-label-layout-background = ${colors.bgal}
+label-layout-padding = 1
+label-layout-foreground = ${colors.bgal}
+label-layout-background = ${colors.green}
 
 ; Text to show when currently focused window is floating
 label-floating = F
@@ -255,14 +256,15 @@ format-underline = ${colors.blue}
 [module/date]
 type = internal/date
 interval = 30
-date = "%d/%m"
 
+label = %date% %time%
+
+date = "%A %d/%m"
 time = "%H:%M"
 
 format-prefix-foreground = ${colors.fg-alt}
 format-underline = ${colors.pink}
 
-label = %date% %time%
 
 [module/volume]
 type = internal/alsa
