@@ -337,7 +337,7 @@ ramp-foreground-2 = ${colors.red}
 [module/mails]
 type = custom/script
 exec = ~/.script/polybar/mails
-format-prefix = %{T6}%{T-}
+format-prefix = %{T6} %{T-}
 click-left = ~/.script/edit -e '(mu4e)'
 format-underline = ${colors.navy}
 tail= true
