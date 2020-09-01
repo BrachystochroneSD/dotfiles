@@ -131,7 +131,7 @@ label-floating = F
 
 ; focused = Selected tag on focused monitor
 label-focused = %name%
-label-focused-background = ${colors.red}
+label-focused-background = ${colors.yellow-alt}
 label-focused-foreground = ${colors.bgam}
 label-focused-padding = 1
 
