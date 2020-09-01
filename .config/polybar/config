@@ -293,21 +293,25 @@ format-charging-underline = ${colors.yellow}
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${colors.orange}
 
-format-full-prefix = ""
+format-full-prefix = %{T6}%{T-}
 format-full-prefix-foreground = ${colors.fg-alt}
 format-full-underline = ${colors.yellow}
 
-ramp-capacity-0 = ""
-ramp-capacity-1 = ""
-ramp-capacity-2 = ""
+ramp-capacity-0 = %{T6}%{T-}
+ramp-capacity-1 = %{T6}%{T-}
+ramp-capacity-2 = %{T6}%{T-}
+ramp-capacity-3 = %{T6}%{T-}
+ramp-capacity-4 = %{T6}%{T-}
 ramp-capacity-foreground = ${colors.fg-alt}
 ramp-capacity-0-foreground = ${colors.red}
 
-animation-charging-0 = ""
-animation-charging-1 = ""
+animation-charging-0 = %{T6}%{T-}
+animation-charging-1 = %{T6}%{T-}
+animation-charging-2 = %{T6}%{T-}
 animation-charging-0-foreground = ${colors.yellow-alt}
 animation-charging-1-foreground = ${colors.yellow}
-animation-charging-framerate = 750
+animation-charging-2-foreground = ${colors.yellow}
+animation-charging-framerate = 450
 
 [module/temperature]
 type = internal/temperature
@@ -323,9 +327,9 @@ label = :%temperature%
 label-warn = :%temperature%
 label-warn-foreground = ${colors.bg-alt}
 
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
+ramp-0 = %{T6}%{T-}
+ramp-1 = %{T6}%{T-}
+ramp-2 = %{T6}%{T-}
 ramp-foreground-0 = ${colors.bg-alt}
 ramp-foreground-1 = ${colors.yellow}
 ramp-foreground-2 = ${colors.red}
@@ -359,6 +363,7 @@ click-right= nm-connection-editor
 type = custom/script
 exec = ~/.script/polybar/note/notescript
 format-foreground = ${colors.red}
+label= %{T6}%{T-} %{T2}%output%%{T-}
 click-left = exec st -n scripts -e ~/.script/edit -t ~/.script/polybar/note/notes
 tail = true
 format-underline = ${colors.yellow}

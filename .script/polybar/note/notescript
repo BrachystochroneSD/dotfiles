@@ -3,4 +3,4 @@
 [[ ! -f "${HOME}"/.notes ]] && exit
 num=$(grep -cE "^ *\*" "${HOME}"/.notes)
 
-[ ! "$num" = 0 ] && echo " $num" || echo
+[ ! "$num" = 0 ] && echo "$num" || echo
