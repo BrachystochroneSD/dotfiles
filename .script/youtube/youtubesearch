@@ -67,6 +67,7 @@ get_search_query () {
             ! grep -q "^$search_query$" "$HISTORY_FILE" && { echo "$search_query"; cat "$HISTORY_FILE"; } > /tmp/youthistotmp && mv /tmp/youthistotmp "$HISTORY_FILE"
 	    printf "Searching for %s\n" "$search_query"
     esac
+    mpv_launch
 }
 
 mpv_launch () {
@@ -143,7 +144,6 @@ main () {
 
     check_internet_connection
     get_search_query
-    mpv_launch
 }
 
 main
