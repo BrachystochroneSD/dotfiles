@@ -1,8 +1,13 @@
 #!/bin/sh
 
 auwlr_cache="${HOME}/.cache/auwlr"
-auwlr_update_list="${HOME}/.cache/auwlr/auwlr_update_list"
-auwlr_upgrade_list="${HOME}/.cache/auwlr/auwlr_upgrade_list"
+auwlr_update_list="$auwlr_cache/auwlr_update_list"
+auwlr_upgrade_list="$auwlr_cache/auwlr_upgrade_list"
+
+error() {
+    echo "error: $1"
+    exit 1
+}
 
 print_help() {
     echo "usage: auwlr <operation> [...]"
@@ -80,8 +85,34 @@ auwlr_build() {
 
 auwlr_upgrade() {
     [ ! -f "$auwlr_upgrade_list" ] && echo "Nothing to install or upgrade, use -Sy first" && exit 1
-    sudo pacman -U $(cat .cache/auwlr/auwlr_upgrade_list| tr "\n" " " )
+    sudo pacman -U $(cat $auwlr_cache/auwlr_upgrade_list| tr "\n" " " )
     rm "$auwlr_upgrade_list"
+}
+
+get_clean_cache_size() {
+    file_list=$(du "$auwlr_cache" -a  | grep -f "$auwlr_clean_list")
+    cache_size=0
+    while read file_size file; do
+        cache_size=$(echo "$cache_size + $file_size" | bc)
+    done <<EOF
+echo $file_list
+EOF
+    echo $(numfmt --to=si $cache_size)
+}
+
+
+auwlr_clean_cache() {
+    auwlr_clean_list="$auwlr_cache/auwlr_clean_cache_list"
+    rm -f "$auwlr_clean_list"
+    pacman -Qm | while read pkg ver; do
+        git --git-dir="$auwlr_cache/$pkg/.git" --work-tree="$auwlr_cache/$pkg" clean -n | sed "s|Would remove |$auwlr_cache/$pkg/|" >> "$auwlr_clean_list"
+    done
+    echo
+    cat "$auwlr_clean_list"
+    echo
+    echo "Remove all of these files: (total cache size = $(get_clean_cache_size)) ? [yN]"
+    read yn
+    [ "$yn" = "Y" -o "$yn" = y ] && xargs rm < "$auwlr_clean_list" || echo Aborted
 }
 
 auwlr_install() {
@@ -100,7 +131,7 @@ auwlr_install() {
     cd "$lastdir"
 }
 
-while getopts "QSyu" opt; do
+while getopts "QSyuc" opt; do
     case $opt in
         Q)
             pacman -Qm
@@ -111,6 +142,10 @@ while getopts "QSyu" opt; do
         S) install_bool=t ;;
         y) upd_bool=t ;;
         u) upg_bool=t ;;
+        c)
+            auwlr_clean_cache
+            exit 0
+            ;;
         *) print_help ;;
     esac
 done
