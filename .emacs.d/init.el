@@ -50,7 +50,7 @@
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   '(lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+   '(kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(send-mail-function 'mailclient-send-it))
 
@@ -1697,6 +1697,7 @@ This function is suitable for `mu4e-compose-mode-hook'."
 ;; ;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
 ;; (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
 (add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server" "")))
+(add-to-list 'eglot-server-programs '(kotlin-mode . ("kotlin-language-server" "")))
 ;; (add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
 
 (setq eglot-events-buffer-size 2000)
