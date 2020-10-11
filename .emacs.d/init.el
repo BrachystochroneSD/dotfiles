@@ -257,8 +257,6 @@
 
 (with-eval-after-load 'org
   (add-to-list 'org-structure-template-alist
-               '("w" "#+BEGIN_codewl \n?\n#+END_codewl"))
-  (add-to-list 'org-structure-template-alist
                '("f" "#+BEGIN_center \n#+ATTR_LATEX: :width 0.45\\linewidth :center\n?\n#+END_center"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
