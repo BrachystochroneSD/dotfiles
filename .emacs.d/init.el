@@ -345,19 +345,9 @@
          (#1# "capt-of" nil)
          (#1# "hyperref" nil)))
 
-  (add-to-list 'org-latex-classes
-               '("wlreport"
-                 "\\documentclass{wlreport}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
   (setq org-latex-toc-command "\\tableofcontents \\newpage")
   (setq org-export-with-sub-superscripts nil)
   (setq org-export-with-special-strings nil)
-  (setq org-latex-default-class "wlreport")
   (setq org-latex-hyperref-template
         "\\hypersetup{
  pdfauthor={%a},
@@ -1696,8 +1686,8 @@ This function is suitable for `mu4e-compose-mode-hook'."
 
 ;; ;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
 ;; (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
-(add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server" "")))
-(add-to-list 'eglot-server-programs '(kotlin-mode . ("kotlin-language-server" "")))
+(add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server")))
+(add-to-list 'eglot-server-programs '(kotlin-mode . ("kotlin-language-server")))
 ;; (add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
 
 (setq eglot-events-buffer-size 2000)
