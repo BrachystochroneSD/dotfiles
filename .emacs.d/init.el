@@ -257,8 +257,6 @@
 
 (with-eval-after-load 'org
   (add-to-list 'org-structure-template-alist
-               '("w" "#+BEGIN_codewl \n?\n#+END_codewl"))
-  (add-to-list 'org-structure-template-alist
                '("f" "#+BEGIN_center \n#+ATTR_LATEX: :width 0.45\\linewidth :center\n?\n#+END_center"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1088,11 +1086,82 @@ for renaming."
     (insert "\\emph{}")
     (backward-char)))
 
+(defun my-latex-replace-shit (shit replacement)
+  (delete-backward-char (length shit))
+  (insert replacement)
+  )
+
+(defun my-latex-smart-tab ()
+  (interactive)
+  (cond
+
+   ((looking-back "<s")
+    (delete-backward-char 2)
+    (indent-for-tab-command)
+    (LaTeX-section 2)
+    )
+
+   ((looking-back "<f")
+    (delete-backward-char 2)
+    (indent-for-tab-command)
+    (LaTeX-insert-environment "frame")
+    (insert "\\frametitle{}")
+    (backward-char 1))
+
+   ((looking-back "<e")
+    (delete-backward-char 2)
+    (indent-for-tab-command)
+    (LaTeX-insert-environment "enumerate")
+    (insert "\\item ")
+    )
+
+   ((looking-back "<i")
+    (delete-backward-char 2)
+    (indent-for-tab-command)
+    (LaTeX-insert-environment "itemize")
+    (insert "\\item ")
+    )
+
+   ((looking-back "<c")
+    (delete-backward-char 2)
+    (indent-for-tab-command)
+    (LaTeX-insert-environment "center"))
+
+   ((looking-back "->")
+    (my-latex-replace-shit "->" "$\\rightarrow$"))
+   ((looking-back "<-")
+    (my-latex-replace-shit "<-" "$\\lefttarrow$"))
+   ((looking-back "=>")
+    (my-latex-replace-shit "=>" "$\\Rightarrow$"))
+   ((looking-back "<=")
+    (my-latex-replace-shit "<=" "$\\Lefttarrow$"))
+   ((looking-back "[.][.][.]")
+    (my-latex-replace-shit "..." "$\\ldots$"))
+   (t
+    (indent-for-tab-command)))
+  )
+
+
+(defun my-latex-smart-return ()
+  (interactive)
+  (cond
+   ((looking-back "\\item ")
+    (kill-whole-line)
+    (end-of-line)
+    (newline))
+   ((and (looking-back "\\frametitle{.*")
+         (looking-at "}"))
+    (end-of-line)
+    (newline))
+   (t
+    (LaTeX-insert-item)))
+  )
+
 (defun my-TeX-LaTeX-mode-hook-setup ()
   (interactive)
   (add-to-list 'TeX-view-program-selection '(output-pdf "mupdf") )
   (add-to-list 'TeX-view-program-list '("mupdf" "mupdf %o"))
-  (local-set-key (kbd "<C-return>") 'LaTeX-insert-item)
+  (local-set-key (kbd "<C-return>") 'my-latex-smart-return)
   (local-set-key (kbd "<M-return>") 'LaTeX-close-environment)
   (outline-minor-mode)
   (local-set-key (kbd "M-v") 'outline-previous-visible-heading)
@@ -1103,6 +1172,10 @@ for renaming."
   (local-set-key (kbd "C-c i i") 'my-latex-insert-italics)
   (local-set-key (kbd "C-c i u") 'my-latex-insert-underline)
   (local-set-key (kbd "C-c i e") 'my-latex-insert-emph)
+
+  (local-set-key (kbd "<tab>") 'my-latex-smart-tab)
+  (evil-define-key 'insert 'local (kbd "<tab>") 'my-latex-smart-tab)
+
   (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
   )
 
