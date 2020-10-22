@@ -132,7 +132,7 @@
 "mpd"
     Mod4 + Control + Shift + m
 "st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh"
-    Mod4 + Control + m
+    Mod4 + m
 "st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh t"
     Mod4 + Mod1 + m
 
