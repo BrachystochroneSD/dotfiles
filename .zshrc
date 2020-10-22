@@ -264,8 +264,16 @@ flac2mp3 () {
     ffmpeg -i "$1" -ab 320k -map_metadata 0 -id3v2_version 3 "$2"
 }
 
+subextract () {
+    ffmpeg -i "$1" -map 0:s:0 "${1%.*}.srt"
+}
+
 videocompress () {
-    ffmpeg -i "$1" -b 800k "$1"
+    input_video=$1
+    video_name=${input_video%%.*}
+    video_ext=${input_video##*.}
+    ffmpeg -i "$input_video" -vcodec libx265 -crf 28 "$video_name"_compressed."$video_ext"
+
 }
 
 # systemctl
@@ -278,5 +286,48 @@ texcheck () {
     ktech "$1" shitktech.png && feh shitktech.png && rm shitktech.png
 }
 
-myop () { nohup "$1" > /dev/null 2>&1 & }
+myop() {
+    nohup "$1" > /dev/null 2>&1 &
+}
 alias makesuck='rm config.h; make && sudo make install'
+
+# xdg-mime
+
+alias xqf='xdg-mime query filetype'
+
+xqd() {
+    filetype=$(xdg-mime query filetype "$1")
+    xdg-mime query default $filetype
+}
+
+xinfo() {
+    file="$1"
+    echo Filetype: $(xqf $1)
+    echo Default application: $(xqd $1)
+}
+
+_xdd() {
+    local state
+    _arguments '1: :->appli' '2: :->file'
+
+    case $state in
+        appli) _files -W "(/usr/share/applications ${HOME}/.local/share/applications)" -g "*.desktop" ;;
+        file) _files ;;
+    esac
+}
+
+xdd() {
+    application="$1"
+    file="$2"
+    filetype=$(xqf "$file")
+    curr_default=$(xqd "$file")
+
+    echo "Change default application of"
+    echo "        $filetype "
+    echo "     from $curr_default "
+    echo "      to $application ? [y/N]"
+    read yn
+    [ "$yn" = "y" -o "$yn" = "Y" ] && xdg-mime default $application $filetype || echo aborted
+}
+
+compdef _xdd xdd
