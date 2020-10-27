@@ -124,7 +124,7 @@ check_and_launch () {
 
     stream=$(echo "$stream_list" | $menucmd -i -l 10 -p "Streams: ") || aborted
 
-    stream=$(echo "$stream" | sed 's/.*:\([^ ]*\).*/\1/')
+    stream=$(echo "$stream" | sed 's/..:\([^ ]*\).*/\1/')
     echo "$stream" > "$laststreamfile"
     [ -z "$QUIETOPT" ] && exec $chat_command "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$(echo $stream | tr [A-Z] [a-z])"
     exit
