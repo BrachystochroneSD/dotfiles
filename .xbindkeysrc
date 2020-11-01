@@ -168,7 +168,8 @@
     Mod4 + Shift + f
 "st -n fzf -e /home/sam/.script/fzf-open.sh --hidden"
     Mod4 + Control + f
-
+"st -n fzf -e /home/sam/.script/fzf-open.sh --open-with"
+    Mod4 + Mod1 + f
 
 #---# Mail mu4e #---#
 
