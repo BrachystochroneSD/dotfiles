@@ -1,7 +1,7 @@
 [dmenu]
 nb = {color0}
-nf = {color15} 
-sb = {color0} 
+nf = {color15}
+sb = {color0}
 sf = {color3}
 
 [dmenu_passphrase]
@@ -10,7 +10,8 @@ nb = {color0}
 
 [database]
 database_1 = ~/.keepassdb/Samuel_Main.kdbx
-keyfile_1 = 
+database_2 = ~/.keepassdb/SamuelDawantDB.kdbx
+keyfile_1 =
 pw_cache_period_min = 360
 # autotype_default = {{USERNAME}}{{TAB}}{{PASSWORD}}
 autotype_default = {{PASSWORD}}
