@@ -7,18 +7,22 @@ dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 notifycmd="dunstify -i owl"
 
 xrandrout=$(xrandr)
-internal=LVDS-1
-
+active=$(xrandr --listactivemonitors | grep -v "Monitors: " | awk '{print $4}')
 
 abort () {
     [ -n "$1" ] && echo "Error: $1"
     echo "Aborted!"
-    $notifycmd "script aborted"
-    exit 0
+    $notifycmd "Error: $1"
+    exit 1
+}
+
+resetscreen () {
+    "${HOME}"/.fehbg
+    "${HOME}"/.config/polybar/launch.sh
 }
 
 turn_on_devices () {
-    con_off_devices=$(echo "$xrandrout" | grep " connected " | grep -v "$internal" | grep -v "+" | awk '{print $1}')
+    con_off_devices=$(echo "$xrandrout" | grep " connected" | grep -v "$active" | awk '{print $1}')
     numline=$(echo "$con_off_devices" | wc -l)
 
     if [ "$numline" = 0 ]; then
@@ -31,15 +35,15 @@ turn_on_devices () {
     fi
 
     if [ -n "$chosenone" ];then
-        leftorright=$(echo -e "left\nright" | $dmenucmd -p "Left or Right of main display?")
+        leftorright=$(echo -e "left\nright" | $dmenucmd -p "Left or Right of $active?")
         if [ "$leftorright" == "right" ];then
-            xrandr --output "$chosenone" --auto --right-of "$internal"
+            xrandr --output "$chosenone" --auto --right-of "$active"
         elif [ "$leftorright" == "left" ];then
-            xrandr --output "$chosenone" --auto --left-of "$internal"
+            xrandr --output "$chosenone" --auto --left-of "$active"
         else
             abort "choose leftorright"
         fi
-        "${HOME}"/.fehbg
+        resetscreen
     else
         echo "no devices to turn on"
         $notifycmd "no devices to turn on"
@@ -47,34 +51,33 @@ turn_on_devices () {
 }
 
 turn_off_devices () {
-    con_on_devices=$(echo "$xrandrout" | grep " connected " | grep -v "$internal" | grep "+" | awk '{print $1}')
-    numline=$(echo "$con_on_devices" | wc -l)
+    numline=$(echo "$active" | wc -l)
     if [ "$numline" = 0 ]; then
         echo "No output devices"
         $notifycmd "No output devices"
     elif [ "$numline" -gt 1 ];then
-        chosenone=$(echo "$con_on_devices" | $dmenucmd -p "Choose which devices to enable: ")
+        chosenone=$(echo "$active" | $dmenucmd -p "Choose which devices to turn off: ")
     else
-        chosenone="$con_on_devices"
+        abort "Don't turn off your only monitor, silly"
     fi
 
     if [ -n "$chosenone" ];then
         xrandr --output "$chosenone" --off
-        "${HOME}"/.fehbg
+        resetscreen
     else
         echo "no devices to turn off"
         $notifycmd "no devices to turn off"
     fi
 }
 
-menu=$(printf "on\noff" | $dmenucmd -i -l 2 -p "Xrandr Script: " ) || abort
+menu=$(printf "enable\ndisable" | $dmenucmd -i -l 2 -p "Xrandr Script: " ) || abort
 
 case $menu in
-    on)
+    enable)
         turn_on_devices ;;
-    off)
+    disable)
         turn_off_devices ;;
     *)
-        echo "need on or off options"
-        $notifycmd "need on or off options"
+        echo "need enable or disable options"
+        $notifycmd "need enable or disable options"
 esac
