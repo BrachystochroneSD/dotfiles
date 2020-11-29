@@ -95,7 +95,10 @@
 "pavucontrol"
     Mod4 + XF86AudioMute
 
-# Amixer Audio controls
+# Audio controls
+"~/.script/pactlsam --reset"
+    Shift + XF86AudioMute
+
 "~/.script/pactlsam --mictoggle"
     XF86AudioMicMute
 

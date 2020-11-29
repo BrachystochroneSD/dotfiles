@@ -1,7 +1,6 @@
 #!/usr/bin/sh
 
-sinknum=$(pactl list sinks | head -n 1)
-sinknum=${sinknum##*#}
+sinknums=$(pactl list sinks | grep ^Sink | grep -o "[0-9]*")
 
 sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
 sourcenum=${sourcenum##*#}
@@ -41,9 +40,26 @@ notif () {
 }
 
 case $1 in
-    --toggle) pactl set-sink-mute $sinknum toggle && notif ;;
+    --toggle)
+        echo "$sinknums" | while read sinknum; do
+            pactl set-sink-mute $sinknum toggle
+        done
+        notif ;;
     --mictoggle) pactl set-source-mute $sourcenum toggle ;;
-    --plus) pactl set-sink-volume $sinknum +$2% && notif ;;
-    --moins) pactl set-sink-volume $sinknum -$2% && notif ;;
+    --plus)
+        echo "$sinknums" | while read sinknum; do
+            pactl set-sink-volume $sinknum +$2%
+        done
+        notif ;;
+    --moins)
+        echo "$sinknums" | while read sinknum; do
+            pactl set-sink-volume $sinknum -$2%
+        done
+        notif ;;
+    --reset)
+        echo "$sinknums" | while read sinknum; do
+            pactl set-sink-volume $sinknum 100%
+        done
+        notif ;;
     *) "usage: pactlsam --toggle --plus or --moins"
 esac
