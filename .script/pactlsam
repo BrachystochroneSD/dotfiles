@@ -1,21 +1,44 @@
 #!/usr/bin/sh
 
+printxfoi(){
+    i=0
+    while [ $i -lt "$1" ]; do
+        printf "$2"
+        : $(( i= i + 1 ))
+    done
+}
+
+print_curr_level () {
+    actual_level=$(pactl list sinks | grep  "[^ ]Volume:")
+    actual_level=${actual_level%%%*}
+    actual_level=${actual_level##* }
+    max_level=150 #TODO: make bar with over 100% zone
+
+    pactl list sinks | grep -q "Mute: yes" && actual_level=0 #put to 0 si muted
+
+    curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
+    message=$(printxfoi "$curr_level" "⭓")
+    message="$message"$(printxfoi $((10 - curr_level)) "⭔")
+    NID=$(dunstify -t 1000 -p -i owl -r "$(cat /tmp/tmpNID)" "$message")
+    echo "$NID" > /tmp/tmpNID
+}
+
 sinknum=$(pactl list sinks | head -n 1)
 sinknum=${sinknum##*#}
 
 sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
 sourcenum=${sourcenum##*#}
 
-alert () {
+notif () {
+    print_curr_level
     sleep 0.05
     paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
 }
 
 case $1 in
-    --toggle) pactl set-sink-mute $sinknum toggle && alert ;;
+    --toggle) pactl set-sink-mute $sinknum toggle && notif ;;
     --mictoggle) pactl set-source-mute $sourcenum toggle ;;
-    --plus) pactl set-sink-volume $sinknum +$2% && alert ;;
-    --moins) pactl set-sink-volume $sinknum -$2% && alert ;;
+    --plus) pactl set-sink-volume $sinknum +$2% && notif ;;
+    --moins) pactl set-sink-volume $sinknum -$2% && notif ;;
     *) "usage: pactlsam --toggle --plus or --moins"
 esac
-
