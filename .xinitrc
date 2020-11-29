@@ -9,7 +9,7 @@ wpg -m
 xbindkeys
 
 # music shit
-mpd
+#mpd
 
 # redshift
 redshift &
