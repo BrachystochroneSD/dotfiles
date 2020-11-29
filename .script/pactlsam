@@ -1,5 +1,14 @@
 #!/usr/bin/sh
 
+sinknum=$(pactl list sinks | head -n 1)
+sinknum=${sinknum##*#}
+
+sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
+sourcenum=${sourcenum##*#}
+
+check=$(cat /tmp/tmpNID)
+[ -z "$check" ] && echo 0 > /tmp/tmpNID
+
 printxfoi(){
     i=0
     while [ $i -lt "$1" ]; do
@@ -12,22 +21,18 @@ print_curr_level () {
     actual_level=$(pactl list sinks | grep  "[^ ]Volume:")
     actual_level=${actual_level%%%*}
     actual_level=${actual_level##* }
-    max_level=150 #TODO: make bar with over 100% zone
+    max_level=100 #TODO: make bar with over 100% zone
 
-    pactl list sinks | grep -q "Mute: yes" && actual_level=0 #put to 0 si muted
+    pactl list sinks | grep -q "Mute: yes" && icon=Mute_Icon || icon=Speaker_Icon
+
+    # [ $actual_level -gt 100 ] && #TODO: change color when over 100% or maybe block it until you use shift
 
     curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
     message=$(printxfoi "$curr_level" "⭓")
     message="$message"$(printxfoi $((10 - curr_level)) "⭔")
-    NID=$(dunstify -t 1000 -p -i owl -r "$(cat /tmp/tmpNID)" "$message")
+    NID=$(dunstify -t 1000 -p -i $icon -r "$(cat /tmp/tmpNID)" "$message")
     echo "$NID" > /tmp/tmpNID
 }
-
-sinknum=$(pactl list sinks | head -n 1)
-sinknum=${sinknum##*#}
-
-sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
-sourcenum=${sourcenum##*#}
 
 notif () {
     print_curr_level
