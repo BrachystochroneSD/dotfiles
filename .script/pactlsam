@@ -1,0 +1,21 @@
+#!/usr/bin/sh
+
+sinknum=$(pactl list sinks | head -n 1)
+sinknum=${sinknum##*#}
+
+sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
+sourcenum=${sourcenum##*#}
+
+alert () {
+    sleep 0.05
+    paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+}
+
+case $1 in
+    --toggle) pactl set-sink-mute $sinknum toggle && alert ;;
+    --mictoggle) pactl set-source-mute $sourcenum toggle ;;
+    --plus) pactl set-sink-volume $sinknum +$2% && alert ;;
+    --moins) pactl set-sink-volume $sinknum -$2% && alert ;;
+    *) "usage: pactlsam --toggle --plus or --moins"
+esac
+
