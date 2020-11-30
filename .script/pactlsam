@@ -16,10 +16,21 @@ printxfoi(){
     done
 }
 
+check_vol () {
+    shit=$1
+    actual_level=$(pactl list sinks | grep  "[^ ]Volume:")
+    actual_level=${actual_level%%%*}
+    actual_level=${actual_level##* }
+
+    : $(( sum= shit + actual_level ))
+    [ $sum -gt 150 ] && return 1 || return 0
+}
+
 print_curr_level () {
     actual_level=$(pactl list sinks | grep  "[^ ]Volume:")
     actual_level=${actual_level%%%*}
     actual_level=${actual_level##* }
+
     max_level=100 #TODO: make bar with over 100% zone
 
     pactl list sinks | grep -q "Mute: yes" && icon=Mute_Icon || icon=Speaker_Icon
@@ -35,8 +46,10 @@ print_curr_level () {
 
 notif () {
     print_curr_level
-    sleep 0.05
-    paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+    if [ -z "$1" ]; then
+        sleep 0.05
+        paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+    fi
 }
 
 case $1 in
@@ -47,10 +60,14 @@ case $1 in
         notif ;;
     --mictoggle) pactl set-source-mute $sourcenum toggle ;;
     --plus)
-        echo "$sinknums" | while read sinknum; do
-            pactl set-sink-volume $sinknum +$2%
-        done
-        notif ;;
+        if check_vol $2; then
+            echo "$sinknums" | while read sinknum; do
+                pactl set-sink-volume $sinknum +$2%
+            done
+            notif
+        else
+            notif --silent
+        fi ;;
     --moins)
         echo "$sinknums" | while read sinknum; do
             pactl set-sink-volume $sinknum -$2%
@@ -63,3 +80,5 @@ case $1 in
         notif ;;
     *) "usage: pactlsam --toggle --plus or --moins"
 esac
+
+[]
