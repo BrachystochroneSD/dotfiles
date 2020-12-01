@@ -48,7 +48,7 @@ notif () {
     print_curr_level
     if [ -z "$1" ]; then
         sleep 0.05
-        paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+        #paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
     fi
 }
 
