@@ -91,6 +91,14 @@
 "~/.script/my_dmenu_run -i"
     Mod4 + d
 
+#CALculette
+"st -n floatingwin -e python"
+    XF86Calculator
+#
+#CALendar
+"st -n floatingwin -e ~/.script/shits/calendar"
+    Mod4 + XF86Calculator
+
 #pavucontrol
 "pavucontrol"
     Mod4 + XF86AudioMute
