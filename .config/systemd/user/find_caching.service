@@ -1,0 +1,10 @@
+[Unit]
+Description=Cache the find for fast fzf at startup
+
+[Service]
+Type=oneshot
+user=sam
+ExecStart=/usr/bin/nice -n 19 /usr/bin/ionice -c 3 -t /usr/bin/find / >/dev/null 2>&1
+
+[Install]
+WantedBy=multi-user.target
