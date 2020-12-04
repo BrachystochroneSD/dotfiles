@@ -1,5 +1,17 @@
 #!/bin/bash
 
-wpg --theme | fzf | xargs wpg --theme
+case $1 in
+    theme)
+        choose=$(wpg --theme | fzf)
+        wpg --theme $choose
+        ;;
+    wall)
+        choose=$(wpg -l | fzf)
+        wpg -s $choose
+        ;;
+    *) exit 1
+esac
+
 "${HOME}"/.script/wpgscript > /dev/null
-exit
+
+exit 0

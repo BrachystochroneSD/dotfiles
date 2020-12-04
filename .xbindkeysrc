@@ -76,11 +76,14 @@
 
 #--# # WPG # #--#
 
-"st -n fzf -e .script/wpg_theme"
-    Mod4 + Control + Shift + w
+"st -n fzf -e ~/.script/wpg_theme theme"
+    Mod4 + Shift + w
+
+"st -n fzf -e ~/.script/wpg_theme wall"
+    Mod4 + Control + w
 
 "wpg -m"
-    Mod4 + Shift + w
+    Mod4 + w
 
 #App launcher bindings
 
