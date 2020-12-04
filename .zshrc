@@ -227,10 +227,9 @@ e(){ /bin/nohup /home/sam/.script/edit2 "$@" &>/dev/null &}
 
 alias feh='feh -..'
 
+# GRUB
 
-# MOUNT WINDONWS
-
-alias winmount='sudo mount /dev/sda3 /media/winmount'
+alias grubreset='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 
 # MPD
 
