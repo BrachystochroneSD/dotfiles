@@ -50,7 +50,7 @@
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   '(kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+   '(kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(send-mail-function 'mailclient-send-it))
 
@@ -1370,7 +1370,7 @@ for renaming."
    mu4e-maildir (expand-file-name "~/.mail")
 
    ;; Sent
-   mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
+   ;; mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
    message-send-mail-function 'smtpmail-send-it
 
    ;; Folders
