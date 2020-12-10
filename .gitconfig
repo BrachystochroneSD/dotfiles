@@ -1,7 +1,7 @@
 [status]
-	showUntrackedFiles = no
+    showUntrackedFiles = no
 [user]
-	email = samrenfou@hotmail.com
-	name = Samuel Dawant
+    email = samueld@mailo.com
+    name = Samuel D
 [pull]
-	rebase = false
+    rebase = false
