@@ -1370,7 +1370,7 @@ for renaming."
    mu4e-maildir (expand-file-name "~/.mail")
 
    ;; Sent
-   ;; mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
+   mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
    message-send-mail-function 'smtpmail-send-it
 
    ;; Folders
