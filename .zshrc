@@ -330,3 +330,12 @@ xdd() {
 }
 
 compdef _xdd xdd
+
+# compress photo
+compress_image () {
+    [ -n "$2" ] && output="$2" || output="compress_$1"
+    [ -f "$1" ] && ffmpeg -i "$1" -qscale:v 2 "$output" || echo "$1" not a file
+}
+
+
+
