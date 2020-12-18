@@ -1,5 +1,8 @@
 #!/bin/sh
 
+. "${HOME}/.cache/wal/colors.sh"
+DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+
 ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
 wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
 
@@ -10,9 +13,20 @@ inversebool () {
 getifstat () {
     ifstat -n
     if [[ -n $(grep "$wifidev" /tmp/.ifstat.u"$UID") ]];then
-        grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}' | read received transmitted
-        received=$(( received - $(cat /tmp/wififstatrxzero 2>/dev/null || echo 0) ))
-        transmitted=$(( transmitted - $(cat /tmp/wififstattxzero 2>/dev/null || echo 0) ))
+        read received transmitted <<EOF
+$(grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
+EOF
+        recminus=$(cat /tmp/wififstatrxzero 2>/dev/null)
+        transminus=$(cat /tmp/wififstattxzero 2>/dev/null)
+        [ -z "$recminus" ] && recminus=0
+        [ -z "$transminus" ] && transminus=0
+
+        recplus=$(cat /tmp/wififstatrxzeroplus 2>/dev/null)
+        [ -z "$recplus" ] && recplus=0
+
+        received=$(( received - recminus + recplus))
+        transmitted=$(( transmitted - transminus ))
+
         RX="↓$(mean $received)"
         TX="↑$(mean $transmitted)"
     fi
@@ -26,34 +40,49 @@ mean () {
     echo $number$unit
 }
 
+format_unit () {
+    echo "$1" | sed 's/K/000/;s/M/000000/;s/G/000000000/;s/T/000000000000/'
+}
+
+setup_zero () {
+    read rxzero txzero <<EOF
+$(grep "$wifidev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}')
+EOF
+    echo $txzero > /tmp/wififstattxzero
+    [ -n "$1" ] && echo $(format_unit $1) > /tmp/wififstatrxzeroplus || rm -f /tmp/wififstatrxzeroplus
+    echo $rxzero > /tmp/wififstatrxzero
+}
+
 case $1 in
     --help)
         echo "Need help? Go fuck yourself!"
         ;;
+    --prompt-zeros)
+        zero=$(echo | $DMENU_CMD -p "Zero to set:")
+        setup_zero "$zero"
+        ;;
     --setup-zeros)
-        grep "$wifidev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}' | read rxzero txzero
-        echo $txzero > /tmp/wififstattxzero
-        echo $rxzero > /tmp/wififstatrxzero
+        setup_zero "$2"
         ;;
     --toggle-ifstat)
         [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
         ;;
     *)
-	[[ -n "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
-       	if [[ -n "$wifidev" ]];then
+        [[ -n "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
+        if [[ -n "$wifidev" ]];then
             wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
             if [ -n "$wifi" ];then
-	        if [ "$wifi" -le 55 ];then
-	            output="A"
-	        elif [ "$wifi" -le 75 ];then
-	            output="B"
-	        elif [ "$wifi" -le 85 ];then
-	            output="C"
-	        else
-	            output="D"
-	        fi
+                if [ "$wifi" -le 55 ];then
+                    output="A"
+                elif [ "$wifi" -le 75 ];then
+                    output="B"
+                elif [ "$wifi" -le 85 ];then
+                    output="C"
+                else
+                    output="D"
+                fi
             fi
-	fi
-        [[ -f /tmp/wififstattglrx ]] && output="$output $RX $TX"
+        fi
+        [[ -f /tmp/wififstattglrx ]] && getifstat && output="$output $RX $TX"
         echo "$output"
 esac

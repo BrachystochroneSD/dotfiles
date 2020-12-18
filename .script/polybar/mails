@@ -21,7 +21,7 @@ fi
 }
 
 while true; do
-    update_mail
+    [ -f /tmp/wififstattglrx ] || update_mail
     i=0
     while [ $i -lt 6 ]; do
     count_mail
