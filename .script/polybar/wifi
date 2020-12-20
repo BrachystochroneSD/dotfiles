@@ -1,16 +1,17 @@
 #!/bin/sh
 
-. "${HOME}/.cache/wal/colors.sh"
-DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
-
 ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
 wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
 
 load_config () {
-    . "${HOME}/.config/wifirc"
+    if [ -f "${HOME}/.config/wifirc" ];then
+        . "${HOME}/.config/wifirc"
 
-    [ -n "WIFI_TGGL_DEFAULT" ] && touch /tmp/wififstattglrx
-    [ -n "WIFI_ZEROS_DEFAULT" ] && format_unit "$WIFI_ZEROS_DEFAULT" > /tmp/wififstatrxzeroplus
+        [ -n "$WIFI_TGGL_DEFAULT" ] && touch /tmp/wififstattglrx
+        [ -n "$WIFI_ZEROS_DEFAULT" ] && format_unit "$WIFI_ZEROS_DEFAULT" > /tmp/wififstatrxzeroplus
+
+        [ -n "$WIFI_ALERT_RX" ] && format_unit "$WIFI_ALERT_RX" > /tmp/wifi_alert_rx
+    fi
 }
 
 mean () {
@@ -24,6 +25,14 @@ mean () {
 format_unit () {
     local res=$(echo "$1" | sed 's/K/ * 1000/;s/M/ * 1000000/;s/G/ * 1000000000/;s/T/ * 1000000000000/' | bc)
     echo ${res%%.*}
+}
+
+alert_data () {
+    received="$1"
+    if [ -f /tmp/wifi_alert_rx ]; then
+        alert=$(cat /tmp/wifi_alert_rx)
+        [ "$alert" -lt "$received" ] && notify-send "ALERT Current data $(mean $received) greater than $(mean $alert)"
+    fi
 }
 
 setup_zero () {
@@ -51,17 +60,40 @@ EOF
 
         received=$(( received - recminus + recplus))
         transmitted=$(( transmitted - transminus ))
+        alert_data "$received"
 
         RX="↓$(mean $received)"
         TX="↑$(mean $transmitted)"
     fi
 }
 
+print_wifi () {
+    [[ -n "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
+    if [[ -n "$wifidev" ]];then
+        wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
+        if [ -n "$wifi" ];then
+            if [ "$wifi" -le 55 ];then
+                output="A"
+            elif [ "$wifi" -le 75 ];then
+                output="B"
+            elif [ "$wifi" -le 85 ];then
+                output="C"
+            else
+                output="D"
+            fi
+        fi
+    fi
+    [[ -f /tmp/wififstattglrx ]] && getifstat && output="$output $RX $TX"
+    echo "$output"
+}
+
 case $1 in
-    --help)
-        echo "TODO"
-        ;;
+    --help) echo "TODO" ;;
     --prompt-zeros)
+
+        . "${HOME}/.cache/wal/colors.sh"
+        DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+
         zero=$(echo | $DMENU_CMD -p "Zero to set:")
         setup_zero "$zero"
         ;;
@@ -71,22 +103,8 @@ case $1 in
     --toggle-ifstat)
         [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
         ;;
+    --load-config)
+        load_config ;;
     *)
-        [[ -n "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
-        if [[ -n "$wifidev" ]];then
-            wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
-            if [ -n "$wifi" ];then
-                if [ "$wifi" -le 55 ];then
-                    output="A"
-                elif [ "$wifi" -le 75 ];then
-                    output="B"
-                elif [ "$wifi" -le 85 ];then
-                    output="C"
-                else
-                    output="D"
-                fi
-            fi
-        fi
-        [[ -f /tmp/wififstattglrx ]] && getifstat && output="$output $RX $TX"
-        echo "$output"
+        print_wifi
 esac
