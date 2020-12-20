@@ -36,12 +36,13 @@ mean () {
     units="KMGTP"
     nummean=$(( $(printf $1 | wc -m) / 3 ))
     number=$(echo "$1 / (10 ^ (3 * $nummean) )" | bc -l | cut -c 1-4)
-    unit=$(echo $units | cut -c $nummean)
-    echo $number$unit
+    [ "$nummean" -gt 0 ] && unit=$(echo $units | cut -c "$nummean")
+    echo "$number$unit"
 }
 
 format_unit () {
-    echo "$1" | sed 's/K/000/;s/M/000000/;s/G/000000000/;s/T/000000000000/'
+    local res=$(echo "$1" | sed 's/K/ * 1000/;s/M/ * 1000000/;s/G/ * 1000000000/;s/T/ * 1000000000000/' | bc)
+    echo ${res%%.*}
 }
 
 setup_zero () {
@@ -49,13 +50,13 @@ setup_zero () {
 $(grep "$wifidev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}')
 EOF
     echo $txzero > /tmp/wififstattxzero
-    [ -n "$1" ] && echo $(format_unit $1) > /tmp/wififstatrxzeroplus || rm -f /tmp/wififstatrxzeroplus
+    [ -n "$1" ] && echo $(format_unit "$1") > /tmp/wififstatrxzeroplus || rm -f /tmp/wififstatrxzeroplus
     echo $rxzero > /tmp/wififstatrxzero
 }
 
 case $1 in
     --help)
-        echo "Need help? Go fuck yourself!"
+        echo "TODO"
         ;;
     --prompt-zeros)
         zero=$(echo | $DMENU_CMD -p "Zero to set:")
