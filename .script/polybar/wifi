@@ -1,8 +1,5 @@
 #!/bin/sh
 
-ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
-wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
-
 load_config () {
     if [ -f "${HOME}/.config/wifirc" ];then
         . "${HOME}/.config/wifirc"
@@ -11,6 +8,7 @@ load_config () {
         [ -n "$WIFI_ZEROS_DEFAULT" ] && format_unit "$WIFI_ZEROS_DEFAULT" > /tmp/wififstatrxzeroplus
 
         [ -n "$WIFI_ALERT_RX" ] && format_unit "$WIFI_ALERT_RX" > /tmp/wifi_alert_rx
+        [ -n "$WIFI_STOP_RX" ] && format_unit "$WIFI_STOP_RX" > /tmp/wifi_stop_rx
     fi
 }
 
@@ -29,9 +27,19 @@ format_unit () {
 
 alert_data () {
     received="$1"
+    if [ -f /tmp/wifi_stop_rx ]; then
+        stop=$(cat /tmp/wifi_stop_rx)
+        if [ "$alert" -lt "$received" ];then
+            nmcli radio wifi off
+            notify-send "ALERT: Data exceeded the max treshold of $(mean $stop), wifi disabled"
+        fi
+    fi
+
     if [ -f /tmp/wifi_alert_rx ]; then
         alert=$(cat /tmp/wifi_alert_rx)
-        [ "$alert" -lt "$received" ] && notify-send "ALERT Current data $(mean $received) greater than $(mean $alert)"
+        if [ "$alert" -lt "$received" ];then
+            notify-send "ALERT Current data $(mean $received) greater than $(mean $alert)"
+        fi
     fi
 }
 
@@ -68,8 +76,12 @@ EOF
 }
 
 print_wifi () {
-    [[ -n "$ethdev" ]] && [[ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ]] && output="E"
-    if [[ -n "$wifidev" ]];then
+
+    ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
+    wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
+
+    [ -n "$ethdev" ] && [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ] && output="E"
+    if [ -n "$wifidev" ];then
         wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
         if [ -n "$wifi" ];then
             if [ "$wifi" -le 55 ];then
@@ -81,9 +93,9 @@ print_wifi () {
             else
                 output="D"
             fi
+            [ -f /tmp/wififstattglrx ] && getifstat && output="$output $RX $TX"
         fi
     fi
-    [[ -f /tmp/wififstattglrx ]] && getifstat && output="$output $RX $TX"
     echo "$output"
 }
 
