@@ -13,28 +13,6 @@ load_config () {
     [ -n "WIFI_ZEROS_DEFAULT" ] && format_unit "$WIFI_ZEROS_DEFAULT" > /tmp/wififstatrxzeroplus
 }
 
-getifstat () {
-    ifstat -n
-    if [[ -n $(grep "$wifidev" /tmp/.ifstat.u"$UID") ]];then
-        read received transmitted <<EOF
-$(grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
-EOF
-        recminus=$(cat /tmp/wififstatrxzero 2>/dev/null)
-        transminus=$(cat /tmp/wififstattxzero 2>/dev/null)
-        [ -z "$recminus" ] && recminus=0
-        [ -z "$transminus" ] && transminus=0
-
-        recplus=$(cat /tmp/wififstatrxzeroplus 2>/dev/null)
-        [ -z "$recplus" ] && recplus=0
-
-        received=$(( received - recminus + recplus))
-        transmitted=$(( transmitted - transminus ))
-
-        RX="↓$(mean $received)"
-        TX="↑$(mean $transmitted)"
-    fi
-}
-
 mean () {
     units="KMGTP"
     nummean=$(( $(printf $1 | wc -m) / 3 ))
@@ -55,6 +33,28 @@ EOF
     echo $txzero > /tmp/wififstattxzero
     [ -n "$1" ] && echo $(format_unit "$1") > /tmp/wififstatrxzeroplus || rm -f /tmp/wififstatrxzeroplus
     echo $rxzero > /tmp/wififstatrxzero
+}
+
+getifstat () {
+    ifstat -n
+    if [[ -n $(grep "$wifidev" /tmp/.ifstat.u"$UID") ]];then
+        read received transmitted <<EOF
+$(grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
+EOF
+        recminus=$(cat /tmp/wififstatrxzero 2>/dev/null)
+        transminus=$(cat /tmp/wififstattxzero 2>/dev/null)
+        [ -z "$recminus" ] && recminus=0
+        [ -z "$transminus" ] && transminus=0
+
+        recplus=$(cat /tmp/wififstatrxzeroplus 2>/dev/null)
+        [ -z "$recplus" ] && recplus=0
+
+        received=$(( received - recminus + recplus))
+        transmitted=$(( transmitted - transminus ))
+
+        RX="↓$(mean $received)"
+        TX="↑$(mean $transmitted)"
+    fi
 }
 
 case $1 in
