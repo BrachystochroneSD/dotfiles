@@ -13,11 +13,35 @@ PS1="%B%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[red]%}%M%{$fg[blue]%}:%{$fg[magenta]
 
 stty -ixon
 
+# COMPLETION
+
 autoload -U compinit
 # zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 compinit
 _comp_options+=(globdots)
+
+# completion functions
+_xdd() {
+    local state
+    _arguments '1: :->appli' '2: :->file'
+
+    case $state in
+        appli) _files -W "(/usr/share/applications ${HOME}/.local/share/applications)" -g "*.desktop" ;;
+        file) _files ;;
+    esac
+}
+
+_wifi() {
+    _arguments -C \
+               "--load-config[load configuration in ${home}/.config/wifirc]" \
+               "--setup-zeros[setup the zero of the rx ]" \
+               "--prompt-zeros[setup the zero of the rx with dmenu prompt]" \
+               "--toggle-ifstat[toggle the print of the ifstat]"
+}
+
+compdef _xdd xdd
+compdef _wifi wifi
 
 # fix for tramp emacs
 [ $TERM = "dumb" ] && unsetopt zle $$ PS1='$ '
@@ -72,6 +96,7 @@ alias zenomount='sudo mount -t davfs https://nextcloud.zenocyne.com/remote.php/w
 ##################
 
 alias twitch='~/.script/twitch/twitchscript'
+alias wifi='~/.script/polybar/wifi'
 alias gamedbupdate='~/.script/gamedatabase/gamedbupdate'
 alias yts='~/.script/youtube/youtubesearch'
 alias im='~/.script/im'
@@ -305,16 +330,6 @@ xinfo() {
     echo Default application: $(xqd $1)
 }
 
-_xdd() {
-    local state
-    _arguments '1: :->appli' '2: :->file'
-
-    case $state in
-        appli) _files -W "(/usr/share/applications ${HOME}/.local/share/applications)" -g "*.desktop" ;;
-        file) _files ;;
-    esac
-}
-
 xdd() {
     application="$1"
     file="$2"
@@ -329,13 +344,8 @@ xdd() {
     [ "$yn" = "y" -o "$yn" = "Y" ] && xdg-mime default $application $filetype || echo aborted
 }
 
-compdef _xdd xdd
-
 # compress photo
 compress_image () {
     [ -n "$2" ] && output="$2" || output="compress_$1"
     [ -f "$1" ] && ffmpeg -i "$1" -qscale:v 2 "$output" || echo "$1" not a file
 }
-
-
-
