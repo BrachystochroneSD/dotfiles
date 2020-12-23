@@ -19,7 +19,7 @@ usb_print() {
     output=""
     counter=0
     for unmounted in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
-	unmounted=$(echo "$unmounted" | tr -d "[:digit:]")
+        unmounted=$(echo "$unmounted" | tr -d "[:digit:]")
         unmounted=$(echo "$devices" | jq -r '.blockdevices[]  | select(.name == "'"$unmounted"'") | .vendor')
         unmounted=$(echo "$unmounted" | tr -d ' ')
 
@@ -47,25 +47,25 @@ usb_print() {
 case "$1" in
     --mount)
         for mount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
-	    [ -n "$(ls /media/usb1/)" ] && num=2 || num=1
-	    prompt=$(printf "Ye\nNah" | $dmenucmd -p "Mounting $mount on /media/usb$num?")
-	    if [ "$prompt" = "Ye" ] ; then
-		echo | $dmenuobf -p "[sudo] password for $USER" | sudo -S mount "$mount" /media/usb$num/ -o uid="$USER" -o gid="$(id -gn "$USER")" || aborted "Wrong password or usb is in use"
+            [ -n "$(ls /media/usb1/)" ] && num=2 || num=1
+            prompt=$(printf "Ye\nNah" | $dmenucmd -p "Mounting $mount on /media/usb$num?")
+            if [ "$prompt" = "Ye" ] ; then
+                echo | $dmenuobf -p "[sudo] password for $USER" | sudo -S mount "$mount" /media/usb$num/ -o uid="$USER" -o gid="$(id -gn "$USER")" || aborted "Wrong password or usb is in use"
                 cd /media/usb$num && st
-	    fi
+            fi
         done
         ;;
 
     --unmount)
         for unmount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .mountpoint'); do
-	    prompt=$(printf "Ye\nNah" | $dmenucmd -p "Unmount $unmount?")
-	    if [ "$prompt" = "Ye" ] ;then
-		echo | $dmenuobf -p "[sudo] password for $USER" | sudo -S umount "$unmount" || aborted "Wrong password"
-	    fi
+            prompt=$(printf "Ye\nNah" | $dmenucmd -p "Unmount $unmount?")
+            if [ "$prompt" = "Ye" ] ;then
+                echo | $dmenuobf -p "[sudo] password for $USER" | sudo -S umount "$unmount" || aborted "Wrong password"
+            fi
         done
         ;;
 
     *)
-        usb_print
+        ! grep -qs "usb_mount" ~/.config/polybar/disabled_module && usb_print
         ;;
 esac

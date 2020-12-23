@@ -15,17 +15,17 @@ count_mail(){
 }
 
 update_mail(){
-if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
-    offlineimap -u quiet >/dev/null
-fi
+    if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
+        offlineimap -u quiet >/dev/null
+    fi
 }
 
 while true; do
     [ -f /tmp/wififstattglrx ] || update_mail
     i=0
-    while [ $i -lt 6 ]; do
-    count_mail
-    sleep 1
-    : $((i=i+1))
+    while [ $i -lt 60 ]; do
+        count_mail
+        sleep 1
+        : $((i=i+1))
     done
 done

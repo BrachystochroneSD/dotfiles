@@ -166,6 +166,6 @@ case "$1" in
 	checktime "$datee"
 	;;
     *)
-	normal
+        ! grep -qs "weather" ~/.config/polybar/disabled_module && normal
 	;;
 esac
