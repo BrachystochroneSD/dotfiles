@@ -1320,9 +1320,9 @@ for renaming."
 ;;    'utf-8))
 ;; (prefer-coding-system 'utf-8)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; MU4E for LINUX ONLY ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;
+;; MU4E ;;
+;;;;;;;;;;
 
 (when (equal system-type 'gnu/linux)
 
@@ -1484,6 +1484,8 @@ for renaming."
     (interactive)
     (local-set-key (kbd "X") (lambda () (interactive) (mu4e-mark-execute-all t)))
     (local-set-key (kbd "M-D") 'my-mu4e-delete-from)
+    (local-set-key (kbd "M-r") 'my-mu4e-refile-subject)
+    (local-set-key (kbd "M-R") 'my-mu4e-refile-from)
     (local-set-key (kbd "C-D") 'my-mu4e-delete-subject)
     (local-set-key (kbd "C-j") 'my-mu4e-delete-junk))
 
@@ -1509,13 +1511,27 @@ for renaming."
            (:from          .  22)
            (:subject       .  nil)))
 
+  (defun my-mu4e-mark-as-refile-regexp (regexp)
+    (interactive
+     (list (read-string "my-mu4e-mark-as-refile-regexp: ")))
+    (save-excursion
+      (beginning-of-buffer)
+      (let ((num 0))
+        (while (re-search-forward regexp nil t)
+          (setq num (+ num 1))
+          (mu4e-headers-mark-for-refile))
+        (message "%d mail marked for archive" num))))
+
   (defun my-mu4e-mark-as-delete-regexp (regexp)
     (interactive
      (list (read-string "my-mu4e-mark-as-delete-regexp: ")))
     (save-excursion
       (beginning-of-buffer)
-      (while (re-search-forward regexp nil t)
-        (mu4e-headers-mark-for-delete))))
+      (let ((num 0))
+        (while (re-search-forward regexp nil t)
+          (setq num (+ num 1))
+          (mu4e-headers-mark-for-delete))
+        (message "%d mail marked for Delete" num))))
 
   (defun my-mu4e-delete-junk ()
     (interactive)
@@ -1525,6 +1541,14 @@ for renaming."
   (defun my-mu4e-delete-from ()
     (interactive)
     (my-mu4e-mark-as-delete-regexp (caar (mu4e-field-at-point :from))))
+
+  (defun my-mu4e-refile-from ()
+    (interactive)
+    (my-mu4e-mark-as-refile-regexp (caar (mu4e-field-at-point :from))))
+
+  (defun my-mu4e-refile-subject ()
+    (interactive)
+    (my-mu4e-mark-as-refile-regexp (mu4e-field-at-point :subject)))
 
   (defun my-mu4e-delete-subject ()
     (interactive)
