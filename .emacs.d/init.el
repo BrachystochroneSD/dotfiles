@@ -1382,6 +1382,7 @@ for renaming."
    mu4e-maildir-shortcuts '(("/mailo/Inbox"       . ?M)
                             ;; ("/outlook/Inbox"     . ?O)
                             ("/umons/Inbox"       . ?U)
+                            ("/archive"           . ?A)
                             ("/gmail/INBOX"       . ?G)
                             ("/sent"              . ?s)
                             ("/trash"             . ?t)

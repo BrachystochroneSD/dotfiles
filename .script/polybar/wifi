@@ -4,8 +4,8 @@ load_config () {
     if [ -f "${HOME}/.config/wifirc" ];then
         . "${HOME}/.config/wifirc"
 
-        [ -n "$WIFI_TGGL_DEFAULT" ] && touch /tmp/wififstattglrx
-        [ -n "$WIFI_ZEROS_DEFAULT" ] && format_unit "$WIFI_ZEROS_DEFAULT" > /tmp/wififstatrxzeroplus
+        [ -n "$WIFI_TGGL_DEFAULT" ] && touch /tmp/wifi_ifstat_toggle
+        [ -n "$WIFI_ZEROS_DEFAULT" ] && format_unit "$WIFI_ZEROS_DEFAULT" > /tmp/wifi_ifstat_rx_zeroplus
 
         [ -n "$WIFI_ALERT_RX" ] && format_unit "$WIFI_ALERT_RX" > /tmp/wifi_alert_rx
         [ -n "$WIFI_STOP_RX" ] && format_unit "$WIFI_STOP_RX" > /tmp/wifi_stop_rx
@@ -47,9 +47,9 @@ setup_zero () {
     read rxzero txzero <<EOF
 $(grep "$wifidev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}')
 EOF
-    echo $txzero > /tmp/wififstattxzero
-    [ -n "$1" ] && echo $(format_unit "$1") > /tmp/wififstatrxzeroplus || rm -f /tmp/wififstatrxzeroplus
-    echo $rxzero > /tmp/wififstatrxzero
+    echo $txzero > /tmp/wifi_ifstat_tx_zero
+    [ -n "$1" ] && echo $(format_unit "$1") > /tmp/wifi_ifstat_rx_zeroplus || rm -f /tmp/wifi_ifstat_rx_zeroplus
+    echo $rxzero > /tmp/wifi_ifstat_rx_zero
 }
 
 getifstat () {
@@ -58,12 +58,12 @@ getifstat () {
         read received transmitted <<EOF
 $(grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
 EOF
-        recminus=$(cat /tmp/wififstatrxzero 2>/dev/null)
-        transminus=$(cat /tmp/wififstattxzero 2>/dev/null)
+        recminus=$(cat /tmp/wifi_ifstat_rx_zero 2>/dev/null)
+        transminus=$(cat /tmp/wifi_ifstat_tx_zero 2>/dev/null)
         [ -z "$recminus" ] && recminus=0
         [ -z "$transminus" ] && transminus=0
 
-        recplus=$(cat /tmp/wififstatrxzeroplus 2>/dev/null)
+        recplus=$(cat /tmp/wifi_ifstat_rx_zeroplus 2>/dev/null)
         [ -z "$recplus" ] && recplus=0
 
         received=$(( received - recminus + recplus))
@@ -93,7 +93,7 @@ print_wifi () {
             else
                 output="D"
             fi
-            [ -f /tmp/wififstattglrx ] && getifstat && output="$output $RX $TX"
+            [ -f /tmp/wifi_ifstat_toggle ] && getifstat && output="$output $RX $TX"
         fi
     fi
     echo "$output"
@@ -113,7 +113,7 @@ case $1 in
         setup_zero "$2"
         ;;
     --toggle-ifstat)
-        [[ -f /tmp/wififstattglrx ]] && rm /tmp/wififstattglrx || touch /tmp/wififstattglrx
+        [[ -f /tmp/wifi_ifstat_toggle ]] && rm /tmp/wifi_ifstat_toggle || touch /tmp/wifi_ifstat_toggle
         ;;
     --load-config)
         load_config ;;
