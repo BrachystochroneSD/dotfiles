@@ -1370,7 +1370,7 @@ for renaming."
    mu4e-maildir (expand-file-name "~/.mail")
 
    ;; Sent
-   mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
+   mu4e-sent-messages-behavior 'sent ;; Unsure how this should be configured
    message-send-mail-function 'smtpmail-send-it
 
    ;; Folders
@@ -1394,7 +1394,6 @@ for renaming."
 
   (defvar my-mu4e-account-alist
     '(("mailo"
-       (mu4e-sent-folder "/mailo/Sent")
        (user-mail-address "samueld@mailo.com")
        (user-full-name "\"Samuel D\"")
        (smtpmail-smtp-user "samueld@mailo.com")
@@ -1414,7 +1413,6 @@ for renaming."
       ;;  (smtpmail-smtp-service 587)
       ;;  )
       ("umons"
-       (mu4e-sent-folder "/umons/Sent")
        (user-mail-address "samuel.dawant@alumni.umons.ac.be")
        (user-full-name "\"Samuel Dawant\"")
        (smtpmail-smtp-user "120781@umons.ac.be")
@@ -1424,7 +1422,6 @@ for renaming."
        (smtpmail-smtp-service 587)
        )
       ("gmail"
-       (mu4e-sent-folder "/gmail/Sent")
        (user-mail-address "mrsamrenfou@gmail.com")
        (user-full-name "\"Samuel D\"")
        (smtpmail-smtp-user "mrsamrenfou@gmail.com")
@@ -1460,7 +1457,7 @@ for renaming."
   (add-to-list 'mu4e-bookmarks
                (make-mu4e-bookmark
                 :name "sents"
-                :query "maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
+                :query "maildir:/sent OR maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
                 :key ?i))
 
   (define-key mu4e-main-mode-map "u" 'mu4e-update-index)

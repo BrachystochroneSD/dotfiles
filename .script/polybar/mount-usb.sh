@@ -6,7 +6,7 @@
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 dmenuobf="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"
 
-devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT)
+devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT | jq -r '.blockdevices[] | select(.mountpoint == ("/media/usb1","/media/usb2","/mnt",null))')
 
 aborted () {
     [[ -n "$1" ]] && dunstify -i owl "$1"
@@ -15,12 +15,12 @@ aborted () {
 }
 
 usb_print() {
-    devices=$( lsblk -Jplno LABEL,NAME,TYPE,RM,SIZE,MOUNTPOINT,VENDOR)
+    devices=$(lsblk -Jplno LABEL,NAME,TYPE,RM,SIZE,MOUNTPOINT,VENDOR | jq -r '.blockdevices[] | select(.mountpoint == ("/media/usb1","/media/usb2","/mnt",null))')
     output=""
     counter=0
-    for unmounted in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
+    for unmounted in $(echo "$devices" | jq -r 'select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
         unmounted=$(echo "$unmounted" | tr -d "[:digit:]")
-        unmounted=$(echo "$devices" | jq -r '.blockdevices[]  | select(.name == "'"$unmounted"'") | .vendor')
+        unmounted=$(echo "$devices" | jq -r 'select(.name == "'"$unmounted"'") | .vendor')
         unmounted=$(echo "$unmounted" | tr -d ' ')
 
         [ $counter -eq 0 ] && space="" || space=" "
@@ -29,7 +29,7 @@ usb_print() {
         output=" $output$space$unmounted "
     done
 
-    for mounted in $(echo "$devices" | jq -r '.blockdevices[] | select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .size'); do
+    for mounted in $(echo "$devices" | jq -r 'select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .size'); do
 
         if [ $counter -eq 0 ]; then
             space=""
@@ -46,7 +46,7 @@ usb_print() {
 
 case "$1" in
     --mount)
-        for mount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
+        for mount in $(echo "$devices" | jq -r 'select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
             [ -n "$(ls /media/usb1/)" ] && num=2 || num=1
             prompt=$(printf "Ye\nNah" | $dmenucmd -p "Mounting $mount on /media/usb$num?")
             if [ "$prompt" = "Ye" ] ; then
@@ -57,7 +57,7 @@ case "$1" in
         ;;
 
     --unmount)
-        for unmount in $(echo "$devices" | jq -r '.blockdevices[]  | select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .mountpoint'); do
+        for unmount in $(echo "$devices" | jq -r 'select(.type == "part") | select(.rm == true) | select(.mountpoint != null) | .mountpoint'); do
             prompt=$(printf "Ye\nNah" | $dmenucmd -p "Unmount $unmount?")
             if [ "$prompt" = "Ye" ] ;then
                 echo | $dmenuobf -p "[sudo] password for $USER" | sudo -S umount "$unmount" || aborted "Wrong password"
