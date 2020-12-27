@@ -63,3 +63,11 @@ autocmd BufWritePre * :retab
 
 vmap <C-y> :!xclip -f -sel clip<CR>
 
+
+" gitdiff
+nmap <C-x><C-j> ]c
+nmap <C-x><C-k> [c
+
+nmap <C-x><C-r> :diffg RE<CR>]c
+nmap <C-x><C-l> :diffg LO<CR>]c
+
