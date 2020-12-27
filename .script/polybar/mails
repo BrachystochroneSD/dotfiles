@@ -21,7 +21,7 @@ update_mail(){
 }
 
 while true; do
-    [ -f /tmp/wififstattglrx ] || update_mail
+    [ -f /tmp/wifi_ifstat_toggle ] || update_mail
     i=0
     while [ $i -lt 60 ]; do
         count_mail
