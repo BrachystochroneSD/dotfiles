@@ -822,6 +822,7 @@
 
 (defun my-elfeed-search-hook-setup ()
   (interactive)
+  (init-fonts)
   (local-set-key (kbd "j") 'next-line)
   (local-set-key (kbd "k") 'previous-line)
   (local-set-key (kbd "l") 'my-elfeed-open)
@@ -1957,3 +1958,11 @@ potentially rename EGLOT's help buffer."
   (local-set-key (kbd "C-c C-d") 'my-sgml-delete-tag))
 
 (add-hook 'html-mode-hook 'my-html-mode-hook)
+
+;;;;;;;;;;;
+;; EMOJI ;;
+;;;;;;;;;;;
+
+(defun init-fonts ()
+  (set-fontset-font t '(#x1f000 . #x1faff)
+                    (font-spec :family "JoyPixels")))
