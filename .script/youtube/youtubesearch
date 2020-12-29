@@ -18,12 +18,12 @@ check_internet_connection () {
 get_channel_infos () {
     channel_name=$(grep "youtube.com" "$RSSFILE" | sed 's/\*\*\* \[\[.*\]\[//' | sed 's/\]\]//' | $DMENU_CMD -l 10 -i -p "Channel Search") || get_search_query
     channelsearch=$(curl -s \
-			 -G https://www.googleapis.com/youtube/v3/search \
-			 --data-urlencode "q=$channel_name" \
-			 -d "type=channel" \
-			 -d "maxResults=25" \
-			 -d "part=snippet" \
-			 -d "key=$ytapikey")
+             -G https://www.googleapis.com/youtube/v3/search \
+             --data-urlencode "q=$channel_name" \
+             -d "type=channel" \
+             -d "maxResults=25" \
+             -d "part=snippet" \
+             -d "key=$ytapikey")
 
     chanchoice=$(echo "$channelsearch" | jq -r ".items[] | .snippet.channelTitle, .snippet.description" | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | $DMENU_CMD -l 25 -i -p "Which channel ?") || get_search_query
     local channum=$(echo "$chanchoice" | sed 's/:.*/-1/' | bc)
@@ -43,29 +43,29 @@ get_search_query () {
 
     case "$menu_entry" in
 
-	"Channel Search")
+    "Channel Search")
             get_channel_infos
-	    search_query=$(echo | $DMENU_CMD -i -l 20 -p "Search on this channel:") || get_search_query
-	    ;;
+        search_query=$(echo | $DMENU_CMD -i -l 20 -p "Search on this channel:") || get_search_query
+        ;;
 
         "Order")
             sort=$(echo -e "relevance\ndate\nrating\ntitle\nviewCount" | $DMENU_CMD -i -l 20 -p "Sort by: ")
             get_search_query
             ;;
 
-	"Show History")
-	    search_query=$($DMENU_CMD -i -l 20 -p "Search in History:" < "$HISTORY_FILE" ) || get_search_query
-	    ;;
+    "Show History")
+        search_query=$($DMENU_CMD -i -l 20 -p "Search in History:" < "$HISTORY_FILE" ) || get_search_query
+        ;;
 
-	"Clear History")
-	    printf "" > "$HISTORY_FILE"
+    "Clear History")
+        printf "" > "$HISTORY_FILE"
             get_search_query
-	    ;;
+        ;;
 
-	*)
+    *)
             search_query="$menu_entry"
             ! grep -q "^$search_query$" "$HISTORY_FILE" && { echo "$search_query"; cat "$HISTORY_FILE"; } > /tmp/youthistotmp && mv /tmp/youthistotmp "$HISTORY_FILE"
-	    printf "Searching for %s\n" "$search_query"
+        printf "Searching for %s\n" "$search_query"
     esac
     mpv_launch
 }
@@ -110,9 +110,9 @@ mpv_launch () {
     choicekind=$(echo "$yt_fetch" | jq -r ".items[$choicenum].id")
 
     if [ "$( echo "$choicekind" | jq -r ".kind" )" = "youtube#video" ];then
-	link="https://www.youtube.com/watch?v=$(echo "$choicekind" | jq -r ".videoId")"
+    link="https://www.youtube.com/watch?v=$(echo "$choicekind" | jq -r ".videoId")"
     else
-	link="https://www.youtube.com/playlist?list=$(echo "$choicekind" | jq -r ".playlistId")"
+    link="https://www.youtube.com/playlist?list=$(echo "$choicekind" | jq -r ".playlistId")"
     fi
 
     echo "$link" | xclip -selection clipboard # clipboard to share with your friend !
@@ -137,7 +137,7 @@ main () {
     touch "$HISTORY_FILE"
 
     #Commands
-    DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+    DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
     NOTIFY_CMD="dunstify -i owl"
 
     COLS=250

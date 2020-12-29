@@ -21,7 +21,7 @@ max_vid=100
 if [ -n "$QUIETOPT" ]; then
     menucmd="fzfcmd"
 else
-    menucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+    menucmd="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
 fi
 
 touch "$laststreamfile"

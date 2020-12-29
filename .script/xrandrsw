@@ -3,7 +3,7 @@
 # colors from wpgtk/pywal
 . "${HOME}/.cache/wal/colors.sh"
 
-dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
+dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
 notifycmd="dunstify -i owl"
 
 xrandrout=$(xrandr)

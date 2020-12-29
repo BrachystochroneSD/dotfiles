@@ -213,7 +213,7 @@ alias keysignation="jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keys
 
 [ -f "${HOME}/.cache/wal/colors.sh" ] && . "${HOME}/.cache/wal/colors.sh"
 
-alias dmenu='dmenu -nb "$color0" -nf "$color15" -sb "$color0" -sf "$color3"'
+alias dmenu='/usr/local/bin/dmenu -nb "$color0" -nf "$color15" -sb "$color3" -sf "$color0"'
 
 ############
 # OBSOLETE #
