@@ -68,6 +68,7 @@ print_charging() {
 
 print_discharging() {
     if [ "$curr_power" -ge "$full_at" ]; then
+        curr_power=100
         curr_pfx=$full_prefix
         curr_fg=$full_prefix_fg
         curr_ul=$full_underline
@@ -98,7 +99,10 @@ print_discharging() {
 while true; do
     is_charging=$(cat /sys/class/power_supply/"$ac"/online 2>/dev/null)
     curr_power=$(cat "$location/$battery/capacity" 2>/dev/null || echo 0)
-    if [ "$is_charging" -eq 1 ]; then
+    if [ "$curr_power" -ge "$full_at" ]; then
+        sleeptime=$framerate
+        print_discharging
+    elif [ "$is_charging" -eq 1 ]; then
         sleeptime=$anim_chrg_frate
         print_charging
     else
