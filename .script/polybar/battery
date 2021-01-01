@@ -1,0 +1,108 @@
+#!/usr/bin/sh
+
+# colors from wpgtk/pywal
+. "${HOME}/.cache/wal/colors.sh"
+
+framerate=1
+
+red="$color6"
+green="$color4"
+yellow="$color9"
+blue="$color11"
+pink="$color12"
+navy="$color13"
+orange="$color1"
+fg="$color15"
+bg_alt="$color3"
+red_alt="$color6"
+yellow_alt="$color9"
+fg_alt="$color15"
+
+charging_underline="$yellow"
+discharging_underline="$orange"
+
+full_at=99
+full_prefix='%{T6}%{T-}'
+full_prefix_fg="$fg_alt"
+full_underline="$yellow"
+
+ramp_cap_0='%{T6}%{T-}'
+ramp_cap_1='%{T6}%{T-}'
+ramp_cap_2='%{T6}%{T-}'
+ramp_cap_3='%{T6}%{T-}'
+ramp_cap_4='%{T6}%{T-}'
+
+ramp_cap_fg="$fg_alt"
+ramp_cap_0_fg="$red"
+
+chrg_0='%{T6}%{T-}'
+chrg_1='%{T6}%{T-}'
+chrg_2='%{T6}%{T-}'
+
+chrg_0_fg="$yellow_alt"
+chrg_1_fg="$yellow"
+chrg_2_fg="$yellow"
+anim_chrg_frate="0.450"
+
+location="/sys/class/power_supply/"
+battery="$(ls /sys/class/power_supply/ | grep BAT | head 2>/dev/null)"
+ac="$(ls /sys/class/power_supply/ | grep AC | head 2>/dev/null)"
+
+print_line () {
+    echo "%{F$curr_fg}%{u$curr_ul}$curr_pfx%{F-} $curr_power%%{u-}"
+    sleep $sleeptime
+}
+
+print_charging() {
+    curr_ul=$charging_underline
+    curr_fg=$chrg_0_fg
+    curr_pfx=$chrg_0
+    print_line
+    curr_fg=$chrg_1_fg
+    curr_pfx=$chrg_1
+    print_line
+    curr_fg=$chrg_2_fg
+    curr_pfx=$chrg_2
+    print_line
+}
+
+print_discharging() {
+    if [ "$curr_power" -ge "$full_at" ]; then
+        curr_pfx=$full_prefix
+        curr_fg=$full_prefix_fg
+        curr_ul=$full_underline
+    elif [ $curr_power -ge 80 ]; then
+        curr_pfx=$ramp_cap_4
+        curr_fg=$ramp_cap_fg
+        curr_ul=$discharging_underline
+    elif [ $curr_power -ge 60 ]; then
+        curr_pfx=$ramp_cap_3
+        curr_fg=$ramp_cap_fg
+        curr_ul=$discharging_underline
+    elif [ $curr_power -ge 40 ]; then
+        curr_pfx=$ramp_cap_2
+        curr_fg=$ramp_cap_fg
+        curr_ul=$discharging_underline
+    elif [ $curr_power -ge 20 ]; then
+        curr_pfx=$ramp_cap_1
+        curr_fg=$ramp_cap_fg
+        curr_ul=$discharging_underline
+    else
+        curr_pfx=$ramp_cap_0
+        curr_fg=$ramp_cap_0_fg
+        curr_ul=$discharging_underline
+    fi
+    print_line
+}
+
+while true; do
+    is_charging=$(cat /sys/class/power_supply/"$ac"/online 2>/dev/null)
+    curr_power=$(cat "$location/$battery/capacity" 2>/dev/null || echo 0)
+    if [ "$is_charging" -eq 1 ]; then
+        sleeptime=$anim_chrg_frate
+        print_charging
+    else
+        sleeptime=$framerate
+        print_discharging
+    fi
+done

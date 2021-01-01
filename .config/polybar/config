@@ -44,6 +44,13 @@ tray-padding = 0
 scroll-up = i3wm-wsnext
 scroll-down = i3wm-wsprev
 
+[module/battery]
+type = custom/script
+exec = ~/.script/polybar/battery
+tail = true
+format-underline = ${colors.fg-alt}
+; format-overline = ${colors.yellow}
+
 [module/owl]
 type = custom/script
 exec = ~/.script/polybar/owl
@@ -275,8 +282,6 @@ time = "%H:%M"
 format-prefix-foreground = ${colors.fg-alt}
 format-underline = ${colors.pink}
 
-
-
 [module/volume]
 type = internal/alsa
 
@@ -290,38 +295,6 @@ label-muted   = 
 ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
-
-[module/battery]
-type = internal/battery
-battery = BAT0
-adapter = AC
-full-at = 99
-
-format-charging = <animation-charging> <label-charging>
-format-charging-underline = ${colors.yellow}
-
-format-discharging = <ramp-capacity> <label-discharging>
-format-discharging-underline = ${colors.orange}
-
-format-full-prefix = %{T6}%{T-}
-format-full-prefix-foreground = ${colors.fg-alt}
-format-full-underline = ${colors.yellow}
-
-ramp-capacity-0 = %{T6}%{T-}
-ramp-capacity-1 = %{T6}%{T-}
-ramp-capacity-2 = %{T6}%{T-}
-ramp-capacity-3 = %{T6}%{T-}
-ramp-capacity-4 = %{T6}%{T-}
-ramp-capacity-foreground = ${colors.fg-alt}
-ramp-capacity-0-foreground = ${colors.red}
-
-animation-charging-0 = %{T6}%{T-}
-animation-charging-1 = %{T6}%{T-}
-animation-charging-2 = %{T6}%{T-}
-animation-charging-0-foreground = ${colors.yellow-alt}
-animation-charging-1-foreground = ${colors.yellow}
-animation-charging-2-foreground = ${colors.yellow}
-animation-charging-framerate = 450
 
 [module/temperature]
 type = internal/temperature
