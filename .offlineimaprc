@@ -17,8 +17,7 @@ remoteuser = mrsamrenfou@gmail.com
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 ssl_version = tls1_2
 remotepasseval = get_password_emacs("imap.gmail.com", "mrsamrenfou@gmail.com", "993")
-folderfilter = lambda foldername: foldername not in ['Trash','[Gmail]/Corbeille','[Gmail]/Tous les messages','[Gmail]/Brouillons','[Gmail]/Suivis','[Gmail]/Important']
-nametrans =  lambda foldername: re.sub('\[Gmail\].Tous\ les\ messages', 'All', re.sub('\[Gmail\].Messages\ envoy&AOk-s', 'Sent', re.sub('\[Gmail\].Spam', 'Junk', foldername)))
+nametrans =  lambda foldername: re.sub('\[Gmail\].Tous\ les\ messages', 'All', re.sub('\[Gmail\].Messages\ envoy&AOk-s', 'Sent', re.sub('\[Gmail\].Spam', 'Junk', re.sub('\[Gmail\].Important', 'Important', re.sub('\[Gmail\].Suivis', 'Followed', re.sub('\[Gmail\].Corbeille', 'Trash', foldername))))))
 
 [Account Outlook]
 localrepository = Localoutlook
@@ -53,8 +52,7 @@ remoteuser = 120781@umons.ac.be
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 ssl_version = tls1_2
 remotepasseval = get_password_emacs("outlook.office365.com", "120781@umons.ac.be", "993")
-folderfilter = lambda foldername: foldername in ['Courrier ind&AOk-sirable','INBOX','&AMk-l&AOk-ments envoy&AOk-s']
-nametrans =  lambda foldername:  re.sub('Courrier ind&AOk-sirable', 'Junk', re.sub('INBOX', 'Inbox', re.sub('&AMk-l&AOk-ments envoy&AOk-s', 'Sent', foldername)))
+nametrans =  lambda foldername:  re.sub('Courrier ind&AOk-sirable', 'Junk', re.sub('INBOX', 'Inbox', re.sub('&AMk-l&AOk-ments envoy&AOk-s', 'Sent', re.sub('Corbeille', 'Trash', foldername))))
 
 [Account Mailo]
 localrepository = LocalMailo

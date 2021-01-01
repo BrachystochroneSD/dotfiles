@@ -1376,18 +1376,51 @@ for renaming."
    mu4e-attachment-dir "/home/sam/Downloads"
 
    ;; Setup Shortcuts
-   mu4e-maildir-shortcuts '(("/mailo/Inbox"       . ?M)
-                            ;; ("/outlook/Inbox"     . ?O)
-                            ("/umons/Inbox"       . ?U)
-                            ("/archive"           . ?A)
-                            ("/gmail/INBOX"       . ?G)
-                            ("/sent"              . ?s)
-                            ("/trash"             . ?t)
-                            ("/drafts"            . ?d))
+   mu4e-maildir-shortcuts '(("/mailo/"             . ?M)
+                            ("/umons/"             . ?U)
+                            ("/gmail/"             . ?G)
+
+                            ;; archives
+                            ("/archives/"          . ?A)
+                            ("/archives/important" . ?i)
+                            ("/archives/umons"     . ?u)
+                            ("/archives/gmail"     . ?g)
+                            ("/archives/mailo"     . ?m)
+
+                            ("/sent"               . ?s)
+                            ("/trash"              . ?t)
+                            ("/drafts"             . ?d))
 
    ;; luminance for dark theme
    shr-color-visible-luminance-min 80
    )
+
+  (setq mu4e-refile-folder
+        ;; Taken from : https://www.djcbsoftware.nl/code/mu/mu4e/Smart-refiling.html
+        (lambda (msg)
+          (cond
+           ((mu4e-message-contact-field-matches msg '(:to :cc) "samueld@mailo.com")
+	    "/archives/mailo")
+           ((mu4e-message-contact-field-matches msg '(:to :cc) "samrenfou@hotmail.com")
+	    "/archives/outlook")
+           ((mu4e-message-contact-field-matches msg :from "samrenfou@hotmail.com")
+	    "/sent")
+           ((mu4e-message-contact-field-matches msg '(:to :cc) "samuel.dawant@alumni.umons.ac.be")
+	    "/archives/umons")
+           ((mu4e-message-contact-field-matches msg '(:to :cc) "mrsamrenfou@gmail.com")
+	    "/archives/gmail")
+           ;; messages sent by me go to the sent folder
+           ((find-if
+	     (lambda (addr)
+	       (mu4e-message-contact-field-matches msg :from addr))
+	     (mu4e-personal-addresses))
+	    mu4e-sent-folder)
+           (t  "/archives/misc"))))
+
+  (defun my-mu4e-important-refile ()
+    (interactive)
+    (let ((mu4e-refile-folder "/archives/important"))
+      (mu4e-headers-mark-for-refile)))
 
   (defvar my-mu4e-account-alist
     '(("mailo"
@@ -1453,9 +1486,15 @@ for renaming."
   ;; Include a bookmark to open all of my inboxes
   (add-to-list 'mu4e-bookmarks
                (make-mu4e-bookmark
+                :name "all"
+                :query "maildir:/umons/* OR maildir:/mailo/* OR maildir:/gmail/*"
+                :key ?a))
+
+  (add-to-list 'mu4e-bookmarks
+               (make-mu4e-bookmark
                 :name "sents"
                 :query "maildir:/sent OR maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
-                :key ?i))
+                :key ?s))
 
   (define-key mu4e-main-mode-map "u" 'mu4e-update-index)
 
@@ -1481,6 +1520,7 @@ for renaming."
     (local-set-key (kbd "M-D") 'my-mu4e-delete-from)
     (local-set-key (kbd "M-r") 'my-mu4e-refile-subject)
     (local-set-key (kbd "M-R") 'my-mu4e-refile-from)
+    (local-set-key (kbd "i") 'my-mu4e-important-refile)
     (local-set-key (kbd "C-D") 'my-mu4e-delete-subject)
     (local-set-key (kbd "C-j") 'my-mu4e-delete-junk))
 
@@ -1962,3 +2002,20 @@ potentially rename EGLOT's help buffer."
 (defun init-fonts ()
   (set-fontset-font t '(#x1f000 . #x1faff)
                     (font-spec :family "JoyPixels")))
+
+;;;;;;;;;;;
+;; SUBED ;;
+;;;;;;;;;;;
+
+(add-to-list 'load-path "~/.emacs.d/packages/subed/")
+(require 'subed)
+
+(defun my-subed-hook ()
+  (interactive)
+  (setq-local fill-column 40)
+  (save-place-local-mode)
+  (turn-on-auto-fill)
+  (subed-disable-sync-point-to-player)
+)
+
+(add-hook 'subed-mode-hook 'my-subed-hook)
