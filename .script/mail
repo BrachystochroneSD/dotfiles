@@ -1,0 +1,5 @@
+#!/usr/bin/sh
+
+mailto=${@##mailto:}
+
+/usr/bin/emacsclient --alternate-editor="" -c -e "(mu4e~compose-mail \"$mailto\")"
