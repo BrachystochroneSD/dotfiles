@@ -7,5 +7,5 @@ x-scheme-handler/about=brave-browser.desktop
 x-scheme-handler/unknown=brave-browser.desktop
 application/pdf=mupdf.desktop
 image/png=feh.desktop
-image/jpeg=feh2.desktop
+image/jpeg=feh.desktop
 x-scheme-handler/mailto=mail.desktop

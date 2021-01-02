@@ -317,6 +317,8 @@ alias makesuck='rm config.h; make && sudo make install'
 
 # xdg-mime
 
+alias update-desktop-db='update-desktop-database ~/.local/share/applications'
+
 alias xqf='xdg-mime query filetype'
 
 xqd() {
