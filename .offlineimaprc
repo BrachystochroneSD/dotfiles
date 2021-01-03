@@ -52,7 +52,6 @@ remoteuser = 120781@umons.ac.be
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 ssl_version = tls1_2
 remotepasseval = get_password_emacs("outlook.office365.com", "120781@umons.ac.be", "993")
-nametrans =  lambda foldername:  re.sub('Courrier ind&AOk-sirable', 'Junk', re.sub('INBOX', 'Inbox', re.sub('&AMk-l&AOk-ments envoy&AOk-s', 'Sent', re.sub('Corbeille', 'Trash', foldername))))
 
 [Account Mailo]
 localrepository = LocalMailo
