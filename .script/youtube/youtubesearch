@@ -117,9 +117,17 @@ mpv_launch () {
 
     echo "$link" | xclip -selection clipboard # clipboard to share with your friend !
 
-    res=$(printf "720\n1080\n360" | $DMENU_CMD -i -p "Which resolution? (if avalaible)") || get_search_query
+    res=$(printf "720\n1080\n360\nno-video" | $DMENU_CMD -i -p "Which resolution? (if avalaible)") || get_search_query
 
-    mpv --ytdl-format="[height<=?$res]" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch the video"
+    if [ $res = "no-video" ];then
+        chan=$(printf "stereo\nmono" | $DMENU_CMD -i -p "Channels") || get_search_query
+        [ "$chan" = "mono" ] && chan="--audio-channels=1" || chan=""
+        sample_rate=$(printf "max\n441000\n38000" | $DMENU_CMD -i -p "Channels") || get_search_query
+        echo "$sample_rate" | grep -q "^[0-9][0-9]*$" && sample_rate="--audio-samplerate=$sample_rate" || sample_rate=""
+        exec st -e mpv --no-video "$chan" "$sample_rate" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch mpv"
+    else
+        mpv --ytdl-format="[height<=?$res]" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch the video"
+    fi
     exit
 }
 
