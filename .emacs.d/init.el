@@ -1374,9 +1374,9 @@ for renaming."
  mu4e-attachment-dir "/home/sam/Downloads"
 
  ;; Setup Shortcuts
- mu4e-maildir-shortcuts '(("/mailo/"             . ?M)
-                          ("/umons/"             . ?U)
-                          ("/gmail/"             . ?G)
+ mu4e-maildir-shortcuts '(("/mailo/*"             . ?M)
+                          ("/umons/*"             . ?U)
+                          ("/gmail/*"             . ?G)
 
                           ;; archives
                           ("/archives/"          . ?A)
