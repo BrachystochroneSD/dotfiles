@@ -99,8 +99,11 @@
     XF86Calculator
 #
 #CALendar
-"st -n floatingwin -e ~/.script/shits/calendar"
+"st -n floatingwin -e ~/.script/calendar"
     Mod4 + XF86Calculator
+
+"st -n floatingwin -e ~/.script/calendar"
+    Mod4 + c
 
 #pavucontrol
 "pavucontrol"
