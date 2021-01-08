@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Mail
+Exec=/usr/bin/sh -e /home/sam/.script/mail %u
