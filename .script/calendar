@@ -1,0 +1,5 @@
+#!/usr/bin/sh
+
+calcurse-caldav
+calcurse
+calcurse-caldav
