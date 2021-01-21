@@ -307,8 +307,9 @@ ramp-volume-2 = 
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
+interval = 2
 warn-temperature = 60
-
+hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon0/temp1_input
 format = <ramp>:<label>
 format-underline = ${colors.navy}
 format-overline = ${colors.navy}

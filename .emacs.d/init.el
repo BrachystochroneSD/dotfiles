@@ -1377,6 +1377,7 @@ for renaming."
  mu4e-maildir-shortcuts '(("/mailo/*"             . ?M)
                           ("/umons/*"             . ?U)
                           ("/gmail/*"             . ?G)
+                          ("/outlook/*"           . ?O)
 
                           ;; archives
                           ("/archives/"          . ?A)
