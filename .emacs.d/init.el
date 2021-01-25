@@ -1465,8 +1465,8 @@ for renaming."
   (let* ((account
           (if mu4e-compose-parent-message
               (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-                (string-match "/\\(.*?\\)/" maildir)
-                (match-string 1 maildir))
+                (string-match "\\(/archives\\)?/\\([^/]*\\)/*" maildir)
+                (match-string 2 maildir))
             (completing-read (format "Compose with account: (%s) "
                                      (mapconcat #'(lambda (var) (car var))
                                                 my-mu4e-account-alist "/"))
@@ -2003,15 +2003,33 @@ potentially rename EGLOT's help buffer."
 ;; SUBED ;;
 ;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/packages/subed/")
-(require 'subed)
+;; (add-to-list 'load-path "~/.emacs.d/packages/subed/")
+;; (require 'subed)
 
-(defun my-subed-hook ()
-  (interactive)
-  (setq-local fill-column 40)
-  (save-place-local-mode)
-  (turn-on-auto-fill)
-  (subed-disable-sync-point-to-player)
-  )
+;; (defun my-subed-hook ()
+;;   (interactive)
+;;   (setq-local fill-column 40)
+;;   (save-place-local-mode)
+;;   (turn-on-auto-fill)
+;;   (subed-disable-sync-point-to-player)
+;;   )
 
-(add-hook 'subed-mode-hook 'my-subed-hook)
+;; (add-hook 'subed-mode-hook 'my-subed-hook)
+
+;;;;;;;;;;;;;;
+;; FLYSPELL ;;
+;;;;;;;;;;;;;;
+
+;; (setq ispell-program-name "hunspell")
+;; (setq ispell-dictionary "francais")
+
+(setq ispell-program-name "hunspell")
+(setq ispell-hunspell-dict-paths-alist
+      '(("fr_BE" "/usr/share/hunspell/fr_BE.aff")))
+(setq ispell-dictionary "fr_BE")
+(setq ispell-hunspell-dictionary-alist
+      ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
+      ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
+      '(("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE,en_GB") nil utf-8)))
+
+(add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
