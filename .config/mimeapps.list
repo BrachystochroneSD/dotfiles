@@ -9,3 +9,4 @@ application/pdf=mupdf.desktop
 image/png=feh.desktop
 image/jpeg=feh.desktop
 x-scheme-handler/mailto=mail.desktop
+text/plain=reaper.desktop

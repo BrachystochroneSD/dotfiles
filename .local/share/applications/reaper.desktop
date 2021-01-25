@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Reaper
+Exec=reaper %F
+Type=Application
+Terminal=false
+Categories=Reaper;Music;AudioEditing;
+MimeType=x-scheme-handler/discord-402572971681644545;
