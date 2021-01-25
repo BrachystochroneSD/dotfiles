@@ -7,7 +7,7 @@ dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
 notifycmd="dunstify -i owl"
 
 xrandrout=$(xrandr)
-active=$(xrandr --listactivemonitors | grep -v "Monitors: " | awk '{print $4}')
+active=$(xrandr --listactivemonitors | grep -v "Monitors: " | grep "*" | awk '{print $4}')
 
 abort () {
     [ -n "$1" ] && echo "Error: $1"
