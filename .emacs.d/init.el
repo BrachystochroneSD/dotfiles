@@ -1467,11 +1467,12 @@ for renaming."
                              (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
                              nil t nil nil (caar my-mu4e-account-alist))))
          (account-vars (cdr (assoc account my-mu4e-account-alist))))
-    (if account-vars
-        (mapc #'(lambda (var)
-                  (set (car var) (cadr var)))
-              account-vars)
-      (error "No email account found"))))
+    (when (not account-vars)
+      (cdr (assoc "mailo" my-mu4e-account-alist))) ;; add a default value (main address)
+    (mapc #'(lambda (var)
+              (set (car var) (cadr var)))
+          account-vars)))
+
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
 ;; Include a bookmark to open all of my inboxes
