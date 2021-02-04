@@ -256,6 +256,9 @@
 "scrot ~/Images/screenshots/%Y-%d-%m_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
      Print
 
+"~/.script/gif_screen"
+     Mod4 + Print
+
 ##################################
 # End of xbindkeys configuration #
 ##################################

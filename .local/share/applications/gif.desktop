@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=mpv gif viewer
+GenericName=Animated gif viewer
+Comment=Gif looper with mpv
+Exec=mpv --loop-file %u
+Terminal=false
+Type=Application
+Icon=mpv
+Categories=Graphics;2DGraphics;Viewer;
+NoDisplay=true
