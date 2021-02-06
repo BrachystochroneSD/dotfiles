@@ -17,7 +17,6 @@ remoteuser = mrsamrenfou@gmail.com
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 ssl_version = tls1_2
 remotepasseval = get_password_emacs("imap.gmail.com", "mrsamrenfou@gmail.com", "993")
-nametrans =  lambda foldername: re.sub('\[Gmail\].Tous\ les\ messages', 'All', re.sub('\[Gmail\].Messages\ envoy&AOk-s', 'Sent', re.sub('\[Gmail\].Spam', 'Junk', re.sub('\[Gmail\].Important', 'Important', re.sub('\[Gmail\].Suivis', 'Followed', re.sub('\[Gmail\].Corbeille', 'Trash', foldername))))))
 
 [Account Outlook]
 localrepository = Localoutlook
