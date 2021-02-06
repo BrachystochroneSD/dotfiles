@@ -54,7 +54,9 @@ auwlr_update() {
     rm -f "$auwlr_update_list"
     pacman -Qm | while read pkg ver; do
         result=$(update_package "$ver" "$pkg")
-        [ -n "$result" ] && echo "$result" >> "$auwlr_update_list"
+        if [ -n "$result" ];then
+            echo "$result" | grep -q "{" || echo "$result" >> "$auwlr_update_list"
+        fi
         printf "."
     done
     echo

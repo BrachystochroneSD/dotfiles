@@ -10,3 +10,5 @@ image/png=feh.desktop
 image/jpeg=feh.desktop
 x-scheme-handler/mailto=mail.desktop
 image/gif=gif.desktop
+text/plain=editor.desktop
+image/x-pcx=editor.desktop

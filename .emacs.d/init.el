@@ -50,7 +50,7 @@
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   '(kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+   '(typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(send-mail-function 'mailclient-send-it))
 
@@ -829,48 +829,42 @@
   (local-set-key (kbd "/") 'isearch-forward)
   (local-set-key (kbd "?") 'isearch-backward)
   (local-set-key (kbd "q") 'delete-frame)
+  (local-set-key (kbd "C-b") (lambda () (interactive) (elfeed-play-with-mpv-at-quality 720 (elfeed-search-selected :single))))
   (local-set-key (kbd "C-n") 'my-elfeed-scroll-up)
   (local-set-key (kbd "C-p") 'my-elfeed-scroll-down)
   )
 
 (add-hook 'elfeed-search-mode-hook 'my-elfeed-search-hook-setup)
 
-(defun elfeed-play-with-vlc ()
-  "Play entry link with vlc."
-  (interactive)
-  (let (( entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)) ))
-    (message "Opening %s with vlc..." (elfeed-entry-link entry))
-    (my-vlc-launc-and-quit (elfeed-entry-link entry))))
+(defun elfeed-play-with-mpv-at-quality (quality-val entry)
+  (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
+  (if (< 0 quality-val)
+      (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val))
+    (setq quality-arg ""))
+  (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry)))
 
 (defun elfeed-play-with-mpv ()
   "Play entry link with mpv."
   (interactive)
   (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-        (quality-arg "")
         (quality-val (completing-read "Max height resolution (0 for unlimited): " '("0" "360" "480" "720" "1080") nil nil "720")))
-    (setq quality-val (string-to-number quality-val))
-    (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
-    (when (< 0 quality-val)
-      (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
-    (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
+    (elfeed-play-with-mpv-at-quality (string-to-number quality-val) entry)))
 
 (defvar elfeed-video-patterns
   '("youtu\\.?be" "facebo\\.?ok")
   "List of regexp to match against elfeed entry link to know
-whether to use vlc to visit the link.")
+whether to use mpv to visit the link.")
 
 (defun elfeed-visit-or-play-video ()
-  "Play with vlc or mpv if entry link matches `elfeed-video-patterns', visit otherwise.
-See `elfeed-play-with-vlc'."
+  "Play with mpv if entry link matches `elfeed-video-patterns', visit otherwise.
+See `elfeed-play-with-mpv'."
   (interactive)
   (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
         (patterns elfeed-video-patterns))
     (while (and patterns (not (string-match (car patterns) (elfeed-entry-link entry))))
       (setq patterns (cdr patterns)))
     (if patterns
-        (if (equal system-type 'windows-nt)
-            (elfeed-play-with-vlc)
-          (elfeed-play-with-mpv))
+        (elfeed-play-with-mpv)
       (if (eq major-mode 'elfeed-search-mode)
           (elfeed-search-browse-url)
         (elfeed-show-visit)))
@@ -1465,19 +1459,20 @@ for renaming."
   (let* ((account
           (if mu4e-compose-parent-message
               (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-                (string-match "/\\(.*?\\)/" maildir)
-                (match-string 1 maildir))
+                (string-match "\\(/archives\\)?/\\([^/]*\\)/*" maildir)
+                (match-string 2 maildir))
             (completing-read (format "Compose with account: (%s) "
                                      (mapconcat #'(lambda (var) (car var))
                                                 my-mu4e-account-alist "/"))
                              (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
                              nil t nil nil (caar my-mu4e-account-alist))))
          (account-vars (cdr (assoc account my-mu4e-account-alist))))
-    (if account-vars
-        (mapc #'(lambda (var)
-                  (set (car var) (cadr var)))
-              account-vars)
-      (error "No email account found"))))
+    (when (not account-vars)
+      (cdr (assoc "mailo" my-mu4e-account-alist))) ;; add a default value (main address)
+    (mapc #'(lambda (var)
+              (set (car var) (cadr var)))
+          account-vars)))
+
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
 ;; Include a bookmark to open all of my inboxes
@@ -2003,15 +1998,33 @@ potentially rename EGLOT's help buffer."
 ;; SUBED ;;
 ;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/packages/subed/")
-(require 'subed)
+;; (add-to-list 'load-path "~/.emacs.d/packages/subed/")
+;; (require 'subed)
 
-(defun my-subed-hook ()
-  (interactive)
-  (setq-local fill-column 40)
-  (save-place-local-mode)
-  (turn-on-auto-fill)
-  (subed-disable-sync-point-to-player)
-  )
+;; (defun my-subed-hook ()
+;;   (interactive)
+;;   (setq-local fill-column 40)
+;;   (save-place-local-mode)
+;;   (turn-on-auto-fill)
+;;   (subed-disable-sync-point-to-player)
+;;   )
 
-(add-hook 'subed-mode-hook 'my-subed-hook)
+;; (add-hook 'subed-mode-hook 'my-subed-hook)
+
+;;;;;;;;;;;;;;
+;; FLYSPELL ;;
+;;;;;;;;;;;;;;
+
+;; (setq ispell-program-name "hunspell")
+;; (setq ispell-dictionary "francais")
+
+(setq ispell-program-name "hunspell")
+(setq ispell-hunspell-dict-paths-alist
+      '(("fr_BE" "/usr/share/hunspell/fr_BE.aff")))
+(setq ispell-dictionary "fr_BE")
+(setq ispell-hunspell-dictionary-alist
+      ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
+      ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
+      '(("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE,en_GB") nil utf-8)))
+
+(add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
