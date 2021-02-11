@@ -243,8 +243,9 @@ f(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1
      sleep 1
      fi
    }
+
 # edit
-e(){ /bin/nohup /home/sam/.script/edit2 "$@" &>/dev/null &}
+e(){ /bin/nohup /home/sam/.script/edit "$@" &>/dev/null &}
 
 #######
 # FEH #
