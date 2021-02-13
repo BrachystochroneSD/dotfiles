@@ -50,7 +50,7 @@
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   '(typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+   '(vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(send-mail-function 'mailclient-send-it))
 
