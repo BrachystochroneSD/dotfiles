@@ -257,7 +257,7 @@
      Print
 
 "~/.script/gif_screen"
-     Mod4 + Print
+     Control + Print
 
 ##################################
 # End of xbindkeys configuration #
