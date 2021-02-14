@@ -21,6 +21,22 @@ print_help() {
     echo "               -u : upgrade installed packages and build them"
 }
 
+get_packages_list() {
+    search_shit="$1"
+
+    curling=$(curl -s \
+                   -G "https://aur.archlinux.org/packages/" \
+                   -d "O=0" \
+                   -d "SeB=nd" \
+                   --data-urlencode "K=$search_shit" \
+                   -d "outdated=" \
+                   -d "SB=n" \
+                   -d "SO=a" \
+                   -d "do_Search=Go")
+
+    echo "$curling" | grep "<td>" | tr -d '\n' | sed 's|<td><a[^>]*>\([^<>]*\)</a></td>|\n\1|g;s/<\/*td>//g'
+}
+
 git_clone_or_pull() {
     mkdir -p "$auwlr_cache"
     cd "$auwlr_cache"
@@ -133,8 +149,12 @@ auwlr_install() {
     cd "$lastdir"
 }
 
-while getopts "QSyuc" opt; do
+while getopts "F:QSyuc" opt; do
     case $opt in
+        F)
+            [ -n "$OPTARG" ] && get_packages_list "$OPTARG"
+            exit
+            ;;
         Q)
             pacman -Qm
             cache_size=$(du -h "$auwlr_cache" --max-depth=0 2>/dev/null)
