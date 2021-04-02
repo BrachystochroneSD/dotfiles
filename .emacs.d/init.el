@@ -1363,7 +1363,7 @@ for renaming."
  message-send-mail-function 'smtpmail-send-it
 
  ;; Folders
- mu4e-sent-folder "/sent"
+ mu4e-sent-folder "/archives/sent"
  mu4e-drafts-folder "/drafts"
  mu4e-attachment-dir "/home/sam/Downloads"
 
