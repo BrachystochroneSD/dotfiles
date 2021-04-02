@@ -528,9 +528,7 @@
 (defun my-dired-find-file-internal (file &optional bm)
   "Used by `my-dired-open-file'"
   (let ((file-extension (or (file-name-extension file) "FILEEXT"))) ;; just to have a string to match when there's none
-    (cond ((string-match "\\(html\\|htm\\)$" file-extension)
-           (browse-url-default-browser file))
-          ((string-match "\\(pdf\\|djvu\\|ps\\|dvi\\)$" file-extension)
+    (cond ((string-match "\\(pdf\\|djvu\\|ps\\|dvi\\)$" file-extension)
            (org-open-file file))
           ((string-match (regexp-opt my-org-extension-list) file-extension)
            (org-open-file-with-system file))
