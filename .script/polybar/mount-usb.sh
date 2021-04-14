@@ -9,7 +9,7 @@ dmenuobf="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"
 devices=$(lsblk -Jplno NAME,TYPE,RM,MOUNTPOINT | jq -r '.blockdevices[] | select(.mountpoint == ("/media/usb1","/media/usb2","/mnt",null))')
 
 aborted () {
-    [[ -n "$1" ]] && dunstify -i owl "$1"
+    [ -n "$1" ] && dunstify -i owl "$1"
     echo "$1"
     exit
 }

@@ -9,71 +9,71 @@ forecast=${HOME}/.script/polybar/weatherdir/datas/forecast
 
 mkdir -p "${HOME}"/.script/polybar/weatherdir/datas
 
-[[ ! -f "$current" ]] && touch "$current"
-[[ ! -f "$forecast" ]] && touch "$forecast"
+[ ! -f "$current" ] && touch "$current"
+[ ! -f "$forecast" ] && touch "$forecast"
 
 icons() {
     case $1 in
         "clear sky") icon="";;
-	#rain
-	"light rain") icon="";;
-	"moderate rain") icon="";;
-	"heavy intensity rain") icon="";;
-	"very heavy rain") icon="";;
-	"extreme rain") icon="";;
-	"freezing rain") icon="";;
-	"light intensity shower rain") icon="";;
-	"shower rain") icon="";;
-	"heavy intensity shower rain") icon="";;
-	"ragged shower rain") icon="";;
-	#thunderstorm
-	"thunderstorm with light rain") icon="";;
-	"thunderstorm with rain") icon="";;
-	"thunderstorm with heavy rain") icon="";;
-	"light thunderstorm") icon="";;
-	"thunderstorm") icon="";;
-	"heavy thunderstorm") icon="";;
-	"ragged thunderstorm") icon="";;
-	"thunderstorm with light drizzle") icon="";;
-	"thunderstorm with drizzle") icon="";;
-	"thunderstorm with heavy drizzle") icon="";;
-	#drizzle
-	"light intensity drizzle") icon="";;
-	"drizzle") icon="";;
-	"heavy intensity drizzle") icon="";;
-	"light intensity drizzle rain") icon="";;
-	"drizzle rain") icon="";;
-	"heavy intensity drizzle rain") icon="";;
-	"shower rain and drizzle") icon="";;
-	"heavy shower rain and drizzle") icon="";;
-	"shower drizzle") icon="";;
-	#snow
-	"light snow") icon="";;
-	"snow") icon="";;
-	"heavy snow") icon="";;
-	"sleet") icon="";;
-	"shower sleet") icon="";;
-	"light rain and snow") icon="";;
-	"rain and snow") icon="";;
-	"light shower snow") icon="";;
-	"shower snow") icon="";;
-	"heavy shower snow") icon="";;
-	#atmoshpere
-	"mist") icon="";;
-	"smoke") icon="";;
-	"haze") icon="";;
-	"sand, dust whirls") icon="";;
-	"fog") icon="";;
-	"sand") icon="";;
-	"dust") icon="";;
-	"volcanic ash") icon="";;
-	"squalls") icon="";;
-	"tornado") icon="";;
-	#clouds
-	"few clouds") icon="";;
-	"scattered clouds") icon="";;
-	"broken clouds") icon="";;
-	"overcast clouds") icon="";;
+    #rain
+    "light rain") icon="";;
+    "moderate rain") icon="";;
+    "heavy intensity rain") icon="";;
+    "very heavy rain") icon="";;
+    "extreme rain") icon="";;
+    "freezing rain") icon="";;
+    "light intensity shower rain") icon="";;
+    "shower rain") icon="";;
+    "heavy intensity shower rain") icon="";;
+    "ragged shower rain") icon="";;
+    #thunderstorm
+    "thunderstorm with light rain") icon="";;
+    "thunderstorm with rain") icon="";;
+    "thunderstorm with heavy rain") icon="";;
+    "light thunderstorm") icon="";;
+    "thunderstorm") icon="";;
+    "heavy thunderstorm") icon="";;
+    "ragged thunderstorm") icon="";;
+    "thunderstorm with light drizzle") icon="";;
+    "thunderstorm with drizzle") icon="";;
+    "thunderstorm with heavy drizzle") icon="";;
+    #drizzle
+    "light intensity drizzle") icon="";;
+    "drizzle") icon="";;
+    "heavy intensity drizzle") icon="";;
+    "light intensity drizzle rain") icon="";;
+    "drizzle rain") icon="";;
+    "heavy intensity drizzle rain") icon="";;
+    "shower rain and drizzle") icon="";;
+    "heavy shower rain and drizzle") icon="";;
+    "shower drizzle") icon="";;
+    #snow
+    "light snow") icon="";;
+    "snow") icon="";;
+    "heavy snow") icon="";;
+    "sleet") icon="";;
+    "shower sleet") icon="";;
+    "light rain and snow") icon="";;
+    "rain and snow") icon="";;
+    "light shower snow") icon="";;
+    "shower snow") icon="";;
+    "heavy shower snow") icon="";;
+    #atmoshpere
+    "mist") icon="";;
+    "smoke") icon="";;
+    "haze") icon="";;
+    "sand, dust whirls") icon="";;
+    "fog") icon="";;
+    "sand") icon="";;
+    "dust") icon="";;
+    "volcanic ash") icon="";;
+    "squalls") icon="";;
+    "tornado") icon="";;
+    #clouds
+    "few clouds") icon="";;
+    "scattered clouds") icon="";;
+    "broken clouds") icon="";;
+    "overcast clouds") icon="";;
     esac
 
     echo "$icon"
@@ -85,18 +85,18 @@ get_datas(){
     long=$(echo "$location" | sed 's/.*,//' | sed 's/.$//')
 
     curl -s \
-	 -G "http://api.openweathermap.org/data/2.5/weather" \
-	 -d "lat=$lat" \
-	 -d "lon=$long" \
-	 -d "APPID=$weatherbisappid" \
-	 -d "units=metric" > "$current"
+     -G "http://api.openweathermap.org/data/2.5/weather" \
+     -d "lat=$lat" \
+     -d "lon=$long" \
+     -d "APPID=$weatherbisappid" \
+     -d "units=metric" > "$current"
 
     curl -s \
-	 -G "http://api.openweathermap.org/data/2.5/forecast" \
-	 -d "lat=$lat" \
-	 -d "lon=$long" \
-	 -d "APPID=$weatherbisappid" \
-	 -d "units=metric"> "$forecast"
+     -G "http://api.openweathermap.org/data/2.5/forecast" \
+     -d "lat=$lat" \
+     -d "lon=$long" \
+     -d "APPID=$weatherbisappid" \
+     -d "units=metric"> "$forecast"
 }
 
 echocurrent(){
@@ -113,16 +113,16 @@ echoforecast(){
 
     if [ -n "$icon" ];then
 
-	humidity=$(jq .list[$1].main.humidity "$forecast" | awk '{print int($1+0.5)}')
+    humidity=$(jq .list[$1].main.humidity "$forecast" | awk '{print int($1+0.5)}')
 
-	tempMin=$(jq .list[$1].main.temp_min "$forecast")
+    tempMin=$(jq .list[$1].main.temp_min "$forecast")
 
-	tempMax=$(jq .list[$1].main.temp_max "$forecast")
+    tempMax=$(jq .list[$1].main.temp_max "$forecast")
 
-	temp=$(echo "( $tempMin + $tempMax ) / 2" \
-		   | bc -l \
-		   | awk '{print int($1+0.5)}')
-	echo "$(icons "$icon")" "$humidity"% "$temp"°C
+    temp=$(echo "( $tempMin + $tempMax ) / 2" \
+           | bc -l \
+           | awk '{print int($1+0.5)}')
+    echo "$(icons "$icon")" "$humidity"% "$temp"°C
     fi
 }
 
@@ -131,41 +131,41 @@ checktime(){
     nummax=$(jq .cnt < "$forecast")
     [ -z "$nummax" ] && exit
     while [ $i -le "$nummax" ];do
-	timetest=$(jq .list[$i].dt "$forecast")
+    timetest=$(jq .list[$i].dt "$forecast")
 
-	: $(( res= 1 - timetest ))
-	if [ $res -le 0 ];then
-	    : $((i= i - 1))
-	    break
-	fi
-	: $((i= i + 1))
+    : $(( res= 1 - timetest ))
+    if [ $res -le 0 ];then
+        : $((i= i - 1))
+        break
+    fi
+    : $((i= i + 1))
     done
     if [ $i = 40 ];then
-	echo "Need Update"
+    echo "Need Update"
     elif [ $i -le 0 ];then
-	: $((i= i + 1))
-	echoforecast $i
+    : $((i= i + 1))
+    echoforecast $i
     else
-	echoforecast $i
+    echoforecast $i
     fi
 }
 
 #check internet connection
 normal(){
     if ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1; then
-	get_datas
-	echocurrent
+    get_datas
+    echocurrent
     else
-	checktime "$(date +%s)"
+    checktime "$(date +%s)"
     fi
 }
 
 case "$1" in
     --forecast)
-	datee=$(( $(date +%s) + 2*86400 ))
-	checktime "$datee"
-	;;
+    datee=$(( $(date +%s) + 2*86400 ))
+    checktime "$datee"
+    ;;
     *)
         ! grep -qs "weather" ~/.config/polybar/disabled_module && normal
-	;;
+    ;;
 esac

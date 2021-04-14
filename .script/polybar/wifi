@@ -54,7 +54,7 @@ EOF
 
 getifstat () {
     ifstat -n
-    if [[ -n $(grep "$wifidev" /tmp/.ifstat.u"$UID") ]];then
+    if [ -n $(grep "$wifidev" /tmp/.ifstat.u"$UID") ];then
         read received transmitted <<EOF
 $(grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
 EOF
@@ -113,7 +113,7 @@ case $1 in
         setup_zero "$2"
         ;;
     --toggle-ifstat)
-        [[ -f /tmp/wifi_ifstat_toggle ]] && rm /tmp/wifi_ifstat_toggle || touch /tmp/wifi_ifstat_toggle
+        [ -f /tmp/wifi_ifstat_toggle ] && rm /tmp/wifi_ifstat_toggle || touch /tmp/wifi_ifstat_toggle
         ;;
     --load-config)
         load_config ;;
