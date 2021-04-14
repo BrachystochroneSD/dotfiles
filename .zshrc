@@ -215,14 +215,6 @@ alias keysignation="jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keys
 
 alias dmenu='/usr/local/bin/dmenu -nb "$color0" -nf "$color15" -sb "$color3" -sf "$color0"'
 
-############
-# OBSOLETE #
-############
-
-# alias apm_shit="sudo hdparm -B 254 /dev/sda"
-
-# PATH=$PATH:~/.sdk/android/tools
-
 #######
 # FZF #
 #######
