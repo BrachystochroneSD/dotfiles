@@ -38,18 +38,51 @@ warn_fg=$red
 
 
 get_temps() {
-    cpu_sensors=$(sensors | grep temp[0-9]:)
 
-    cpu_temp=${cpu_sensors#*+}
-    cpu_temp=${cpu_temp%%.*}
+    if command -v "sensors" > /dev/null; then
+        cpu_sensors=$(sensors | grep temp[0-9]:)
 
-    cpu_warn=${cpu_sensors##*+}
-    cpu_warn=${cpu_warn%%.*}
 
-    gpu_temp=$(nvidia-smi | grep -o "[0-9][0-9]C")
-    gpu_temp=${gpu_temp%C}
+        cpu_temp=${cpu_sensors#*+}
+        cpu_temp=${cpu_temp%%.*}
 
-    gpu_warn=70
+        cpu_warn=${cpu_sensors##*+}
+        cpu_warn=${cpu_warn%%.*}
+
+        cpu_label=c
+
+        if [ $cpu_temp -gt $cpu_warn ]; then
+            curr_cpu_fg=$warn_fg
+            curr_cpu_pfx=$warn_pfx
+            curr_cpu_ul=$warn_ul
+        else
+            curr_cpu_fg=$normal_fg
+            curr_cpu_pfx=$normal_pfx
+            curr_cpu_ul=$normal_ul
+        fi
+        cpu_block="%{F$curr_cpu_fg}%{o$curr_cpu_ul}%{u$curr_cpu_ul}"$curr_cpu_pfx"$cpu_label $cpu_temp°C%{u-}${o-}%{F-}"
+
+    fi
+
+    if command -v "nvidia-smi" > /dev/null; then
+        gpu_temp=$(nvidia-smi | grep -o "[0-9][0-9]C")
+        gpu_temp=${gpu_temp%C}
+
+        gpu_label=g
+
+        gpu_warn=70
+        if [ $gpu_temp -gt $gpu_warn ]; then
+            curr_gpu_fg=$warn_fg
+            curr_gpu_pfx=$warn_pfx
+            curr_gpu_ul=$warn_ul
+        else
+            curr_gpu_fg=$normal_fg
+            curr_gpu_pfx=$normal_pfx
+            curr_gpu_ul=$normal_ul
+        fi
+        gpu_block="%{F$curr_gpu_fg}%{o$curr_cpu_ul}%{u$curr_gpu_ul}"$curr_gpu_pfx"$gpu_label $gpu_temp°C%{u-}${o-}%{F-}"
+
+    fi
 
 }
 
@@ -57,27 +90,7 @@ get_temps() {
 print_line () {
     get_temps
 
-    if [ $cpu_temp -gt $cpu_warn ]; then
-        curr_cpu_fg=$warn_fg
-        curr_cpu_pfx=$warn_pfx
-        curr_cpu_ul=$warn_ul
-    else
-        curr_cpu_fg=$normal_fg
-        curr_cpu_pfx=$normal_pfx
-        curr_cpu_ul=$normal_ul
-    fi
-
-    if [ $gpu_temp -gt $gpu_warn ]; then
-        curr_gpu_fg=$warn_fg
-        curr_gpu_pfx=$warn_pfx
-        curr_gpu_ul=$warn_ul
-    else
-        curr_gpu_fg=$normal_fg
-        curr_gpu_pfx=$normal_pfx
-        curr_gpu_ul=$normal_ul
-    fi
-
-    echo "%{F$curr_cpu_fg}%{o$curr_cpu_ul}%{u$curr_cpu_ul}"$curr_cpu_pfx"c $cpu_temp°C%{u-}%{o-}%{F-}%{o$color0}%{u$color0} ${u-}${o-}%{F$curr_gpu_fg}%{o$curr_cpu_ul}%{u$curr_gpu_ul}"$curr_gpu_pfx"g $gpu_temp°C%{u-}${o-}%{F-}"
+    echo "$cpu_block%{o$color0}%{u$color0} ${u-}${o-}$gpu_block"
 }
 
 print_line
