@@ -1,0 +1,83 @@
+#!/bin/sh
+
+
+# colors from wpgtk/pywal
+. "${HOME}/.cache/wal/colors.sh"
+
+red="$color6"
+green="$color4"
+yellow="$color9"
+blue="$color11"
+pink="$color12"
+navy="$color13"
+orange="$color1"
+fg="$color15"
+bg_alt="$color3"
+red_alt="$color6"
+yellow_alt="$color9"
+fg_alt="$color15"
+
+
+normal_ul=$navy
+#format_overline=$navy
+
+warn_ul=$red_alt
+#format_warn_overline=$red_alt
+
+label_warn_foreground=$bg_alt
+
+normal_pfx=%{T6}%{T-}
+warn_pfx=%{T6}%{T-}
+
+normal_fg=$fg
+warn_fg=$red
+
+# TODO : make a ramp ?
+# ramp_1 = %{T6}%{T-}
+# ramp_2 = %{T6}%{T-}
+
+
+get_temps() {
+    cpu_sensors=$(sensors | grep temp[0-9]:)
+
+    cpu_temp=${cpu_sensors#*+}
+    cpu_temp=${cpu_temp%%.*}
+
+    cpu_warn=${cpu_sensors##*+}
+    cpu_warn=${cpu_warn%%.*}
+
+    gpu_temp=$(nvidia-smi | grep -o "[0-9][0-9]C")
+    gpu_temp=${gpu_temp%C}
+
+    gpu_warn=70
+
+}
+
+
+print_line () {
+    get_temps
+
+    if [ $cpu_temp -gt $cpu_warn ]; then
+        curr_cpu_fg=$warn_fg
+        curr_cpu_pfx=$warn_pfx
+        curr_cpu_ul=$warn_ul
+    else
+        curr_cpu_fg=$normal_fg
+        curr_cpu_pfx=$normal_pfx
+        curr_cpu_ul=$normal_ul
+    fi
+
+    if [ $gpu_temp -gt $gpu_warn ]; then
+        curr_gpu_fg=$warn_fg
+        curr_gpu_pfx=$warn_pfx
+        curr_gpu_ul=$warn_ul
+    else
+        curr_gpu_fg=$normal_fg
+        curr_gpu_pfx=$normal_pfx
+        curr_gpu_ul=$normal_ul
+    fi
+
+    echo "%{F$curr_cpu_fg}%{o$curr_cpu_ul}%{u$curr_cpu_ul}"$curr_cpu_pfx"c $cpu_temp°C%{u-}%{o-}%{F-}%{o$color0}%{u$color0} ${u-}${o-}%{F$curr_gpu_fg}%{o$curr_cpu_ul}%{u$curr_gpu_ul}"$curr_gpu_pfx"g $gpu_temp°C%{u-}${o-}%{F-}"
+}
+
+print_line
