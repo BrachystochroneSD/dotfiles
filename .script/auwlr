@@ -6,6 +6,9 @@ auwlr_pkg="$auwlr_cache/pkg"
 auwlr_update_list="$auwlr_cache/auwlr_update_list"
 auwlr_upgrade_list="$auwlr_cache/auwlr_upgrade_list"
 
+mkdir -p $auwlr_pkg
+mkdir -p $auwlr_build
+
 error() {
     echo "error: $1"
     exit 1
@@ -28,7 +31,6 @@ get_packages_list() {
 }
 
 git_clone_or_pull() {
-    mkdir -p "$auwlr_build"
     cd "$auwlr_build"
     if [ -d "$1" ];then
         cd "$1"
@@ -82,7 +84,7 @@ auwlr_build() {
             makepkg -sfc && {
                 pkg_tar=$(makepkg --packagelist)
                 echo "$pkg_tar" >> "$auwlr_upgrade_list"
-                mv "$pkg_tar" "$auwlr_pkg"
+                mv "$pkg_tar" "$auwlr_pkg/"
                 grep -v "$pkg" "$auwlr_update_list" > /tmp/auwlrshit && mv /tmp/auwlrshit "$auwlr_update_list"
             }
         done < "$auwlr_update_list"
@@ -134,7 +136,7 @@ auwlr_install() {
         makepkg -sfc && {
             pkg_tar=$(makepkg --packagelist)
             echo "$pkg_tar" >> "$auwlr_upgrade_list"
-            mv "$pkg_tar" "$auwlr_pkg"
+            mv "$pkg_tar" "$auwlr_pkg/"
         } || exit 1
         list_packages="${list_packages% *}"
     done
