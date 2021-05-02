@@ -1,24 +1,14 @@
 #!/bin/sh
 
 auwlr_cache="${HOME}/.cache/auwlr"
+auwlr_build="$auwlr_cache/build"
+auwlr_pkg="$auwlr_cache/pkg"
 auwlr_update_list="$auwlr_cache/auwlr_update_list"
 auwlr_upgrade_list="$auwlr_cache/auwlr_upgrade_list"
 
 error() {
     echo "error: $1"
     exit 1
-}
-
-print_help() {
-    echo "usage: auwlr <operation> [...]"
-    echo "operations:"
-    echo "    auwlr -h: print this help"
-    echo "    auwlr -Q: print all packages installed with AUR"
-    echo "              and the size of the cache"
-    echo "    auwlr -S [options] [package(s)]"
-    echo "           options are:"
-    echo "               -y : update installed AUR packages with git"
-    echo "               -u : upgrade installed packages and build them"
 }
 
 get_packages_list() {
@@ -38,14 +28,14 @@ get_packages_list() {
 }
 
 git_clone_or_pull() {
-    mkdir -p "$auwlr_cache"
-    cd "$auwlr_cache"
+    mkdir -p "$auwlr_build"
+    cd "$auwlr_build"
     if [ -d "$1" ];then
         cd "$1"
-        echo "Pulling/Update $1 in $auwlr_cache"...
+        echo "Pulling/Update $1 in $auwlr_build"...
         git pull origin master
     else
-        echo "Installing $1 in $auwlr_cache"...
+        echo "Installing $1 in $auwlr_build"...
         git clone "https://aur.archlinux.org/$1.git"
         cd "$1"
     fi
@@ -55,10 +45,10 @@ update_package() {
     curr_version="$1"
     package="$2"
     git_clone_or_pull "$package" > /dev/null 2>&1
-    [ ! -f "$auwlr_cache/$package/PKGBUILD" ] && exit 1
-    pkg_epoch=$(grep "^epoch=" "$auwlr_cache/$package/PKGBUILD" | sed 's/epoch=//')
-    pkg_ver=$(grep "^pkgver=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgver=//')
-    pkg_rel=$(grep "^pkgrel=" "$auwlr_cache/$package/PKGBUILD" | sed 's/pkgrel=//')
+    [ ! -f "$auwlr_build/$package/PKGBUILD" ] && exit 1
+    pkg_epoch=$(grep "^epoch=" "$auwlr_build/$package/PKGBUILD" | sed 's/epoch=//')
+    pkg_ver=$(grep "^pkgver=" "$auwlr_build/$package/PKGBUILD" | sed 's/pkgver=//')
+    pkg_rel=$(grep "^pkgrel=" "$auwlr_build/$package/PKGBUILD" | sed 's/pkgrel=//')
     [ -n "$pkg_epoch" ] && pkg_epoch="$pkg_epoch:"
     [ -n "$pkg_rel" ] && pkg_rel="-$pkg_rel"
     package_version="$pkg_epoch$pkg_ver$pkg_rel"
@@ -88,11 +78,13 @@ auwlr_build() {
     read conf
     if [ "$conf" = "y" ];then
         while read pkg shits;do
-            cd "$auwlr_cache/$pkg"
+            cd "$auwlr_build/$pkg"
             makepkg -sfc && {
-                makepkg --packagelist >> "$auwlr_upgrade_list"
+                pkg_tar=$(makepkg --packagelist)
+                echo "$pkg_tar" >> "$auwlr_upgrade_list"
+                mv "$pkg_tar" "$auwlr_pkg"
                 grep -v "$pkg" "$auwlr_update_list" > /tmp/auwlrshit && mv /tmp/auwlrshit "$auwlr_update_list"
-            } || exit 1
+            }
         done < "$auwlr_update_list"
         rm "$auwlr_update_list"
     else
@@ -103,34 +95,32 @@ auwlr_build() {
 
 auwlr_upgrade() {
     [ ! -f "$auwlr_upgrade_list" ] && echo "Nothing to install or upgrade, use -Sy first" && exit 1
-    sudo pacman -U $(cat $auwlr_cache/auwlr_upgrade_list| tr "\n" " " )
+    sudo pacman -U $(cat $auwlr_cache/auwlr_upgrade_list | sed "s|.*/|$auwlr_pkg/|" | tr "\n" " " )
     rm "$auwlr_upgrade_list"
 }
 
-get_clean_cache_size() {
-    file_list=$(du "$auwlr_cache" -a  | grep -f "$auwlr_clean_list")
-    cache_size=0
-    while read file_size file; do
-        cache_size=$(echo "$cache_size + $file_size" | bc)
-    done <<EOF
-echo $file_list
-EOF
-    echo $(numfmt --to=si $cache_size)
-}
-
-
 auwlr_clean_cache() {
-    auwlr_clean_list="$auwlr_cache/auwlr_clean_cache_list"
-    rm -f "$auwlr_clean_list"
-    pacman -Qm | while read pkg ver; do
-        git --git-dir="$auwlr_cache/$pkg/.git" --work-tree="$auwlr_cache/$pkg" clean -n | sed "s|Would remove |$auwlr_cache/$pkg/|" >> "$auwlr_clean_list"
-    done
-    echo
-    cat "$auwlr_clean_list"
-    echo
-    echo "Remove all of these files: (total cache size = $(get_clean_cache_size)) ? [yN]"
-    read yn
-    [ "$yn" = "Y" -o "$yn" = y ] && xargs rm < "$auwlr_clean_list" || echo Aborted
+
+    if [ ! $(ls "$auwlr_build" | wc -l) -eq 0 ];then
+        build_size=$(du -h --max-depth=1 "$auwlr_build" | tail -n1 | tr "\t" " ")
+        build_size=${build_size% *}
+        echo "Clean build repos (size: $build_size)? [Y/n]"
+        read yn_build
+        [ "$yn_build" = "Y" -o "$yn_build" = y -o -z "$yn_build" ] && rm -fr "$auwlr_build"/*
+    else
+        echo "build clean!"
+    fi
+
+    if [ ! $(ls "$auwlr_pkg" | wc -l) -eq 0 ];then
+        pkg_size=$(du -h --max-depth=1 "$auwlr_pkg" | tail -n1 | tr "\t" " ")
+        pkg_size=${pkg_size% *}
+        echo "Clean pkg ? (size: $pkg_size)? [y/N]"
+        read yn_pkg
+        [ "$yn_pkg" = "Y" -o "$yn_pkg" = y ] && rm "$auwlr_pkg"/*
+    else
+        echo "pkg clean!"
+    fi
+
 }
 
 auwlr_install() {
@@ -140,9 +130,11 @@ auwlr_install() {
         pkg="${list_packages##* }"
         echo "Building $pkg"
         git_clone_or_pull "$pkg" > /dev/null 2>&1
-        cd "$auwlr_cache/$pkg"
+        cd "$auwlr_build/$pkg"
         makepkg -sfc && {
-            makepkg --packagelist >> "$auwlr_upgrade_list"
+            pkg_tar=$(makepkg --packagelist)
+            echo "$pkg_tar" >> "$auwlr_upgrade_list"
+            mv "$pkg_tar" "$auwlr_pkg"
         } || exit 1
         list_packages="${list_packages% *}"
     done
@@ -168,15 +160,35 @@ while getopts "F:QSyuc" opt; do
             auwlr_clean_cache
             exit 0
             ;;
-        *) print_help ;;
+        h) print_help ;;
     esac
 done
+
+
+print_help() {
+    cat <<-EOF
+
+    usage: auwlr <operation> [...]
+    operations:
+        auwlr -h: print this help
+        auwlr -Q: print all packages installed with AUR
+                  and the size of the cache
+        auwlr -S [options] [package(s)]
+               options are:
+                   -y : update installed AUR packages with git
+                   -u : upgrade installed packages and build them
+                   -c : clean build directory and pkg cache
+
+EOF
+}
+
 
 if [ -n "$install_bool" ]; then
     auwlr_install "${@#$1}"
     [ -n "$upd_bool" ] && auwlr_update
     [ -n "$upg_bool" ] && auwlr_build
     auwlr_upgrade
+    auwlr_clean_cache
     exit 0
 else
     echo "Options y and u need to be used with S"
