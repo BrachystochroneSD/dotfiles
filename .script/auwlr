@@ -81,7 +81,7 @@ auwlr_build() {
     if [ "$conf" = "y" ];then
         while read pkg shits;do
             cd "$auwlr_build/$pkg"
-            makepkg -sfc && {
+            makepkg -sfcr && {
                 pkg_tar=$(makepkg --packagelist)
                 echo "$pkg_tar" >> "$auwlr_upgrade_list"
                 mv "$pkg_tar" "$auwlr_pkg/"
@@ -133,7 +133,7 @@ auwlr_install() {
         echo "Building $pkg"
         git_clone_or_pull "$pkg" > /dev/null 2>&1
         cd "$auwlr_build/$pkg"
-        makepkg -sfc && {
+        makepkg -sfrc && {
             pkg_tar=$(makepkg --packagelist)
             echo "$pkg_tar" >> "$auwlr_upgrade_list"
             mv "$pkg_tar" "$auwlr_pkg/"
