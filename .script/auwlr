@@ -190,7 +190,6 @@ if [ -n "$install_bool" ]; then
     [ -n "$upd_bool" ] && auwlr_update
     [ -n "$upg_bool" ] && auwlr_build
     auwlr_upgrade
-    auwlr_clean_cache
     exit 0
 else
     echo "Options y and u need to be used with S"
