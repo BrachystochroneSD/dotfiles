@@ -220,7 +220,7 @@ alias dmenu='/usr/local/bin/dmenu -nb "$color0" -nf "$color15" -sb "$color3" -sf
 #######
 
 # Goto
-g(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -not -path '*/\.*' -type d | fzf )" ;}
+g(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -maxdepth 4 -not -path '*/\.*' -type d | fzf )" ;}
 gh(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -type d | fzf )" ;}
 # copy to
 c(){ cp "$@" "$(find /home/sam -type d | fzf)";}
