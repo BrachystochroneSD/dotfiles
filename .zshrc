@@ -7,6 +7,8 @@ HISTFILE=~/.zsh_history
 
 local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
 
+bindkey -e
+
 autoload -U colors && colors
 
 PS1="%B%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[red]%}%M%{$fg[blue]%}:%{$fg[magenta]%}%~%{$reset_color%}$%b "
