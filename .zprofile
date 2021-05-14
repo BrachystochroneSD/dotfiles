@@ -4,6 +4,8 @@
 
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 
+export EDITOR="/usr/bin/vim"
+
 export PATH=$PATH:~/.local/bin
 
 export TEXMFHOME="~/.config/texmf"

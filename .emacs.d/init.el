@@ -10,6 +10,7 @@
 (scroll-bar-mode 0)
 (column-number-mode)
 (menu-bar-mode -1)
+(setq create-lockfiles nil)
 (delete-selection-mode 1)
 (show-paren-mode 1)
 (setq completion-ignore-case t)
@@ -1378,7 +1379,7 @@ for renaming."
                           ("/archives/gmail"     . ?g)
                           ("/archives/mailo"     . ?m)
 
-                          ("/sent"               . ?s)
+                          ("/archives/sent"      . ?s)
                           ("/trash"              . ?t)
                           ("/drafts"             . ?d))
 
