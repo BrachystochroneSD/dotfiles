@@ -48,9 +48,9 @@ update_package() {
     package="$2"
     git_clone_or_pull "$package" > /dev/null 2>&1
     [ ! -f "$auwlr_build/$package/PKGBUILD" ] && exit 1
-    pkg_epoch=$(grep "^epoch=" "$auwlr_build/$package/PKGBUILD" | sed 's/epoch=//')
-    pkg_ver=$(grep "^pkgver=" "$auwlr_build/$package/PKGBUILD" | sed 's/pkgver=//')
-    pkg_rel=$(grep "^pkgrel=" "$auwlr_build/$package/PKGBUILD" | sed 's/pkgrel=//')
+    pkg_epoch=$(grep "^epoch=" "$auwlr_build/$package/PKGBUILD" |sed "s/epoch=//;s/'//g")
+    pkg_ver=$(grep "^pkgver=" "$auwlr_build/$package/PKGBUILD" | sed "s/pkgver=//;s/'//g")
+    pkg_rel=$(grep "^pkgrel=" "$auwlr_build/$package/PKGBUILD" | sed "s/pkgrel=//;s/'//g")
     [ -n "$pkg_epoch" ] && pkg_epoch="$pkg_epoch:"
     [ -n "$pkg_rel" ] && pkg_rel="-$pkg_rel"
     package_version="$pkg_epoch$pkg_ver$pkg_rel"
@@ -97,8 +97,7 @@ auwlr_build() {
 
 auwlr_upgrade() {
     [ ! -f "$auwlr_upgrade_list" ] && echo "Nothing to install or upgrade, use -Sy first" && exit 1
-    sudo pacman -U $(cat $auwlr_cache/auwlr_upgrade_list | sed "s|.*/|$auwlr_pkg/|" | tr "\n" " " )
-    rm "$auwlr_upgrade_list"
+    sudo pacman -U $(cat $auwlr_cache/auwlr_upgrade_list | sed "s|.*/|$auwlr_pkg/|" | tr "\n" " " ) && rm "$auwlr_upgrade_list"
 }
 
 auwlr_clean_cache() {
