@@ -79,7 +79,7 @@ get_temps() {
             curr_gpu_pfx=$normal_pfx
             curr_gpu_ul=$normal_ul
         fi
-        gpu_block="%{F$curr_gpu_fg}%{o$curr_cpu_ul}%{u$curr_gpu_ul}"$curr_gpu_pfx"$gpu_label $gpu_temp°C%{u-}${o-}%{F-}"
+        gpu_block="%{F$curr_gpu_fg}%{o$curr_gpu_ul}%{u$curr_gpu_ul}"$curr_gpu_pfx"$gpu_label $gpu_temp°C%{u-}${o-}%{F-}"
 
     fi
 

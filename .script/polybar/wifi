@@ -1,6 +1,6 @@
 #!/bin/sh
 
-grep -qs "wifi" ~/.config/polybar/disabled_module && return #do nothing if disabled
+grep -qs "wifi" ~/.config/polybar/disabled_module && exit 0 #do nothing if disabled
 
 load_config () {
     if [ -f "${HOME}/.config/wifirc" ];then
