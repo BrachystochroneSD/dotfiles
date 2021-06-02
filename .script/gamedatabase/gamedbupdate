@@ -7,26 +7,26 @@
 database=${HOME}/.script/gamedatabase/gamesdb
 
 curly=$(curl -s \
-	     -G "https://www.giantbomb.com/api/games/" \
-	     -d "format=json" \
-	     -d "field_list=number_of_total_results" \
-	     -d "offset=0" \
-	     -d "api_key=$gdbapikey")
+         -G "https://www.giantbomb.com/api/games/" \
+         -d "format=json" \
+         -d "field_list=number_of_total_results" \
+         -d "offset=0" \
+         -d "api_key=$gdbapikey")
 
-number_max=$(jq ".number_of_total_results" "$curly")
-offset=$(wc -l $database)
+number_max=$(echo "$curly" | jq ".number_of_total_results")
+offset=$(cat "$database" | wc -l)
 
 while [ "$offset" -lt "$number_max" ]; do
     printf "Curl giant bomb site with offset=%s\n" "$offset"
 
     curly=$(curl -s \
-	     -G "https://www.giantbomb.com/api/games/" \
-	     -d "format=json" \
-	     -d "field_list=number_of_total_results" \
-	     -d "offset=$offset" \
-	     -d "api_key=$gdbapikey")
+         -G "https://www.giantbomb.com/api/games/" \
+         -d "format=json" \
+         -d "field_list=name" \
+         -d "offset=$offset" \
+         -d "api_key=$gdbapikey")
 
-    echo "$curly" | jq .results[] | jq .name | sed 's/^"\(.*\)"$/\1/' >> $database 
+    echo "$curly" | jq .results[] | jq .name | sed 's/^"\(.*\)"$/\1/' >> $database
     : $(( offset= offset + 100 ))
 done
 
