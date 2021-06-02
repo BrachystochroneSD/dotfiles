@@ -223,14 +223,14 @@ alias dmenu='/usr/local/bin/dmenu -nb "$color0" -nf "$color15" -sb "$color3" -sf
 
 # Goto
 g(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -maxdepth 4 -not -path '*/\.*' -type d | fzf )" ;}
-gh(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -type d | fzf )" ;}
+gh(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1; cd "$(find $search -maxdepth 4 -type d | fzf )" ;}
 # copy to
-c(){ cp "$@" "$(find /home/sam -type d | fzf)";}
+c(){ cp "$@" "$(find /home/sam -maxdepth 4 -type d | fzf)";}
 # move to
-m(){ mv "$@" "$(find /home/sam -type d | fzf)";}
+m(){ mv "$@" "$(find /home/sam -maxdepth 4 -type d | fzf)";}
 # search
 f(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1
-     shit=$(find $search -type f | fzf --layout=reverse --height 40% )
+     shit=$(find $search -type f -maxdepth 4 | fzf --layout=reverse --height 40% )
      if [[ -n $shit ]];then
      nohup xdg-open "$shit" &>/dev/null &
      echo "Opening $shit"
