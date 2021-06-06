@@ -883,7 +883,11 @@ See `elfeed-play-with-mpv'."
   (interactive
    (list
     (read-string "Mark as read: "
-                 (elfeed-feed-title (elfeed-entry-feed (car(elfeed-search-selected)))))))
+                 (let ((feed (elfeed-entry-feed (car (elfeed-search-selected)))))
+                   (when feed
+                     (or (elfeed-meta feed :title) (elfeed-feed-title feed)))
+                   )
+)))
   (setq cur_line (line-number-at-pos))
   (beginning-of-buffer)
   (while (re-search-forward regex nil t)
