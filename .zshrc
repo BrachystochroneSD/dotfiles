@@ -23,6 +23,9 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 compinit
 _comp_options+=(globdots)
 
+# shred and remove
+rmshr(){shred "$1" && rm "$1"}
+
 # completion functions
 _xdd() {
     local state
