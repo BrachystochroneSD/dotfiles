@@ -227,6 +227,9 @@
 "keepmenu"
     Mod4 + p
 
+"~/.script/mypassmenu"
+    Mod4 + Mod1 + p
+
 # mount-usb
 "~/.script/polybar/mount-usb.sh --mount"
     Mod4 + u

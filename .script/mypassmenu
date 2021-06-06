@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+
+. "${HOME}/.cache/wal/colors.sh"
+
+NOTIFY_CMD="dunstify -i owl"
+DMENU_CMD="dmenu -i -nb $color0 -nf $color15 -sb $color3 -sf $color0"
+DMENU_SECRET="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"
+
+shopt -s nullglob globstar
+
+typeit=1
+
+prefix=${PASSWORD_STORE_DIR-~/.password-store}
+password_files=( "$prefix"/**/*.gpg )
+password_files=( "${password_files[@]#"$prefix"/}" )
+password_files=( "${password_files[@]%.gpg}" )
+
+add_entry(){
+    local name="$1"
+    local username="$2"
+    local password="$3"
+    local note="$4"
+
+    [[ -z "$name" ]] && exit
+    [[ -z "$username" ]] && exit
+    [[ -z "$password" ]] && exit
+
+    pass insert $name/username <<EOF
+$(echo -e "$username\n$username")
+EOF
+
+    pass insert $name/password <<EOF
+$(echo -e "$password\n$password")
+EOF
+
+    if [[ -n "$note" ]];then
+        echo "$note" > "$prefix/$name/note.txt"
+        pass git add "$prefix/$name/note.txt"
+        pass git commit -m "add given notes for $prefix/$name"
+    fi
+
+}
+
+if [[ -n "$1" ]]; then
+    add_entry "$1" "$2" "$3" "$4"
+    exit
+fi
+
+password=$(echo -e "Add\nEdit\nDelete\nPush\n\n$(printf '%s\n' "${password_files[@]}")" | $DMENU_CMD -l 20 -p "Password Manager: ") || exit
+
+case "$password" in
+    Add)
+        name=$(echo "" | $DMENU_CMD -p "Name: ") || exit
+        username=$(echo "" | $DMENU_CMD -p "Username: ") || exit
+        pass_choice=$(echo -e "Generated\nManual" | $DMENU_CMD -p "How to create the Password: ") || exit
+        case "$pass_choice" in
+            Manual)
+                loop=t
+                while [[ "$loop" == "t" ]]; do
+                    password=$(echo "" | $DMENU_SECRET -p "Password: ") || exit
+                    retype_password=$(echo "" | $DMENU_SECRET -p "Retype Password: ") || exit
+                    [[ ! "$retype_password" == "$password" ]] && $NOTIFY_CMD "Passwords doesn't match" || loop=f
+                done
+                ;;
+            Generated)
+                pass_type=$(echo -e "Letter + Digits + Special Char\nLetter + Digit\nLetter only" | $DMENU_CMD -p "Choose: ") || exit
+                pass_length=$(echo -e "20\n30\n10" | $DMENU_CMD -p "Length: ") || exit
+                case "$pass_type" in
+                    "Letter only")
+                        tr_option='A-Za-z' ;;
+                    "Letter + Digit")
+                        tr_option='A-Za-z0-9' ;;
+                    "Letter + Digits + Special Char")
+                        tr_option='A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' ;;
+                esac
+                read password <<EOF
+$(tr -dc "$tr_option" </dev/urandom | head -c "$pass_length")
+EOF
+                ;;
+            *) exit
+        esac
+        note=$(echo "" | $DMENU_CMD -p "Notes: ") || exit
+
+        add_entry "$username" "$password" "$note"
+        ;;
+
+    Edit)
+        edit_choice=$(printf '%s\n' "${password_files[@]}" | $DMENU_CMD -l 20 -p "Edit entry: ") || exit
+        echo "TOTO : st -n floatingwin -e pass edit $edit_choice but it is not working"
+        ;;
+    Push)
+        pass git push origin master > "$prefix/.last_push.log" && $NOTIFY_CMD "push successful" || $NOTIFY_CMD "push unsucessful"
+        ;;
+    Delete)
+        choice=$(ls "$prefix" | $DMENU_CMD -p "Delete entry: ") || exit
+        [[ -z "$choice" ]] && exit
+        besure=$(echo -e "No\nYes" | $DMENU_CMD -p "Are you sure you want to delete $choice? ") || exit
+        if [[ "$besure" == "Yes" ]]; then
+            pass rm -rf "$choice"
+        fi
+        ;;
+
+    *)
+        [[ -n $password ]] || exit
+
+        if [[ $typeit -eq 0 ]]; then # TODO for now always typeit, but make a way to copy it
+            pass show -c "$password" 2>/dev/null
+        else
+            pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } |
+                xdotool type --clearmodifiers --file -
+        fi
+esac
