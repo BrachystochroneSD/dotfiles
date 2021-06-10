@@ -1,6 +1,8 @@
 * Blogs								:elfeed:
 ** getmonero                                                            :gxmr:
 *** https://www.getmonero.org/feed.xml
+** OSM feed                                                             :osmrss:
+*** https://weeklyosm.eu/feed
 ** Sarah's Scribble                                                     :SScr:
 *** https://www.comicsrss.com/rss/sarahs-scribbles.rss
 ** xkcd									:xkcd:

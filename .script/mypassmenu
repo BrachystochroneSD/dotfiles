@@ -21,9 +21,12 @@ add_entry(){
     local password="$3"
     local note="$4"
 
+
     [[ -z "$name" ]] && exit
     [[ -z "$username" ]] && exit
     [[ -z "$password" ]] && exit
+
+    echo add entry for "$name"
 
     pass insert $name/username <<EOF
 $(echo -e "$username\n$username")
@@ -81,7 +84,7 @@ EOF
         esac
         note=$(echo "" | $DMENU_CMD -p "Notes: ") || exit
 
-        add_entry "$username" "$password" "$note"
+        add_entry "$name" "$username" "$password" "$note"
         ;;
 
     Edit)
