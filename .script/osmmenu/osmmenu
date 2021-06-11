@@ -9,6 +9,9 @@ touch "$favfile"
 dmenucmd="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
 
 from=$(cat "$favfile" | $dmenucmd -l 10 -i -p "osm menu: ") || exit
-to=$(cat "$favfile" | $dmenucmd -l 10 -i -p "osm menu: ") || exit
+to=$(cat "$favfile" | $dmenucmd -l 10 -i -p "osm menu: " ) || exit
 
-xdg-open "https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&from=$from&to=$to"
+from=$(echo "$from" | sed 's/^.*: //')
+to=$(echo "$to" | sed 's/^.*: //')
+
+[ -n "$from" -a -n "$to" ] && xdg-open "https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&from=$from&to=$to"
