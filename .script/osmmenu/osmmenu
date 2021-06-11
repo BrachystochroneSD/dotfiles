@@ -2,7 +2,7 @@
 
 # colors from wpgtk/pywal
 . "${HOME}/.cache/wal/colors.sh"
-favfile="${HOME}/.script/rome2rio/r2rfav"
+favfile="${HOME}/.script/osmmenu/osmfav"
 
 touch "$favfile"
 
