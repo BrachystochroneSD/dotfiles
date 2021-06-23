@@ -50,6 +50,14 @@
    '("c306e0ef591df6383f666287d0d55767c2c24f3ca137e1c7785c43f08d23c9e8" "2b9dc43b786e36f68a9fd4b36dd050509a0e32fe3b0a803310661edb7402b8b6" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default))
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
+ '(mml-secure-key-preferences
+   '((OpenPGP
+      (sign
+       ("samueld@mailo.com" "97A79AE8BEAE08D06ABBFE0145EBA6683B3604EA"))
+      (encrypt))
+     (CMS
+      (sign)
+      (encrypt))))
  '(package-selected-packages
    '(vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
