@@ -1,6 +1,6 @@
 #!/bin/sh
 
-grep -qs "weather" ~/.config/polybar/disabled_module && return #do nothing if disabled
+grep -qs "weather" ~/.config/polybar/disabled_module && exit 0 #do nothing if disabled
 
 # get my private app ip
 . "${HOME}/.authentification/apikeys.sh" 2> /dev/null || exit
