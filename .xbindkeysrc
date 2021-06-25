@@ -225,10 +225,10 @@
 
 # keepass
 "keepmenu"
-    Mod4 + p
+    Mod4 + Mod1 + p
 
 "~/.script/mypassmenu"
-    Mod4 + Mod1 + p
+    Mod4 + p
 
 # mount-usb
 "~/.script/polybar/mount-usb.sh --mount"
