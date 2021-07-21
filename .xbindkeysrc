@@ -150,7 +150,7 @@
     Mod4 + Control + Shift + m
 "st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh"
     Mod4 + m
-"st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh t"
+"~/.script/radiosam"
     Mod4 + Mod1 + m
 
 #bindings for MPD MPC NCMPCPP
