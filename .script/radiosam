@@ -7,7 +7,7 @@ DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
 
 radio=$(cat ${HOME}/.config/music_radios | $DMENU_CMD -l 20 -p "Select Radio:")
 
-echo "$radio"
-
-mpc insert "${radio##* }"
-mpc next || mpc play
+if [ -n "$radio" ];then
+    mpc insert "${radio##* }"
+    mpc next || mpc play
+fi
