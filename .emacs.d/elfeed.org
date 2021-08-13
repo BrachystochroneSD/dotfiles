@@ -1,6 +1,8 @@
 * Blogs								:elfeed:
 ** getmonero                                                            :gxmr:
 *** https://www.getmonero.org/feed.xml
+** zrythm                                                               :zrtm:
+*** https://git.sr.ht/~alextee/zrythm/refs/rss.xml
 ** OSM feed                                                             :osmrss:
 *** https://weeklyosm.eu/feed
 ** Sarah's Scribble                                                     :SScr:
