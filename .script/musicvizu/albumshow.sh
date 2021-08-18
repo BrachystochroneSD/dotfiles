@@ -2,8 +2,6 @@
 
 source "`ueberzug library`"
 
-source ${HOME}/.config/music_radios # sources radios
-
 MUSIC_DIR=$(grep music_dir ${HOME}/.config/mpd/mpd.conf | sed 's|.*"\(.*\)/".*|\1|;s/\\//g' | sed "s|~|${HOME}|")
 backup_img=${HOME}/.config/wpg/mywalls/owl.png #when no cover img found
 
@@ -14,21 +12,25 @@ ImageLayer 0< <(
         file=$(mpc --format %file% current 2>/dev/null)
 
         #check if webradio
-        radio=$(grep "$file" "${HOME}/.config/music_radios")
 
-        if [ -n "$radio" ];then
-            src="${HOME}/.script/musicvizu/radio_img/${radio%% *}.png"
-        else
-            album_dir="${file%/*}"
-            if [ -n "$album_dir" ] ; then
-                album_dir="$MUSIC_DIR/$album_dir"
-                covers="$(find "$album_dir" -type d -exec find {} -maxdepth 1 -type f -iregex ".*/.*\(${album}\|cover\|folder\|artwork\|front\).*[.]\(jpe?g\|png\|gif\|bmp\)" \; )"
-                nosmall=$(echo "$covers" | grep -v "Small")
-                [ -n "$nosmall" ] && covers="$nosmall"
-                src="$(printf "$covers" | head -n1)"
+        if [ -n "$file" ];then
+            radio=$(grep "$file" "${HOME}/.config/music_radios")
+
+            if [ -n "$radio" ];then
+                src="${HOME}/.script/musicvizu/radio_img/${radio%% *}.png"
+            else
+                album_dir="${file%/*}"
+                if [ -n "$album_dir" ] ; then
+                    album_dir="$MUSIC_DIR/$album_dir"
+                    covers="$(find "$album_dir" -type d -exec find {} -maxdepth 1 -type f -iregex ".*/.*\(${album}\|cover\|folder\|artwork\|front\).*[.]\(jpe?g\|png\|gif\|bmp\)" \; )"
+                    nosmall=$(echo "$covers" | grep -v "Small")
+                    [ -n "$nosmall" ] && covers="$nosmall"
+                    src="$(printf "$covers" | head -n1)"
+                fi
+                [ -z "$src" ]
             fi
-            [ -z "$src" ] && src=$backup_img
-
+        else
+            src=$backup_img
         fi
         # Display the image. TODO
 
