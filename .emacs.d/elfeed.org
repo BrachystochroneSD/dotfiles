@@ -1,4 +1,6 @@
 * Blogs								:elfeed:
+** zenofeed                                                             :zenrss:
+*** https://www.zenocyne.com/rss.xml
 ** getmonero                                                            :gxmr:
 *** https://www.getmonero.org/feed.xml
 ** zrythm                                                               :zrtm:
@@ -155,3 +157,4 @@
 *** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCK0wWfg2_bqWOQFFNWp58mw][kitfox games]]
 *** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC8wetM391-BKmBh95DEkkdA][occulture]]
 *** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCBB7sYb14uBtk8UqSQYc9-w][ramsey wood working]]
+*** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCllm3HivMERwu2x2Sjz5EIg][Vargskelethor Joel]]

@@ -48,9 +48,10 @@ update_package() {
     package="$2"
     git_clone_or_pull "$package" > /dev/null 2>&1
     [ ! -f "$auwlr_build/$package/PKGBUILD" ] && exit 1
-    pkg_epoch=$(grep "^epoch=" "$auwlr_build/$package/PKGBUILD" |sed "s/epoch=//;s/'//g")
-    pkg_ver=$(grep "^pkgver=" "$auwlr_build/$package/PKGBUILD" | sed "s/pkgver=//;s/'//g")
-    pkg_rel=$(grep "^pkgrel=" "$auwlr_build/$package/PKGBUILD" | sed "s/pkgrel=//;s/'//g")
+    . "$auwlr_build/$package/PKGBUILD" > /dev/null 2>&1
+    pkg_epoch=$pkgepoch
+    pkg_ver=$pkgver
+    pkg_rel=$pkgrel
     [ -n "$pkg_epoch" ] && pkg_epoch="$pkg_epoch:"
     [ -n "$pkg_rel" ] && pkg_rel="-$pkg_rel"
     package_version="$pkg_epoch$pkg_ver$pkg_rel"

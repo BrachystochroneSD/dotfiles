@@ -28,11 +28,13 @@ get_channel_infos () {
     chanchoice=$(echo "$channelsearch" | jq -r ".items[] | .snippet.channelTitle, .snippet.description" | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | $DMENU_CMD -l 25 -i -p "Which channel ?") || get_search_query
     local channum=$(echo "$chanchoice" | sed 's/:.*/-1/' | bc)
 
+    local channame=${chanchoice#*: }
+    channame=${channame%% :*}
     channel_id=$(echo "$channelsearch" | jq -r ".items[$channum].snippet.channelId")
 
     # Ask for saving the channel and save it on rss.org file
     ! grep -q "$channel_id" "$RSSFILE" && local save_or_not=$(printf "No\nYes" | $DMENU_CMD -i -p "Save this channel ?")
-    [ "$save_or_not" = "Yes" ] && printf "*** [[https://www.youtube.com/feeds/videos.xml?channel_id=%s][%s]]\n" "$channel_id" "$channel_name" >> "$RSSFILE"
+    [ "$save_or_not" = "Yes" ] && printf "*** [[https://www.youtube.com/feeds/videos.xml?channel_id=%s][%s]]\n" "$channel_id" "$channame" >> "$RSSFILE"
 
 }
 

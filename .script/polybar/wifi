@@ -46,8 +46,9 @@ alert_data () {
 }
 
 setup_zero () {
+    get_bigdev
     read rxzero txzero <<EOF
-$(grep "$wifidev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}')
+$(grep "$bigdev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}')
 EOF
     echo $txzero > /tmp/wifi_ifstat_tx_zero
     [ -n "$1" ] && echo $(format_unit "$1") > /tmp/wifi_ifstat_rx_zeroplus || rm -f /tmp/wifi_ifstat_rx_zeroplus
@@ -56,9 +57,9 @@ EOF
 
 getifstat () {
     ifstat -n
-    if [ -n $(grep "$wifidev" /tmp/.ifstat.u"$UID") ];then
+    if [ -n "$(grep "$bigdev" /tmp/.ifstat.u"$UID")" ];then
         read received transmitted <<EOF
-$(grep "$wifidev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
+$(grep "$bigdev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
 EOF
         recminus=$(cat /tmp/wifi_ifstat_rx_zero 2>/dev/null)
         transminus=$(cat /tmp/wifi_ifstat_tx_zero 2>/dev/null)
@@ -77,27 +78,42 @@ EOF
     fi
 }
 
+get_bigdev () {
+
+    ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
+    wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
+
+    [ -n "$ethdev" ] && bigdev="$ethdev"
+    [ -n "$wifidev" ] && bigdev="$wifidev"
+
+}
+
+
 print_wifi () {
 
     ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
     wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
 
-    [ -n "$ethdev" ] && [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ] && output="E"
-    if [ -n "$wifidev" ];then
-        wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
-        if [ -n "$wifi" ];then
-            if [ "$wifi" -le 55 ];then
-                output="A"
-            elif [ "$wifi" -le 75 ];then
-                output="B"
-            elif [ "$wifi" -le 85 ];then
-                output="C"
-            else
-                output="D"
+    if [ -n "$ethdev" ];then
+        [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ] && output="E" && bigdev="$ethdev"
+    else
+        if [ -n "$wifidev" ];then
+            wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
+            bigdev="$wifidev"
+            if [ -n "$wifi" ];then
+                if [ "$wifi" -le 55 ];then
+                    output="A"
+                elif [ "$wifi" -le 75 ];then
+                    output="B"
+                elif [ "$wifi" -le 85 ];then
+                    output="C"
+                else
+                    output="D"
+                fi
             fi
-            [ -f /tmp/wifi_ifstat_toggle ] && getifstat && output="$output $RX $TX"
         fi
     fi
+    [ -f /tmp/wifi_ifstat_toggle ] && getifstat && output="$output $RX $TX"
     echo "$output"
 }
 
@@ -115,7 +131,11 @@ case $1 in
         setup_zero "$2"
         ;;
     --toggle-ifstat)
-        [ -f /tmp/wifi_ifstat_toggle ] && rm /tmp/wifi_ifstat_toggle || touch /tmp/wifi_ifstat_toggle
+        if [ -f /tmp/wifi_ifstat_toggle ];then
+            rm /tmp/wifi_ifstat_toggle && echo wifi ifstat disabled
+        else
+            touch /tmp/wifi_ifstat_toggle && echo wifi ifstat enabled
+        fi
         ;;
     --load-config)
         load_config ;;
