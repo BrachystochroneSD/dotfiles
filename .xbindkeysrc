@@ -221,7 +221,7 @@
     Mod4 + Control + s
 "killall skypeforlinux"
     Mod4 + Mod1 + s
-"brave discord.com/app"
+"element-desktop"
     Mod4 + Control + d
 "killall Discord"
     Mod4 + Mod1 + d
