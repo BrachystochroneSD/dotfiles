@@ -63,7 +63,7 @@ get_temps() {
 
     fi
 
-    if command "nvidia-smi" > /dev/null; then
+    if command "nvidia-smi" > /dev/null 2>&1; then
         gpu_temp=$(nvidia-smi | grep -o "[0-9][0-9]C")
         gpu_temp=${gpu_temp%C}
 
