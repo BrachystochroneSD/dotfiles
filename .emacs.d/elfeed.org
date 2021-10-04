@@ -1,4 +1,6 @@
 * Blogs								:elfeed:
+** matrix                                                               :matrix:
+** https://matrix.org/blog/feed
 ** zenofeed                                                             :zenrss:
 *** https://www.zenocyne.com/rss.xml
 ** getmonero                                                            :gxmr:

@@ -179,11 +179,6 @@
 "~/.script/mpcsam --volume -3"
     Control + XF86AudioLowerVolume
 
-#--# # Nautilus # #--#
-
-"/usr/bin/nautilus"
-    Mod4 + l
-
 #--# # FZF # #--#
 
 "st -n fzf -e /home/sam/.script/fzf-open.sh"
@@ -223,8 +218,6 @@
     Mod4 + Mod1 + s
 "element-desktop"
     Mod4 + Control + d
-"killall Discord"
-    Mod4 + Mod1 + d
 "caprine"
     Mod4 + Control + c
 

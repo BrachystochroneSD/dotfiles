@@ -220,7 +220,8 @@ curl_choose_and_watch(){
     else
         : $(( num=video-1-offset ))
         videourl=$(echo "$twitchvod" | jq -r '.data['$num'].url')
-
+        echo "$videourl" | xclip -selection clipboard
+        echo selection cliped
         # ask for the resolution and launch the video with mpv
         res=$(printf "720\n1080\n360" | $menucmd -i -p "Which resolution? (if avalaible): ") || twitchvod_search
         mpv --ytdl-format="[height<=?$res]" "$videourl" || twitchvod_search
