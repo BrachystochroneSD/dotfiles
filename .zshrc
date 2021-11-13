@@ -358,7 +358,6 @@ upload_to_zenocloud () {
     echo "Password:"
     read -s pass
     url="https://nextcloud.zenocyne.com/remote.php/dav/files/$user/"
-    echo $url $pass
 
     curl --basic --user "$user:$pass" -T "$1" "$url/$1"
 }
