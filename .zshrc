@@ -349,3 +349,17 @@ compress_image () {
     [ -n "$2" ] && output="$2" || output="compress_$1"
     [ -f "$1" ] && ffmpeg -i "$1" -qscale:v 2 "$output" || echo "$1" not a file
 }
+
+upload_to_zenocloud () {
+    local user
+    local pass
+    echo "User:"
+    read user
+    echo "Password:"
+    read -s pass
+    url="https://nextcloud.zenocyne.com/remote.php/dav/files/$user/"
+    echo $url $pass
+
+    curl --basic --user "$user:$pass" -T "$1" "$url/$1"
+}
+alias tozeno='upload_to_zenocloud'

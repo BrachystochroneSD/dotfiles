@@ -59,7 +59,7 @@
       (sign)
       (encrypt))))
  '(package-selected-packages
-   '(vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+   '(counsel helm-core vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(send-mail-function 'mailclient-send-it))
 
@@ -1792,22 +1792,34 @@ This function is suitable for `mu4e-compose-mode-hook'."
 
 (global-set-key (kbd "M-²") 'magit)
 
+
+
+;;;;;;;;;
+;; IVY ;;
+;;;;;;;;;
+
+(require 'ivy)
+(ivy-mode 1)
+
+(setq ivy-count-format "%-4d ")
+(global-set-key (kbd "C-c n") 'counsel-fzf)
+
 ;;;;;;;;;;;;;
 ;; COMPANY ;;
 ;;;;;;;;;;;;;
 
-(require 'company)
+;; (require 'company)
 
-(global-company-mode)
+;; (global-company-mode)
 
-(setq company-idle-delay 0.1)
-(setq company-minimum-prefix-length 3)
+;; (setq company-idle-delay 0.1)
+;; (setq company-minimum-prefix-length 3)
 
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-search-map (kbd "C-n") 'company-select-next)
-  (define-key company-search-map (kbd "C-p") 'company-select-previous))
+;; (with-eval-after-load 'company
+;;   (define-key company-active-map (kbd "C-n") 'company-select-next)
+;;   (define-key company-active-map (kbd "C-p") 'company-select-previous)
+;;   (define-key company-search-map (kbd "C-n") 'company-select-next)
+;;   (define-key company-search-map (kbd "C-p") 'company-select-previous))
 
 ;;;;;;;;;;;
 ;; EGLOT ;;

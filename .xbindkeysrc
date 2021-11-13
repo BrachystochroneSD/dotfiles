@@ -48,6 +48,10 @@
 "brave"
     Mod4 + z
 
+# Zrythm
+"zrythm"
+    Control + Mod4 + z
+
 #--# # polybar # #--#
 
 "~/.config/polybar/launch.sh"
