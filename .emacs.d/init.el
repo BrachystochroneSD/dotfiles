@@ -1595,8 +1595,8 @@ for renaming."
 (defun samueld\mu4e-tab ()
   (interactive)
   (cond
-   ((looking-back "^To:.*")
-    (re-search-forward "Subject: *"))
+   ;; ((looking-back "^To:.*")
+   ;;  (re-search-forward "Subject: *"))
    ((looking-back "^Subject:.*")
     (goto-char (point-max)))
    (t

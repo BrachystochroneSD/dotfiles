@@ -38,7 +38,7 @@ font-5 = Font Awesome 5 Free Solid:size=12;3
 locale = fr_BE.UTF-8
 modules-left = owl i3 dwm mpd
 modules-center = dwm-win-name
-modules-right = mount-usb update notes mails network weather filesys cpu temperature memory battery dati
+modules-right = update notes mails network weather filesys cpu temperature memory battery dati
 tray-position = right
 tray-padding = 0
 scroll-up = i3wm-wsnext
