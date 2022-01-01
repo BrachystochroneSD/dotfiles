@@ -83,8 +83,9 @@ alias fsz='filesize'
 ##########
 
 alias sp='sudo pacman'
-alias sps='sp -S'
-alias spu='sp -Syyu'
+alias spS='sp -S'
+alias spU='sp -Syu'
+alias spQ='sp -Q'
 
 ############
 # ZENOCYNE #

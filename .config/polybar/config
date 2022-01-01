@@ -36,7 +36,7 @@ font-3 = Weather Icons:size=12:weight=bold;3
 font-4 = wifidemoncul:size=12;3
 font-5 = Font Awesome 5 Free Solid:size=12;3
 locale = fr_BE.UTF-8
-modules-left = owl i3 dwm mpd
+modules-left = owl i3 dwm-shite mpd
 modules-center = dwm-win-name
 modules-right = update notes mails network weather filesys cpu temperature memory battery dati
 tray-position = right
@@ -162,6 +162,13 @@ label-urgent-padding = 1
 label-empty =
 label-empty-foreground = ${colors.bgam}
 label-empty-padding = 1
+
+[module/dwm-shite]
+type = custom/script
+exec = /home/sam/.script/polybar/dwm
+interval = 0.1
+format-underline = ${colors.fg-alt}
+format-overline = ${colors.fg-alt}
 
 [module/mount-usb]
 type = custom/script
