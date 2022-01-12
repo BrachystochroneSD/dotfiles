@@ -38,7 +38,7 @@ font-5 = Font Awesome 5 Free Solid:size=12;3
 locale = fr_BE.UTF-8
 modules-left = owl i3 dwm-shite mpd
 modules-center = dwm-win-name
-modules-right = update notes mails network weather filesys cpu temperature memory battery dati
+modules-right = pwned update notes mails network weather filesys cpu temperature memory battery dati
 tray-position = right
 tray-padding = 0
 scroll-up = i3wm-wsnext
@@ -341,6 +341,14 @@ ramp-2 = %{T6}%{T-}
 ramp-foreground-0 = ${colors.bg-alt}
 ramp-foreground-1 = ${colors.yellow}
 ramp-foreground-2 = ${colors.red}
+
+[module/pwned]
+type = custom/script
+exec = ~/.script/polybar/pwned/pwned
+format-prefix = %{T6} %{T-}
+format-underline = ${colors.navy}
+format-overline = ${colors.navy}
+interval=10
 
 [module/mails]
 type = custom/script

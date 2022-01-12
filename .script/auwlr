@@ -82,7 +82,7 @@ auwlr_build() {
     if [ "$conf" = "y" ];then
         while read pkg shits;do
             cd "$auwlr_build/$pkg"
-            makepkg -sfcr && {
+            makepkg -sfcr --noconfirm && {
                 pkg_tar=$(makepkg --packagelist)
                 echo "$pkg_tar" >> "$auwlr_upgrade_list"
                 mv "$pkg_tar" "$auwlr_pkg/"
