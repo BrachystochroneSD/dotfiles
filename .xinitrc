@@ -12,6 +12,7 @@ xbindkeys
 mpd
 
 # redshift
+unclutter -idle 1 -jitter 2 -root &
 redshift &
 picom &
 
