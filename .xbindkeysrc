@@ -263,9 +263,9 @@
 
 
 
-"~/hass inc"
+"~/.script/hass inc"
     Mod4 + XF86AudioRaiseVolume
-"~/hass test_script"
+"~/.script/hass test_script"
     Mod4 + XF86AudioLowerVolume
 
 ##################################
