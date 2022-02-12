@@ -53,7 +53,7 @@
  '(mml-secure-key-preferences
    '((OpenPGP
       (sign
-       ("samueld@mailo.com" "97A79AE8BEAE08D06ABBFE0145EBA6683B3604EA"))
+       ("samueld@mailo.com" "3D077DB25503D095BD9C8630BBD108B2C6A65E04"))
       (encrypt))
      (CMS
       (sign)
