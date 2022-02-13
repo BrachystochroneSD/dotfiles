@@ -1,0 +1,8 @@
+#!/usr/bin/sh
+
+pwned_list="${HOME}/.script/polybar/pwned/pwned_list"
+
+if [ -f "$pwned_list" ]; then
+    shite=$(cat $pwned_list | wc -l)
+    [ $shite -gt 0 ] && echo $shite
+fi
