@@ -1,6 +1,9 @@
 * Blogs								:elfeed:
+
+** Nota Bene                                                            :notabene:
+*** https://feeds.acast.com/public/shows/notabenemovies
 ** matrix                                                               :matrix:
-** https://matrix.org/blog/feed
+*** https://matrix.org/blog/feed
 ** zenofeed                                                             :zenrss:
 *** https://www.zenocyne.com/rss.xml
 ** getmonero                                                            :gxmr:
