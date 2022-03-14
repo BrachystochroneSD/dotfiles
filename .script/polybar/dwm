@@ -1,0 +1,55 @@
+#!/usr/bin/sh
+
+# colors from wpgtk/pywal
+. "${HOME}/.cache/wal/colors.sh"
+
+red="$color6"
+green="$color4"
+yellow="$color9"
+blue="$color11"
+pink="$color12"
+navy="$color13"
+orange="$color1"
+fg="$color15"
+bg_alt="$color3"
+red_alt="$color6"
+yellow_alt="$color9"
+fg_alt="$color15"
+
+boldify(){
+    echo "%{F$red_alt}$@%{F-}"
+}
+
+
+tags_name=$(dwm-msg get_tags)
+
+get_tags(){
+    echo "$tags_name" | jq -r ".[$i].name"
+}
+
+read occupied selected <<EOF
+$(dwm-msg get_monitors | jq '.[0].tag_state.occupied,.[0].tag_state.selected' | while read a;do echo 000000000$(echo "obase=2;$a" | bc) | tail -c 10;done | tr '\n' ' ')
+EOF
+
+
+tmp_occ="$occupied"
+tmp_sel="$selected"
+
+for i in {0..8};do
+    rest_occ="${tmp_occ%?}"
+    rest_sel="${tmp_sel%?}"
+
+    first_occ="${tmp_occ#"$rest_occ"}"
+    first_sel="${tmp_sel#"$rest_sel"}"
+
+    if [ "$first_sel" = 1 ];then
+        res="$res $(boldify $(get_tags $i)) "
+    elif [ "$first_occ" = 1 ];then
+        res="$res $(get_tags $i) "
+    fi
+
+    tmp_occ="$rest_occ"
+    tmp_sel="$rest_sel"
+done
+
+echo "$res"
