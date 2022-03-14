@@ -96,20 +96,20 @@ print_wifi () {
 
     if [ -n "$ethdev" ];then
         [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ] && output="E" && bigdev="$ethdev"
-    else
-        if [ -n "$wifidev" ];then
-            wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
-            bigdev="$wifidev"
-            if [ -n "$wifi" ];then
-                if [ "$wifi" -le 55 ];then
-                    output="A"
-                elif [ "$wifi" -le 75 ];then
-                    output="B"
-                elif [ "$wifi" -le 85 ];then
-                    output="C"
-                else
-                    output="D"
-                fi
+    fi
+
+    if [ -n "$wifidev" ];then
+        wifi=$(awk 'NR==3 {print substr($4,2,2)}' /proc/net/wireless)
+        bigdev="$wifidev"
+        if [ -n "$wifi" ];then
+            if [ "$wifi" -le 55 ];then
+                output="A"
+            elif [ "$wifi" -le 75 ];then
+                output="B"
+            elif [ "$wifi" -le 85 ];then
+                output="C"
+            else
+                output="D"
             fi
         fi
     fi
