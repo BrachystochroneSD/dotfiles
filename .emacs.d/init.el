@@ -825,7 +825,6 @@
 
 (defun my-elfeed-search-hook-setup ()
   (interactive)
-  (init-fonts)
   (local-set-key (kbd "j") 'next-line)
   (local-set-key (kbd "k") 'previous-line)
   (local-set-key (kbd "l") 'my-elfeed-open)
@@ -838,8 +837,7 @@
   (local-set-key (kbd "q") 'delete-frame)
   (local-set-key (kbd "C-b") (lambda () (interactive) (elfeed-play-with-mpv-at-quality 720 (elfeed-search-selected :single))))
   (local-set-key (kbd "C-n") 'my-elfeed-scroll-up)
-  (local-set-key (kbd "C-p") 'my-elfeed-scroll-down)
-  )
+  (local-set-key (kbd "C-p") 'my-elfeed-scroll-down))
 
 (add-hook 'elfeed-search-mode-hook 'my-elfeed-search-hook-setup)
 
