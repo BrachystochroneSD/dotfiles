@@ -1543,11 +1543,11 @@ for renaming."
 
 ;; maildir in headers fields
 (setq mu4e-headers-fields
-      '( (:date          .  12)    ;; or :human-date
-         (:maildir       .  15)
-         (:flags         .   6)
-         (:from          .  22)
-         (:subject       .  nil)))
+      '((:date          .  12)    ;; or :human-date
+        (:maildir       .  15)
+        (:flags         .   6)
+        (:from          .  22)
+        (:subject       .  nil)))
 
 (defun my-mu4e-mark-as-refile-regexp (regexp)
   (interactive

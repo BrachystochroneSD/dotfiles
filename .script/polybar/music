@@ -1,0 +1,20 @@
+#!/bin/sh
+
+format="%title% - %artist%"
+time=0.3
+length=15
+
+i=0
+
+while true;do
+    output=$(mpc --format "$format" | head -n1)
+    len=$(echo "$output" | wc -c)
+    limit=$(expr "$len" - "$length")
+
+    first=$(expr "$i" % "$limit" + 1)
+    last=$(expr "$first" + "$length")
+
+    echo "$output" | cut -c "$first"-"$last"
+    i=$(expr $i + 1)
+    [ $first -eq $limit ] && sleep 2 || sleep $time
+done

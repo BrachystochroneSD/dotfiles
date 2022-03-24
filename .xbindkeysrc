@@ -54,8 +54,8 @@
 
 #--# # polybar # #--#
 
-"~/.config/polybar/launch.sh"
-    Mod4 + Control + r
+ "~/.config/polybar/launch.sh"
+     Mod4 + Control + r
 
 #--# # xrandr # #--#
 

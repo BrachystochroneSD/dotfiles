@@ -142,7 +142,7 @@ grc () {
     fi
 }
 
-gr () {
+grm () {
     if [[ "$PWD" = "$HOME" ]]; then
         dotfiles_git rm "$@"
     else
