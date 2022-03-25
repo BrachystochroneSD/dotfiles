@@ -1,15 +1,15 @@
 #!/bin/sh
 
-grep -qs "weather" ~/.config/polybar/disabled_module && exit 0 #do nothing if disabled
+grep -qs "weather" ~/.config/bar/disabled_module && exit 0 #do nothing if disabled
 
 # get my private app ip
 . "${HOME}/.authentification/apikeys.sh" 2> /dev/null || exit
 
 # parameters
-current=${HOME}/.script/polybar/weatherdir/datas/current
-forecast=${HOME}/.script/polybar/weatherdir/datas/forecast
+current=${HOME}/.script/bar/weatherdir/datas/current
+forecast=${HOME}/.script/bar/weatherdir/datas/forecast
 
-mkdir -p "${HOME}"/.script/polybar/weatherdir/datas
+mkdir -p "${HOME}"/.script/bar/weatherdir/datas
 
 [ ! -f "$current" ] && touch "$current"
 [ ! -f "$forecast" ] && touch "$forecast"

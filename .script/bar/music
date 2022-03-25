@@ -1,11 +1,11 @@
 #!/bin/sh
+time=0.3
+length=20
 
 format="%title% - %artist%"
 mpc_out=$(mpc --format "$format")
 
 if [ $(echo "$mpc_out" | wc -l) -gt 1 ];then
-    time=0.3
-    length=15
 
     i=$(date +%s)
 

@@ -7,12 +7,12 @@ mhf="/tmp/mpchost"
 mpc_cmd="mpc -h $host"
 
 case $1 in
-    --prev) $mpc_cmd prev ;;
-    --toggle) $mpc_cmd toggle ;;
-    --stop) $mpc_cmd stop ;;
-    --next) $mpc_cmd next ;;
+    --prev) $mpc_cmd prev && pkill -SIGUSR1 dwmblocks ;;
+    --toggle) $mpc_cmd toggle && pkill -SIGUSR1 dwmblocks ;;
+    --stop) $mpc_cmd stop && pkill -SIGUSR1 dwmblocks ;;
+    --next) $mpc_cmd next && pkill -SIGUSR1 dwmblocks ;;
     --seek) $mpc_cmd seek "$2" ;;
-    --random) $mpc_cmd random ;;
+    --random) $mpc_cmd random && pkill -SIGUSR1 dwmblocks ;;
     --volume) $mpc_cmd volume "$2" ;;
     --tggl-host) [ -f "$mhf" ] && rm "$mhf" || echo "$ip" > "$mhf" ;;
 esac

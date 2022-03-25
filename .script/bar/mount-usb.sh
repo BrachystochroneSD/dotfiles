@@ -66,6 +66,6 @@ case "$1" in
         ;;
 
     *)
-        ! grep -qs "usb_mount" ~/.config/polybar/disabled_module && usb_print
+        ! grep -qs "usb_mount" ~/.config/bar/disabled_module && usb_print
         ;;
 esac
