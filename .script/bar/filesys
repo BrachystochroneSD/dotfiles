@@ -5,5 +5,5 @@ df ~ / | grep \[0-9]\ | awk '{printf $2" "$3" "}' | {
     # echo :"$(echo "($homeUsed + $rootUsed) * 100 / ($homeSize + $rootSize)" | bc -l | awk '{print int($1+0.5)}')"%
     home=$(echo "$homeUsed * 100 /$homeSize" | bc -l | awk '{print int ($1+0.5)}')
     root=$(echo "$rootUsed * 100 /$rootSize" | bc -l | awk '{print int ($1+0.5)}')
-    echo :$home% /:$root%
+    echo ":$home% /:$root%"
     }

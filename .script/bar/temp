@@ -26,8 +26,11 @@ warn_ul=$red_alt
 
 label_warn_foreground=$bg_alt
 
-normal_pfx=%{T6}%{T-}
-warn_pfx=%{T6}%{T-}
+# normal_pfx=%{T6}%{T-}
+# warn_pfx=%{T6}%{T-}
+
+normal_pfx=
+warn_pfx=
 
 normal_fg=$fg
 warn_fg=$red
@@ -59,7 +62,8 @@ get_temps() {
             curr_cpu_pfx=$normal_pfx
             curr_cpu_ul=$normal_ul
         fi
-        [ -n "$cpu_temp" ] && cpu_block="%{F$curr_cpu_fg}%{o$curr_cpu_ul}%{u$curr_cpu_ul}"$curr_cpu_pfx"$cpu_label $cpu_temp°C%{u-}${o-}%{F-}"
+        # [ -n "$cpu_temp" ] && cpu_block="%{F$curr_cpu_fg}%{o$curr_cpu_ul}%{u$curr_cpu_ul}"$curr_cpu_pfx"$cpu_label $cpu_temp°C%{u-}${o-}%{F-}"
+        [ -n "$cpu_temp" ] && cpu_block="$curr_cpu_pfx$cpu_label $cpu_temp°C"
 
     fi
 
@@ -79,7 +83,8 @@ get_temps() {
             curr_gpu_pfx=$normal_pfx
             curr_gpu_ul=$normal_ul
         fi
-        gpu_block="%{F$curr_gpu_fg}%{o$curr_gpu_ul}%{u$curr_gpu_ul}"$curr_gpu_pfx"$gpu_label $gpu_temp°C%{u-}${o-}%{F-}"
+        # gpu_block="%{F$curr_gpu_fg}%{o$curr_gpu_ul}%{u$curr_gpu_ul}"$curr_gpu_pfx"$gpu_label $gpu_temp°C%{u-}${o-}%{F-}"
+        gpu_block="$curr_gpu_pfx$gpu_label $gpu_temp°C"
 
     fi
 
@@ -90,7 +95,8 @@ print_line () {
 
     if [ -n "$cpu_temp" ]; then
         if [ -n "$gpu_temp" ]; then
-            echo "$cpu_block%{o$color0}%{u$color0} ${u-}${o-}$gpu_block"
+            # echo "$cpu_block%{o$color0}%{u$color0} ${u-}${o-}$gpu_block"
+            echo "$cpu_block $gpu_block"
         else
             echo "$cpu_block"
         fi

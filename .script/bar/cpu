@@ -1,8 +1,5 @@
 #!/bin/sh
-echo ':00%'
-sleepDurationSeconds=2
-
-while true;do
+sleepDurationSeconds=1
 
     previousStats=$(cat /proc/stat)
 
@@ -44,5 +41,4 @@ while true;do
 
     CPU_Percentage=$(awk "BEGIN {print ($totald - $idled)/$totald*100}" | awk '{print int($1+0.5)}')
 
-    printf ":%02d%%\n" "$CPU_Percentage"
-done
+    printf ":%02d%%\n" "$CPU_Percentage"

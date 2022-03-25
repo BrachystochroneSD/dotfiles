@@ -15,7 +15,7 @@ xbindkeys
 unclutter -idle 1 -jitter 2 -root &
 redshift &
 picom &
-#dwmblocks &
+dwmblocks &
 
 # nextcloud
 nextcloud --background &

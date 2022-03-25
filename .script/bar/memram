@@ -5,4 +5,4 @@ memava=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
 
 per=$(echo "($memtot - $memava.) / $memtot * 100" | bc -l | awk '{print int($1+0.5)}')
 
-printf ":%02d%%" "$per"
+printf ":%02d%%" "$per"

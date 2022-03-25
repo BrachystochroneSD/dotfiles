@@ -1349,6 +1349,7 @@ for renaming."
  mu4e-compose-dont-reply-to-self t
  mu4e-save-multiple-attachments-without-asking t
  mu4e-headers-skip-duplicates t
+ mu4e-headers-include-related nil
 
  ;; images
  mu4e-view-show-images t
