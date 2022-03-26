@@ -5,28 +5,47 @@ length=20
 format="%title% - %artist%"
 mpc_out=$(mpc --format "$format")
 
+printxfoi(){
+    i=0
+    while [ $i -lt "$1" ]; do
+	printf "$2"
+	: $(( i= i + 1 ))
+    done
+}
+
 if [ $(echo "$mpc_out" | wc -l) -gt 1 ];then
 
     i=$(date +%s)
 
+
     output=$(echo "$mpc_out" | head -n1)
 
-    len=$(echo "$output" | wc -c)
-    len=$(expr "$len" - 1)
+    len=$(printf "$output" | wc -c)
     limit=$(expr "$len" - "$length")
 
-    first=$(expr "$i" % "$limit" + 1)
-    last=$(expr "$first" + "$length")
+    if [ $limit -gt 0 ]; then
 
+        if [ $(echo "$i % ($limit * 2)" | bc) -ge "$limit" ];then
+            shit="-1"
+            crap="1"
+        else
+            shit="1"
+            crap="0"
+        fi
+        norm=$(expr "$i" % "$limit")
 
+        first=$(echo "$shit * $norm + $crap * ($limit - 1) + 1" | bc)
+        last=$(expr "$first" + "$length")
+
+        title_artist=$(echo "$output" | cut -c "$first"-"$last")
+
+    else
+        foi=$(echo "-1 * $limit + 1" | bc)
+        title_artist="$(printxfoi $foi  )$output"
+    fi
     playpause=$(echo "$mpc_out" | head -n 2 | tail -n1 | grep -q "^[[]playing[]]" && echo "" || echo "")
     random=$(echo "$mpc_out" | grep -q "random: on" && echo "" || echo " ")
     repeat=$(echo "$mpc_out" | grep -q "repeat: on" && echo "" || echo " ")
 
-
-    title_artist=$(echo "$output" | cut -c "$first"-"$last")
-
-    echo " $playpause : $title_artist $random $repeat"
-# else
-#     echo ""
+    echo " $playpause : $title_artist $random $repeat" | sed -s 's/ / /g'
 fi
