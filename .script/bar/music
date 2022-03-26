@@ -2,7 +2,7 @@
 time=0.3
 length=20
 
-format="%title% - %artist%"
+format="%artist% - %title%"
 mpc_out=$(mpc --format "$format")
 
 printxfoi(){
@@ -16,8 +16,6 @@ printxfoi(){
 if [ $(echo "$mpc_out" | wc -l) -gt 1 ];then
 
     i=$(date +%s)
-
-
     output=$(echo "$mpc_out" | head -n1)
 
     len=$(printf "$output" | wc -c)
@@ -41,11 +39,11 @@ if [ $(echo "$mpc_out" | wc -l) -gt 1 ];then
 
     else
         foi=$(echo "-1 * $limit + 1" | bc)
-        title_artist="$(printxfoi $foi  )$output"
+        title_artist=$(echo "$output$(printxfoi $foi  )" | sed -s 's/ / /g')
     fi
     playpause=$(echo "$mpc_out" | head -n 2 | tail -n1 | grep -q "^[[]playing[]]" && echo "" || echo "")
     random=$(echo "$mpc_out" | grep -q "random: on" && echo "" || echo " ")
     repeat=$(echo "$mpc_out" | grep -q "repeat: on" && echo "" || echo " ")
 
-    echo " $playpause : $title_artist $random $repeat" | sed -s 's/ / /g'
+    echo " $playpause : $title_artist $random $repeat"
 fi
