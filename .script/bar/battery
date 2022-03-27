@@ -22,22 +22,22 @@ charging_underline="$yellow"
 discharging_underline="$orange"
 
 full_at=99
-full_prefix='%{T6}%{T-}'
+full_prefix=''
 full_prefix_fg="$fg_alt"
 full_underline="$yellow"
 
-ramp_cap_0='%{T6}%{T-}'
-ramp_cap_1='%{T6}%{T-}'
-ramp_cap_2='%{T6}%{T-}'
-ramp_cap_3='%{T6}%{T-}'
-ramp_cap_4='%{T6}%{T-}'
+ramp_cap_0=''
+ramp_cap_1=''
+ramp_cap_2=''
+ramp_cap_3=''
+ramp_cap_4=''
 
 ramp_cap_fg="$fg_alt"
 ramp_cap_0_fg="$red"
 
-chrg_0='%{T6}%{T-}'
-chrg_1='%{T6}%{T-}'
-chrg_2='%{T6}%{T-}'
+chrg_0='%'
+chrg_1='%'
+chrg_2='%'
 
 chrg_0_fg="$yellow_alt"
 chrg_1_fg="$yellow"
@@ -50,8 +50,7 @@ battery="$(ls $location | grep BAT | head 2>/dev/null)"
 ac="$(ls $location | grep AC | head 2>/dev/null)"
 
 print_line () {
-    echo "%{F$curr_fg}%{u$curr_ul}$curr_pfx%{F-} $curr_power%%{u-}"
-    sleep $sleeptime
+    echo "$curr_pfx $curr_power%"
 }
 
 print_charging() {
@@ -98,18 +97,13 @@ print_discharging() {
 }
 
 if [ -n "$nothing_here" ];then
-    while true; do
-        is_charging=$(cat /sys/class/power_supply/"$ac"/online 2>/dev/null)
-        curr_power=$(cat "$location/$battery/capacity" 2>/dev/null || echo 0)
-        if [ "$curr_power" -ge "$full_at" ]; then
-            sleeptime=$framerate
-            print_discharging
-        elif [ "$is_charging" -eq 1 ]; then
-            sleeptime=$anim_chrg_frate
-            print_charging
-        else
-            sleeptime=$framerate
-            print_discharging
-        fi
-    done
+    is_charging=$(cat /sys/class/power_supply/"$ac"/online 2>/dev/null)
+    curr_power=$(cat "$location/$battery/capacity" 2>/dev/null || echo 0)
+    if [ "$curr_power" -ge "$full_at" ]; then
+        print_discharging
+    elif [ "$is_charging" -eq 1 ]; then
+        print_charging
+    else
+        print_discharging
+    fi
 fi
