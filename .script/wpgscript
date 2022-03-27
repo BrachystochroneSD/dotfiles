@@ -22,7 +22,11 @@ cp ~/.cache/wal/dunstconf ~/.config/dunst/dunstrc
 #dunst
 dunst &
 
-# ~/.config/polybar/launch.sh
+# load xressource colors
+xrdb -merge ~/.cache/wal/xresources
+# reload dwm
+xdotool key super+shift+q
+
 
 # animated wallpaper if gif
 #~/.script/bganim

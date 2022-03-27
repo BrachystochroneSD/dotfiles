@@ -95,7 +95,7 @@ print_wifi () {
     wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
 
     if [ -n "$ethdev" ];then
-        [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ] && output="E" && bigdev="$ethdev"
+        [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ] && output="" && bigdev="$ethdev"
     fi
 
     if [ -n "$wifidev" ];then
@@ -103,13 +103,13 @@ print_wifi () {
         bigdev="$wifidev"
         if [ -n "$wifi" ];then
             if [ "$wifi" -le 55 ];then
-                output="A"
+                output=""
             elif [ "$wifi" -le 75 ];then
-                output="B"
+                output=""
             elif [ "$wifi" -le 85 ];then
-                output="C"
+                output=""
             else
-                output="D"
+                output=""
             fi
         fi
     fi

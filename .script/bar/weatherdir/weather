@@ -107,7 +107,7 @@ echocurrent(){
 
     temp=$(jq .main.temp "$current" | awk '{print int($1+0.5)}')
 
-    echo "$(icons "$icon")" "$humidity"% "$temp"°C
+    echo "$(icons "$icon")""$humidity"% "$temp"°C
 }
 
 echoforecast(){

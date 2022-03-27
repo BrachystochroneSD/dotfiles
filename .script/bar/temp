@@ -29,7 +29,7 @@ label_warn_foreground=$bg_alt
 # normal_pfx=%{T6}%{T-}
 # warn_pfx=%{T6}%{T-}
 
-normal_pfx=
+normal_pfx=
 warn_pfx=
 
 normal_fg=$fg
