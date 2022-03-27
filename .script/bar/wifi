@@ -103,13 +103,13 @@ print_wifi () {
         bigdev="$wifidev"
         if [ -n "$wifi" ];then
             if [ "$wifi" -le 55 ];then
-                output=""
-            elif [ "$wifi" -le 75 ];then
-                output=""
-            elif [ "$wifi" -le 85 ];then
-                output=""
-            else
                 output=""
+            elif [ "$wifi" -le 75 ];then
+                output=""
+            elif [ "$wifi" -le 85 ];then
+                output=""
+            else
+                output=""
             fi
         fi
     fi
