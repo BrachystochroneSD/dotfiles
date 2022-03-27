@@ -19,6 +19,9 @@
 (put 'downcase-region 'disabled nil)
 (global-set-key (kbd "C-x M-k") 'my-kill-current-buffer)
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'untabify)
+
 (defun my-kill-current-buffer ()
   (interactive)
   (kill-buffer (current-buffer)))
@@ -454,8 +457,6 @@
 ;; Goto-Line Binding ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-M-g") 'goto-line)
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (defun darken-hex-color ()
   (interactive)

@@ -107,7 +107,7 @@ echocurrent(){
 
     temp=$(jq .main.temp "$current" | awk '{print int($1+0.5)}')
 
-    echo "$(icons "$icon")""$humidity"% "$temp"°C
+    echo "$(icons "$icon") $humidity"% "$temp"°C
 }
 
 echoforecast(){
@@ -124,7 +124,7 @@ echoforecast(){
     temp=$(echo "( $tempMin + $tempMax ) / 2" \
            | bc -l \
            | awk '{print int($1+0.5)}')
-    echo "$(icons "$icon")" "$humidity"% "$temp"°C
+    echo "$(icons "$icon") $humidity"% "$temp"°C
     fi
 }
 
