@@ -9,7 +9,7 @@ ofimapf="${HOME}"/.offlineimaprc
 
 count_mail(){
     num_mail=$(find ~/.mail -regex ".*/[Ii][nN][bB][oO][xX]/new/.*" | wc -l)
-    [ ! "$num_mail" = 0 ] && echo " $num_mail" || echo ""
+    [ ! "$num_mail" = 0 ] && echo "✉ $num_mail" || echo ""
 }
 
 count_mail
