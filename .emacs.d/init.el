@@ -1520,6 +1520,7 @@ for renaming."
 (defun my-mu4e-header-hook ()
   (interactive)
   (local-set-key (kbd "X") (lambda () (interactive) (mu4e-mark-execute-all t)))
+  (setq mu4e-headers-include-related nil)
   (local-set-key (kbd "M-D") 'my-mu4e-delete-from)
   (local-set-key (kbd "M-r") 'my-mu4e-refile-subject)
   (local-set-key (kbd "M-R") 'my-mu4e-refile-from)
