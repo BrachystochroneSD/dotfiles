@@ -35,9 +35,9 @@ ramp_cap_4=''
 ramp_cap_fg="$fg_alt"
 ramp_cap_0_fg="$red"
 
-chrg_0='%'
-chrg_1='%'
-chrg_2='%'
+chrg_0=''
+chrg_1=''
+chrg_2=''
 
 chrg_0_fg="$yellow_alt"
 chrg_1_fg="$yellow"
@@ -55,14 +55,14 @@ print_line () {
 
 print_charging() {
     curr_ul=$charging_underline
-    curr_fg=$chrg_0_fg
-    curr_pfx=$chrg_0
-    print_line
-    curr_fg=$chrg_1_fg
-    curr_pfx=$chrg_1
-    print_line
-    curr_fg=$chrg_2_fg
-    curr_pfx=$chrg_2
+    case $(echo $(date "+%s" ) % 3 | bc) in
+        0) curr_fg=$chrg_0_fg
+           curr_pfx=$chrg_0 ;;
+        1) curr_fg=$chrg_1_fg
+           curr_pfx=$chrg_1 ;;
+        2) curr_fg=$chrg_2_fg
+           curr_pfx=$chrg_2 ;;
+    esac
     print_line
 }
 
