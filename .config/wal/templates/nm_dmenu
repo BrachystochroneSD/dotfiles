@@ -1,9 +1,5 @@
 [dmenu]
-nb = {color0}
-nf = {color15} 
-sb = {color0} 
-sf = {color3}
+dmenu_command=dmenu -nb {color0} -nf {color15} -sb {color0} -sf {color3} -l 10
 
 [dmenu_passphrase]
-nf = {color0}
-nb = {color0}
+obscure_color = {color0}
