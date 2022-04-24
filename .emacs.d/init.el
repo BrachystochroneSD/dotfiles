@@ -777,7 +777,7 @@
 ;; ELFEED ;;
 ;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/packages/elfeed-master/")
+;; (add-to-list 'load-path "~/.emacs.d/packages/elfeed-master/")
 (require 'elfeed)
 (require 'elfeed-org)
 (elfeed-org)
@@ -1199,7 +1199,7 @@ for renaming."
 ;; EVIL MODE ;;
 ;;;;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/packages/evil-master")
+;; (add-to-list 'load-path "~/.emacs.d/packages/evil-master")
 
 (setq evil-want-C-u-scroll t)
 (require 'evil)
@@ -1404,19 +1404,19 @@ for renaming."
       (lambda (msg)
         (cond
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samueld@mailo.com")
-	  "/archives/mailo")
+      "/archives/mailo")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samrenfou@hotmail.com")
-	  "/archives/outlook")
+      "/archives/outlook")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samuel.dawant@alumni.umons.ac.be")
-	  "/archives/umons")
+      "/archives/umons")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "mrsamrenfou@gmail.com")
-	  "/archives/gmail")
+      "/archives/gmail")
          ;; messages sent by me go to the sent folder
          ((find-if
-	   (lambda (addr)
-	     (mu4e-message-contact-field-matches msg :from addr))
-	   (mu4e-personal-addresses))
-	  mu4e-sent-folder)
+       (lambda (addr)
+         (mu4e-message-contact-field-matches msg :from addr))
+       (mu4e-personal-addresses))
+      mu4e-sent-folder)
          (t  "/archives/misc"))))
 
 (defun my-mu4e-important-refile ()
@@ -1789,7 +1789,7 @@ This function is suitable for `mu4e-compose-mode-hook'."
 ;; (setq evil-magit-state 'normal)
 ;; optional: disable additional bindings for yanking text
 ;; (setq evil-magit-use-y-for-yank nil)
-(require 'evil-magit)
+;; (require 'evil-magit)
 
 (global-set-key (kbd "M-²") 'magit)
 
