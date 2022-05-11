@@ -12,9 +12,8 @@ b=$(printf '%02x' $(( $((0x$(echo "$hex" | cut -c6,7))) / 2 )))
 
 sed "/base02/c\                                         :base02 \"#$r$g$b\"" ~/.cache/wal/base16-wal-theme.el > ~/.emacs.d/themes/base16-wal-theme.el
 
-# templates for keepmenu, networkdmenu, cava and dunst
+# templates for networkdmenu, cava and dunst
 
-cp ~/.cache/wal/keepmenuconf ~/.config/keepmenu/config.ini
 cp ~/.cache/wal/nm_dmenu ~/.config/networkmanager-dmenu/config.ini
 cp ~/.cache/wal/cavaconf ~/.config/cava/config
 cp ~/.cache/wal/dunstconf ~/.config/dunst/dunstrc

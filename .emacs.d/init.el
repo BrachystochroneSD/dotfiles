@@ -160,6 +160,7 @@
 (require 'undo-tree)
 (global-undo-tree-mode 1)
 (setq undo-tree-enable-undo-in-region nil)
+(setq undo-tree-history-directory-alist '((".*" . "~/.emacs.d/undo_tree_backups/")))
 (global-set-key (kbd "C-z") 'undo-tree-undo)
 (global-set-key (kbd "C-M-z") 'undo-tree-redo)
 
@@ -364,7 +365,7 @@
  pdflang={%L},
  colorlinks=true,
  pdfborderstyle={/S/U/W 1},
- linkcolor=wlblue}") ;; color defined in wlreport class
+ linkcolor=blue}") ;; color defined in wlreport class
   )
 
 (defun my-org-insert-bold-star ()
@@ -2004,11 +2005,42 @@ potentially rename EGLOT's help buffer."
 
 (defun my-html-mode-hook ()
   (interactive)
+  (local-set-key (kbd "<tab>") 'my-html-smart-tab)
+  (evil-define-key 'insert 'local (kbd "<tab>") 'my-html-smart-tab)
+  (local-set-key (kbd "C-c C-p") 'sgml-skip-toggle-tag)
   (local-set-key (kbd "C-c C-p") 'sgml-skip-toggle-tag)
   (local-set-key (kbd "C-c C-t") 'my-sgml-tag)
   (local-set-key (kbd "C-c C-d") 'my-sgml-delete-tag))
 
 (add-hook 'html-mode-hook 'my-html-mode-hook)
+
+(defun my-html-shite-cond (shite)
+  (and (looking-back (format "<%s" shite))
+       (looking-at ">")))
+
+(defun my-html-shite (shite tag)
+  (delete-char 1)
+  (delete-backward-char (1+ (length shite)))
+  (insert (format "<%s>\n\n</%s>" tag tag))
+  (next-logical-line -1)
+  (indent-for-tab-command))
+
+(defun my-html-smart-tab ()
+  (interactive)
+  (cond
+   ((my-html-shite-cond "he")
+    (my-html-shite "he" "header"))
+   ((and (looking-at ">")
+         (looking-back "<\\([^ ]*\\).*"))
+    (end-of-line)
+    (newline 2)
+    (insert (format "</%s>" (match-string 1)))
+    (next-logical-line -1)
+    (indent-for-tab-command))
+   (t
+    (indent-for-tab-command))))
+
+
 
 ;;;;;;;;;;;
 ;; EMOJI ;;
