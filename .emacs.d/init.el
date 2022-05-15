@@ -142,17 +142,6 @@
 (global-set-key (kbd "M-<left>") 'move-beginning-of-line)
 (global-set-key (kbd "M-<right>") 'move-end-of-line)
 
-;;;;;;;;;;;;;;;;
-;; Move-LineS ;;
-;;;;;;;;;;;;;;;;
-
-(require 'move-lines)
-
-(global-set-key (kbd "M-<up>") 'move-lines-up)
-(global-set-key (kbd "M-<down>") 'move-lines-down)
-(global-set-key (kbd "C-M-:") 'move-lines-up)
-(global-set-key (kbd "C-M-;") 'move-lines-down)
-
 ;;;;;;;;;;;;;;;
 ;; Undo Tree ;;
 ;;;;;;;;;;;;;;;
