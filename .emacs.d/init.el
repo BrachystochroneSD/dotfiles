@@ -379,6 +379,7 @@
   (local-set-key (kbd "C-c <C-return>") 'org-open-at-point)
   (local-set-key (kbd "C-,") 'forward-char)
   (local-set-key (kbd "C-<tab>") 'mode-line-other-buffer)
+  (setq org-startup-folded t)
   (local-unset-key (kbd "M-h"))
   (local-set-key (kbd "M-h") 'backward-paragraph))
 
