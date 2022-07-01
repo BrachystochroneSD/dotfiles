@@ -2,7 +2,7 @@
 
 ** Nota Bene                                                            :notabene:
 *** https://feeds.acast.com/public/shows/notabenemovies
-** matrix                                                               :matrix:
+** matrix                                                            :matrix:
 *** https://matrix.org/blog/feed
 ** zenofeed                                                             :zenrss:
 *** https://www.zenocyne.com/rss.xml
@@ -27,7 +27,7 @@
 *** http://www.teamfortress.com/rss.xml
 ** Reddit inbox
 *** https://www.reddit.com/message/inbox/.rss?feed=9f8037f7f392ce2ba0051af2b65cb740b138c537&user=Samrenfou
-** Youtube
+** Youtube                                                              :YT:
 *** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCzORJV8l3FWY4cFO8ot-F2w][Vinesauce]]
 *** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCzR-rom72PHN9Zg7RML9EbA][PBS Eons]]
 *** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCrDd34OpvSDuWCwRdxv0RNg][Don Giani Guide]]

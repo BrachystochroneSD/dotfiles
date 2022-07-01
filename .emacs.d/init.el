@@ -1222,6 +1222,7 @@ for renaming."
 (define-key evil-visual-state-map (kbd "<tab>") 'indent-for-tab-command)
 ;; (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
 (evil-define-key 'insert org-mode-map (kbd "<tab>") #'org-cycle)
+(evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
 
 (evil-define-key '(insert normal replace visual emacs)
   'global (kbd "C-e") #'move-end-of-line)
