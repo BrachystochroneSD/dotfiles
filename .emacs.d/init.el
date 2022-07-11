@@ -165,6 +165,7 @@
 (global-set-key (kbd "C-c C-<left>") 'previous-buffer)
 (global-set-key (kbd "M-$") 'my-previous-buffer)
 
+
 ;;;;;;;;;;;;;;;
 ;; Undo Tree ;;
 ;;;;;;;;;;;;;;;
@@ -176,6 +177,7 @@
 (global-set-key (kbd "C-z") 'undo-tree-undo)
 (global-set-key (kbd "C-M-z") 'undo-tree-redo)
 
+
 ;;;;;;;;;;;;;;;
 ;; EVIL MODE ;;
 ;;;;;;;;;;;;;;;
@@ -186,22 +188,13 @@
 (require 'evil-collection)
 (evil-mode 1)
 
-;; Don't use evil-mode for dired mode. I've already set the key to be vim-like
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'eshell-mode 'emacs)
 (evil-set-initial-state 'elfeed-search-mode 'emacs)
 (evil-set-initial-state 'elfeed-show-mode 'emacs)
 (evil-set-initial-state 'messages-buffer-mode 'emacs)
 
-;; New command:
-
-(evil-ex-define-cmd "kb" 'my-kill-current-buffer)
-(evil-ex-define-cmd "kw" 'kill-buffer-and-window)
-(evil-ex-define-cmd "wkb" (lambda ()
-                            (interactive)(save-buffer)(my-kill-current-buffer)))
-
 ;; bind meta space to exit to normal mode (escape is too far !!!)
-
 (define-key evil-insert-state-map (kbd "M-SPC") 'evil-normal-state)
 (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
 (define-key evil-visual-state-map (kbd "M-SPC") 'evil-exit-visual-state)
@@ -226,10 +219,7 @@
 (add-hook 'org-metareturn-hook 'evil-insert-state)
 (add-hook 'org-insert-heading-hook 'evil-insert-state)
 
-(define-key evil-normal-state-map (kbd "ù") 'evil-first-non-blank)
-(define-key evil-normal-state-map (kbd "µ") 'evil-end-of-line)
-
-(define-key evil-normal-state-map (kbd "é") 'evil-goto-mark)
+(define-key evil-normal-state-map (kbd "q") 'evil-goto-mark)
 
 (define-key evil-normal-state-map (kbd "J") 'next-line)
 (define-key evil-normal-state-map (kbd "K") 'previous-line)
@@ -241,48 +231,38 @@
 
 ;; evil mode-line gruvbox colors
 
-(defun my-evil-normal-state-hook ()
+(defun my-evil-color-modeline ()
   (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#cc241d" :foreground "#351717") mode-line)))
+  (cond
+   ((eq evil-state 'emacs)
+    (face-remap-add-relative
+     'mode-line '((:background "#cc241d" :foreground "#351717") mode-line)))
+   ((eq evil-state 'normal)
+    (face-remap-add-relative
+     'mode-line '((:background "#b16286" :foreground "#35212b") mode-line)))
+   ((eq evil-state 'insert)
+    (face-remap-add-relative
+     'mode-line '((:background "#d65d0e" :foreground "#3f2100") mode-line)))
+   ((eq evil-state 'replace)
+    (face-remap-add-relative
+     'mode-line '((:background "#d79921" :foreground "#3f2b00") mode-line)))
+   ((eq evil-state 'motion)
+    (face-remap-add-relative
+     'mode-line '((:background "#98971a" :foreground "#2b2b00") mode-line)))
+   ((eq evil-state 'visual)
+    (face-remap-add-relative
+     'mode-line '((:background "#458588" :foreground "#212b2b") mode-line)))
+   ((eq evil-state 'operator)
+    (face-remap-add-relative
+     'mode-line '((:background "#689d6a" :foreground "#212b21") mode-line)))))
 
-(defun my-evil-emacs-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#b16286"       :foreground "#35212b") mode-line)))
-
-(defun my-evil-insert-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#d65d0e"    :foreground "#3f2100") mode-line)))
-
-(defun my-evil-replace-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#d79921"      :foreground "#3f2b00") mode-line)))
-
-(defun my-evil-motion-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#98971a"          :foreground "#2b2b00") mode-line)))
-
-(defun my-evil-visual-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#458588"           :foreground "#212b2b") mode-line)))
-
-(defun my-evil-operator-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#689d6a"    :foreground "#212b21") mode-line)))
-
-(add-hook 'evil-visual-state-entry-hook 'my-evil-visual-state-hook)
-(add-hook 'evil-motion-state-entry-hook 'my-evil-motion-state-hook)
-(add-hook 'evil-replace-state-entry-hook 'my-evil-replace-state-hook)
-(add-hook 'evil-insert-state-entry-hook 'my-evil-insert-state-hook)
-(add-hook 'evil-emacs-state-entry-hook 'my-evil-emacs-state-hook)
-(add-hook 'evil-normal-state-entry-hook 'my-evil-normal-state-hook)
-(add-hook 'evil-operator-state-entry-hook 'my-evil-operator-state-hook)
+(add-hook 'evil-visual-state-entry-hook 'my-evil-color-modeline)
+(add-hook 'evil-motion-state-entry-hook 'my-evil-color-modeline)
+(add-hook 'evil-replace-state-entry-hook 'my-evil-color-modeline)
+(add-hook 'evil-insert-state-entry-hook 'my-evil-color-modeline)
+(add-hook 'evil-emacs-state-entry-hook 'my-evil-color-modeline)
+(add-hook 'evil-normal-state-entry-hook 'my-evil-color-modeline)
+(add-hook 'evil-operator-state-entry-hook 'my-evil-color-modeline)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Electric Pair Mode ;;
