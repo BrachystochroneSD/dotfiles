@@ -109,7 +109,10 @@ EOF
         if [[ $typeit -eq 0 ]]; then # TODO for now always typeit, but make a way to copy it
             pass show -c "$password" 2>/dev/null
         else
-            pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } |
-                xdotool type --clearmodifiers --file -
+            if [[ "${password##*/}" == "otp" ]];then
+                pass otp "$password" | { IFS= read -r pass; printf %s "$pass"; } | xdotool type --clearmodifiers --file -
+            else
+                pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } | xdotool type --clearmodifiers --file -
+            fi
         fi
 esac

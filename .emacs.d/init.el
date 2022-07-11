@@ -2,6 +2,17 @@
 ;; Basic Configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+(setq custom-file (concat user-emacs-directory "custom.el"))
+(load custom-file 'noerror)
+
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
+(setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
+
+(setq inhibit-startup-screen t)
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 (setq display-line-numbers-type 'relative)
@@ -26,51 +37,10 @@
   (interactive)
   (kill-buffer (current-buffer)))
 
-(require 'package)
-(package-initialize)
-;; (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; time
+(setq display-time-format "%Y/%m/%d %H:%M")
+(display-time-mode 1)
 
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-term-color-vector
-   [unspecified "#10180d" "#94a19a" "#A3C348" "#9DC248" "#B6CDB9" "#B0D2C1" "#B6CDB9" "#B6CDB9"] t)
- '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
- '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
- '(compilation-message-face 'default)
- '(custom-safe-themes
-   '("c306e0ef591df6383f666287d0d55767c2c24f3ca137e1c7785c43f08d23c9e8" "2b9dc43b786e36f68a9fd4b36dd050509a0e32fe3b0a803310661edb7402b8b6" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default))
- '(inhibit-startup-screen t)
- '(magit-diff-use-overlays nil)
- '(mml-secure-key-preferences
-   '((OpenPGP
-      (sign
-       ("samueld@mailo.com" "3D077DB25503D095BD9C8630BBD108B2C6A65E04"))
-      (encrypt))
-     (CMS
-      (sign)
-      (encrypt))))
- '(package-selected-packages
-   '(counsel helm-core vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
- '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
- '(send-mail-function 'mailclient-send-it))
-
-
-;;dir packages ajouté
-(add-to-list 'load-path "~/.emacs.d/packages/")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(add-to-list 'load-path "~/.emacs.d/themes")
 
 ;;;;;;;;;;;;;;;;;
 ;; AUTO-INSERT ;;
@@ -81,106 +51,72 @@
 (setq auto-insert-query nil) ;; supprimer la demande de confirmation pour l'insertion
 
 
-;; My system name
-
-(defun my-system-name ()
-  "Reliable way to get current hostname."
-  (substring (shell-command-to-string "hostname") 0 -1)
-  )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Base16 Wal and Gruvbox theme on The Fly ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun refresh-theme ()
-  (progn
-    (load-theme 'base16-wal t)))
-
-(defun theme-callback (event)
-  (when (equal my-current-theme 'base16-wal)
-    (refresh-theme)))
-
-(require 'filenotify)
-
-(file-notify-add-watch
- "~/.emacs.d/themes/base16-wal-theme.el" '(change) 'theme-callback)
+;;;;;;;;;;;;;;;;;;;;
+;; FONT AND THEME ;;
+;;;;;;;;;;;;;;;;;;;;
 
 (load-theme 'gruvbox-dark-medium)
 
-(defvar my-theme-gruv 'gruvbox-dark-medium)
-(defvar my-theme-wal 'base16-wal)
-(defvar my-current-theme my-theme-gruv)
+(setq default-frame-alist '((vertical-scroll-bars . nil)
+                            (horizontal-scroll-bars . nil)
+                            (fullscreen . maximized)))
 
-;; disable other themes before loading new one
-(defadvice load-theme (before theme-dont-propagate activate)
-  "Disable theme before loading new one."
-  (mapc #'disable-theme custom-enabled-themes))
+(set-frame-font "firacode-14:regular")
+(add-to-list 'default-frame-alist
+             '(font . "firacode-14:regular"))
 
-(defun my-next-theme (theme)
-  (if (eq theme 'default)
-      (disable-theme my-current-theme)
-    (progn
-      (load-theme theme t)))
-  (setq my-current-theme theme))
+;; alpha
 
-(defun my-toggle-theme ()
-  (interactive)
-  (cond ((eq my-current-theme my-theme-gruv)
-         (my-next-theme my-theme-wal))
-        ((eq my-current-theme my-theme-wal)
-         (my-next-theme my-theme-gruv))))
+(set-frame-parameter nil 'alpha '(95))
+(add-to-list 'default-frame-alist '(alpha 95))
 
-(global-set-key (kbd "<f10>") 'my-toggle-theme)
+(defun my-make-it-transparentier (x)
+  "add X to the current frame alpha value"
+  (set-frame-parameter nil 'alpha (list (max 20 (min 100 (+ x (car (frame-parameter nil 'alpha)))))))
+  (message (format "Current alpha: %d" (car (frame-parameter nil 'alpha)))))
+
+(global-set-key (kbd "<f9>") (lambda () (interactive) (my-make-it-transparentier -5)))
+(global-set-key (kbd "<C-f9>") (lambda () (interactive) (my-make-it-transparentier 5)))
+(global-set-key (kbd "<M-f9>") (lambda () (interactive) (my-make-it-transparentier -10)))
+(global-set-key (kbd "<C-M-f9>") (lambda () (interactive) (my-make-it-transparentier 10)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Bindings ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
+
+(global-set-key (kbd "C-,") 'forward-char)
+(define-key key-translation-map (kbd "C-?") (kbd "C-S-f"))
+(define-key key-translation-map (kbd "M-?") (kbd "M-S-f"))
+(global-set-key (kbd "M-,") 'forward-word)
+
+(define-key key-translation-map (kbd "C-h") (kbd "C-p"))
+(define-key key-translation-map (kbd "C-S-h") (kbd "C-S-p"))
+(global-set-key (kbd "M-h") 'backward-paragraph)
+
+(global-set-key (kbd "M-n") 'forward-paragraph)
+
+(global-set-key (kbd "C-M-,") 'windmove-right)
+(global-set-key (kbd "C-M-b") 'windmove-left)
+(global-set-key (kbd "C-M-h") 'windmove-up)
+(global-set-key (kbd "C-M-n") 'windmove-down)
+
+(global-set-key (kbd "C-M-?") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-M-S-b") 'shrink-window-horizontally)
+(global-set-key (kbd "C-M-S-h") 'enlarge-window)
+(global-set-key (kbd "C-M-S-n") 'shrink-window)
+
+
 (global-set-key (kbd "<f8>") 'toggle-truncate-lines)
 (global-set-key (kbd "<C-f8>") 'visual-line-mode)
 
-(global-set-key (kbd "M-<left>") 'move-beginning-of-line)
-(global-set-key (kbd "M-<right>") 'move-end-of-line)
-
-;;;;;;;;;;;;;;;
-;; Undo Tree ;;
-;;;;;;;;;;;;;;;
-
-(require 'undo-tree)
-(global-undo-tree-mode 1)
-(setq undo-tree-enable-undo-in-region nil)
-(setq undo-tree-history-directory-alist '((".*" . "~/.emacs.d/undo_tree_backups/")))
-(global-set-key (kbd "C-z") 'undo-tree-undo)
-(global-set-key (kbd "C-M-z") 'undo-tree-redo)
-
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; Electric Pair Mode ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-(electric-pair-mode 1)
-(setq electric-pair-pairs '((?\" . ?\")
-                            (?\{ . ?\})
-                            ))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Bindings For Windows Move ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Window Move
 
 (global-set-key (kbd "C-M-y") 'other-frame)
 
-(global-set-key (kbd "C-M-<right>") 'windmove-right)
-(global-set-key (kbd "C-M-<left>") 'windmove-left)
-(global-set-key (kbd "C-M-<down>") 'windmove-down)
-(global-set-key (kbd "C-M-<up>") 'windmove-up)
-
-(global-set-key (kbd "C-M-S-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "C-M-S-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-M-S-<down>") 'shrink-window)
-(global-set-key (kbd "C-M-S-<up>") 'enlarge-window)
-
 (global-set-key (kbd "C-M-<backspace>") 'delete-window)
 (global-set-key (kbd "C-M-S-<backspace>") 'kill-buffer-and-window)
-
 
 (defun my-split-window-vertically ()
   (interactive)
@@ -195,26 +131,11 @@
 (global-set-key (kbd "C-M-<return>") 'my-split-window-horizontally)
 (global-set-key (kbd "C-M-S-<return>") 'my-split-window-vertically)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Mark-Multiple/Multiple Cursor ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Comments
 
-(require 'multiple-cursors)
-(global-set-key (kbd "M-l") 'mc/mark-previous-like-this)
-(global-set-key (kbd "M-m") 'mc/mark-next-like-this)
-(global-set-key (kbd "M-o") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c ;") 'comment-line)
+(global-set-key (kbd "C-c b") 'comment-box)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; FONT AND DEFAULT-FRAME ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(setq default-frame-alist '((vertical-scroll-bars . nil)
-                            (horizontal-scroll-bars . nil)
-                            (fullscreen . maximized)))
-
-(set-frame-font "firacode-14:regular")
-(add-to-list 'default-frame-alist
-             '(font . "firacode-14:regular"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Change-Buffer ;;
@@ -243,6 +164,143 @@
 (global-set-key (kbd "C-x C-<left>") 'my-previous-buffer)
 (global-set-key (kbd "C-c C-<left>") 'previous-buffer)
 (global-set-key (kbd "M-$") 'my-previous-buffer)
+
+;;;;;;;;;;;;;;;
+;; Undo Tree ;;
+;;;;;;;;;;;;;;;
+
+(require 'undo-tree)
+(global-undo-tree-mode 1)
+(setq undo-tree-enable-undo-in-region nil)
+(setq undo-tree-history-directory-alist '((".*" . "~/.emacs.d/undo_tree_backups/")))
+(global-set-key (kbd "C-z") 'undo-tree-undo)
+(global-set-key (kbd "C-M-z") 'undo-tree-redo)
+
+;;;;;;;;;;;;;;;
+;; EVIL MODE ;;
+;;;;;;;;;;;;;;;
+
+(setq evil-want-C-u-scroll t)
+(require 'evil)
+(setq evil-want-keybinding nil)
+(require 'evil-collection)
+(evil-mode 1)
+
+;; Don't use evil-mode for dired mode. I've already set the key to be vim-like
+(evil-set-initial-state 'dired-mode 'emacs)
+(evil-set-initial-state 'eshell-mode 'emacs)
+(evil-set-initial-state 'elfeed-search-mode 'emacs)
+(evil-set-initial-state 'elfeed-show-mode 'emacs)
+(evil-set-initial-state 'messages-buffer-mode 'emacs)
+
+;; New command:
+
+(evil-ex-define-cmd "kb" 'my-kill-current-buffer)
+(evil-ex-define-cmd "kw" 'kill-buffer-and-window)
+(evil-ex-define-cmd "wkb" (lambda ()
+                            (interactive)(save-buffer)(my-kill-current-buffer)))
+
+;; bind meta space to exit to normal mode (escape is too far !!!)
+
+(define-key evil-insert-state-map (kbd "M-SPC") 'evil-normal-state)
+(define-key evil-insert-state-map (kbd "C-d") 'delete-char)
+(define-key evil-visual-state-map (kbd "M-SPC") 'evil-exit-visual-state)
+(define-key evil-replace-state-map (kbd "M-SPC") 'evil-normal-state)
+(define-key evil-emacs-state-map (kbd "M-SPC") 'evil-normal-state)
+(define-key evil-normal-state-map (kbd "M-SPC") 'evil-emacs-state)
+
+(define-key evil-visual-state-map (kbd "<tab>") 'indent-for-tab-command)
+;; (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
+(evil-define-key 'insert org-mode-map (kbd "<tab>") #'org-cycle)
+(evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
+
+(evil-define-key '(insert normal replace visual emacs)
+  'global (kbd "C-e") #'move-end-of-line)
+
+;; Get rid of C-z to switch to emacs mode (M-spc used instead)
+(evil-define-key '(insert normal replace visual emacs)
+  'global (kbd "C-z") #'undo-tree-undo)
+
+(define-key evil-insert-state-map (kbd "<tab>") 'indent-for-tab-command)
+
+(add-hook 'org-metareturn-hook 'evil-insert-state)
+(add-hook 'org-insert-heading-hook 'evil-insert-state)
+
+(define-key evil-normal-state-map (kbd "ù") 'evil-first-non-blank)
+(define-key evil-normal-state-map (kbd "µ") 'evil-end-of-line)
+
+(define-key evil-normal-state-map (kbd "é") 'evil-goto-mark)
+
+(define-key evil-normal-state-map (kbd "J") 'next-line)
+(define-key evil-normal-state-map (kbd "K") 'previous-line)
+
+(define-key evil-visual-state-map (kbd "J") 'next-line)
+(define-key evil-visual-state-map (kbd "K") 'previous-line)
+
+(define-key evil-normal-state-map (kbd "C-M-j") 'evil-join)
+
+;; evil mode-line gruvbox colors
+
+(defun my-evil-normal-state-hook ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:background "#cc241d" :foreground "#351717") mode-line)))
+
+(defun my-evil-emacs-state-hook ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:background "#b16286"       :foreground "#35212b") mode-line)))
+
+(defun my-evil-insert-state-hook ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:background "#d65d0e"    :foreground "#3f2100") mode-line)))
+
+(defun my-evil-replace-state-hook ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:background "#d79921"      :foreground "#3f2b00") mode-line)))
+
+(defun my-evil-motion-state-hook ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:background "#98971a"          :foreground "#2b2b00") mode-line)))
+
+(defun my-evil-visual-state-hook ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:background "#458588"           :foreground "#212b2b") mode-line)))
+
+(defun my-evil-operator-state-hook ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:background "#689d6a"    :foreground "#212b21") mode-line)))
+
+(add-hook 'evil-visual-state-entry-hook 'my-evil-visual-state-hook)
+(add-hook 'evil-motion-state-entry-hook 'my-evil-motion-state-hook)
+(add-hook 'evil-replace-state-entry-hook 'my-evil-replace-state-hook)
+(add-hook 'evil-insert-state-entry-hook 'my-evil-insert-state-hook)
+(add-hook 'evil-emacs-state-entry-hook 'my-evil-emacs-state-hook)
+(add-hook 'evil-normal-state-entry-hook 'my-evil-normal-state-hook)
+(add-hook 'evil-operator-state-entry-hook 'my-evil-operator-state-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Electric Pair Mode ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+(electric-pair-mode 1)
+(setq electric-pair-pairs '((?\" . ?\")
+                            (?\{ . ?\})
+                            ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mark-Multiple/Multiple Cursor ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'multiple-cursors)
+(global-set-key (kbd "M-l") 'mc/mark-previous-like-this)
+(global-set-key (kbd "M-m") 'mc/mark-next-like-this)
+(global-set-key (kbd "M-o") 'mc/mark-all-like-this)
 
 ;;;;;;;;;;;;;;
 ;; Org-Mode ;;
@@ -373,7 +431,6 @@
 
 (defun my-org-mode-hook ()
   (interactive)
-  ;; (org-bullets-mode 1)
   ;; (local-set-key (kbd "<C-return>") 'ealm-org-heading-return)
   (local-set-key (kbd "C-*") 'my-org-insert-bold-star)
   (local-set-key (kbd "C-c <C-return>") 'org-open-at-point)
@@ -394,12 +451,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'DocView-mode-hook 'auto-revert-mode)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Comment Line and Box ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-c ;") 'comment-line)
-(global-set-key (kbd "C-c b") 'comment-box)
-
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Text Scale Adjust ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -419,31 +470,6 @@
 
 (global-set-key (kbd "C-+") 'my-text-scale-increase)
 (global-set-key (kbd "C--") 'my-text-scale-decrease)
-
-;;;;;;;;;;;;;;;;;;;;;
-;; Set Moving Keys ;;
-;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-,") 'forward-char)
-(define-key key-translation-map (kbd "C-?") (kbd "C-S-f"))
-(define-key key-translation-map (kbd "M-?") (kbd "M-S-f"))
-(global-set-key (kbd "M-,") 'forward-word)
-
-(define-key key-translation-map (kbd "C-h") (kbd "C-p"))
-(define-key key-translation-map (kbd "C-S-h") (kbd "C-S-p"))
-(global-set-key (kbd "M-h") 'backward-paragraph)
-
-(global-set-key (kbd "M-n") 'forward-paragraph)
-
-(global-set-key (kbd "C-M-,") 'windmove-right)
-(global-set-key (kbd "C-M-b") 'windmove-left)
-(global-set-key (kbd "C-M-h") 'windmove-up)
-(global-set-key (kbd "C-M-n") 'windmove-down)
-
-(global-set-key (kbd "C-M-?") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-M-S-b") 'shrink-window-horizontally)
-(global-set-key (kbd "C-M-S-h") 'enlarge-window)
-(global-set-key (kbd "C-M-S-n") 'shrink-window)
-
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Goto-Line Binding ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -768,10 +794,7 @@
 ;; ELFEED ;;
 ;;;;;;;;;;;;
 
-;; (add-to-list 'load-path "~/.emacs.d/packages/elfeed-master/")
 (require 'elfeed)
-(require 'elfeed-org)
-(elfeed-org)
 (global-set-key (kbd "<f6>") 'elfeed)
 (setq elfeed-search-filter "@3-weeks-ago +unread")
 
@@ -899,63 +922,9 @@ See `elfeed-play-with-mpv'."
   (my-elfeed-read-regex
    (elfeed-meta (car (elfeed-search-selected)) :author)))
 
-;;;;;;;;;;;;;;;
-;; TIME MODE ;;
-;;;;;;;;;;;;;;;
-
-(setq display-time-format "%Y/%m/%d %H:%M")
-
-(display-time-mode 1)
-
-;;;;;;;;;;;;;;;;;;
-;; ALPHA values ;;
-;;;;;;;;;;;;;;;;;;
-(set-frame-parameter nil 'alpha '(95))
-(add-to-list 'default-frame-alist '(alpha 95))
-
-(defun my-make-it-transparentier (x)
-  "add X to the current frame alpha value"
-  (set-frame-parameter nil 'alpha (list (+ x (car(frame-parameter nil 'alpha)))))
-  (message (format "Current alpha: %d"(car(frame-parameter nil 'alpha)))))
-
-(global-set-key (kbd "<f9>") (lambda () (interactive) (my-make-it-transparentier -5)))
-(global-set-key (kbd "<C-f9>") (lambda () (interactive) (my-make-it-transparentier 5)))
-(global-set-key (kbd "<M-f9>") (lambda () (interactive) (my-make-it-transparentier -10)))
-(global-set-key (kbd "<C-M-f9>") (lambda () (interactive) (my-make-it-transparentier 10)))
-
-;; ;;;;;;;;;;;;;;;;;;;;;;
-;; ;; UNDO KILL BUFFER ;;
-;; ;;;;;;;;;;;;;;;;;;;;;;
-;; TODO : MAKE IT WORK
-;; (defvar my-last-killed-buffer "")
-
-;; (defun my-undo-kill-buffer-add-buffer ()
-;;   (unless (string-match "*" (buffer-name))
-;;     (setq my-last-killed-buffer (or (buffer-file-name) (dired-current-directory)))
-;;     (message (format "Buffer \"%s\" killed and added to the kill-buffer ring. Press C-S-z to revive him" (buffer-name)))))
-
-
-;; (defun my-undo-kill-buffer ()
-;;   (interactive)
-;;   (unless (equal my-last-killed-buffer "")
-;;     (when (y-or-n-p (format "Revive %s buffer ?" my-last-killed-buffer))
-;;     (find-file my-last-killed-buffer))))
-
-
-;; (defun kill-buffer-hook-setup ()
-;;   (interactive)
-;;   (my-undo-kill-buffer-add-buffer))
-
-
-;; (add-hook 'kill-buffer-hook 'kill-buffer-hook-setup)
-;; (global-set-key (kbd "C-S-z") 'my-undo-kill-buffer)
-
 ;;;;;;;;;;;;
 ;; AuCTeX ;;
 ;;;;;;;;;;;;
-
-;;AucteX "me fait pas chier avec tes messages de confirmation quand je compile"
-
 
 (setq TeX-save-query nil)
 (setq TeX-clean-confirm nil)
@@ -1185,114 +1154,6 @@ for renaming."
   (if condition
       (message "ok")
     (message "nok")))
-
-;;;;;;;;;;;;;;;
-;; EVIL MODE ;;
-;;;;;;;;;;;;;;;
-
-;; (add-to-list 'load-path "~/.emacs.d/packages/evil-master")
-
-(setq evil-want-C-u-scroll t)
-(require 'evil)
-(evil-mode 1)
-
-;; Don't use evil-mode for dired mode. I've already set the key to be vim-like
-(evil-set-initial-state 'dired-mode 'emacs)
-(evil-set-initial-state 'eshell-mode 'emacs)
-(evil-set-initial-state 'elfeed-search-mode 'emacs)
-(evil-set-initial-state 'elfeed-show-mode 'emacs)
-(evil-set-initial-state 'messages-buffer-mode 'emacs)
-
-;; New command:
-
-(evil-ex-define-cmd "kb" 'my-kill-current-buffer)
-(evil-ex-define-cmd "kw" 'kill-buffer-and-window)
-(evil-ex-define-cmd "wkb" (lambda ()
-                            (interactive)(save-buffer)(my-kill-current-buffer)))
-
-;; bind meta space to exit to normal mode (escape is too far !!!)
-
-(define-key evil-insert-state-map (kbd "M-SPC") 'evil-normal-state)
-(define-key evil-insert-state-map (kbd "C-d") 'delete-char)
-(define-key evil-visual-state-map (kbd "M-SPC") 'evil-exit-visual-state)
-(define-key evil-replace-state-map (kbd "M-SPC") 'evil-normal-state)
-(define-key evil-emacs-state-map (kbd "M-SPC") 'evil-normal-state)
-(define-key evil-normal-state-map (kbd "M-SPC") 'evil-emacs-state)
-
-(define-key evil-visual-state-map (kbd "<tab>") 'indent-for-tab-command)
-;; (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
-(evil-define-key 'insert org-mode-map (kbd "<tab>") #'org-cycle)
-(evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
-
-(evil-define-key '(insert normal replace visual emacs)
-  'global (kbd "C-e") #'move-end-of-line)
-
-;; Get rid of C-z to switch to emacs mode (M-spc used instead)
-(evil-define-key '(insert normal replace visual emacs)
-  'global (kbd "C-z") #'undo-tree-undo)
-
-(define-key evil-insert-state-map (kbd "<tab>") 'indent-for-tab-command)
-
-(add-hook 'org-metareturn-hook 'evil-insert-state)
-(add-hook 'org-insert-heading-hook 'evil-insert-state)
-
-(define-key evil-normal-state-map (kbd "ù") 'evil-first-non-blank)
-(define-key evil-normal-state-map (kbd "µ") 'evil-end-of-line)
-
-(define-key evil-normal-state-map (kbd "é") 'evil-goto-mark)
-
-(define-key evil-normal-state-map (kbd "J") 'next-line)
-(define-key evil-normal-state-map (kbd "K") 'previous-line)
-
-(define-key evil-visual-state-map (kbd "J") 'next-line)
-(define-key evil-visual-state-map (kbd "K") 'previous-line)
-
-(define-key evil-normal-state-map (kbd "C-M-j") 'evil-join)
-
-;; evil mode-line gruvbox colors
-
-(defun my-evil-normal-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#cc241d" :foreground "#351717") mode-line)))
-
-(defun my-evil-emacs-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#b16286"       :foreground "#35212b") mode-line)))
-
-(defun my-evil-insert-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#d65d0e"    :foreground "#3f2100") mode-line)))
-
-(defun my-evil-replace-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#d79921"      :foreground "#3f2b00") mode-line)))
-
-(defun my-evil-motion-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#98971a"          :foreground "#2b2b00") mode-line)))
-
-(defun my-evil-visual-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#458588"           :foreground "#212b2b") mode-line)))
-
-(defun my-evil-operator-state-hook ()
-  (interactive)
-  (face-remap-add-relative
-   'mode-line '((:background "#689d6a"    :foreground "#212b21") mode-line)))
-
-(add-hook 'evil-visual-state-entry-hook 'my-evil-visual-state-hook)
-(add-hook 'evil-motion-state-entry-hook 'my-evil-motion-state-hook)
-(add-hook 'evil-replace-state-entry-hook 'my-evil-replace-state-hook)
-(add-hook 'evil-insert-state-entry-hook 'my-evil-insert-state-hook)
-(add-hook 'evil-emacs-state-entry-hook 'my-evil-emacs-state-hook)
-(add-hook 'evil-normal-state-entry-hook 'my-evil-normal-state-hook)
-(add-hook 'evil-operator-state-entry-hook 'my-evil-operator-state-hook)
 
 ;;;;;;;;;;
 ;; PYIM ;;
@@ -1751,41 +1612,12 @@ This function is suitable for `mu4e-compose-mode-hook'."
 
 (global-set-key (kbd "M-\"") 'insert-quotes)
 
-;; TODO MSICELANOUS
-(defun delete-doublon (&optional pos)
-  (interactive)
-  (unless pos (setq pos (point-min)))
-  (goto-line pos)
-  (setq centpourcent (line-number-at-pos (point-max)))
-  (setq killvar 0)
-  (while (not (eobp))
-    (let (( line (word-at-point) ))
-      (save-excursion
-        (when (re-search-forward line nil t)
-          (while (re-search-forward line nil t)
-            (setq killvar (+ 1 killvar))
-            (setq centpourcent (- centpourcent 1))
-            (kill-whole-line)))))
-    (next-logical-line)
-    (let (( linum (line-number-at-pos)))
-      (message "Cleanning progress: %3d %% (%d killed) (line %s)"
-               (* 100 (/ linum centpourcent 1.0)) killvar linum)) ))
-
-
-
 ;;;;;;;;;;;
 ;; MAGIT ;;
 ;;;;;;;;;;;
 
-;; optional: this is the evil state that evil-magit will use
-;; (setq evil-magit-state 'normal)
-;; optional: disable additional bindings for yanking text
-;; (setq evil-magit-use-y-for-yank nil)
-;; (require 'evil-magit)
-
+(require 'magit)
 (global-set-key (kbd "M-²") 'magit)
-
-
 
 ;;;;;;;;;
 ;; IVY ;;
@@ -1796,23 +1628,6 @@ This function is suitable for `mu4e-compose-mode-hook'."
 
 (setq ivy-count-format "%-4d ")
 (global-set-key (kbd "C-c n") 'counsel-fzf)
-
-;;;;;;;;;;;;;
-;; COMPANY ;;
-;;;;;;;;;;;;;
-
-;; (require 'company)
-
-;; (global-company-mode)
-
-;; (setq company-idle-delay 0.1)
-;; (setq company-minimum-prefix-length 3)
-
-;; (with-eval-after-load 'company
-;;   (define-key company-active-map (kbd "C-n") 'company-select-next)
-;;   (define-key company-active-map (kbd "C-p") 'company-select-previous)
-;;   (define-key company-search-map (kbd "C-n") 'company-select-next)
-;;   (define-key company-search-map (kbd "C-p") 'company-select-previous))
 
 ;;;;;;;;;;;
 ;; EGLOT ;;
@@ -2040,23 +1855,6 @@ potentially rename EGLOT's help buffer."
 (defun init-fonts ()
   (set-fontset-font t '(#x1f000 . #x1faff)
                     (font-spec :family "JoyPixels")))
-
-;;;;;;;;;;;
-;; SUBED ;;
-;;;;;;;;;;;
-
-;; (add-to-list 'load-path "~/.emacs.d/packages/subed/")
-;; (require 'subed)
-
-;; (defun my-subed-hook ()
-;;   (interactive)
-;;   (setq-local fill-column 40)
-;;   (save-place-local-mode)
-;;   (turn-on-auto-fill)
-;;   (subed-disable-sync-point-to-player)
-;;   )
-
-;; (add-hook 'subed-mode-hook 'my-subed-hook)
 
 ;;;;;;;;;;;;;;
 ;; FLYSPELL ;;
