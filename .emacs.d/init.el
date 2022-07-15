@@ -47,8 +47,8 @@
 ;;;;;;;;;;;;;;;;;
 
 (auto-insert-mode)
-(setq auto-insert-directory "~/.emacs.d/mytemplates/") ;; dossier custom à créer
-(setq auto-insert-query nil) ;; supprimer la demande de confirmation pour l'insertion
+(setq auto-insert-directory "~/.emacs.d/mytemplates/") 
+(setq auto-insert-query nil) 
 
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -61,9 +61,9 @@
                             (horizontal-scroll-bars . nil)
                             (fullscreen . maximized)))
 
-(set-frame-font "firacode-14:regular")
+(set-frame-font "firacode-12:regular")
 (add-to-list 'default-frame-alist
-             '(font . "firacode-14:regular"))
+             '(font . "firacode-12:regular"))
 
 ;; alpha
 
@@ -186,6 +186,7 @@
 (require 'evil)
 (setq evil-want-keybinding nil)
 (require 'evil-collection)
+(evil-collection-init)
 (evil-mode 1)
 
 (evil-set-initial-state 'dired-mode 'emacs)
@@ -234,10 +235,10 @@
 (defun my-evil-color-modeline ()
   (interactive)
   (cond
-   ((eq evil-state 'emacs)
+   ((eq evil-state 'normal)
     (face-remap-add-relative
      'mode-line '((:background "#cc241d" :foreground "#351717") mode-line)))
-   ((eq evil-state 'normal)
+   ((eq evil-state 'emacs)
     (face-remap-add-relative
      'mode-line '((:background "#b16286" :foreground "#35212b") mode-line)))
    ((eq evil-state 'insert)
@@ -535,7 +536,7 @@
 (defun my-dired-find-file-internal (file &optional bm)
   "Used by `my-dired-open-file'"
   (let ((file-extension (or (file-name-extension file) "FILEEXT"))) ;; just to have a string to match when there's none
-    (cond ((string-match "\\(pdf\\|djvu\\|ps\\|dvi\\)$" file-extension)
+    (cond ((string-match "\\(xcf\\|pdf\\|djvu\\|ps\\|dvi\\)$" file-extension)
            (org-open-file file))
           ((string-match (regexp-opt my-org-extension-list) file-extension)
            (org-open-file-with-system file))
@@ -694,8 +695,11 @@
 
 (global-set-key (kbd "<f5>") (lambda () (interactive) (find-file "~/Documents/Administrative/a_faire.org")))
 
-(defvar my-bookmarks-alist ;; General bm
+(defvar my-bookmarks-alist 
   `(("packages" . "~/.emacs.d/packages/")
+    ("dp" . "/home/sam/Documents/Projects/Godot/Deeper/")
+    ("godot" . "/home/sam/Documents/Projects/Godot/")
+    ("proj" . "~/Documents/Projects/")
     ("emacs" . "~/.emacs.d/init.el")
     ("home" . "~/")
     ("zshrc" . "~/.zshrc")
@@ -710,23 +714,17 @@
    (list (completing-read "My-bookmarks goto: " my-bookmarks-alist nil t)))
   (my-dired-find-file-internal (cdr (assoc alias my-bookmarks-alist)) t))
 
-(defun my-bookmarks-add-bm (alias path pc)
+(defun my-bookmarks-add-bm (alias path)
   (interactive
    (list
     (read-string "Add bookmark alias: ")
-    (read-file-name "Add bookmak pathway: " nil nil t)
-    (completing-read "Which PC (General): " '("HomePC" "eWL" "Linux" "General") nil t nil nil "General")))
+    (read-file-name "Add bookmak pathway: " nil nil t)))
   (setq my-bookmarks-alist (cons (cons alias path) my-bookmarks-alist))
   (with-temp-buffer
     (find-file "~/.emacs.d/init.el")
     (save-excursion
-      (if (equal pc "General")
-          (progn
-            (re-search-forward "General bm" (beginning-of-buffer))
-            (next-logical-line))
-        (progn
-          (re-search-forward (format "%s bm" pc) (beginning-of-buffer))
-          (next-logical-line 4)))
+      (re-search-forward "my-bookmarks-alist" (beginning-of-buffer))
+      (next-logical-line)
       (end-of-line)
       (newline)
       (indent-for-tab-command)
@@ -1853,3 +1851,14 @@ potentially rename EGLOT's help buffer."
       '(("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE,en_GB") nil utf-8)))
 
 (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+
+
+;; GDSCRIPT
+
+(defun my-gdscript-mode-hook()
+  (interactive)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (eglot)
+  )
+
+(add-hook 'gdscript-mode-hook 'my-gdscript-mode-hook)
