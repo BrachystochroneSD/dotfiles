@@ -226,7 +226,7 @@
     Mod4 + Control + c
 
 # keepass
-"keepmenu"
+"~/.script/xprop_dwm"
     Mod4 + Mod1 + p
 
 "~/.script/mypassmenu"

@@ -16,7 +16,7 @@
 (setq inhibit-startup-screen t)
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type t)
 (global-display-line-numbers-mode)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
@@ -1859,3 +1859,21 @@ potentially rename EGLOT's help buffer."
   )
 
 (add-hook 'gdscript-mode-hook 'my-gdscript-mode-hook)
+
+
+;;SH-MODE
+
+(defun my-chmod-x-current-file ()
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (when (looking-at "#!.*")
+      (let ((curr-file (buffer-file-name)))
+        (chmod curr-file (file-modes-symbolic-to-number
+                          "u+x" (file-modes curr-file)))
+        (message "%s +x chmoded" curr-file)))))
+
+(defun my-sh-mode-hook ()
+  (interactive)
+  (add-hook 'before-save-hook 'my-chmod-x-current-file)
+  )
