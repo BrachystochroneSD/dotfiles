@@ -12,6 +12,7 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
 
+(setq evil-want-keybinding nil)
 (setq inhibit-startup-screen t)
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
@@ -183,10 +184,7 @@
 ;;;;;;;;;;;;;;;
 
 (setq evil-want-C-u-scroll t)
-(require 'evil)
-(setq evil-want-keybinding nil)
-(require 'evil-collection)
-(evil-collection-init)
+(evil-collection-init '((magit magit-repos magit-submodule) magit-section magit-todos))
 (evil-mode 1)
 
 (evil-set-initial-state 'dired-mode 'emacs)
@@ -772,7 +770,6 @@
 ;; ELFEED ;;
 ;;;;;;;;;;;;
 
-(require 'elfeed)
 (global-set-key (kbd "<f6>") 'elfeed)
 (setq elfeed-search-filter "@3-weeks-ago +unread")
 
