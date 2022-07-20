@@ -1,0 +1,32 @@
+#!/bin/sh
+
+
+auwlr_cache="${HOME}/.cache/auwlr"
+auwlr_build="$auwlr_cache/build"
+
+git_clone_or_pull() {
+    cd "$auwlr_build"
+    if [ -d "$1" ];then
+        cd "$1"
+        echo "Pulling/Update $1 in $auwlr_build"...
+        git pull origin master
+    else
+        echo "Installing $1 in $auwlr_build"...
+        git clone "https://aur.archlinux.org/$1.git"
+        cd "$1"
+    fi
+}
+
+
+zenorepo_add() {
+    lastdir="$PWD"
+    pkg="$1"
+    echo "Building $pkg"
+    git_clone_or_pull "$pkg" > /dev/null 2>&1
+    cd "$auwlr_build/$pkg"
+    makepkg -sfcr && {
+        pkg_tar=$(makepkg --packagelist)
+        sudo mv "$pkg_tar" "/srv/aur"
+    } || exit 1
+    cd "$lastdir"
+}

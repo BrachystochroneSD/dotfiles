@@ -1,0 +1,52 @@
+#!/bin/sh
+
+
+in_seconds() {
+    shite="$1"
+    seconds=${shite#*:}
+    minutes=${shite%:*}
+    echo "$minutes * 60 + $seconds" | bc
+}
+
+abort() {
+    echo "ERROR $1" 1&>2
+    exit 1
+}
+
+while getopts "ht:i:" opt; do
+      case $opt in
+          h) helpgen && exit 0 ;; # Print this Help
+          t) file=$OPTARG ;; # File that contain the list of timestamp
+          i) input=$OPTARG ;; # Input file taht contain the list of timestamp
+      esac
+done
+
+[ -n "$file" -a -f "$file" ] || abort "timestamp file -t $file not found"
+[ -n "$input" -a -f "$input" ] || abort "input file -i $input not found"
+
+tstamps=$(cat $file)
+
+cumul=0
+index=1
+suffixe=${input##*.}
+[ -z "$tstamps" ] && abort "file empty"
+
+echo "$tstamps" | while read time; do
+    if [ "$time" = "end" ]; then
+        echo end reaches
+        echo ffmpeg -loglevel quiet -y -ss $cumul -i "$input" "$index.$suffixe"
+        ffmpeg -nostdin -loglevel quiet -y -ss $cumul -i "$input" "$index.$suffixe"
+    else
+        if [ $cumul -eq 0 ]; then
+            echo ffmpeg -loglevel quiet -y -t $time -i "$input" "$index.$suffixe" 
+            ffmpeg -nostdin -loglevel quiet -y -t $time -i "$input" "$index.$suffixe"
+        else
+            echo ffmpeg -loglevel quiet -y -ss $cumul -t $time -i "$input" "$index.$suffixe"
+            ffmpeg -nostdin -loglevel quiet -y -ss $cumul -t $time -i "$input" "$index.$suffixe"
+        fi
+        stime=$(in_seconds "$time")
+        cumul=$(echo "$cumul + $stime" | bc)
+        index=$(echo "$index" + 1 | bc)
+    fi
+done
+          

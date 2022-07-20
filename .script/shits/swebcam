@@ -1,0 +1,2 @@
+mpv --demuxer-lavf-format=v4l2 /dev/video0
+

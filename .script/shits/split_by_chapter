@@ -1,0 +1,33 @@
+#!/bin/sh
+
+extract_chapter_number () {
+    local file="$1"
+    local number="$2"
+
+    start=$(echo "$json" | jq -r ".[$number] | .start_time")
+    end=$(echo "$json" | jq -r ".[$number] | .end_time")
+    title=$(echo "$json" | jq -r ".[$number] | .tags | .title")
+
+    ep_num=$(printf "%02d" $(echo 1 + $from + $number | bc))
+    ffmpeg -i "$file" -acodec copy -vcodec copy -ss "$start" -to "$end" "$shit$ep_num ${title##*. }.mkv"
+}
+
+file=$1
+shit=$2
+from=$3
+
+[ -z "$file" ] && echo need file && exit
+[ -z "$shit" ] && echo need shit && exit
+[ -z "$from" ] && from=0
+
+format=${file##*.}
+
+
+json=$(ffprobe -i "$file" -print_format json -show_chapters -loglevel error | jq ".[]" )
+
+
+number_of_chapters=$(echo "$json" | jq length)
+
+for i in $(seq 0 $(echo "$number_of_chapters" - 1 | bc ));do
+    extract_chapter_number "$file" "$i"
+done

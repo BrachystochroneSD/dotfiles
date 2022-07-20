@@ -770,6 +770,7 @@
 ;; ELFEED ;;
 ;;;;;;;;;;;;
 
+(elfeed-org)
 (global-set-key (kbd "<f6>") 'elfeed)
 (setq elfeed-search-filter "@3-weeks-ago +unread")
 
@@ -815,6 +816,10 @@
 
 (defun my-elfeed-search-hook-setup ()
   (interactive)
+  (local-set-key (kbd "b") 'elfeed-visit-or-play-video)
+  (local-set-key (kbd "B") 'elfeed-search-browse-url)
+  (local-set-key (kbd "d") 'my-elfeed-read-regex)
+  (local-set-key (kbd "D") 'my-elfeed-mark-all-author-as-read)
   (local-set-key (kbd "j") 'next-line)
   (local-set-key (kbd "k") 'previous-line)
   (local-set-key (kbd "l") 'my-elfeed-open)
@@ -865,25 +870,14 @@ See `elfeed-play-with-mpv'."
         (elfeed-show-visit)))
     (elfeed-search-untag-all-unread)))
 
-(define-key elfeed-search-mode-map "b" 'elfeed-visit-or-play-video)
-(define-key elfeed-search-mode-map "B" 'elfeed-search-browse-url)
-
-(define-key elfeed-search-mode-map "d" 'my-elfeed-read-regex)
-(define-key elfeed-search-mode-map "D" 'my-elfeed-mark-all-author-as-read)
-
-(defun my-vlc-launc-and-quit (link)
-  "Launch a link with vlc and then quit after the end of the video"
-  (start-process "my-vlc-quit" nil "vlc" link "vlc://quit"))
-
 (defun my-elfeed-read-regex (regex)
   (interactive
    (list
-    (read-string "Mark as read: "
-                 (let ((feed (elfeed-entry-feed (car (elfeed-search-selected)))))
-                   (when feed
-                     (or (elfeed-meta feed :title) (elfeed-feed-title feed)))
-                   )
-)))
+    (read-string
+     "Mark as read: "
+     (let ((feed (elfeed-entry-feed (car (elfeed-search-selected)))))
+       (when feed
+         (or (elfeed-meta feed :title) (elfeed-feed-title feed)))))))
   (setq cur_line (line-number-at-pos))
   (beginning-of-buffer)
   (while (re-search-forward regex nil t)
@@ -1854,11 +1848,13 @@ potentially rename EGLOT's help buffer."
 
 (defun my-gdscript-mode-hook()
   (interactive)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  (eglot)
-  )
+  (eglot-ensure))
 
 (add-hook 'gdscript-mode-hook 'my-gdscript-mode-hook)
+
+(add-hook 'gdscript-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'delete-trailing-whitespace)))
 
 
 ;;SH-MODE

@@ -1,0 +1,16 @@
+#!/usr/bin/sh
+
+desk_files=$(ls ${HOME} | grep ".*\.desktop")
+
+echo "$desk_files"
+
+echo "$desk_files" | while read file; do
+    echo "$file"
+    game_name=`echo ${file%%.desktop} | tr "[A-Z ]" "[a-z_]"`
+    exec_cmd=$(cat "${HOME}/$file" | grep "Exec")
+    exec_cmd="~/.local/bin/"${exec_cmd#Exec=}
+
+    echo -e "#!/usr/bin/sh\n\n$exec_cmd" > "${HOME}/$file"
+    chmod +x "${HOME}/$file"
+    mv "${HOME}/$file" "${HOME}/.local/bin/$game_name"
+done

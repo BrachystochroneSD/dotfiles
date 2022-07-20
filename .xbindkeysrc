@@ -150,7 +150,7 @@
 
 #---# Music shits #---#
 
-"mpd"
+"zenozik"
     Mod4 + Control + Shift + m
 "st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh"
     Mod4 + m
