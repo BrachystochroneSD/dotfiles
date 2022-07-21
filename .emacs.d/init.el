@@ -1310,14 +1310,12 @@ for renaming."
 
 ;; Include a bookmark to open all of my inboxes
 (add-to-list 'mu4e-bookmarks
-             (make-mu4e-bookmark
-              :name "all"
+             '(:name "all"
               :query "maildir:/umons/* OR maildir:/mailo/* OR maildir:/gmail/*"
               :key ?a))
 
 (add-to-list 'mu4e-bookmarks
-             (make-mu4e-bookmark
-              :name "sents"
+             '(:name "sents"
               :query "maildir:/sent OR maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
               :key ?s))
 
@@ -1873,3 +1871,6 @@ potentially rename EGLOT's help buffer."
   (interactive)
   (add-hook 'before-save-hook 'my-chmod-x-current-file)
   )
+
+
+(message "ALL DONE!")
