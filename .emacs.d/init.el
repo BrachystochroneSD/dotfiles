@@ -32,7 +32,7 @@
 (global-set-key (kbd "C-x M-k") 'my-kill-current-buffer)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'before-save-hook 'untabify)
+;; (add-hook 'before-save-hook 'untabify)
 
 (defun my-kill-current-buffer ()
   (interactive)
@@ -48,8 +48,8 @@
 ;;;;;;;;;;;;;;;;;
 
 (auto-insert-mode)
-(setq auto-insert-directory "~/.emacs.d/mytemplates/") 
-(setq auto-insert-query nil) 
+(setq auto-insert-directory "~/.emacs.d/mytemplates/")
+(setq auto-insert-query nil)
 
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -182,7 +182,8 @@
 ;;;;;;;;;;;;;;;
 ;; EVIL MODE ;;
 ;;;;;;;;;;;;;;;
-
+(require 'evil)
+(evil-set-undo-system 'undo-tree)
 (setq evil-want-C-u-scroll t)
 (evil-collection-init '((magit magit-repos magit-submodule) magit-section magit-todos))
 (evil-mode 1)
@@ -530,12 +531,13 @@
            switch-to-buffer-preserve-window-point)))
     (funcall (intern (completing-read "Open with : " '("org-open-file" "org-open-file-with-system" "find-file") nil t)) (dired-get-file-for-visit))))
 
-
 (defun my-dired-find-file-internal (file &optional bm)
   "Used by `my-dired-open-file'"
   (let ((file-extension (or (file-name-extension file) "FILEEXT"))) ;; just to have a string to match when there's none
     (cond ((string-match "\\(xcf\\|pdf\\|djvu\\|ps\\|dvi\\)$" file-extension)
            (org-open-file file))
+          ((string-match "^https?://.*" file)
+           (browse-url-default-browser file))
           ((string-match (regexp-opt my-org-extension-list) file-extension)
            (org-open-file-with-system file))
           ((and
@@ -693,7 +695,7 @@
 
 (global-set-key (kbd "<f5>") (lambda () (interactive) (find-file "~/Documents/Administrative/a_faire.org")))
 
-(defvar my-bookmarks-alist 
+(defvar my-bookmarks-alist
   `(("packages" . "~/.emacs.d/packages/")
     ("dp" . "/home/sam/Documents/Projects/Godot/Deeper/")
     ("godot" . "/home/sam/Documents/Projects/Godot/")
@@ -705,6 +707,7 @@
     ("doc" . "~/Documents/")
     ("downloads" . "~/Downloads/")
     ("images" . "~/Images/")
+    ("gitlab-deeper" . "https://gitlab.com/samd854685/deeper/-/issues")
     ))
 
 (defun my-bookmarks (alias)
@@ -1513,71 +1516,50 @@ This function is suitable for `mu4e-compose-mode-hook'."
 ;; INSERT BRACKETS ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
+(defun insert-or-encircle (char &optional insert)
+  (let ((start-char (if (eq (length char) 2) (substring char 0 1) char))
+        (end-char (if (eq (length char) 2) (substring char 1) char)))
+    (if (region-active-p)
+        (let ((start (region-beginning))
+              (end (region-end)))
+          (save-excursion
+            (goto-char start)
+            (insert start-char)
+            (goto-char end)
+            (forward-char)
+            (insert end-char)))
+      (insert (or insert char)))))
+
 (defun insert-bracket--right ()
   (interactive)
-  (if (region-active-p)
-      (progn
-        (goto-char (region-end))
-        (save-excursion
-          (insert "]")
-          (goto-char (region-beginning))
-          (insert "["))
-        (forward-char 2))
-    (insert "[]")))
+  (insert-or-encircle "[]" "]"))
 
 (defun insert-bracket--left ()
   (interactive)
-  (if (region-active-p)
-      (progn
-        (goto-char (region-end))
-        (insert "]")
-        (goto-char (region-beginning))
-        (insert "[")
-        (forward-char))
-    (insert "[]")))
-
-(global-set-key (kbd "M-]") 'insert-bracket--right)
-(global-set-key (kbd "M-[") 'insert-bracket--left)
+  (insert-or-encircle "[]" "["))
 
 (defun insert-curly-bracket--right ()
   (interactive)
-  (if (region-active-p)
-      (progn
-        (goto-char (region-end))
-        (save-excursion
-          (insert "}")
-          (goto-char (region-beginning))
-          (insert "{"))
-        (forward-char 2))
-    (insert "{}")))
+  (insert-or-encircle "{}" "}"))
 
 (defun insert-curly-bracket--left ()
   (interactive)
-  (if (region-active-p)
-      (progn
-        (goto-char (region-end))
-        (insert "}")
-        (goto-char (region-beginning))
-        (insert "{")
-        (forward-char))
-    (insert "{}")))
-
-(global-set-key (kbd "M-}") 'insert-curly-bracket--right)
-(global-set-key (kbd "M-{") 'insert-curly-bracket--left)
+  (insert-or-encircle "{}" "{"))
 
 (defun insert-quotes ()
   (interactive)
-  (if (region-active-p)
-      (progn
-        (goto-char (region-end))
-        (save-excursion
-          (insert "\"")
-          (goto-char (region-beginning))
-          (insert "\""))
-        (forward-char 2))
-    (insert "\"\"")))
+  (insert-or-encircle "\""))
 
+(defun insert-quote ()
+  (interactive)
+  (insert-or-encircle "'"))
+
+(global-set-key (kbd "M-}") 'insert-curly-bracket--right)
+(global-set-key (kbd "M-{") 'insert-curly-bracket--left)
+(global-set-key (kbd "M-]") 'insert-bracket--right)
+(global-set-key (kbd "M-[") 'insert-bracket--left)
 (global-set-key (kbd "M-\"") 'insert-quotes)
+(global-set-key (kbd "M-'") 'insert-quotes)
 
 ;;;;;;;;;;;
 ;; MAGIT ;;
@@ -1852,7 +1834,7 @@ potentially rename EGLOT's help buffer."
 
 (add-hook 'gdscript-mode-hook
           (lambda ()
-            (add-hook 'before-save-hook 'delete-trailing-whitespace)))
+            (add-hook 'before-save-hook 'delete-trailing-whitespace nil 'make-it-local)))
 
 
 ;;SH-MODE
@@ -1871,6 +1853,13 @@ potentially rename EGLOT's help buffer."
   (interactive)
   (add-hook 'before-save-hook 'my-chmod-x-current-file)
   )
+
+
+;;GITLAB
+
+(setq gitlab-host "https://gitlab.com"
+          gitlab-token-id "glpat-fJPVemQTX1nut5zttyzW")
+
 
 
 (message "ALL DONE!")
