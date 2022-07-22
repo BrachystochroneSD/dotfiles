@@ -16,7 +16,7 @@
       (sign)
       (encrypt))))
  '(package-selected-packages
-   '(ivy-gitlab gitlab elfeed-org magit gdscript-mode evil evil-collection undo-tree ivy gruvbox-theme elfeed multiple-cursors counsel helm-core vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+   '(forge elfeed-org magit gdscript-mode evil evil-collection undo-tree ivy gruvbox-theme elfeed multiple-cursors counsel helm-core vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(send-mail-function 'mailclient-send-it)
  '(warning-suppress-types '(((evil-collection)) ((evil-collection)))))

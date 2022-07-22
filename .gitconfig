@@ -3,3 +3,5 @@
     name = Samuel D
 [pull]
     rebase = false
+[gitlab]
+    user = samd854685

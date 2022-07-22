@@ -1567,6 +1567,8 @@ This function is suitable for `mu4e-compose-mode-hook'."
 
 (require 'magit)
 (global-set-key (kbd "M-²") 'magit)
+(with-eval-after-load 'magit
+  (require 'forge))
 
 ;;;;;;;;;
 ;; IVY ;;
@@ -1855,11 +1857,23 @@ potentially rename EGLOT's help buffer."
   )
 
 
-;;GITLAB
+;; number minor mode
 
-(setq gitlab-host "https://gitlab.com"
-          gitlab-token-id "glpat-fJPVemQTX1nut5zttyzW")
+(define-minor-mode number-mode
+  "When Hungry mode is enabled, you can write number with qsdfghjklm"
+  nil
+  " Number"
+  `((,(kbd "q") . "1")
+    (,(kbd "s") . "2")
+    (,(kbd "d") . "3")
+    (,(kbd "f") . "4")
+    (,(kbd "g") . "5")
+    (,(kbd "h") . "6")
+    (,(kbd "j") . "7")
+    (,(kbd "k") . "8")
+    (,(kbd "l") . "9")
+    (,(kbd "m") . "0")))
 
-
+(global-set-key (kbd "C-S-n") 'number-mode)
 
 (message "ALL DONE!")
