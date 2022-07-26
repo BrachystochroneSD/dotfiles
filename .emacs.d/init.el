@@ -1229,19 +1229,19 @@ for renaming."
       (lambda (msg)
         (cond
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samueld@mailo.com")
-      "/archives/mailo")
+          "/archives/mailo")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samrenfou@hotmail.com")
-      "/archives/outlook")
+          "/archives/outlook")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samuel.dawant@alumni.umons.ac.be")
-      "/archives/umons")
+          "/archives/umons")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "mrsamrenfou@gmail.com")
-      "/archives/gmail")
+          "/archives/gmail")
          ;; messages sent by me go to the sent folder
-         ((find-if
-       (lambda (addr)
-         (mu4e-message-contact-field-matches msg :from addr))
-       (mu4e-personal-addresses))
-      mu4e-sent-folder)
+         ((cl-find-if
+           (lambda (addr)
+             (mu4e-message-contact-field-matches msg :from addr))
+           (mu4e-personal-addresses))
+          mu4e-sent-folder)
          (t  "/archives/misc"))))
 
 (defun my-mu4e-important-refile ()
