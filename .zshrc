@@ -55,7 +55,7 @@ compdef _wifi wifi
 # Basics Aliases #
 ##################
 
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --group-directories-first'
 alias la='ls -A'
 alias ll='ls -halF'
 alias l='ls -CF'
