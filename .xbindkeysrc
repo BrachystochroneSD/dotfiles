@@ -260,8 +260,10 @@
     Mod4 + Control + F7
 
 "scrot ~/Images/screenshots/%Y-%m-%d_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
-     Print
+    Print
 
+"~/.script/gif_screen"
+    Mod4 + Print
 
 
 "~/.script/hass inc"

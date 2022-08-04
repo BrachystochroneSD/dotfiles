@@ -1,7 +1,7 @@
 #!/bin/sh
 
-location="${HOME}/Images/screenshots/gif/"
+location="${HOME}/Images/screenshots/video/"
 mkdir -p $location
-name=$(date +"%Y-%m-%d_%H:%M:%S_screengif.gif")
+name=$(date +"%Y-%m-%d_%H:%M:%S_screengif.mp4")
 
 ffmpeg -f x11grab -framerate 25 -i :0 "$location$name"
