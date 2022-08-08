@@ -103,10 +103,10 @@
 (global-set-key (kbd "C-M-h") 'windmove-up)
 (global-set-key (kbd "C-M-n") 'windmove-down)
 
-(global-set-key (kbd "C-M-?") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-M-S-b") 'shrink-window-horizontally)
-(global-set-key (kbd "C-M-S-h") 'enlarge-window)
-(global-set-key (kbd "C-M-S-n") 'shrink-window)
+(global-set-key (kbd "C-M-?") (lambda () (interactive) (enlarge-window-horizontally 5)))
+(global-set-key (kbd "C-M-S-b") (lambda () (interactive) (shrink-window-horizontally 5)))
+(global-set-key (kbd "C-M-S-h") (lambda () (interactive) (enlarge-window 5)))
+(global-set-key (kbd "C-M-S-n") (lambda () (interactive) (shrink-window 5)))
 
 
 (global-set-key (kbd "<f8>") 'toggle-truncate-lines)
@@ -229,32 +229,28 @@
 
 (define-key evil-normal-state-map (kbd "C-M-j") 'evil-join)
 
-;; evil mode-line gruvbox colors
+;; evil mood-line and gruvbox colors
+
+(require 'mood-line)
+(mood-line-mode)
+(setq mood-line-show-eol-style t)
+(setq mood-line-show-encoding-information t)
+
+(setq evil-mood-line-colors
+ '((emacs . (:background "#b16286" :foreground "#35212b"))
+   (insert . (:background "#d65d0e" :foreground "#3f2100"))
+   (replace . (:background "#d79921" :foreground "#3f2b00"))
+   (motion . (:background "#98971a" :foreground "#2b2b00"))
+   (visual . (:background "#458588" :foreground "#212b2b"))
+   (operator . (:background "#689d6a" :foreground "#212b21"))
+   (normal . (:background "#cc241d" :foreground "#351717"))))
 
 (defun my-evil-color-modeline ()
   (interactive)
-  (cond
-   ((eq evil-state 'normal)
-    (face-remap-add-relative
-     'mode-line '((:background "#cc241d" :foreground "#351717") mode-line)))
-   ((eq evil-state 'emacs)
-    (face-remap-add-relative
-     'mode-line '((:background "#b16286" :foreground "#35212b") mode-line)))
-   ((eq evil-state 'insert)
-    (face-remap-add-relative
-     'mode-line '((:background "#d65d0e" :foreground "#3f2100") mode-line)))
-   ((eq evil-state 'replace)
-    (face-remap-add-relative
-     'mode-line '((:background "#d79921" :foreground "#3f2b00") mode-line)))
-   ((eq evil-state 'motion)
-    (face-remap-add-relative
-     'mode-line '((:background "#98971a" :foreground "#2b2b00") mode-line)))
-   ((eq evil-state 'visual)
-    (face-remap-add-relative
-     'mode-line '((:background "#458588" :foreground "#212b2b") mode-line)))
-   ((eq evil-state 'operator)
-    (face-remap-add-relative
-     'mode-line '((:background "#689d6a" :foreground "#212b21") mode-line)))))
+  (face-remap-add-relative 'mood-line-modified `(,(alist-get evil-state evil-mood-line-colors) mood-line-modified))
+  (face-remap-add-relative 'mood-line-unimportant `(,(alist-get evil-state evil-mood-line-colors) mood-line-unimportant))
+  (face-remap-add-relative 'mood-line-anzu `(,(alist-get evil-state evil-mood-line-colors) mood-line-anzu))
+  (face-remap-add-relative 'mood-line-buffer-name `(,(alist-get evil-state evil-mood-line-colors) mood-line-buffer-name)))
 
 (add-hook 'evil-visual-state-entry-hook 'my-evil-color-modeline)
 (add-hook 'evil-motion-state-entry-hook 'my-evil-color-modeline)
@@ -603,8 +599,8 @@
   (split-window-horizontally (max 15 (min 20 (/ (window-width) 3.))))
   (dired-jump))
 
-(global-set-key (kbd "C-à") 'dired-jump)
-(global-set-key (kbd "M-à") 'my-dired-jump)
+(global-set-key (kbd "C-à") 'my-dired-jump)
+(global-set-key (kbd "M-à") 'dired-jump)
 (global-set-key (kbd "C-!") (lambda () (interactive)(dired "~")))
 
 (defun my-dired-kill-subdir ()
@@ -1874,5 +1870,6 @@ potentially rename EGLOT's help buffer."
             (,(kbd "m") . "0")))
 
 (global-set-key (kbd "C-S-n") 'number-mode)
+
 
 (message "ALL DONE!")
