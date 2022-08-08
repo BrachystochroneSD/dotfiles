@@ -744,6 +744,8 @@
 ;; SCRATCH MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq initial-scratch-message "")
+
 (defun my-rename-scratch ()
   (interactive)
   (rename-buffer (format "*scratch*<%s>" (read-string "Rename scratch buffer: "))))
@@ -1122,25 +1124,6 @@ for renaming."
   (if condition
       (message "ok")
     (message "nok")))
-
-;;;;;;;;;;
-;; PYIM ;;
-;;;;;;;;;;
-
-;; (require 'pyim)
-;; (set-input-method 'pyim)
-;; (global-set-key (kbd "C-=") 'toggle-input-method)
-
-;; (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
-;; (set-language-environment 'utf-8)
-;; (setq locale-coding-system 'utf-8)
-;; (set-default-coding-systems 'utf-8)
-;; (set-terminal-coding-system 'utf-8)
-;; (set-selection-coding-system
-;;  (if (eq system-type 'windows-nt)
-;;      'utf-16-le  ;; https://rufflewind.com/2014-07-20/pasting-unicode-in-emacs-on-windows
-;;    'utf-8))
-;; (prefer-coding-system 'utf-8)
 
 ;;;;;;;;;;
 ;; MU4E ;;
