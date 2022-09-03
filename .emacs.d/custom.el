@@ -25,7 +25,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(mode-line ((t (:background "#303030" :box nil))))
- '(mode-line-inactive ((t (:background "#282828" :box nil))))
  '(line-number ((t (:background "#292929" :box nil))))
- '(line-number-current-line ((t (:background "#292929" :box nil)))))
+ '(line-number-current-line ((t (:background "#292929" :box nil))))
+ '(mode-line ((t (:background "#303030" :box nil))))
+ '(mode-line-inactive ((t (:background "#282828" :box nil)))))

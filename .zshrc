@@ -49,7 +49,8 @@ compdef _xdd xdd
 compdef _wifi wifi
 
 # fix for tramp emacs
-[ $TERM = "dumb" ] && unsetopt zle $$ PS1='$ '
+#[ $TERM = "dumb" ] && unsetopt zle $$ PS1='$ '
+[ $TERM = "dumb" ] && TERM=xterm-256color
 
 ##################
 # Basics Aliases #

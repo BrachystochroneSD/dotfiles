@@ -66,10 +66,40 @@
 (add-to-list 'default-frame-alist
              '(font . "firacode-12:regular"))
 
+(let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+               (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+               (36 . ".\\(?:>\\)")
+               (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+               (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+               (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+               (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+               (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+               (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+               (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+               (48 . ".\\(?:x[a-zA-Z]\\)")
+               (58 . ".\\(?:::\\|[:=]\\)")
+               (59 . ".\\(?:;;\\|;\\)")
+               (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+               (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+               (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+               (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+               (91 . ".\\(?:]\\)")
+               (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+               (94 . ".\\(?:=\\)")
+               (119 . ".\\(?:ww\\)")
+               (123 . ".\\(?:-\\)")
+               (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+               (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+               )
+             ))
+  (dolist (char-regexp alist)
+    (set-char-table-range composition-function-table (car char-regexp)
+                          `([,(cdr char-regexp) 0 font-shape-gstring]))))
+
 ;; alpha
 
-(set-frame-parameter nil 'alpha '(95))
-(add-to-list 'default-frame-alist '(alpha 95))
+(set-frame-parameter nil 'alpha '(80))
+(add-to-list 'default-frame-alist '(alpha 80))
 
 (defun my-make-it-transparentier (x)
   "add X to the current frame alpha value"
@@ -142,29 +172,24 @@
 ;; Custom Change-Buffer ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun my-next-buffer ()
+(defun my-next-buffer (&optional previous modified)
   "next-buffer, only skip buffer nuls"
   (interactive)
-  (next-buffer)
-  (if (or (equal "dired-mode" (symbol-name major-mode))
+  (if previous (previous-buffer) (next-buffer))
+  (if (or (when modified (not (buffer-modified-p)))
+          (equal "dired-mode" (symbol-name major-mode))
           (equal (substring (buffer-name) 0 1) "*"))
-      (my-next-buffer)))
+      (my-next-buffer previous modified)))
 
-(global-set-key (kbd "C-x C-<right>") 'my-next-buffer)
-(global-set-key (kbd "C-c C-<right>") 'next-buffer)
+(defun my-previous-buffer () (interactive) (my-next-buffer t))
+(defun my-next-modified-buffer () (interactive) (my-next-buffer nil t))
+(defun my-previous-modified-buffer () (interactive) (my-next-buffer t t))
+
+
 (global-set-key (kbd "C-$") 'my-next-buffer)
-
-(defun my-previous-buffer ()
-  "previous-buffer, only skip buffer nuls"
-  (interactive)
-  (previous-buffer)
-  (if (or (equal "dired-mode" (symbol-name major-mode))
-          (equal (substring (buffer-name) 0 1) "*"))
-      (my-previous-buffer)))
-
-(global-set-key (kbd "C-x C-<left>") 'my-previous-buffer)
-(global-set-key (kbd "C-c C-<left>") 'previous-buffer)
 (global-set-key (kbd "M-$") 'my-previous-buffer)
+(global-set-key (kbd "C-*") 'my-next-modified-buffer)
+(global-set-key (kbd "M-*") 'my-previous-modified-buffer)
 
 
 ;;;;;;;;;;;;;;;
@@ -662,7 +687,6 @@
   (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
   (dired-hide-details-mode)
   (display-line-numbers-mode 0)
-  (text-scale-decrease 2)
   (local-unset-key (kbd "C-M-n"))
   (local-set-key (kbd "C-x C-f") 'my-dired-find-file)
   (local-set-key (kbd "/") 'isearch-forward)
@@ -693,7 +717,7 @@
 
 (defvar my-bookmarks-alist
   `(("packages" . "~/.emacs.d/packages/")
-    ("dp" . "/home/sam/Documents/Projects/Godot/Deeper/")
+    ("dp" . "/home/sam/Documents/Projects/Godot/Deeper/main.gd")
     ("godot" . "/home/sam/Documents/Projects/Godot/")
     ("proj" . "~/Documents/Projects/")
     ("emacs" . "~/.emacs.d/init.el")
@@ -848,7 +872,7 @@
   "Play entry link with mpv."
   (interactive)
   (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-        (quality-val (completing-read "Max height resolution (0 for unlimited): " '("0" "360" "480" "720" "1080") nil nil "720")))
+        (quality-val (completing-read "Max height resolution (0 for unlimited): " '("720" "0" "360" "480" "1080"))))
     (elfeed-play-with-mpv-at-quality (string-to-number quality-val) entry)))
 
 (defvar elfeed-video-patterns
@@ -1640,7 +1664,8 @@ potentially rename EGLOT's help buffer."
 ;;;;;;;;;;;;;
 
 
-(global-set-key (kbd "M-§") 'flymake-goto-next-error)
+(global-set-key (kbd "C-µ") 'flymake-goto-next-error)
+(global-set-key (kbd "C-ù") 'flymake-goto-prev-error)
 ;; (setq image-file-name-extensions (remove "svg" image-file-name-extensions))
 
 ;;;;;;;;;;
@@ -1807,6 +1832,13 @@ potentially rename EGLOT's help buffer."
 
 ;; GDSCRIPT
 
+(add-hook 'godot-mode-hook 'ansi-color-for-comint-mode-on)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+
+
+
 (defun my-gdscript-mode-hook()
   (interactive)
   (eglot-ensure))
@@ -1837,20 +1869,27 @@ potentially rename EGLOT's help buffer."
 
 ;; number minor mode
 
+(defun my-goto-line ()
+  (interactive)
+  (let ((number-mode t))
+    (call-interactively 'goto-line)))
+
+(evil-ex-define-cmd "g" 'my-goto-line)
+
 (define-minor-mode number-mode
   "When Hungry mode is enabled, you can write number with qsdfghjklm"
   :init-value nil
   :lighter " Number"
-  :keymap `((,(kbd "q") . "1")
-            (,(kbd "s") . "2")
-            (,(kbd "d") . "3")
-            (,(kbd "f") . "4")
-            (,(kbd "g") . "5")
-            (,(kbd "h") . "6")
-            (,(kbd "j") . "7")
-            (,(kbd "k") . "8")
-            (,(kbd "l") . "9")
-            (,(kbd "m") . "0")))
+  :keymap `((,(kbd ",") . "1")
+            (,(kbd ";") . "2")
+            (,(kbd ":") . "3")
+            (,(kbd "j") . "4")
+            (,(kbd "k") . "5")
+            (,(kbd "l") . "6")
+            (,(kbd "u") . "7")
+            (,(kbd "i") . "8")
+            (,(kbd "o") . "9")
+            (,(kbd "n") . "0")))
 
 (global-set-key (kbd "C-S-n") 'number-mode)
 
