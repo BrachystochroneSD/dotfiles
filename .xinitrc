@@ -8,7 +8,7 @@ wpg -m
 xbindkeys
 unclutter -idle 1 -jitter 2 -root &
 redshift &
-picom &
+picom --experimental-backends &
 dwmblocks &
 nextcloud --background &
 emacs --daemon
