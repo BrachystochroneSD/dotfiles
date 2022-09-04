@@ -95,7 +95,7 @@
     Mod4 + Shift + t
 
 # start dmenu
-"~/.script/my_dmenu_run -i"
+"rofi -show drun"
     Mod4 + d
 
 #CALculette
