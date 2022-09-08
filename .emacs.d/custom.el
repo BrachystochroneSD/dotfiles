@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(compilation-message-face 'default)
  '(custom-safe-themes
-   '("7661b762556018a44a29477b84757994d8386d6edee909409fabe0631952dad9" default))
+   '("d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298" "7661b762556018a44a29477b84757994d8386d6edee909409fabe0631952dad9" default))
  '(magit-diff-use-overlays nil)
  '(mml-secure-key-preferences
    '((OpenPGP

@@ -62,9 +62,12 @@
                             (horizontal-scroll-bars . nil)
                             (fullscreen . maximized)))
 
-(set-frame-font "firacode-12:regular")
-(add-to-list 'default-frame-alist
-             '(font . "firacode-12:regular"))
+(set-face-attribute 'default nil :family "firacode" :height 140)
+(set-face-attribute 'font-lock-string-face nil :family "cascadiacodepl" :weight 'demibold :slant 'italic)
+(set-face-attribute 'font-lock-type-face nil :family "victormono" :weight 'demibold :slant 'oblique)
+(set-face-attribute 'font-lock-function-name-face nil :family "victormono" :weight 'medium)
+(set-face-attribute 'font-lock-builtin-face nil :family "victormono" :weight 'demibold :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil :family "victormono" :weight 'demibold :slant 'italic)
 
 (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
@@ -471,6 +474,7 @@
 
 (global-set-key (kbd "C-+") 'my-text-scale-increase)
 (global-set-key (kbd "C--") 'my-text-scale-decrease)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Goto-Line Binding ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -1832,13 +1836,6 @@ potentially rename EGLOT's help buffer."
 
 ;; GDSCRIPT
 
-(add-hook 'godot-mode-hook 'ansi-color-for-comint-mode-on)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-
-
-
 (defun my-gdscript-mode-hook()
   (interactive)
   (eglot-ensure))
@@ -1877,7 +1874,7 @@ potentially rename EGLOT's help buffer."
 (evil-ex-define-cmd "g" 'my-goto-line)
 
 (define-minor-mode number-mode
-  "When Hungry mode is enabled, you can write number with qsdfghjklm"
+  "To write number with ,;:jkluion"
   :init-value nil
   :lighter " Number"
   :keymap `((,(kbd ",") . "1")
