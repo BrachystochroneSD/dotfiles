@@ -221,7 +221,7 @@
 "killall skypeforlinux"
     Mod4 + Mod1 + s
 #"nheko"
-"element-desktop"
+"nheko"
     Mod4 + Control + d
 "caprine"
     Mod4 + Control + c
