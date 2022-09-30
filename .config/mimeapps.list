@@ -18,4 +18,4 @@ image/svg+xml=brave-browser.desktop;
 text/plain=brave-browser.desktop;
 application/x-wine-extension-ini=emacs.desktop;
 audio/mpeg=music.desktop;mpv.desktop;
-audio/x-wav=userapp-paplay-BDF8O1.desktop;
+audio/x-wav=mpv.desktop;userapp-paplay-BDF8O1.desktop;

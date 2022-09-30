@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=surf
-Comment=Surf minimal web browser
-Terminal=false
-Exec=/home/sam/.config/surf-2.0/surf-open.sh
-Categories=Network;WebBrowser
-MimeType=x-scheme-handler/unknown;x-scheme-handler/about;x-scheme-handler/https;x-scheme-handler/http;text/html;

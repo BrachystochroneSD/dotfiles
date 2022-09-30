@@ -266,13 +266,13 @@
 (setq mood-line-show-encoding-information t)
 
 (setq evil-mood-line-colors
- '((emacs . (:background "#b16286" :foreground "#35212b"))
-   (insert . (:background "#d65d0e" :foreground "#3f2100"))
-   (replace . (:background "#d79921" :foreground "#3f2b00"))
-   (motion . (:background "#98971a" :foreground "#2b2b00"))
-   (visual . (:background "#458588" :foreground "#212b2b"))
-   (operator . (:background "#689d6a" :foreground "#212b21"))
-   (normal . (:background "#cc241d" :foreground "#351717"))))
+      '((emacs . (:background "#b16286" :foreground "#35212b"))
+        (insert . (:background "#d65d0e" :foreground "#3f2100"))
+        (replace . (:background "#d79921" :foreground "#3f2b00"))
+        (motion . (:background "#98971a" :foreground "#2b2b00"))
+        (visual . (:background "#458588" :foreground "#212b2b"))
+        (operator . (:background "#689d6a" :foreground "#212b21"))
+        (normal . (:background "#cc241d" :foreground "#351717"))))
 
 (defun my-evil-color-modeline ()
   (interactive)
@@ -720,24 +720,33 @@
 
 (global-set-key (kbd "<f5>") (lambda () (interactive) (find-file "~/Documents/Administrative/a_faire.org")))
 
-(defvar my-bookmarks-alist
-  `(("packages" . "~/.emacs.d/packages/")
-    ("dp" . "/home/sam/Documents/Projects/Godot/Deeper/main.gd")
-    ("godot" . "/home/sam/Documents/Projects/Godot/")
-    ("proj" . "~/Documents/Projects/")
-    ("emacs" . "~/.emacs.d/init.el")
-    ("home" . "~/")
-    ("zshrc" . "~/.zshrc")
-    ("scripts" . "~/.script/")
-    ("doc" . "~/Documents/")
-    ("downloads" . "~/Downloads/")
-    ("images" . "~/Images/")
-    ("gitlab-deeper" . "https://gitlab.com/samd854685/deeper/-/issues")
-    ))
+
+(defvar my-bookmarks-default-file "~/.emacs.d/my-bookmarks")
+(defvar my-bookmarks-alist `())
+
+(defun my-save-bookmarks ()
+  (interactive)
+  (let ((file my-bookmarks-default-file))
+    (with-current-buffer (find-file-noselect my-bookmarks-default-file)
+      (delete-region (point-min) (point-max))
+      (dolist (bm my-bookmarks-alist)
+        (insert (format "%s %s\n" (car bm) (cdr bm))))
+      (write-file file)
+      (kill-buffer (current-buffer)))))
+
+(defun my-load-bookmarks ()
+  (interactive)
+  (let ((file my-bookmarks-default-file))
+    (with-current-buffer (find-file-noselect my-bookmarks-default-file)
+      (goto-char (point-min))
+      (dolist (line (split-string (substring (thing-at-point 'page) 0 -1) "\n"))
+        (let ((bm (split-string line " ")))
+          (my-bookmarks-add-bm (car bm) (cadr bm)))))))
 
 (defun my-bookmarks (alias)
   (interactive
    (list (completing-read "My-bookmarks goto: " my-bookmarks-alist nil t)))
+  (my-load-bookmarks)
   (my-dired-find-file-internal (cdr (assoc alias my-bookmarks-alist)) t))
 
 (defun my-bookmarks-add-bm (alias path)
@@ -745,26 +754,22 @@
    (list
     (read-string "Add bookmark alias: ")
     (read-file-name "Add bookmak pathway: " nil nil t)))
-  (setq my-bookmarks-alist (cons (cons alias path) my-bookmarks-alist))
-  (with-temp-buffer
-    (find-file "~/.emacs.d/init.el")
-    (save-excursion
-      (re-search-forward "my-bookmarks-alist" (beginning-of-buffer))
-      (next-logical-line)
-      (end-of-line)
-      (newline)
-      (indent-for-tab-command)
-      (insert (format "(\"%s\" . \"%s\")" alias path))
-      (save-buffer)
-      (eval-defun t)
-      (switch-to-prev-buffer))))
+  (unless (assoc alias my-bookmarks-alist)
+    (add-to-list 'my-bookmarks-alist (cons alias path)))
+  (my-save-bookmarks))
 
 (defun my-bookmarks-remove-bm (alias)
   (interactive
-   (list (completing-read "My-bookmarks goto: " my-bookmarks-alist nil t)))
-  (setq my-bookmarks-alist (delq (assoc "doc" my-bookmarks-alist) my-bookmarks-alist)))
+   (list
+    (completing-read
+     "My-bookmarks remove: "
+     my-bookmarks-alist nil t)))
+  (setq my-bookmarks-alist
+        (delq (assoc alias my-bookmarks-alist)
+              my-bookmarks-alist))
+  (my-save-bookmarks))
 
-(global-set-key (kbd "C-ç") 'my-bookmarks)
+(global-set-key (kbd "C-ç") 'bookmarks)
 (global-set-key (kbd "C-M-ç") 'my-bookmarks-remove-bm)
 (global-set-key (kbd "M-ç") 'my-bookmarks-add-bm)
 
@@ -1322,13 +1327,13 @@ for renaming."
 ;; Include a bookmark to open all of my inboxes
 (add-to-list 'mu4e-bookmarks
              '(:name "all"
-              :query "maildir:/umons/* OR maildir:/mailo/* OR maildir:/gmail/*"
-              :key ?a))
+                     :query "maildir:/umons/* OR maildir:/mailo/* OR maildir:/gmail/*"
+                     :key ?a))
 
 (add-to-list 'mu4e-bookmarks
              '(:name "sents"
-              :query "maildir:/sent OR maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
-              :key ?s))
+                     :query "maildir:/sent OR maildir:/umons/Sent OR maildir:/mailo/Sent OR maildir:/gmail/Sent"
+                     :key ?s))
 
 (define-key mu4e-main-mode-map "u" 'mu4e-update-index)
 
