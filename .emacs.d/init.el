@@ -735,28 +735,28 @@
       (kill-buffer (current-buffer)))))
 
 (defun my-load-bookmarks ()
-  (interactive)
   (let ((file my-bookmarks-default-file))
     (with-current-buffer (find-file-noselect my-bookmarks-default-file)
       (goto-char (point-min))
       (dolist (line (split-string (substring (thing-at-point 'page) 0 -1) "\n"))
         (let ((bm (split-string line " ")))
-          (my-bookmarks-add-bm (car bm) (cadr bm)))))))
+          (my-bookmarks-add-bm (car bm) (cadr bm) t))))))
+
 
 (defun my-bookmarks (alias)
   (interactive
-   (list (completing-read "My-bookmarks goto: " my-bookmarks-alist nil t)))
-  (my-load-bookmarks)
+   (list
+    (completing-read "My-bookmarks goto: " my-bookmarks-alist nil t)))
   (my-dired-find-file-internal (cdr (assoc alias my-bookmarks-alist)) t))
 
-(defun my-bookmarks-add-bm (alias path)
+(defun my-bookmarks-add-bm (alias path &optional no-save)
   (interactive
    (list
     (read-string "Add bookmark alias: ")
     (read-file-name "Add bookmak pathway: " nil nil t)))
   (unless (assoc alias my-bookmarks-alist)
     (add-to-list 'my-bookmarks-alist (cons alias path)))
-  (my-save-bookmarks))
+  (unless no-save (my-save-bookmarks)))
 
 (defun my-bookmarks-remove-bm (alias)
   (interactive
@@ -769,10 +769,11 @@
               my-bookmarks-alist))
   (my-save-bookmarks))
 
-(global-set-key (kbd "C-ç") 'bookmarks)
+(global-set-key (kbd "C-ç") 'my-bookmarks)
 (global-set-key (kbd "C-M-ç") 'my-bookmarks-remove-bm)
 (global-set-key (kbd "M-ç") 'my-bookmarks-add-bm)
 
+(my-load-bookmarks)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SCRATCH MANAGEMENT ;;
