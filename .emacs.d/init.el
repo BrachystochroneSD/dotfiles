@@ -4,6 +4,7 @@
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'load-path "~/.emacs.d/my-packages")
 (package-initialize)
 
 (setq custom-file (concat user-emacs-directory "custom.el"))
@@ -102,8 +103,8 @@
 
 ;; alpha
 
-(set-frame-parameter nil 'alpha '(80))
-(add-to-list 'default-frame-alist '(alpha 80))
+(set-frame-parameter nil 'alpha '(90))
+(add-to-list 'default-frame-alist '(alpha 90))
 
 (defun my-make-it-transparentier (x)
   "add X to the current frame alpha value"
@@ -155,16 +156,37 @@
 
 (defun my-split-window-vertically ()
   (interactive)
+  (setq my-zoom-state nil)
   (split-window-vertically)
   (set-window-buffer (next-window) (other-buffer)))
 
 (defun my-split-window-horizontally ()
   (interactive)
+  (setq my-zoom-state nil)
   (split-window-horizontally)
   (set-window-buffer (next-window) (other-buffer)))
 
 (global-set-key (kbd "C-M-<return>") 'my-split-window-horizontally)
 (global-set-key (kbd "C-M-S-<return>") 'my-split-window-vertically)
+
+(setq my-zoom-state nil)
+
+(defun my-zoom-window ()
+  (window-configuration-to-register 1)
+  (delete-other-windows))
+
+(defun my-dezoom-window ()
+  (let ((curr-pos (point)))
+    (jump-to-register 1)
+    (goto-char curr-pos)))
+
+(defun my-toggle-zoom-window ()
+  (interactive)
+  (message "%s" my-zoom-state)
+  (if (not my-zoom-state)
+      (my-zoom-window)
+    (my-dezoom-window))
+  (setq my-zoom-state (not my-zoom-state)))
 
 ;; Comments
 
@@ -217,6 +239,9 @@
 (evil-collection-init '((magit magit-repos magit-submodule) magit-section magit-todos))
 (evil-mode 1)
 
+
+(define-key evil-window-map (kbd "z") 'my-toggle-zoom-window)
+
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'eshell-mode 'emacs)
 (evil-set-initial-state 'elfeed-search-mode 'emacs)
@@ -260,10 +285,12 @@
 
 ;; evil mood-line and gruvbox colors
 
-(require 'mood-line)
-(mood-line-mode)
-(setq mood-line-show-eol-style t)
-(setq mood-line-show-encoding-information t)
+
+(add-to-list 'load-path "~/.emacs.d/my-packages/my-mood-line")
+(require 'my-mood-line)
+(my-mood-line-mode 1)
+(setq my-mood-line-show-eol-style t)
+(setq my-mood-line-show-encoding-information t)
 
 (setq evil-mood-line-colors
       '((emacs . (:background "#b16286" :foreground "#35212b"))
@@ -276,10 +303,10 @@
 
 (defun my-evil-color-modeline ()
   (interactive)
-  (face-remap-add-relative 'mood-line-modified `(,(alist-get evil-state evil-mood-line-colors) mood-line-modified))
-  (face-remap-add-relative 'mood-line-unimportant `(,(alist-get evil-state evil-mood-line-colors) mood-line-unimportant))
-  (face-remap-add-relative 'mood-line-anzu `(,(alist-get evil-state evil-mood-line-colors) mood-line-anzu))
-  (face-remap-add-relative 'mood-line-buffer-name `(,(alist-get evil-state evil-mood-line-colors) mood-line-buffer-name)))
+  (face-remap-add-relative 'my-mood-line-modified `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-modified))
+  (face-remap-add-relative 'my-mood-line-unimportant `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-unimportant))
+  (face-remap-add-relative 'my-mood-line-anzu `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-anzu))
+  (face-remap-add-relative 'my-mood-line-buffer-name `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-buffer-name)))
 
 (add-hook 'evil-visual-state-entry-hook 'my-evil-color-modeline)
 (add-hook 'evil-motion-state-entry-hook 'my-evil-color-modeline)
@@ -1244,6 +1271,8 @@ for renaming."
         (cond
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samueld@mailo.com")
           "/archives/mailo")
+         ((mu4e-message-contact-field-matches msg '(:to :cc) "mlkjazeriulkjoiu@netc.it")
+          "/archives/mailo")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samrenfou@hotmail.com")
           "/archives/outlook")
          ((mu4e-message-contact-field-matches msg '(:to :cc) "samuel.dawant@alumni.umons.ac.be")
@@ -1592,7 +1621,7 @@ This function is suitable for `mu4e-compose-mode-hook'."
 (ivy-mode 1)
 
 (setq ivy-count-format "%-4d ")
-(global-set-key (kbd "C-c n") 'counsel-fzf)
+(global-set-key (kbd "C-c C-n") (lambda () (interactive) (counsel-fzf nil (magit-toplevel))))
 
 ;;;;;;;;;;;
 ;; EGLOT ;;
