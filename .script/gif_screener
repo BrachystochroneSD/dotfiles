@@ -4,4 +4,4 @@ location="${HOME}/Images/screenshots/video/"
 mkdir -p $location
 name=$(date +"%Y-%m-%d_%H:%M:%S_screengif.mp4")
 
-ffmpeg -f x11grab -framerate 25 -i :0 "$location$name"
+ffmpeg -f x11grab   -framerate 25 -i :0 -f pulse -i 45 "$location$name"

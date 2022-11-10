@@ -131,7 +131,7 @@ check_and_launch () {
 }
 
 twitchgamefunction () {
-    game=$(echo -e "$(cat $gamesfile)\n\nOther\nAdd Game" | $menucmd -l 15 -i -p "$noshit") || aborted
+    game=$(echo "$(cat $gamesfile)\n\nOther\nAdd Game" | $menucmd -l 15 -i -p "$noshit") || aborted
 
     case "$game" in
         "Add Game")
@@ -182,6 +182,7 @@ twitchlivefunction () {
         [ -z "$streams_test" ] && aborted "Nothing found"
         stream=$(echo "$streams_test" | while read a;do echo "$a" | grep -q "^[0-9]*$" && echo "$game_dico" | grep "$a" | sed 's/^[0-9]* //' || echo "$a";done | awk 'NR%2{printf "%14s : ",$0;next;}1' | $menucmd -l 10 -i -p "Streams: ") || aborted
         stream=$(echo "$stream" | sed 's/ *\([^ ]*\).*/\1/')
+        echo "https://www.twitch.tv/$stream"
         [ -z "$QUIETOPT" ] && exec $chat_command "https://www.twitch.tv/popout/$stream/chat?darkpopout" & mpv "https://www.twitch.tv/$stream"
         exit
     fi

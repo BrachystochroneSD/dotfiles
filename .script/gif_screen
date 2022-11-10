@@ -3,7 +3,8 @@
 paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
 
 if [ -n "$(pgrep gif_screener)" ];then
-pkill -P $(pgrep gif_screener) && notify-send "gif_screener killed" || error "Can't kill gif_screener"
+    pkill -P $(pgrep gif_screener) && notify-send "gif_screener killed" || error "Can't kill gif_screener"
+    dragon-drag-and-drop -x $(ls ${HOME}/Images/screenshots/video/* | sort -r | head -n1)
 else
     "${HOME}/.script/gif_screener"
 fi

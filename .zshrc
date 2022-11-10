@@ -281,22 +281,29 @@ alias bellwarn='paplay /usr/share/sounds/freedesktop/stereo/bell.oga'
 # FFMPEG
 
 mp42mov () {
-    ffmpeg -i "$1" -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a pcm_s16le -f mov "$(echo $1 | sed 's/.[^.]$//')".mov
+    ffmpeg -loglevel quiet -nostdin -i "$1" -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a pcm_s16le -f mov "$(echo $1 | sed 's/.[^.]$//')".mov
 }
 
-flac2mp3 () {
-    ffmpeg -i "$1" -ab 320k -map_metadata 0 -id3v2_version 3 "$2"
+2mp3 () {
+    ffmpeg -loglevel quiet -nostdin -i "$1" -ab 320k -map_metadata 0 -id3v2_version 3 "$2"
+}
+
+2mp3_all () {
+    ls | grep "flac$\|wav$" | while read file; do
+        echo converting "$file" to "${file%.*}.mp3"
+        2mp3 "$file" "${file%.*}.mp3"
+    done
 }
 
 subextract () {
-    ffmpeg -i "$1" -map 0:s:0 "${1%.*}.srt"
+    ffmpeg -loglevel quiet -nostdin -i "$1" -map 0:s:0 "${1%.*}.srt"
 }
 
 videocompress () {
     input_video=$1
     video_name=${input_video%%.*}
     video_ext=${input_video##*.}
-    ffmpeg -i "$input_video" -vcodec libx265 -crf 28 "$video_name"_compressed."$video_ext"
+    ffmpeg -loglevel quiet -nostdin -i "$input_video" -vcodec libx265 -crf 28 "$video_name"_compressed."$video_ext"
 
 }
 
