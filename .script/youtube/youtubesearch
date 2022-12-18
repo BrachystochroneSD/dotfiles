@@ -128,6 +128,7 @@ mpv_launch () {
         echo "$sample_rate" | grep -q "^[0-9][0-9]*$" && sample_rate="--audio-samplerate=$sample_rate" || sample_rate=""
         exec st -e mpv --no-video "$chan" "$sample_rate" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch mpv"
     else
+        echo $link > $LAST_VIDEO_FILE
         mpv --ytdl-format="[height<=?$res]" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch the video"
     fi
     exit
@@ -144,6 +145,7 @@ main () {
     MAX_RESULTS=35
     RSSFILE="${HOME}/.emacs.d/elfeed.org"
     HISTORY_FILE="${HOME}/.script/youtube/searchhistory"
+    LAST_VIDEO_FILE="${HOME}/.script/youtube/last_video"
     touch "$HISTORY_FILE"
 
     #Commands

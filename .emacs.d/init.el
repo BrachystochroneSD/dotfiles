@@ -654,7 +654,7 @@
 (defun my-dired-jump ()
   (interactive)
   (split-window-horizontally (max 15 (min 20 (/ (window-width) 3.))))
-  (dired-jump))
+  (dired-jump nil (magit-toplevel)))
 
 (global-set-key (kbd "C-à") 'my-dired-jump)
 (global-set-key (kbd "M-à") 'dired-jump)
@@ -879,7 +879,7 @@
 
 (defun my-elfeed-search-hook-setup ()
   (interactive)
-  (local-set-key (kbd "b") 'elfeed-visit-or-play-video)
+  (local-set-key (kbd "b") 'elfeed-visit-or-play)
   (local-set-key (kbd "B") 'elfeed-search-browse-url)
   (local-set-key (kbd "d") 'my-elfeed-read-regex)
   (local-set-key (kbd "D") 'my-elfeed-mark-all-author-as-read)
@@ -906,32 +906,56 @@
     (setq quality-arg ""))
   (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry)))
 
+(defun elfeed-play-with-mpd ()
+  "Play entry link with mpv."
+  (interactive)
+  (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single))))
+    (message "Opening %s with mpd..." (elfeed-entry-link entry))
+    (start-process "elfeed-mpd" nil (expand-file-name "~/.script/podcast") (elfeed-entry-link entry))))
+
 (defun elfeed-play-with-mpv ()
   "Play entry link with mpv."
   (interactive)
   (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-        (quality-val (completing-read "Max height resolution (0 for unlimited): " '("720" "0" "360" "480" "1080"))))
+        (quality-val (completing-read "Max height resolution (0 for unlimited): " '("1080" "720" "360" "480"))))
     (elfeed-play-with-mpv-at-quality (string-to-number quality-val) entry)))
 
 (defvar elfeed-video-patterns
-  '("youtu\\.?be" "facebo\\.?ok")
+  '("youtu\\.?be")
   "List of regexp to match against elfeed entry link to know
 whether to use mpv to visit the link.")
 
-(defun elfeed-visit-or-play-video ()
-  "Play with mpv if entry link matches `elfeed-video-patterns', visit otherwise.
-See `elfeed-play-with-mpv'."
+(defvar elfeed-podcast-patterns
+  '("acast\\.?com")
+  "List of regexp to match podcast")
+
+(defun elfeed-visit-or-play ()
+  "Play video, podcast or visit entry based on `elfeed-video-patterns'."
   (interactive)
-  (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-        (patterns elfeed-video-patterns))
-    (while (and patterns (not (string-match (car patterns) (elfeed-entry-link entry))))
-      (setq patterns (cdr patterns)))
-    (if patterns
-        (elfeed-play-with-mpv)
-      (if (eq major-mode 'elfeed-search-mode)
-          (elfeed-search-browse-url)
-        (elfeed-show-visit)))
-    (elfeed-search-untag-all-unread)))
+  (let ((entry
+         (if (eq major-mode 'elfeed-show-mode)
+             elfeed-show-entry
+           (elfeed-search-selected :single)))
+        (video-patterns elfeed-video-patterns)
+        (podcast-patterns elfeed-podcast-patterns))
+    (while (and video-patterns
+                (not (string-match (car video-patterns) (elfeed-entry-link entry))))
+      (setq video-patterns (cdr video-patterns)))
+    (while (and podcast-patterns
+                (not (string-match (car podcast-patterns) (elfeed-entry-link entry))))
+      (setq podcast-patterns (cdr podcast-patterns)))
+    (message "%s %s" podcast-patterns video-patterns)
+    (cond
+     (podcast-patterns
+      (elfeed-play-with-mpd)
+      (elfeed-search-untag-all-unread))
+     (video-patterns
+      (elfeed-play-with-mpv)
+      (elfeed-search-untag-all-unread))
+     ((eq major-mode 'elfeed-search-mode)
+      (elfeed-search-browse-url))
+     (t
+      (elfeed-show-visit)))))
 
 (defun my-elfeed-read-regex (regex)
   (interactive
@@ -1622,6 +1646,14 @@ This function is suitable for `mu4e-compose-mode-hook'."
 
 (setq ivy-count-format "%-4d ")
 (global-set-key (kbd "C-c C-n") (lambda () (interactive) (counsel-fzf nil (magit-toplevel))))
+(global-set-key (kbd "C-c C-g")
+                (lambda (regexp)
+                  (interactive
+                   (list (read-string
+                          (format "rgrep on %s: "
+                                  (or (magit-toplevel)
+                                      (file-name-directory (buffer-file-name)))))))
+                  (rgrep regexp "*" (magit-toplevel))))
 
 ;;;;;;;;;;;
 ;; EGLOT ;;
@@ -1925,6 +1957,5 @@ potentially rename EGLOT's help buffer."
             (,(kbd "n") . "0")))
 
 (global-set-key (kbd "C-S-n") 'number-mode)
-
 
 (message "ALL DONE!")

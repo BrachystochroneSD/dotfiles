@@ -34,10 +34,10 @@
     Mod4 + Control + Escape
 
 # Terminal
-"st"
+"st -e ~/.script/tmuxa"
     Mod4 + Return
 
-"st -n floatingwin"
+"st -n floatingwin -e ~/.script/tmuxa"
     Mod4 + Control + Return
 
 # Emacs
