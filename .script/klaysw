@@ -1,3 +1,18 @@
 #!/bin/sh
 
-setxkbmap -print | grep -q azerty && setxkbmap -layout us || setxkbmap -layout be
+notif() {
+    message="$1"
+    NID=$(dunstify -t 1000 -p -r "$(cat /tmp/tmpNID)" "$message")
+    echo "$NID" > /tmp/tmpNID
+}
+
+current=$(setxkbmap -print)
+
+echo "$current" | grep -q "+be+" && next=us
+echo "$current" | grep -q "+us+" && next=uasd
+echo "$current" | grep -q "+ua+" && next=be
+
+[ -z "$next" ] && next=be
+
+setxkbmap -layout $next && notif "Keyboard changed to $next"
+
