@@ -37,7 +37,7 @@
 "st -e ~/.script/tmuxa"
     Mod4 + Return
 
-"st -n floatingwin -e ~/.script/tmuxa"
+"st -n floatingwin"
     Mod4 + Control + Return
 
 # Emacs
@@ -97,6 +97,11 @@
 # start dmenu
 "rofi -show drun"
     Mod4 + d
+
+# start dmenu
+"~/.script/my_dmenu_run"
+    Mod4 + Shift + d
+
 
 #CALculette
 "st -n floatingwin -e python"
@@ -167,7 +172,7 @@
 "~/.script/mpcsam --next"
     Mod4 + n
 
-"~/.script/mpcsam --seek  +3"
+"~/.script/mpcsam --seek +3"
     Mod4 + Shift + n
 "~/.script/mpcsam --seek -3"
     Mod4 + Shift + v
