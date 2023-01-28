@@ -180,11 +180,12 @@
 "~/.script/mpcsam --random"
     Mod4 + Control + b
 
-"~/.script/mpcsam --tggl-host"
+"~/.script/mpcsam --tggl-mupris"
     Mod4 + Mod1 + b
 
 "~/.script/mpcsam --volume  +3"
     Control + XF86AudioRaiseVolume
+
 "~/.script/mpcsam --volume -3"
     Control + XF86AudioLowerVolume
 
@@ -279,6 +280,3 @@
 ##################################
 # End of xbindkeys configuration #
 ##################################
-
-
-

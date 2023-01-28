@@ -63,14 +63,12 @@
                             (horizontal-scroll-bars . nil)
                             (fullscreen . maximized)))
 
-
 (set-face-attribute 'default nil :family "firacode" :height 120)
-(set-face-attribute 'font-lock-string-face nil :family "cascadiacodepl" :weight 'demibold :slant 'italic)
-(set-face-attribute 'font-lock-type-face nil :family "victormono" :weight 'demibold :slant 'oblique :height 1.1)
-(set-face-attribute 'font-lock-function-name-face nil :family "victormono" :weight 'medium :height 1.1)
-(set-face-attribute 'font-lock-builtin-face nil :family "victormono" :weight 'demibold :slant 'italic :height 1.1)
-(set-face-attribute 'font-lock-keyword-face nil :family "victormono" :weight 'demibold :slant 'italic :height 1.1)
-
+(set-face-attribute 'font-lock-string-face nil :family "cascadiacodepl" :weight 'semibold :slant 'italic :height 132)
+(set-face-attribute 'font-lock-type-face nil :family "victormono" :weight 'demibold :slant 'oblique :height 140)
+(set-face-attribute 'font-lock-function-name-face nil :family "victormono" :weight 'medium :height 140)
+(set-face-attribute 'font-lock-builtin-face nil :family "victormono" :weight 'demibold :slant 'italic :height 140)
+(set-face-attribute 'font-lock-keyword-face nil :family "victormono" :weight 'demibold :slant 'italic :height 140)
 (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
                (36 . ".\\(?:>\\)")
