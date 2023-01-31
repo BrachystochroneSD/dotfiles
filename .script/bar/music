@@ -32,7 +32,7 @@ if [ $(echo "$music_out" | wc -l) -gt 1 ];then
     i=$(date +%s)
     output=$(echo "$music_out" | head -n1)
 
-    len=$(printf "$output" | wc -c)
+    len=$(printf "$output" | wc -m)
     limit=$(expr "$len" - "$length")
 
     if [ $limit -gt 0 ]; then
@@ -46,10 +46,9 @@ if [ $(echo "$music_out" | wc -l) -gt 1 ];then
         fi
         norm=$(expr "$i" % "$limit")
 
-        first=$(echo "$shit * $norm + $crap * ($limit - 1) + 1" | bc)
-        last=$(expr "$first" + "$length")
-
-        title_artist=$(echo "$output" | cut -c "$first"-"$last")
+        first=$(echo "$shit * $norm + $crap * ($limit - 1)" | bc)
+        last=$(expr "$length" + 1)
+        title_artist=$(echo "$output" | sed "s/.\{$first\}\(.\{$last\}\).*/\1/")
 
     else
         foi=$(echo "-1 * $limit + 1" | bc)
