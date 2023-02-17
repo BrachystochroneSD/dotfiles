@@ -1642,8 +1642,13 @@ This function is suitable for `mu4e-compose-mode-hook'."
 (require 'ivy)
 (ivy-mode 1)
 
+
+(defun my-git-fzf ()
+  (interactive)
+  (counsel-fzf nil (magit-toplevel)))
+
 (setq ivy-count-format "%-4d ")
-(global-set-key (kbd "C-c C-n") (lambda () (interactive) (counsel-fzf nil (magit-toplevel))))
+(global-set-key (kbd "C-c C-n") 'my-git-fzf)
 (global-set-key (kbd "C-c C-g")
                 (lambda (regexp)
                   (interactive
@@ -1838,12 +1843,15 @@ potentially rename EGLOT's help buffer."
   (interactive)
   (local-set-key (kbd "<tab>") 'my-html-smart-tab)
   (evil-define-key 'insert 'local (kbd "<tab>") 'my-html-smart-tab)
+  (local-set-key (kbd "C-c C-n")
+                  (lambda () (interactive) (counsel-fzf nil (magit-toplevel))))
   (local-set-key (kbd "C-c C-p") 'sgml-skip-toggle-tag)
   (local-set-key (kbd "C-c C-p") 'sgml-skip-toggle-tag)
   (local-set-key (kbd "C-c C-t") 'my-sgml-tag)
   (local-set-key (kbd "C-c C-d") 'my-sgml-delete-tag))
 
 (add-hook 'html-mode-hook 'my-html-mode-hook)
+(add-hook 'mhtml-mode-hook 'my-html-mode-hook)
 
 (defun my-html-shite-cond (shite)
   (and (looking-back (format "<%s" shite))
@@ -1955,5 +1963,26 @@ potentially rename EGLOT's help buffer."
             (,(kbd "n") . "0")))
 
 (global-set-key (kbd "C-S-n") 'number-mode)
+
+;; DJANGO
+
+(require 'django-mode)
+(require 'django-manage)
+
+(defun django-manage-root ()
+  "Override the shitty defcustom in django-manage by something that search for the manage.py, taken the same algorythm than gdscript-util"
+  (let* ((base-path  default-directory)
+         (dominating-file
+          (locate-dominating-file base-path
+                                  (lambda (parent)
+                                    (directory-files parent t "manage.py")))))
+    (when dominating-file (expand-file-name dominating-file))))
+
+
+(defun my-django-mode-hook()
+  (interactive)
+  (local-set-key (kbd "<f5>") 'django-manage-runserver))
+
+(add-hook 'django-mode-hook 'my-django-mode-hook)
 
 (message "ALL DONE!")
