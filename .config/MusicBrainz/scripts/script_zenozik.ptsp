@@ -1,0 +1,12 @@
+title: The Script 2
+description: ""
+author: ''
+license: ''
+version: ''
+last_updated: 2022-07-01 14:53:35 UTC
+script_language_version: '1.1'
+script: |
+  $getmulti($delprefix($if2(%albumartist%,%artist%),A,An,The,La,Le,Les,Un,Une),0)/
+  $if(%albumartist%,$if(%date%,$substr(%date%,0,4) - )%album%/,)
+  $if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)$if(%_multiartist%,%artist% - ,)%title%
+id: 85b03b91-f487-48e7-9a13-74f307ad0e35
