@@ -1,0 +1,2 @@
+#!/usr/bin/sh
+tmux attach 2>/dev/null || tmux
