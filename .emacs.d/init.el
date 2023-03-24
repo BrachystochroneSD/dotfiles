@@ -63,12 +63,27 @@
                             (horizontal-scroll-bars . nil)
                             (fullscreen . maximized)))
 
-(set-face-attribute 'default nil :family "firacode" :height 120)
-(set-face-attribute 'font-lock-string-face nil :family "cascadiacodepl" :weight 'semibold :slant 'italic :height 132)
-(set-face-attribute 'font-lock-type-face nil :family "victormono" :weight 'demibold :slant 'oblique :height 140)
-(set-face-attribute 'font-lock-function-name-face nil :family "victormono" :weight 'medium :height 140)
-(set-face-attribute 'font-lock-builtin-face nil :family "victormono" :weight 'demibold :slant 'italic :height 140)
-(set-face-attribute 'font-lock-keyword-face nil :family "victormono" :weight 'demibold :slant 'italic :height 140)
+(set-face-attribute 'default nil :family "firacode" :height 113)
+
+(defun set-other-faces()
+  (set-face-attribute 'font-lock-string-face nil
+                      :family "cascadiacodepl" :weight 'semibold :slant 'italic
+                      :height (round (* (face-attribute 'default :height) 1.0)))
+  (set-face-attribute 'font-lock-type-face nil
+                      :family "victormono" :weight 'demibold :slant 'oblique
+                      :height (round (* (face-attribute 'default :height) 1.1)))
+  (set-face-attribute 'font-lock-function-name-face nil
+                      :family "victormono" :weight 'medium
+                      :height (round (* (face-attribute 'default :height) 1.1)))
+  (set-face-attribute 'font-lock-builtin-face nil
+                      :family "victormono" :weight 'demibold :slant 'italic
+                      :height (round (* (face-attribute 'default :height) 1.1)))
+  (set-face-attribute 'font-lock-keyword-face nil
+                      :family "victormono" :weight 'demibold :slant 'italic
+                      :height (round (* (face-attribute 'default :height) 1.1))))
+(set-other-faces)
+
+
 (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
                (36 . ".\\(?:>\\)")
@@ -486,7 +501,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my-text-scale-adjust (height)
-  (set-face-attribute 'default nil :height height))
+  (set-face-attribute 'default nil :height height)
+  (set-other-faces))
 
 (defun my-text-scale-decrease (incr)
   (interactive (list 10))
