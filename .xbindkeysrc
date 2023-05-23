@@ -91,7 +91,7 @@
 
 #App launcher bindings
 
-"st -e tremc"
+"st -e tremc -X"
     Mod4 + Shift + t
 
 # start dmenu

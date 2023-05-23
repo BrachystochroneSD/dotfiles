@@ -9,10 +9,11 @@ auth_file="${HOME}/.authentification/apikeys.sh"
 . "${HOME}/.cache/wal/colors.sh"
 
 # Parameters
-scriptdir="${HOME}/.script/twitch"
-channelsfile="$scriptdir/datas/listchanneltwitch"
-laststreamfile="$scriptdir/datas/lastchannelviewed"
-gamesfile="$scriptdir/datas/listgamestwitch"
+config_dir="${HOME}/.config/twitch"
+mkdir -p $config_dir
+channelsfile="$config_dir/listchanneltwitch"
+laststreamfile="$config_dir/lastchannelviewed"
+gamesfile="$config_dir/listgamestwitch"
 gamesdb="${HOME}/.script/gamedatabase/gamesdb"
 chat_command="brave -new-window"
 
@@ -78,6 +79,7 @@ get_user_id() {
                          -H "Authorization: Bearer $twitch_access_token" \
                          -G "https://api.twitch.tv/helix/users" \
                          --data-urlencode "id=$*")
+        handle_error "$curl_data"
         output=$(echo "$curl_data" | jq -r '.data[] | .login')
     else
         curl_data=$(curl -s \
@@ -85,6 +87,7 @@ get_user_id() {
                          -H "Authorization: Bearer $twitch_access_token" \
                          -G "https://api.twitch.tv/helix/users" \
                          --data-urlencode "login=$*")
+        handle_error "$curl_data"
         output=$(echo "$curl_data" | jq -r '.data[] | .id')
     fi
     [ -n "$output" ] && echo "$output" || aborted "Nothing found for $*"
@@ -98,6 +101,7 @@ get_game_info () {
                          -H "Authorization: Bearer $twitch_access_token" \
                          -G "https://api.twitch.tv/helix/games" \
                          --data-urlencode "id=$*")
+        handle_error "$curl_data"
         output=$(echo "$curl_data" | jq -r '.data[] | .name')
     else
         curl_data=$(curl -s \
@@ -105,6 +109,7 @@ get_game_info () {
                          -H "Authorization: Bearer $twitch_access_token" \
                          -G "https://api.twitch.tv/helix/games" \
                          --data-urlencode "name=$*")
+        handle_error "$curl_data"
         output=$(echo "$curl_data" | jq -r '.data[] | .id')
     fi
     [ -n "$output" ] && echo "$output" || echoerror "Nothing found for $*"
@@ -118,6 +123,7 @@ check_and_launch () {
                       -H "Authorization: Bearer $twitch_access_token" \
                       -G "https://api.twitch.tv/helix/streams" \
                       --data-urlencode "game_id=$(get_game_info $game_name)")
+    handle_error "$twitchdata"
 
     stream_list=$(echo "$twitchdata" | sed 's/\\n//g' | jq -r '.data[] | .language, .user_name, .title, .viewer_count' | awk '(NR%4==1){lg=$0}(NR%4==2){name=$0}(NR%4==3){title=$0}(NR%4==0){printf "%s:%s \"%s\" %s\n",lg,name,title,$0}')
     [ -z "$stream_list" ] && echoerror "No streams"
@@ -159,6 +165,7 @@ twitchlivefunction () {
                     -H "Authorization: Bearer $twitch_access_token" \
                     -G "https://api.twitch.tv/helix/streams" \
                     -d "user_login=$*" | jq '.data | length')
+        handle_error "$test"
         [ ! "$test" = 0 ] && (exec $chat_command "https://www.twitch.tv/popout/$*/chat?darkpopout" & mpv "https://www.twitch.tv/$*") || echo "$* doesn't stream right now"
         exit
     else
@@ -169,6 +176,7 @@ twitchlivefunction () {
                           -H "Authorization: Bearer $twitch_access_token" \
                           -G "https://api.twitch.tv/helix/streams" \
                           -d "$userlogins")
+        handle_error "$twitchdata"
 
         game_ids=$(echo "$twitchdata" | jq -r '.data[] | .game_id' | awk '{printf "id="$1"&"}')
         curl_data=$(curl -s \
@@ -176,6 +184,7 @@ twitchlivefunction () {
                          -H "Authorization: Bearer $twitch_access_token" \
                          -G "https://api.twitch.tv/helix/games" \
                          -d "$game_ids")
+        handle_error "$curl_data"
         game_dico=$(echo "$curl_data" | jq -r '.data[] | .id,.name' | awk 'NR%2{printf "%s ",$0;next;}1')
 
         streams_test=$(echo "$twitchdata" | jq -r '.data[] | .user_name, .game_id')
@@ -188,13 +197,28 @@ twitchlivefunction () {
     fi
 }
 
-twitchvod_search(){
+twitchvod_search() {
     searchingshit=$(sort "$channelsfile" | $menucmd -i -l 10 -p "TwitchVOD Channel: ") || aborted
     printf "Searching for video on %s\n" "$searchingshit"
     curl_choose_and_watch
 }
 
-curl_choose_and_watch(){
+handle_error() {
+    local curl_out="$1"
+    local error=$(echo "$curl_out" | jq -r .error)
+    [ "$error" != "null" ] && {
+        local status=$(echo "$curl_out" | jq -r .status)
+        local message=$(echo "$curl_out" | jq -r .message)
+        if [ "$status" = 401 ]; then
+            refresh_access_token
+            aborted "Token refreshed please relaunch"
+        else
+            aborted "Error $status: $message"
+        fi
+    }
+}
+
+curl_choose_and_watch() {
     #curl the api twitch vod search for a channel
     twitchvod=$(curl -s \
                      -H "Client-ID: $twitch_clientID" \
@@ -203,6 +227,7 @@ curl_choose_and_watch(){
                      -d "user_id=$(get_user_id $searchingshit)" \
                      -d "first=$max_vid" )
 
+    handle_error "$twitchvod"
     total_vod=$(echo "$twitchvod" | jq -r '.data | length')
     [ "$total_vod" = "null" ] || [ "$total_vod" = 0 ] && twitchvod_search
 

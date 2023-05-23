@@ -316,10 +316,10 @@
 
 (defun my-evil-color-modeline ()
   (interactive)
-  (face-remap-add-relative 'my-mood-line-modified `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-modified))
-  (face-remap-add-relative 'my-mood-line-unimportant `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-unimportant))
-  (face-remap-add-relative 'my-mood-line-anzu `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-anzu))
-  (face-remap-add-relative 'my-mood-line-buffer-name `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-buffer-name)))
+  (face-remap-set-base 'my-mood-line-modified `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-modified))
+  (face-remap-set-base 'my-mood-line-unimportant `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-unimportant))
+  (face-remap-set-base 'my-mood-line-anzu `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-anzu))
+  (face-remap-set-base 'my-mood-line-buffer-name `(,(alist-get evil-state evil-mood-line-colors) my-mood-line-buffer-name)))
 
 (add-hook 'evil-visual-state-entry-hook 'my-evil-color-modeline)
 (add-hook 'evil-motion-state-entry-hook 'my-evil-color-modeline)
@@ -1926,15 +1926,11 @@ potentially rename EGLOT's help buffer."
 
 ;; GDSCRIPT
 
-(defun my-gdscript-mode-hook()
-  (interactive)
-  (eglot-ensure))
-
-(add-hook 'gdscript-mode-hook 'my-gdscript-mode-hook)
-
 (add-hook 'gdscript-mode-hook
           (lambda ()
             (add-hook 'before-save-hook 'delete-trailing-whitespace nil 'make-it-local)))
+
+
 
 
 ;;SH-MODE
@@ -2000,5 +1996,16 @@ potentially rename EGLOT's help buffer."
   (local-set-key (kbd "<f5>") 'django-manage-runserver))
 
 (add-hook 'django-mode-hook 'my-django-mode-hook)
+
+
+;; DRAGON
+
+(defun my-dragon-launch ()
+  (interactive)
+  (shell-command (format "dragon-drag-and-drop %s" (buffer-file-name))))
+
+(global-set-key (kbd "M-g M-g") 'my-dragon-launch)
+
+
 
 (message "ALL DONE!")
