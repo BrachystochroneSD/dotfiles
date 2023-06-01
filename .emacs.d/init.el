@@ -1683,12 +1683,6 @@ This function is suitable for `mu4e-compose-mode-hook'."
 (define-key eglot-mode-map (kbd "M-*") 'xref-find-definitions)
 (define-key eglot-mode-map (kbd "C-c h") 'eglot-help-at-point)
 
-;; ;; (add-to-list 'eglot-server-programs '(foo-mode . ("foo-language-server" "--args")))
-;; (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
-(add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server")))
-(add-to-list 'eglot-server-programs '(kotlin-mode . ("kotlin-language-server")))
-;; (add-to-list 'eglot-server-programs '(mhtml-mode . ("html-languageserver" "--stdio")))
-
 (setq eglot-events-buffer-size 2000)
 (setq eglot-put-doc-in-help-buffer t)
 (setq eglot-auto-display-help-buffer nil)
@@ -1929,9 +1923,6 @@ potentially rename EGLOT's help buffer."
 (add-hook 'gdscript-mode-hook
           (lambda ()
             (add-hook 'before-save-hook 'delete-trailing-whitespace nil 'make-it-local)))
-
-
-
 
 ;;SH-MODE
 

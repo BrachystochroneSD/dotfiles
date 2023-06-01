@@ -11,10 +11,9 @@ redshift &
 picom &
 dwmblocks &
 nextcloud --background &
+thunar --daemon &
 emacs --daemon
 
-#custom shit
-~/.script/polybar/wifi --load-config
 . /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
 
 ${HOME}/.script/execdwm

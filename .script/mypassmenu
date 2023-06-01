@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 . "${HOME}/.cache/wal/colors.sh"
+. "${HOME}/.config/password_defaults"
 
 NOTIFY_CMD="dunstify -i owl"
 DMENU_CMD="dmenu -i -nb $color0 -nf $color15 -sb $color3 -sf $color0"
@@ -54,7 +55,7 @@ password=$(echo -e "Add\nEdit\nDelete\nPush\n\n$(printf '%s\n' "${password_files
 case "$password" in
     Add)
         name=$(echo "" | $DMENU_CMD -p "Name: ") || exit
-        username=$(echo "" | $DMENU_CMD -p "Username: ") || exit
+        username=$(echo "$DEFAULT_USER" | $DMENU_CMD -p "Username: ") || exit
         pass_choice=$(echo -e "Generated\nManual" | $DMENU_CMD -p "How to create the Password: ") || exit
         case "$pass_choice" in
             Manual)

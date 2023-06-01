@@ -230,7 +230,7 @@
 "nheko"
     Mod4 + Control + d
 
-# keepass
+# passwords
 "~/.script/xprop_dwm"
     Mod4 + Mod1 + p
 
