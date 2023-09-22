@@ -2,6 +2,7 @@
 ;; Basic Configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'load-path "~/.emacs.d/my-packages")
@@ -12,6 +13,24 @@
 
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
+
+(defconst emacs-config-dir "~/.emacs.d/init.d/"
+  "Default config dir")
+
+;; utility function to auto-load my package configurations
+(defun load-config-file (filelist)
+  (dolist (file filelist)
+    (load (expand-file-name
+           (concat emacs-config-dir file)))
+    (message "Loaded config file:%s" file)))
+
+(load-config-file
+ '("auto-insert.el"
+   "pkgbuild.el"))
+
+
+;; TODO: CLEAN EVERYTHING BELOW
+
 
 (setq evil-want-keybinding nil)
 (setq inhibit-startup-screen t)
@@ -42,15 +61,6 @@
 ;; time
 (setq display-time-format "%Y/%m/%d %H:%M")
 (display-time-mode 1)
-
-
-;;;;;;;;;;;;;;;;;
-;; AUTO-INSERT ;;
-;;;;;;;;;;;;;;;;;
-
-(auto-insert-mode)
-(setq auto-insert-directory "~/.emacs.d/mytemplates/")
-(setq auto-insert-query nil)
 
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -1655,8 +1665,11 @@ This function is suitable for `mu4e-compose-mode-hook'."
 ;; IVY ;;
 ;;;;;;;;;
 
+
 (require 'ivy)
 (ivy-mode 1)
+
+(global-set-key (kbd "C-M-<tab>") 'completion-at-point)
 
 
 (defun my-git-fzf ()
@@ -1672,6 +1685,7 @@ This function is suitable for `mu4e-compose-mode-hook'."
                           (format "rgrep on %s: "
                                   (or (magit-toplevel)
                                       (file-name-directory (buffer-file-name)))))))
+                  (grep-compute-defaults)
                   (rgrep regexp "*" (magit-toplevel))))
 
 ;;;;;;;;;;;
@@ -1938,6 +1952,9 @@ potentially rename EGLOT's help buffer."
 
 (defun my-sh-mode-hook ()
   (interactive)
+  (unset-key "C-c C-n")
+  (local-set-key (kbd "C-c C-n")
+                  (lambda () (interactive) (counsel-fzf nil (magit-toplevel))))
   (add-hook 'before-save-hook 'my-chmod-x-current-file))
 
 
@@ -1996,7 +2013,5 @@ potentially rename EGLOT's help buffer."
   (shell-command (format "dragon-drag-and-drop %s" (buffer-file-name))))
 
 (global-set-key (kbd "M-g M-g") 'my-dragon-launch)
-
-
 
 (message "ALL DONE!")

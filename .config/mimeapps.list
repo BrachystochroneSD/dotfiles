@@ -11,12 +11,17 @@ x-scheme-handler/mailto=mail.desktop
 image/gif=gif.desktop
 text/plain=editor.desktop
 image/x-pcx=editor.desktop
+application/zip=userapp-unzip-RFOK61.desktop
 
 [Added Associations]
-image/png=gimp.desktop;
+image/png=brave-browser.desktop;gimp.desktop;
 image/svg+xml=brave-browser.desktop;
 text/plain=brave-browser.desktop;
 application/x-wine-extension-ini=emacs.desktop;
-audio/mpeg=music.desktop;mpv.desktop;
+audio/mpeg=mpv.desktop;org.musicbrainz.Picard.desktop;music.desktop;
 audio/x-wav=mpv.desktop;userapp-paplay-BDF8O1.desktop;
-image/jpeg=org.nomacs.ImageLounge.desktop;
+image/jpeg=feh.desktop;org.nomacs.ImageLounge.desktop;
+application/pdf=brave-browser.desktop;gimp.desktop;
+image/x-canon-cr2=org.darktable.darktable.desktop;
+application/zip=userapp-myunzip-4AUO61.desktop;userapp-unzip-RFOK61.desktop;
+video/mp4=mpv.desktop;vlc.desktop;
