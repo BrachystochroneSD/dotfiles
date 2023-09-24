@@ -936,8 +936,10 @@ potentially rename EGLOT's help buffer."
 
 (add-hook 'dired-mode-hook 'my-dired-mode-hook)
 
-(use-package elfeed-org
+(use-package elfeed
   :ensure t
+  :init
+  (setq elfeed-search-filter "@3-weeks-ago +unread")
   :bind (:map elfeed-search-mode-map
               ("b" . elfeed-visit-or-play)
               ("B" . elfeed-search-browse-url)
@@ -957,7 +959,6 @@ potentially rename EGLOT's help buffer."
               ("C-n" . my-elfeed-scroll-up)
               ("C-p" . my-elfeed-scroll-down))
   :config
-  (setq elfeed-search-filter "@3-weeks-ago +unread")
   (defun my-elfeed-toggle-unread ()
     (interactive)
     (let ((filter elfeed-search-filter))
@@ -1075,11 +1076,10 @@ whether to use mpv to visit the link.")
   (defun my-elfeed-mark-all-author-as-read ()
     (interactive)
     (my-elfeed-read-regex
-     (elfeed-meta (car (elfeed-search-selected)) :author))))
+     (elfeed-meta (car (elfeed-search-selected)) :author)))
+  (elfeed-org))
 
-;;;;;;;;;;;;
-;; AuCTeX ;;
-;;;;;;;;;;;;
+(use-package elfeed-org :ensure t :after elfeed :config (elfeed-org))
 
 (use-package tex
   :after evil
@@ -1091,7 +1091,6 @@ whether to use mpv to visit the link.")
   (add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-mode))
   (add-to-list 'TeX-command-list
                '("Compile&Clean" "pdflatex %s && pdflatex %s && erase *.aux *.toc *.log" TeX-run-command nil t :help "compile 2 fois et clean") t)
-
 
   (defun mc--get-env-context ()
     "return a list of the beginning of the env,
