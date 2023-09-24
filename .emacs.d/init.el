@@ -445,6 +445,9 @@
 ;; ------------ PACKAGES ------------ ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package pkgbuild-mode
+  :ensure t)
+
 (use-package multiple-cursors
   :ensure t
   :bind (("M-l" . mc/mark-previous-like-this)
@@ -465,6 +468,7 @@
 
 (use-package ivy
   :ensure t
+  :hook (after-init . ivy-mode)
   :init
   (setq ivy-count-format "%-4d ")
   :bind (("C-M-<tab>" . completion-at-point))
@@ -473,7 +477,7 @@
 
 (use-package counsel
   :ensure t
-  :after magit
+  :after (ivy magit)
   :bind (("C-c C-n" . my-git-fzf)
          ("C-c C-g" . my-grep-fzf))
   :config
