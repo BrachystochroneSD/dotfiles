@@ -208,7 +208,6 @@
 
 
 #NOTES#
-
 "st -n floatingwin -e vim ~/.notes"
     Mod4 + t
 
@@ -220,12 +219,6 @@
 "~/.script/youtube/youtubesearch"
     Mod4 + Shift + y
 
-#---# Social media #---#
-
-"skypeforlinux"
-    Mod4 + Control + s
-"killall skypeforlinux"
-    Mod4 + Mod1 + s
 #"matrix.org"
 "nheko"
     Mod4 + Control + d
