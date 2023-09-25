@@ -1,18 +1,26 @@
 #!/bin/sh
 
+CONFIG=$(cat <<EOF
+be
+us
+EOF
+)
+
+CONFIG_FILE="$HOME/.config/klaysw.conf"
+
+[ -f "$CONFIG_FILE" ] && CONFIG=$(cat $CONFIG_FILE)
+
 notif() {
     message="$1"
     NID=$(dunstify -t 1000 -p -r "$(cat /tmp/tmpNID)" "$message")
     echo "$NID" > /tmp/tmpNID
 }
 
-current=$(setxkbmap -print)
+current=$(setxkbmap -print | grep symbols | sed 's/.*+\([a-z]*\)+.*/\1/')
 
-echo "$current" | grep -q "+be+" && next=us
-echo "$current" | grep -q "+us+" && next=uasd
-echo "$current" | grep -q "+ua+" && next=be
-
-[ -z "$next" ] && next=be
+next=$(echo "$CONFIG" | sed "0,/^$current\$/d" | head -n1)
+[ -z "$next" ] && next=$(echo "$CONFIG" | head -n1)
 
 setxkbmap -layout $next && notif "Keyboard changed to $next"
+
 
