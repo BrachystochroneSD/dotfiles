@@ -9,20 +9,6 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
 
-(defconst emacs-config-dir "~/.emacs.d/init.d/"
-  "Default config dir")
-
-;; utility function to auto-load my package configurations
-(defun load-config-file (filelist)
-  (dolist (file filelist)
-    (load (expand-file-name
-           (concat emacs-config-dir file)))
-    (message "Loaded config file:%s" file)))
-
-(load-config-file
- '("auto-insert.el"
-   "pkgbuild.el"))
-
 (setq inhibit-startup-screen t)
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
@@ -63,12 +49,22 @@
 
 
 
-  (set-face-attribute 'default nil :family "firacode" :height 100)
-  ;; (set-face-attribute 'font-lock-string-face nil :family "cascadiacodepl" :weight 'semibold :slant 'italic :height 113)
-  ;; (set-face-attribute 'font-lock-type-face nil :family "victormono nfm" :weight 'demibold :slant 'oblique :height 117)
-  ;; (set-face-attribute 'font-lock-function-name-face nil :family "victormono nfm" :weight 'medium :height 117)
-  ;; (set-face-attribute 'font-lock-builtin-face nil :family "victormono nfm" :weight 'demibold :slant 'italic :height 117)
-  ;; (set-face-attribute 'font-lock-keyword-face nil :family "victormono nfm" :weight 'demibold :slant 'italic :height 117)
+  (set-face-attribute 'default nil :family "firacode" :height 110)
+  (defun set-other-face ()
+    (message "TODO")
+    ;;(let ((h (face-attribute 'default :height)))
+    ;;  (set-face-attribute 'font-lock-string-face nil
+    ;;                      :family "cascadiacodepl" :weight 'semibold :slant 'italic :height (* 1.1 h))
+    ;;  (set-face-attribute 'font-lock-type-face nil
+    ;;                      :family "VictorMono NFM" :weight 'demibold :slant 'oblique :height (* 1.1 h))
+    ;;  (set-face-attribute 'font-lock-function-name-face nil
+    ;;                      :family "VictorMono NFM" :weight 'medium :height h)
+    ;;  (set-face-attribute 'font-lock-builtin-face nil
+    ;;                      :family "VictorMono NFM" :weight 'demibold :slant 'italic :height h)
+    ;;  (set-face-attribute 'font-lock-keyword-face nil
+    ;;                      :family "VictorMono NFM" :weight 'demibold :slant 'italic :height h))
+    )
+  ;; (set-other-face)
 
   (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                  (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
@@ -593,7 +589,8 @@ potentially rename EGLOT's help buffer."
 
 (use-package magit
   :ensure t
-  :bind (("M-²" . magit)))
+  :bind (("M-²" . magit))
+  :config (require 'magit))
 
 (use-package forge
   :ensure t
@@ -1739,3 +1736,9 @@ taken the same algorythm than gdscript-util"
               ("C-:" . codegeex-accept-completion)
               ("C-=" . codegeex-next-completion)
               ("C-;" . codegeex-previous-completion)))
+
+
+(use-package gdscript-mode
+  :hook
+  (gdscript-mode . codegeex-mode)
+  (gdscript-mode . eglot))
