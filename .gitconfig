@@ -5,3 +5,5 @@
     rebase = false
 [gitlab]
     user = samd854685
+[github]
+	user = BrachystochroneSD

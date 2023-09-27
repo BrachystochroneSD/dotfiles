@@ -63,12 +63,12 @@
 
 
 
-  (set-face-attribute 'default nil :family "firacode" :height 109)
-  (set-face-attribute 'font-lock-string-face nil :family "cascadiacodepl" :weight 'semibold :slant 'italic :height 113)
-  (set-face-attribute 'font-lock-type-face nil :family "victormono nfm" :weight 'demibold :slant 'oblique :height 117)
-  (set-face-attribute 'font-lock-function-name-face nil :family "victormono nfm" :weight 'medium :height 117)
-  (set-face-attribute 'font-lock-builtin-face nil :family "victormono nfm" :weight 'demibold :slant 'italic :height 117)
-  (set-face-attribute 'font-lock-keyword-face nil :family "victormono nfm" :weight 'demibold :slant 'italic :height 117)
+  (set-face-attribute 'default nil :family "firacode" :height 100)
+  ;; (set-face-attribute 'font-lock-string-face nil :family "cascadiacodepl" :weight 'semibold :slant 'italic :height 113)
+  ;; (set-face-attribute 'font-lock-type-face nil :family "victormono nfm" :weight 'demibold :slant 'oblique :height 117)
+  ;; (set-face-attribute 'font-lock-function-name-face nil :family "victormono nfm" :weight 'medium :height 117)
+  ;; (set-face-attribute 'font-lock-builtin-face nil :family "victormono nfm" :weight 'demibold :slant 'italic :height 117)
+  ;; (set-face-attribute 'font-lock-keyword-face nil :family "victormono nfm" :weight 'demibold :slant 'italic :height 117)
 
   (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                  (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
@@ -478,6 +478,7 @@
 (use-package counsel
   :ensure t
   :after (ivy magit)
+  :hook (after-init . counsel-mode)
   :bind (("C-c C-n" . my-git-fzf)
          ("C-c C-g" . my-grep-fzf))
   :config
@@ -590,8 +591,13 @@ potentially rename EGLOT's help buffer."
   :config
   (evil-collection-init '((magit magit-repos magit-submodule) magit-section magit-todos)))
 
-(use-package magit :ensure t :bind (("M-²" . magit)))
-(use-package forge :ensure t :after magit)
+(use-package magit
+  :ensure t
+  :bind (("M-²" . magit)))
+
+(use-package forge
+  :ensure t
+  :after magit)
 
 (use-package my-mood-line
   :after evil
@@ -1721,3 +1727,15 @@ taken the same algorythm than gdscript-util"
                                     (lambda (parent)
                                       (directory-files parent t "manage.py")))))
       (when dominating-file (expand-file-name dominating-file)))))
+
+(use-package uuidgen
+  :ensure t)
+
+(use-package codegeex
+  :after uuidgen
+  :load-path "~/.emacs.d/my-packages/codegeex.el"
+  :custom (codegeex-idle-delay 1)
+  :bind (:map codegeex-mode-map
+              ("C-:" . codegeex-accept-completion)
+              ("C-=" . codegeex-next-completion)
+              ("C-;" . codegeex-previous-completion)))
