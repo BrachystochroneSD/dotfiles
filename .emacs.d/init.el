@@ -1735,10 +1735,11 @@ taken the same algorythm than gdscript-util"
   :bind (:map codegeex-mode-map
               ("C-:" . codegeex-accept-completion)
               ("C-=" . codegeex-next-completion)
-              ("C-;" . codegeex-previous-completion)))
-
+              ("C-;" . codegeex-previous-completion))
+  :config
+  (require 'codegeex))
 
 (use-package gdscript-mode
   :hook
-  (gdscript-mode . codegeex-mode)
+  (gdscript-mode . (codegeex-mode 1))
   (gdscript-mode . eglot))
