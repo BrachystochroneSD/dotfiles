@@ -4,8 +4,16 @@
 . "${HOME}/.config/password_defaults"
 
 NOTIFY_CMD="dunstify -i owl"
-DMENU_CMD="dmenu -i -nb $color0 -nf $color15 -sb $color3 -sf $color0"
+DMENU_CMD="dmenu -i -nb $color0 -nf $color15 -sb $color3 -sf $color0 -l 20 -p"
 DMENU_SECRET="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"
+MENU="Add\nEdit\nDelete\nPush"
+TYPE_CMD="xdotool type --clearmodifiers --file -"
+
+if [ -z "$DISPLAY" ]; then
+    DMENU_CMD="fzf --prompt"
+    MENU="Edit\nDelete\nPush"
+    TYPE_CMD=cat
+fi
 
 shopt -s nullglob globstar
 
@@ -50,13 +58,13 @@ if [[ -n "$1" ]]; then
     exit
 fi
 
-password=$(echo -e "Add\nEdit\nDelete\nPush\n\n$(printf '%s\n' "${password_files[@]}")" | $DMENU_CMD -l 20 -p "Password Manager: ") || exit
+password=$(echo -e "$MENU\n\n$(printf '%s\n' "${password_files[@]}")" | $DMENU_CMD "Password Manager: ") || exit
 
 case "$password" in
     Add)
-        name=$(echo "" | $DMENU_CMD -p "Name: ") || exit
-        username=$(echo "$DEFAULT_USER" | $DMENU_CMD -p "Username: ") || exit
-        pass_choice=$(echo -e "Generated\nManual" | $DMENU_CMD -p "How to create the Password: ") || exit
+        name=$(echo "" | $DMENU_CMD "Name: ") || exit
+        username=$(echo "$DEFAULT_USER" | $DMENU_CMD "Username: ") || exit
+        pass_choice=$(echo -e "Generated\nManual" | $DMENU_CMD "How to create the Password: ") || exit
         case "$pass_choice" in
             Manual)
                 loop=t
@@ -67,8 +75,8 @@ case "$password" in
                 done
                 ;;
             Generated)
-                pass_type=$(echo -e "Letter + Digits + Special Char\nLetter + Digit\nLetter only" | $DMENU_CMD -p "Choose: ") || exit
-                pass_length=$(echo -e "20\n30\n10" | $DMENU_CMD -p "Length: ") || exit
+                pass_type=$(echo -e "Letter + Digits + Special Char\nLetter + Digit\nLetter only" | $DMENU_CMD "Choose: ") || exit
+                pass_length=$(echo -e "20\n30\n10" | $DMENU_CMD "Length: ") || exit
                 case "$pass_type" in
                     "Letter only")
                         tr_option='A-Za-z' ;;
@@ -83,37 +91,31 @@ EOF
                 ;;
             *) exit
         esac
-        note=$(echo "" | $DMENU_CMD -p "Notes: ") || exit
+        note=$(echo "" | $DMENU_CMD "Notes: ") || exit
 
         add_entry "$name" "$username" "$password" "$note"
         ;;
 
     Edit)
-        edit_choice=$(printf '%s\n' "${password_files[@]}" | $DMENU_CMD -l 20 -p "Edit entry: ") || exit
+        edit_choice=$(printf '%s\n' "${password_files[@]}" | $DMENU_CMD "Edit entry: ") || exit
         echo "TOTO : st -n floatingwin -e pass edit $edit_choice but it is not working"
         ;;
     Push)
         pass git push origin master > "$prefix/.last_push.log" && $NOTIFY_CMD "push successful" || $NOTIFY_CMD "push unsucessful"
         ;;
     Delete)
-        choice=$(ls "$prefix" | $DMENU_CMD -p "Delete entry: ") || exit
+        choice=$(ls "$prefix" | $DMENU_CMD "Delete entry: ") || exit
         [[ -z "$choice" ]] && exit
-        besure=$(echo -e "No\nYes" | $DMENU_CMD -p "Are you sure you want to delete $choice? ") || exit
+        besure=$(echo -e "No\nYes" | $DMENU_CMD "Are you sure you want to delete $choice? ") || exit
         if [[ "$besure" == "Yes" ]]; then
             pass rm -rf "$choice"
         fi
         ;;
 
     *)
-        [[ -n $password ]] || exit
+        [ -z "$password" ] && exit 1
+        [ -z "$typeit" ] && pass show -c "$password" 2>/dev/null && exit 0
 
-        if [[ $typeit -eq 0 ]]; then # TODO for now always typeit, but make a way to copy it
-            pass show -c "$password" 2>/dev/null
-        else
-            if [[ "${password##*/}" == "otp" ]];then
-                pass otp "$password" | { IFS= read -r pass; printf %s "$pass"; } | xdotool type --clearmodifiers --file -
-            else
-                pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } | xdotool type --clearmodifiers --file -
-            fi
-        fi
+        [ "${password##*/}" = "otp" ] && opt="otp" || opt="show"
+        pass $opt "$password" | { IFS= read -r pass; printf %s "$pass"; } | $TYPE_CMD
 esac
