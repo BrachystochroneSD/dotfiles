@@ -45,7 +45,7 @@
     Mod4 + Shift + Return
 
 # Browser
-"brave"
+"firefox"
     Mod4 + z
 
 # Zrythm
@@ -220,7 +220,7 @@
     Mod4 + Shift + y
 
 #"matrix.org"
-"nheko"
+"element-desktop"
     Mod4 + Control + d
 
 # passwords
@@ -256,7 +256,7 @@
 "~/.script/polybar/wifi --toggle-ifstat"
     Mod4 + Control + F7
 
-"scrot ~/Images/screenshots/%Y-%m-%d_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
+"scrot -s ~/Images/screenshots/%Y-%m-%d_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
     Print
 
 "~/.script/gif_screen"

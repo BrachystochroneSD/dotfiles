@@ -420,26 +420,25 @@
   (set-fontset-font t '(#x1f000 . #x1faff)
                     (font-spec :family "JoyPixels")))
 
-;;;;;;;;;;;;;;
-;; FLYSPELL ;;
-;;;;;;;;;;;;;;
-
-;; (setq ispell-program-name "hunspell")
-;; (setq ispell-dictionary "francais")
-
-(setq ispell-program-name "hunspell")
-(setq ispell-hunspell-dict-paths-alist
-      '(("fr_BE" "/usr/share/hunspell/fr_BE.aff")))
-(setq ispell-dictionary "fr_BE")
-(setq ispell-hunspell-dictionary-alist
-      ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
-      ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
-      '(("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE,en_GB") nil utf-8)))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ------------ PACKAGES ------------ ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package flyspell
+  :init
+  (setq ispell-program-name "hunspell")
+  ;; :config
+  ;; (add-to-list 'ispell-hunspell-dict-paths-alist '("fr_BE" "/usr/share/hunspell/fr_BE.aff"))
+  )
+
+;; (setq ispell-hunspell-dict-paths-alist
+      ;; '())
+;; (setq ispell-dictionary "fr_BE")
+;; (setq ispell-hunspell-dictionary-alist
+      ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
+      ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
+      ;; '(("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE,en_GB") nil utf-8)))
 
 (use-package pkgbuild-mode
   :ensure t)
@@ -551,7 +550,12 @@ potentially rename EGLOT's help buffer."
               ("q" . evil-goto-mark)
               ("J" . next-line)
               ("K" . previous-line)
-              ("C-M-j" . evil-join))
+              ("C-M-j" . evil-join)
+              ("C-w RET" . evil-window-vsplit)
+              ("C-w c" . evil-window-split)
+              ("C-w {" . evil-window-move-far-left)
+              ("C-w }" . evil-window-move-far-right)
+              ("C-w DEL" . evil-window-delete))
   :hook ((org-metareturn . evil-insert-state)
          (org-insert-heading . evil-insert-state))
   :config
@@ -583,14 +587,13 @@ potentially rename EGLOT's help buffer."
 
 (use-package evil-collection
   :ensure t
-  :after (evil magit)
+  :after (evil magit forge)
   :config
   (evil-collection-init '((magit magit-repos magit-submodule) magit-section magit-todos)))
 
 (use-package magit
   :ensure t
-  :bind (("M-²" . magit))
-  :config (require 'magit))
+  :bind (("M-²" . magit)))
 
 (use-package forge
   :ensure t
@@ -1321,6 +1324,9 @@ for renaming."
    mu4e-save-multiple-attachments-without-asking t
    mu4e-headers-skip-duplicates t
    mu4e-headers-include-related nil
+   mu4e-date-format-long "%d/%m/%Y"
+   mu4e-headers-date-format "%d/%m/%Y"
+   mu4e-headers-long-date-format "%d/%m/%Y"
 
    ;; images
    mu4e-view-show-images t
@@ -1731,15 +1737,23 @@ taken the same algorythm than gdscript-util"
 (use-package codegeex
   :after uuidgen
   :load-path "~/.emacs.d/my-packages/codegeex.el"
-  :custom (codegeex-idle-delay 1)
-  :bind (:map codegeex-mode-map
-              ("C-:" . codegeex-accept-completion)
-              ("C-=" . codegeex-next-completion)
-              ("C-;" . codegeex-previous-completion))
-  :config
-  (require 'codegeex))
+  :custom
+  (codegeex-idle-delay 0.5)
+  (codegeex-top_k 0)
+  (codegeex-top_p 0.95)
+  (codegeex-temperature 0.2)
+  :bind (("C-M-:" . global-codegeex-mode)
+         :map codegeex-mode-map
+         ("C-:" . codegeex-accept-completion)
+         ("C-=" . codegeex-next-completion)
+         ("C-;" . codegeex-previous-completion)))
 
-(use-package gdscript-mode
-  :hook
-  (gdscript-mode . (codegeex-mode 1))
-  (gdscript-mode . eglot))
+;; (use-package gdscript-mode
+;;   :after (codegeex magit)
+;;   :hook
+;;   (gdscript-mode . eglot))
+
+;; (use-package robot-mode
+;;   :load-path "~/.emacs.d/my-packages/robot-mode"
+;;   :custom
+;;   (robot-mode-retain-point-on-indent t))

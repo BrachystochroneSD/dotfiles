@@ -1,7 +1,8 @@
 #!/bin/sh
 
+format=$1
 location="${HOME}/Images/screenshots/video/"
 mkdir -p $location
-name=$(date +"%Y-%m-%d_%H:%M:%S_screengif.mp4")
+name=$(date +"%Y-%m-%d_%H:%M:%S_screengif.$format")
 
-ffmpeg -f x11grab   -framerate 25 -i :0 -f pulse -i 45 "$location$name"
+ffmpeg -f x11grab -framerate 23 -select_region true -i :0 -f pulse -i 45 "$location$name"

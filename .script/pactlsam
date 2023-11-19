@@ -33,7 +33,7 @@ print_curr_level () {
 
     max_level=100 #TODO: make bar with over 100% zone
 
-    pactl list sinks | grep -q "Mute: yes" && icon=Mute_Icon || icon=Speaker_Icon
+    pactl get-sink-mute @DEFAULT_SINK@ | grep -q "Mute: yes" && icon=Mute_Icon || icon=Speaker_Icon
 
     # [ $actual_level -gt 100 ] && #TODO: change color when over 100% or maybe block it until you use shift
 

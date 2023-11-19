@@ -15,7 +15,7 @@ channelsfile="$config_dir/listchanneltwitch"
 laststreamfile="$config_dir/lastchannelviewed"
 gamesfile="$config_dir/listgamestwitch"
 gamesdb="${HOME}/.script/gamedatabase/gamesdb"
-chat_command="brave -new-window"
+chat_command="firefox --new-window"
 
 API="https://api.twitch.tv/helix"
 

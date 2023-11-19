@@ -13,10 +13,10 @@ marching: "fuzzy";
 }
 
 * {
-bg: #0e0c1820;
-bg-alt: #0e0c1830;
-fg: #ddd0dd;
-fg-alt: #A58DB4;
+bg: #171c1020;
+bg-alt: #171c1030;
+fg: #c0e7dc;
+fg-alt: #8FBBB5;
 border: 0;
 margin: 0;
 padding: 0;

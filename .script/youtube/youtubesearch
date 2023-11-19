@@ -1,5 +1,19 @@
 #!/bin/sh
 
+. "${HOME}/.authentification/apikeys.sh"
+. "${HOME}/.cache/wal/colors.sh"
+
+MAX_RESULTS=35
+RSSFILE="${HOME}/.emacs.d/elfeed.org"
+HISTORY_FILE="${HOME}/.script/youtube/searchhistory"
+LAST_VIDEO_FILE="${HOME}/.script/youtube/last_video"
+touch "$HISTORY_FILE"
+
+DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
+NOTIFY_CMD="dunstify -i owl"
+COLS=250
+
+
 error_print () {
     echo "$1"
     $NOTIFY_CMD "$1"
@@ -103,7 +117,7 @@ mpv_launch () {
                                  --data-urlencode "q=$search_query"
                          )
     fi
-
+    echo "$yt_fetch"
     testcold=$(echo "$COLS" / 2.2 | bc)
     choicenum=$(echo "$yt_fetch" | jq -r ".items[] | .id.kind,.snippet.title, .snippet.channelTitle, .snippet.publishedAt" | html_to_ascii | awk -v cols="$testcold" '(NR%4==1){if($0=="youtube#playlist"){play="Playlist : "}else{play=""}}(NR%4==2){name=$0}(NR%4==3){chan=$0}(NR%4==0){printf ("%2d: %-" cols "s %-15s %.10s \n", NR/4, substr(play name,0,cols), substr(chan,0,15), $0)}' | sed 's/|//g' | $DMENU_CMD -l 30 -i | sed 's/:.*/ - 1/' | bc )
 
@@ -133,29 +147,6 @@ mpv_launch () {
     fi
     exit
 }
+check_internet_connection
+get_search_query
 
-main () {
-    # get my private ytapikey
-    . "${HOME}/.authentification/apikeys.sh"
-
-    # colors from wpgtk/pywal
-    . "${HOME}/.cache/wal/colors.sh"
-
-    #Parameters
-    MAX_RESULTS=35
-    RSSFILE="${HOME}/.emacs.d/elfeed.org"
-    HISTORY_FILE="${HOME}/.script/youtube/searchhistory"
-    LAST_VIDEO_FILE="${HOME}/.script/youtube/last_video"
-    touch "$HISTORY_FILE"
-
-    #Commands
-    DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
-    NOTIFY_CMD="dunstify -i owl"
-
-    COLS=250
-
-    check_internet_connection
-    get_search_query
-}
-
-main
