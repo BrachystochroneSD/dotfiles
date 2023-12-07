@@ -13,7 +13,6 @@ DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color3 -sf $color0"
 NOTIFY_CMD="dunstify -i owl"
 COLS=250
 
-
 error_print () {
     echo "$1"
     $NOTIFY_CMD "$1"
@@ -29,15 +28,34 @@ check_internet_connection () {
     ping -q -c 1 -W 1 1.1.1.1 >/dev/null 2>&1 || error_print "No internet connection"
 }
 
+launch_youtube_link() {
+    local yt_link="$1" _sample_rate= _res=
+    echo "$yt_link" | xclip -selection clipboard # clipboard to share with your friend !
+
+    res=$(printf "1080\n720\n360\nno-video" | $DMENU_CMD -i -p "Which resolution? (if avalaible)") || get_search_query
+
+    if [ $res = "no-video" ];then
+        chan=$(printf "stereo\nmono" | $DMENU_CMD -i -p "Channels") || get_search_query
+        [ "$chan" = "mono" ] && chan="--audio-channels=1" || chan=""
+        _sample_rate=$(printf "max\n441000\n38000" | $DMENU_CMD -i -p "Channels") || get_search_query
+        echo "$_sample_rate" | grep -q "^[0-9][0-9]*$" && _sample_rate="--audio-samplerate=$_sample_rate" || _sample_rate=""
+        exec st -e mpv --no-video "$chan" "$_sample_rate" "$yt_link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch mpv"
+    else
+        echo $yt_link > $LAST_VIDEO_FILE
+        mpv --ytdl-format="[height<=?$res]" "$yt_link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch the video"
+    fi
+    exit
+}
+
 get_channel_infos () {
     channel_name=$(grep "youtube.com" "$RSSFILE" | sed 's/\*\*\* \[\[.*\]\[//' | sed 's/\]\]//' | $DMENU_CMD -l 10 -i -p "Channel Search") || get_search_query
     channelsearch=$(curl -s \
-             -G https://www.googleapis.com/youtube/v3/search \
-             --data-urlencode "q=$channel_name" \
-             -d "type=channel" \
-             -d "maxResults=25" \
-             -d "part=snippet" \
-             -d "key=$ytapikey")
+                         -G https://www.googleapis.com/youtube/v3/search \
+                         --data-urlencode "q=$channel_name" \
+                         -d "type=channel" \
+                         -d "maxResults=25" \
+                         -d "part=snippet" \
+                         -d "key=$ytapikey")
 
     chanchoice=$(echo "$channelsearch" | jq -r ".items[] | .snippet.channelTitle, .snippet.description" | awk '(NR%2==1){chantitle=$0}(NR%2==0){printf ("%2d: %s : %s\n",NR/2,chantitle,$0)}' | $DMENU_CMD -l 25 -i -p "Which channel ?") || get_search_query
     local channum=$(echo "$chanchoice" | sed 's/:.*/-1/' | bc)
@@ -49,7 +67,6 @@ get_channel_infos () {
     # Ask for saving the channel and save it on rss.org file
     ! grep -q "$channel_id" "$RSSFILE" && local save_or_not=$(printf "No\nYes" | $DMENU_CMD -i -p "Save this channel ?")
     [ "$save_or_not" = "Yes" ] && printf "*** [[https://www.youtube.com/feeds/videos.xml?channel_id=%s][%s]]\n" "$channel_id" "$channame" >> "$RSSFILE"
-
 }
 
 get_search_query () {
@@ -58,64 +75,48 @@ get_search_query () {
     [ -z "$menu_entry" ] && error_print "Youtube search aborted"
 
     case "$menu_entry" in
-
-    "Channel Search")
-            get_channel_infos
-        search_query=$(echo | $DMENU_CMD -i -l 20 -p "Search on this channel:") || get_search_query
-        ;;
-
-        "Order")
-            sort=$(echo -e "relevance\ndate\nrating\ntitle\nviewCount" | $DMENU_CMD -i -l 20 -p "Sort by: ")
-            get_search_query
-            ;;
-
-    "Show History")
-        search_query=$($DMENU_CMD -i -l 20 -p "Search in History:" < "$HISTORY_FILE" ) || get_search_query
-        ;;
-
-    "Clear History")
-        printf "" > "$HISTORY_FILE"
-            get_search_query
-        ;;
-
-    *)
+        http*) launch_youtube_link "$menu_entry" ;;
+        "Channel Search") get_channel_infos; search_query=$(echo | $DMENU_CMD -i -l 20 -p "Search on this channel:") || get_search_query ;;
+        "Order") sort=$(echo -e "relevance\ndate\nrating\ntitle\nviewCount" | $DMENU_CMD -i -l 20 -p "Sort by: "); get_search_query ;;
+        "Show History") search_query=$($DMENU_CMD -i -l 20 -p "Search in History:" < "$HISTORY_FILE" ) || get_search_query ;;
+        "Clear History") printf "" > "$HISTORY_FILE"; get_search_query ;;
+        *)
             search_query="$menu_entry"
             ! grep -q "^$search_query$" "$HISTORY_FILE" && { echo "$search_query"; cat "$HISTORY_FILE"; } > /tmp/youthistotmp && mv /tmp/youthistotmp "$HISTORY_FILE"
-        printf "Searching for %s\n" "$search_query"
+            printf "Searching for %s\n" "$search_query"
     esac
     mpv_launch
 }
 
-mpv_launch () {
-
-    local yt_fetch
+mpv_launch() {
+    local yt_fetch=
     [ -z "$sort" ] && sort="relevance" # take default
 
     if [ -z "$channel_id" ]; then
         yt_fetch=$(curl -s \
-                                 -G https://www.googleapis.com/youtube/v3/search \
-                                 -d "type=video,playlist" \
-                                 -d "maxResults=$MAX_RESULTS" \
-                                 -d "key=$ytapikey" \
-                                 -d "part=snippet" \
-                                 -d "order=$sort" \
-                                 -d "relevanceLanguage=en" \
-                                 -d "relevanceLanguage=fr" \
-                                 --data-urlencode "q=$search_query"
-                         )
+                        -G https://www.googleapis.com/youtube/v3/search \
+                        -d "type=video,playlist" \
+                        -d "maxResults=$MAX_RESULTS" \
+                        -d "key=$ytapikey" \
+                        -d "part=snippet" \
+                        -d "order=$sort" \
+                        -d "relevanceLanguage=en" \
+                        -d "relevanceLanguage=fr" \
+                        --data-urlencode "q=$search_query"
+                )
     else
         yt_fetch=$(curl -s \
-                                 -G https://www.googleapis.com/youtube/v3/search \
-                                 -d "type=video,playlist" \
-                                 -d "maxResults=$MAX_RESULTS" \
-                                 -d "key=$ytapikey" \
-                                 -d "part=snippet" \
-                                 -d "order=$sort" \
-                                 -d "relevanceLanguage=en" \
-                                 -d "relevanceLanguage=fr" \
-                                 -d "channelId=$channel_id" \
-                                 --data-urlencode "q=$search_query"
-                         )
+                        -G https://www.googleapis.com/youtube/v3/search \
+                        -d "type=video,playlist" \
+                        -d "maxResults=$MAX_RESULTS" \
+                        -d "key=$ytapikey" \
+                        -d "part=snippet" \
+                        -d "order=$sort" \
+                        -d "relevanceLanguage=en" \
+                        -d "relevanceLanguage=fr" \
+                        -d "channelId=$channel_id" \
+                        --data-urlencode "q=$search_query"
+                )
     fi
     echo "$yt_fetch"
     testcold=$(echo "$COLS" / 2.2 | bc)
@@ -124,29 +125,12 @@ mpv_launch () {
     [ -z "$choicenum" ] && get_search_query
 
     choicekind=$(echo "$yt_fetch" | jq -r ".items[$choicenum].id")
-
-    if [ "$( echo "$choicekind" | jq -r ".kind" )" = "youtube#video" ];then
-    link="https://www.youtube.com/watch?v=$(echo "$choicekind" | jq -r ".videoId")"
+    if [ "$( echo "$choicekind" | jq -r ".kind" )" = "youtube#video" ]; then
+        launch_youtube_link "https://www.youtube.com/watch?v=$(echo "$choicekind" | jq -r ".videoId")"
     else
-    link="https://www.youtube.com/playlist?list=$(echo "$choicekind" | jq -r ".playlistId")"
+        launch_youtube_link "https://www.youtube.com/playlist?list=$(echo "$choicekind" | jq -r ".playlistId")"
     fi
-
-    echo "$link" | xclip -selection clipboard # clipboard to share with your friend !
-
-    res=$(printf "720\n1080\n360\nno-video" | $DMENU_CMD -i -p "Which resolution? (if avalaible)") || get_search_query
-
-    if [ $res = "no-video" ];then
-        chan=$(printf "stereo\nmono" | $DMENU_CMD -i -p "Channels") || get_search_query
-        [ "$chan" = "mono" ] && chan="--audio-channels=1" || chan=""
-        sample_rate=$(printf "max\n441000\n38000" | $DMENU_CMD -i -p "Channels") || get_search_query
-        echo "$sample_rate" | grep -q "^[0-9][0-9]*$" && sample_rate="--audio-samplerate=$sample_rate" || sample_rate=""
-        exec st -e mpv --no-video "$chan" "$sample_rate" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch mpv"
-    else
-        echo $link > $LAST_VIDEO_FILE
-        mpv --ytdl-format="[height<=?$res]" "$link" || $NOTIFY_CMD  "MPV ERROR " "Can't launch the video"
-    fi
-    exit
 }
+
 check_internet_connection
 get_search_query
-
