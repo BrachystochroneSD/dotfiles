@@ -1,0 +1,28 @@
+#!/bin/sh
+
+curr_branch=$(git branch | grep '*')
+
+[ -n "$1" ] && cd "$1"
+[ -f "pyproject.toml" ] && version=$(grep "version" pyproject.toml | grep -o "[0-9.]*")
+[ -f "PKGBUILD" ] && version=$(grep "pkgver" PKGBUILD | grep -o "[0-9.]*")
+
+[ "${curr_branch#* }" = "dev" ] && branchlog="origin/master.." ||
+branchlog="dev.."
+
+[ "${curr_branch#* }" = "master" ] && branchlog=""
+
+log=$(git log $branchlog | grep -v "^\(commit\|Author:\|Date:\)" | sed "s/^ *\([^-]*:\)/ - \1/" | grep -v "^ *$" | grep "[:-]" | grep -v "Closes #" | grep -v "Merge"| sed 's/(dev)/[DEV]/g;s/ WARN /[WARN]/g')
+
+all_warns=$(echo "$log" | grep "\[WARN\]" | sed 's/\[WARN\]//g;s/ - \(.*\)/ - ⚠ \1/')
+all_imps=$(echo "$log" | grep "\[IMP\]" | sed 's/\[IMP\]//g;s/ - \(.*\)/ - ❗ \1/')
+all_devs=$(echo "$log" | grep "\[DEV\]" | sed 's/\[DEV\]//g;s/ - \(.*\)/ - 🔧 \1/')
+all_misc=$(echo "$log" | grep "^ - Misc:" | sort -fu)
+rest=$(echo "$log" | grep -v "\[\(WARN\|IMP\|DEV\)\]" | grep -v "^ - Misc:")
+
+
+[ -n "$version" ] && echo "# Version $version" && echo
+[ -n "$all_warns" ] && echo "$all_warns"
+[ -n "$all_imps" ] && echo "$all_imps"
+echo "$rest"
+[ -n "$all_devs" ] && echo "$all_devs"
+[ -n "$all_misc" ] && echo "$all_misc"
