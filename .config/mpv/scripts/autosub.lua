@@ -36,7 +36,7 @@ local languages = {
 local logins = {
 --          { '--addic7ed', 'USERNAME', 'PASSWORD' },
 --          { '--legendastv', 'USERNAME', 'PASSWORD' },
-         { '--opensubtitles', 'Sdfs', 'I}`E2,vpc]sR)tqMnPV&' },
+--          { '--opensubtitles', 'Sdfs', 'I}`E2,vpc]sR)tqMnPV&' },
 --          { '--subscenter', 'USERNAME', 'PASSWORD' },
 }
 --=============================================================================

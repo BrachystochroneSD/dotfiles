@@ -17,7 +17,7 @@
       (encrypt))))
  '(mml-secure-openpgp-sign-with-sender t)
  '(package-selected-packages
-   '(codegpt uuidgen counsel-fzf pkgbuild multipe-cursors pkgbuild-mode nginx-mode sqlite3 django-manage django-mode glsl-mode mood-line forge elfeed-org magit gdscript-mode evil evil-collection undo-tree ivy gruvbox-theme elfeed multiple-cursors counsel helm-core vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
+   '(subed codegpt uuidgen counsel-fzf pkgbuild multipe-cursors pkgbuild-mode nginx-mode sqlite3 django-manage django-mode glsl-mode mood-line forge elfeed-org magit gdscript-mode evil evil-collection undo-tree ivy gruvbox-theme elfeed multiple-cursors counsel helm-core vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(send-mail-function 'mailclient-send-it)
  '(warning-suppress-types '(((evil-collection)) ((evil-collection)))))
 (custom-set-faces

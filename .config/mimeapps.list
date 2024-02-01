@@ -11,7 +11,7 @@ x-scheme-handler/mailto=mail.desktop
 image/gif=gif.desktop
 text/plain=editor.desktop
 image/x-pcx=editor.desktop
-application/zip=userapp-unzip-RFOK61.desktop
+application/zip=userapp-myunzip-4AUO61.desktop
 x-scheme-handler/chrome=firefox.desktop
 application/x-extension-htm=firefox.desktop
 application/x-extension-html=firefox.desktop
@@ -23,7 +23,7 @@ application/x-zerosize=editor.desktop
 
 [Added Associations]
 image/png=krita_png.desktop;brave-browser.desktop;gimp.desktop;
-image/svg+xml=brave-browser.desktop;
+image/svg+xml=org.inkscape.Inkscape.desktop;emacsclient.desktop;firefox.desktop;brave-browser.desktop;
 text/plain=brave-browser.desktop;
 application/x-wine-extension-ini=emacs.desktop;
 audio/mpeg=mpv.desktop;org.musicbrainz.Picard.desktop;music.desktop;
@@ -44,3 +44,7 @@ application/xhtml+xml=firefox.desktop;
 application/x-extension-xhtml=firefox.desktop;
 application/x-extension-xht=firefox.desktop;
 application/x-zerosize=editor.desktop;
+application/x-shellscript=emacsclient.desktop;
+font/ttf=org.gnome.FontViewer.desktop;org.gnome.FontManager.desktop;
+font/otf=org.gnome.FontViewer.desktop;
+model/stl=org.freecadweb.FreeCAD.desktop;

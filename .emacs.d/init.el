@@ -27,6 +27,7 @@
 (put 'downcase-region 'disabled nil)
 (global-set-key (kbd "C-x M-k") 'my-kill-current-buffer)
 
+(fset 'epg-wait-for-status 'ignore)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;; (add-hook 'before-save-hook 'untabify)
 
