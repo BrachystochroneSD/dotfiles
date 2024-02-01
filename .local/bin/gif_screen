@@ -10,5 +10,5 @@ if [ -n "$(pgrep gif_screener)" ];then
     dragon-drag-and-drop -x $(ls ${HOME}/Images/screenshots/video/* | sort -r | head -n1)
 else
     format=$(echo -n "mp4\ngif" | $DMENU_CMD)
-    ${HOME}/.script/gif_screener "$format"
+    ${HOME}/.local/bin/gif_screener "$format"
 fi

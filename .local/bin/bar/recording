@@ -1,0 +1,8 @@
+#!/bin/sh
+
+print_recording() {
+    i=$(date +%s)
+    [ "$(expr $i % 2 )" -eq 0 ] && echo "⬤"
+}
+
+[ -n "$(pgrep gif_screener)" ] && print_recording

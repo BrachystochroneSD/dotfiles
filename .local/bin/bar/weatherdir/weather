@@ -6,10 +6,10 @@ grep -qs "weather" ~/.config/bar/disabled_module && exit 0 #do nothing if disabl
 . "${HOME}/.authentification/apikeys.sh" 2> /dev/null || exit
 
 # parameters
-current=${HOME}/.script/bar/weatherdir/datas/current
-forecast=${HOME}/.script/bar/weatherdir/datas/forecast
+current=${HOME}/.config/bar/weatherdir/datas/current
+forecast=${HOME}/.config/bar/weatherdir/datas/forecast
 
-mkdir -p "${HOME}"/.script/bar/weatherdir/datas
+mkdir -p "${HOME}"/.config/bar/weatherdir/datas
 
 [ ! -f "$current" ] && touch "$current"
 [ ! -f "$forecast" ] && touch "$forecast"

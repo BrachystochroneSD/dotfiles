@@ -9,7 +9,7 @@ get_image() {
     echo "$file" | grep -q acast && echo "/tmp/podcast" && return
 
     radio=$(grep "$file" "${HOME}/.config/music_radios")
-    [ -n "$radio" ] && echo "${HOME}/.script/musicvizu/radio_img/${radio%% *}.png" && return
+    [ -n "$radio" ] && echo "${HOME}/.local/bin/musicvizu/radio_img/${radio%% *}.png" && return
 
     album_dir="${file%/*}"
     if [ -n "$album_dir" ] ; then

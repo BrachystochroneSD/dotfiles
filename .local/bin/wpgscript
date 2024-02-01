@@ -19,4 +19,4 @@ xdotool key super+shift+q
 
 
 # animated wallpaper if gif
-# ~/.script/bganim
+# ~/.config/bganim

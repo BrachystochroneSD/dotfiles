@@ -34,7 +34,7 @@
     Mod4 + Control + Escape
 
 # Terminal
-"st -e ~/.script/tmuxa"
+"st -e ~/.local/bin/tmuxa"
     Mod4 + Return
 
 "st -n floatingwin"
@@ -48,70 +48,51 @@
 "firefox"
     Mod4 + z
 
-# Zrythm
-"zrythm"
-    Control + Mod4 + z
-
-#--# # polybar # #--#
-
- "~/.config/polybar/launch.sh"
-     Mod4 + Control + r
-
-#--# # xrandr # #--#
-
-"~/.script/xrandrsw"
+"xrandrsw"
     Mod4 + Shift + Control + d
 
-# switch keyboard layout
-"~/.script/klaysw"
+"~/.local/bin/klaysw"
     Mod1 + Shift + Tab
 
-# nextcloud
 "nextcloud"
     Mod4 + Control + n
 
 "killall nextcloud"
     Mod4 + Mod1 + n
 
-#--# # osmmenu # #--#
-
-"~/.script/osmmenu/osmmenu"
+"~/.local/bin/osmmenu"
     Mod4 + g
 
 #--# # WPG # #--#
-
-"st -n fzf -e ~/.script/wpg_theme theme"
+"st -n fzf -e ~/.local/bin/wpg_theme theme"
     Mod4 + Shift + w
 
-"st -n fzf -e ~/.script/wpg_theme wall"
+"st -n fzf -e ~/.local/bin/wpg_theme wall"
     Mod4 + Control + w
 
 "wpg -m"
     Mod4 + w
 
 #App launcher bindings
-
 "st -e tremc -X"
     Mod4 + Shift + t
 
-# start dmenu
 "rofi -show drun"
     Mod4 + d
 
-# start dmenu
-"~/.script/my_dmenu_run"
+"~/.local/bin/my_dmenu_run"
     Mod4 + Shift + d
 
 
-#CALculette
+#Calculette
 "st -n floatingwin -e python"
     XF86Calculator
 #
-#CALendar
-"st -n floatingwin -e ~/.script/calendar"
+#Calendar
+"st -n floatingwin -e ~/.local/bin/calendar"
     Mod4 + XF86Calculator
 
-"st -n floatingwin -e ~/.script/calendar"
+"st -n floatingwin -e ~/.local/bin/calendar"
     Mod4 + c
 
 #pavucontrol
@@ -119,91 +100,91 @@
     Mod4 + XF86AudioMute
 
 # Audio controls
-"~/.script/pactlsam --reset"
+"~/.local/bin/pactlsam --reset"
     Shift + XF86AudioMute
 
-"~/.script/pactlsam --mictoggle"
+"~/.local/bin/pactlsam --mictoggle"
     XF86AudioMicMute
 
-"~/.script/pactlsam --plus 5"
+"~/.local/bin/pactlsam --plus 5"
     XF86AudioRaiseVolume
 
-"~/.script/pactlsam --moins 5"
+"~/.local/bin/pactlsam --moins 5"
     XF86AudioLowerVolume
 
-"~/.script/pactlsam --plus 10"
+"~/.local/bin/pactlsam --plus 10"
     Shift + XF86AudioRaiseVolume
 
-"~/.script/pactlsam --moins 10"
+"~/.local/bin/pactlsam --moins 10"
     Shift + XF86AudioLowerVolume
 
 # "amixer -q set Master 1+ toggle && sleep 0.05"
 #     XF86AudioMute
-"~/.script/pactlsam --toggle"
+"~/.local/bin/pactlsam --toggle"
     XF86AudioMute
 
 # Screen brightness controls
-"~/.script/brightnessbar moins 5"
+"~/.local/bin/brightnessbar moins 5"
     XF86MonBrightnessDown
-"~/.script/brightnessbar plus 5"
+"~/.local/bin/brightnessbar plus 5"
     XF86MonBrightnessUp
 
-"~/.script/brightnessbar moins 10"
+"~/.local/bin/brightnessbar moins 10"
     Shift + XF86MonBrightnessDown
-"~/.script/brightnessbar plus 10"
+"~/.local/bin/brightnessbar plus 10"
     Shift + XF86MonBrightnessUp
 
 #---# Music shits #---#
 
 "zenozik"
     Mod4 + Control + Shift + m
-"st -n ncmpcppwin -e ~/.script/musicvizu/musicvizu.sh"
+"st -n ncmpcppwin -e ~/.local/bin/musicvizu/musicvizu.sh"
     Mod4 + m
-"~/.script/radiosam"
+"~/.local/bin/radiosam"
     Mod4 + Mod1 + m
 
 #bindings for MPD MPC NCMPCPP
-"~/.script/mpcsam --prev"
+"~/.local/bin/mpcsam --prev"
     Mod4 + v
-"~/.script/mpcsam --toggle"
+"~/.local/bin/mpcsam --toggle"
     Mod4 + b
-"~/.script/mpcsam --stop"
+"~/.local/bin/mpcsam --stop"
     Mod4 + Shift + b
-"~/.script/mpcsam --next"
+"~/.local/bin/mpcsam --next"
     Mod4 + n
 
-"~/.script/mpcsam --seek +3"
+"~/.local/bin/mpcsam --seek +3"
     Mod4 + Shift + n
-"~/.script/mpcsam --seek -3"
+"~/.local/bin/mpcsam --seek -3"
     Mod4 + Shift + v
 
-"~/.script/mpcsam --random"
+"~/.local/bin/mpcsam --random"
     Mod4 + Control + b
 
-"~/.script/mpcsam --tggl-mupris"
+"~/.local/bin/mpcsam --tggl-mupris"
     Mod4 + Mod1 + b
 
-"~/.script/mpcsam --volume  +3"
+"~/.local/bin/mpcsam --volume  +3"
     Control + XF86AudioRaiseVolume
 
-"~/.script/mpcsam --volume -3"
+"~/.local/bin/mpcsam --volume -3"
     Control + XF86AudioLowerVolume
 
 #--# # FZF # #--#
 
-"st -n fzf -e /home/sam/.script/fzf-open.sh"
+"st -n fzf -e /home/sam/.local/bin/fzf-open.sh"
     Mod4 + Shift + f
-"st -n fzf -e /home/sam/.script/fzf-open.sh --hidden"
+"st -n fzf -e /home/sam/.local/bin/fzf-open.sh --hidden"
     Mod4 + Control + f
-"st -n fzf -e /home/sam/.script/fzf-open.sh --open-with"
+"st -n fzf -e /home/sam/.local/bin/fzf-open.sh --open-with"
     Mod4 + Mod1 + f
 
 #---# Mail mu4e #---#
 
-"~/.script/edit -e '(mu4e)'"
+"~/.local/bin/edit -e '(mu4e)'"
     Mod4 + Shift + m
 
-"~/.script/edit -e '(elfeed)'"
+"~/.local/bin/edit -e '(elfeed)'"
     Mod4 + Shift + r
 
 
@@ -212,11 +193,11 @@
     Mod4 + t
 
 #Twitch#
-"~/.script/twitch/twitchscript --menu"
+"~/.local/bin/twitch --menu"
     Mod4 + Control + t
 
 #Youtube#
-"~/.script/youtube/youtubesearch"
+"~/.local/bin/youtube"
     Mod4 + Shift + y
 
 #"matrix.org"
@@ -224,16 +205,16 @@
     Mod4 + Control + d
 
 # passwords
-"~/.script/xprop_dwm"
+"~/.local/bin/xprop_dwm"
     Mod4 + Mod1 + p
 
-"~/.script/mypassmenu"
+"~/.local/bin/mypassmenu"
     Mod4 + p
 
 # mount-usb
-"~/.script/polybar/mount-usb.sh --mount"
+"~/.local/bin/polybar/mount-usb.sh --mount"
     Mod4 + u
-"~/.script/polybar/mount-usb.sh --unmount"
+"~/.local/bin/polybar/mount-usb.sh --unmount"
     Mod4 + Shift + u
 
 # update
@@ -250,22 +231,22 @@
 "networkmanager_dmenu"
     Mod4 + F7
 
-"~/.script/polybar/wifi --prompt-zeros"
+"~/.local/bin/polybar/wifi --prompt-zeros"
     Mod4 + Shift + Control + F7
 
-"~/.script/polybar/wifi --toggle-ifstat"
+"~/.local/bin/polybar/wifi --toggle-ifstat"
     Mod4 + Control + F7
 
 "scrot -s ~/Images/screenshots/%Y-%m-%d_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
     Print
 
-"~/.script/gif_screen"
+"~/.local/bin/gif_screen"
     Mod4 + Print
 
 
-"~/.script/hass inc"
+"~/.local/bin/hass inc"
     Mod4 + XF86AudioRaiseVolume
-"~/.script/hass test_script"
+"~/.local/bin/hass test_script"
     Mod4 + XF86AudioLowerVolume
 
 ##################################

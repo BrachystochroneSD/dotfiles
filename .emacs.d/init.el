@@ -1022,7 +1022,7 @@ potentially rename EGLOT's help buffer."
     (interactive)
     (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single))))
       (message "Opening %s with mpd..." (elfeed-entry-link entry))
-      (start-process "elfeed-mpd" nil (expand-file-name "~/.script/podcast") (elfeed-entry-link entry))))
+      (start-process "elfeed-mpd" nil (expand-file-name "podcast") (elfeed-entry-link entry))))
 
   (defun elfeed-play-with-mpv ()
     "Play entry link with mpv."

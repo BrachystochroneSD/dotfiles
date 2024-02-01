@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-pwned_list="${HOME}/.script/bar/pwned/pwned_list"
+pwned_list="${HOME}/.config/bar/pwned/pwned_list"
 
 if [ -f "$pwned_list" ]; then
     shite=$(cat $pwned_list | wc -l)

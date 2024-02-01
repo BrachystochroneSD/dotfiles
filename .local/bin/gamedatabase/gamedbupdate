@@ -4,7 +4,7 @@
 . "${HOME}/.authentification/apikeys.sh"
 
 #parameter
-database=${HOME}/.script/gamedatabase/gamesdb
+database=${HOME}/.config/gamedatabase/gamesdb
 
 curly=$(curl -s \
          -G "https://www.giantbomb.com/api/games/" \
