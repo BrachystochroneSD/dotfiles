@@ -16,7 +16,6 @@ is_playerctl_toggled() {
     [ -f "$muprisf" ]
 }
 
-
 is_playerctl_working && is_playerctl_toggled && {
     [ -n "$2" ] && arg=$(echo "$2" | sed 's/\(.\)\(.\)/\2\1/')
     toggle_cmd="playerctl play-pause"
@@ -37,11 +36,33 @@ is_playerctl_working && is_playerctl_toggled && {
     volume_cmd="$mpc_cmd volume \"$2\""
 }
 
-refresh_dwm(){
+refresh_dwm() {
     pkill -SIGUSR1 dwmblocks
 }
 
+help() {
+    cat <<EOF
+
+    -h) help && exit
+    --prev) $prev_cmd && refresh_dwm ;;
+    --toggle) $toggle_cmd && refresh_dwm ;;
+    --stop) $stop_cmd && refresh_dwm ;;
+    --next) $next_cmd && refresh_dwm ;;
+    --random) $random_cmd && refresh_dwm ;;
+    --seek) $seek_cmd ;;
+    --volume) $volume_cmd ;;
+    --tggl-host) [ -f "$mhf" ] && rm "$mhf" || echo "$ip" > "$mhf" ;;
+    --tggl-mupris)
+        [ -f "$muprisf" ] && rm "$muprisf" || echo "" > "$muprisf"
+        refresh_dwm
+        ;;
+
+EOF
+}
+
+
 case $1 in
+    -h) help && exit ;;
     --prev) $prev_cmd && refresh_dwm ;;
     --toggle) $toggle_cmd && refresh_dwm ;;
     --stop) $stop_cmd && refresh_dwm ;;

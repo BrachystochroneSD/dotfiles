@@ -7,3 +7,5 @@
     user = samd854685
 [github]
 	user = BrachystochroneSD
+[init]
+	defaultBranch = main

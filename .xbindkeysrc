@@ -193,11 +193,11 @@
     Mod4 + t
 
 #Twitch#
-"~/.local/bin/twitch --menu"
+"twitch --menu"
     Mod4 + Control + t
 
 #Youtube#
-"~/.local/bin/youtube"
+"youtube"
     Mod4 + Shift + y
 
 #"matrix.org"

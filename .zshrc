@@ -92,24 +92,10 @@ alias spQ='sp -Q'
 # ZENOCYNE #
 ############
 
-#zenohost
-alias zenohost="sudo ${HOME}/.script/hostszeno"
-
 #zenocloud
 alias zenomount='sudo mount -t davfs https://nextcloud.zenocyne.com/remote.php/webdav/ ${HOME}/zenocloud'
 
-##################
-# Custom scripts #
-##################
-
-alias twitch='~/.script/twitch/twitchscript'
-alias wifi='~/.script/polybar/wifi'
-alias gamedbupdate='~/.script/gamedatabase/gamedbupdate'
-alias yts='~/.script/youtube/youtubesearch'
-alias im='~/.script/im'
-alias xmen='~/.script/xrandrsw'
 xop () { nohup xdg-open "$1" >/dev/null 2>&1 &}
-alias fop='~/.script/fzf-open.sh'
 
 #######
 # GIT #
@@ -244,7 +230,7 @@ f(){ [[ ! -n $1 ]] && search="/home/sam" || search=$1
    }
 
 # edit
-e(){ /bin/nohup /home/sam/.script/edit "$@" &>/dev/null &}
+e(){ edit "$@" &>/dev/null & ; }
 
 #######
 # FEH #
@@ -260,10 +246,6 @@ alias grubreset='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 
 alias mpddefault='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_default.conf ${HOME}/.config/mpd/mpd.conf && mpd'
 alias mpdstream='killall mpd && cp ${HOME}/.config/mpd/configfiles/config_stream.conf ${HOME}/.config/mpd/mpd.conf && mpd'
-
-# AUR install
-
-alias auwlr='${HOME}/.script/auwlr'
 
 # git clone
 

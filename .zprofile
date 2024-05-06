@@ -11,6 +11,8 @@ export PATH=$PATH:~/.local/bin
 
 export TEXMFHOME="~/.config/texmf"
 
+#export XDG_CONFIG_HOME="~/.config"
+
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   exec startx
 fi

@@ -48,3 +48,5 @@ application/x-shellscript=emacsclient.desktop;
 font/ttf=org.gnome.FontViewer.desktop;org.gnome.FontManager.desktop;
 font/otf=org.gnome.FontViewer.desktop;
 model/stl=org.freecadweb.FreeCAD.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox.desktop;
+application/json=emacsclient.desktop;
