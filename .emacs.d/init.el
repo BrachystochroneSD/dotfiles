@@ -1758,3 +1758,27 @@ taken the same algorythm than gdscript-util"
 ;;   :load-path "~/.emacs.d/my-packages/robot-mode"
 ;;   :custom
 ;;   (robot-mode-retain-point-on-indent t))
+
+(use-package gdshader-mode
+  ;; Optional customisations for company-mode completion.
+  :load-path "~/.emacs.d/my-packages/gdshader-mode"
+  :config
+  (defun gdshader-func-hook ()
+    ;; Use tab instead of space for this mode:
+    (setq-local indent-tabs-mode 'only)
+    (setq-local tab-width 4)
+    (setq-local c-basic-offset 4))
+
+  :hook (gdshader-mode . gdshader-func-hook)
+
+  )
+  ;; :init
+  ;; (defun gdshader-completion-at-point ()
+  ;;   "This is the function to be used for the hook `completion-at-point-functions'."
+  ;;   (interactive)
+  ;;   (let* ((bounds (bounds-of-thing-at-point 'symbol))
+  ;;          (start (car bounds))
+  ;;          (end (cdr bounds)))
+  ;;     (list start end gdshader-all-keywords
+  ;;           . nil)))
+  ;; :hook (completion-at-point-functions . gdshader-completion-at-point))

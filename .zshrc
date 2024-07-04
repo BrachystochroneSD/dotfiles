@@ -2,7 +2,7 @@
 # ZSH CONFIG #
 ##############
 
-SAVEHIST=10
+SAVEHIST=1000
 HISTFILE=~/.zsh_history
 
 local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
