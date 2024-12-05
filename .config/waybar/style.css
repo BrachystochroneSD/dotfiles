@@ -1,0 +1,188 @@
+@import "_srcery.css";
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "FiraCode", "JetBrains Mono Nerd Font";
+    font-size: 14px;
+    margin-top: 1px;
+}
+
+/* ------ Window Title ------ */
+#window {
+    color: @bright-green;
+    background-color: @background;
+    border-radius: 0px 10px 10px 0px;
+    padding-right: 4px;
+}
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: 0px solid #ffffff;
+    background: transparent;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+/* -----------------------------------------------------
+ * Workspaces
+ * ----------------------------------------------------- */
+#workspaces button.empty {
+    color: @bright-white;
+}
+
+#workspaces button {
+    border-radius: 0px;
+    padding: 0;
+    margin: 0;
+    padding-left: 3px;
+    padding-right: 3px;
+    color: @green;
+    background-color: @background;
+}
+
+#workspaces button:hover {
+    color: @red;
+}
+
+#workspaces button.persistent.visible {
+    color: @black;
+    background-color: @yellow;
+}
+
+/* ALL */
+#custom-filesys,
+#custom-temp,
+#clock,
+#cpu,
+#temperature,
+#memory,
+#custom-weather{
+    margin-left: 5px;
+    margin-right: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 8px;
+    background-color: @background;
+}
+
+#custom-filesys {
+    color: @blue;
+}
+
+#custom-temp {
+    color: @red;
+}
+
+
+#cpu,
+#memory {
+    color: @teal;
+}
+
+#cpu {
+    margin-right: 0;
+    padding-right: 0;
+    border-radius: 8px 0 0 8px;
+}
+
+#memory {
+    margin-left: 0;
+    padding-left: 0;
+    border-radius: 0 8px 8px 0;
+}
+
+/* ------ Pulseaudio ------ */
+#pulseaudio {
+    color: @orange;
+    padding: 2px 5px;
+}
+
+/* ------ Backlight ------ */
+#backlight {
+    color: @cyan;
+    padding: 2px 5px;
+}
+
+/* ------ Network ------ */
+#network {
+    color: @cyan;
+    padding: 2px 5px;
+}
+
+/* ------ Battery ------ */
+#battery {
+    color: @yellow;
+    padding: 2px 5px;
+}
+
+/* ------ Clock ------ */
+#clock {
+    color: @yellow;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#custom-epoch {
+    padding-left: 10px;
+    color: @yellow;
+    border-radius: 0px;
+    background-color: @background;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* ------ System Tray ------ */
+#tray {
+    background-color: @background;
+    padding: 2px 5px;
+}
+
+/* ------ Custom Modules ------ */
+
+#custom-warp {
+    color: @yellow;
+    padding: 2px 5px;
+}
+
+#custom-power {
+    color: @red;
+}
+
+#custom-mpd {
+    color: @bright-white;
+}
+
+#custom-mails {
+    color: @bright-white;
+}
+
+#custom-weather {
+    color: @bright-green;
+    font-family: "Weather Icons";
+}
+
+#custom-owl {
+    padding-top: 4px;
+    border-radius: 14px 0 0 14px;
+    margin-right: 0;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: @white;
+    background-color: @background;
+}
+
+#custom-r_end {
+    border-radius: 0px 0px 0px 0px;
+    margin-right: 0px;
+    padding-right: 0px;
+    background-color: @background;
+}
+
+#custom-l_end {
+    border-radius: 0px 0px 0px 0px;
+    margin-left: 0px;
+    padding-left: 0px;
+    background-color: @background;
+}

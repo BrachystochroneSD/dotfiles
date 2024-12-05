@@ -37,7 +37,7 @@
 "st -e ~/.local/bin/tmuxa"
     Mod4 + Return
 
-"st -n floatingwin"
+"st -n floatingwin -e ~/.local/bin/tmuxa"
     Mod4 + Control + Return
 
 # Emacs
@@ -45,7 +45,7 @@
     Mod4 + Shift + Return
 
 # Browser
-"brave"
+"firefox"
     Mod4 + z
 
 "xrandrsw"
