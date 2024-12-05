@@ -98,7 +98,7 @@ auwlr_build() {
 
 auwlr_upgrade() {
     [ ! -f "$auwlr_upgrade_list" ] && echo "Nothing to install or upgrade, use -Sy first" && exit 1
-    sudo pacman -U $(cat $auwlr_cache/auwlr_upgrade_list | sed "s|.*/|$auwlr_pkg/|" | tr "\n" " " ) && rm "$auwlr_upgrade_list"
+    sudo pacman -U "$(cat $auwlr_cache/auwlr_upgrade_list | sed "s|.*/|$auwlr_pkg/|" | tr "\n" " " )" && rm "$auwlr_upgrade_list"
 }
 
 auwlr_clean_cache() {

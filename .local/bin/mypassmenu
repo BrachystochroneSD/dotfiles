@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 
-. "${HOME}/.cache/wal/colors.sh"
 . "${HOME}/.config/password_defaults"
+. "${HOME}/.config/zowl.sh"
 
-NOTIFY_CMD="dunstify -i owl"
-DMENU_CMD="dmenu -i -nb $color0 -nf $color15 -sb $color3 -sf $color0 -l 20 -p"
-DMENU_SECRET="dmenu -nb $color0 -nf $color0 -sb $color0 -sf $color3"
-MENU="Add\nEdit\nDelete\nPush"
-TYPE_CMD="xdotool type --clearmodifiers --file -"
+[ -z "$NOTIFY_CMD" ] && NOTIFY_CMD="dunstify -i owl"
+[ -z "$MENU_CMD" ] && MENU_CMD="wofi -d -i -nb -l 20 -p"
+[ -z "$MENU_SECRET_CMD" ] && MENU_SECRET_CMD="wofi -d"
+[ -z "$TYPE_CMD" ] && TYPE_CMD="wtype -"
+
+
+MENU_CMD="$MENU_CMD -l 20 -p"
+MENU="Add\nAddOTP\nEdit\nDelete\nPush"
 
 if [ -z "$DISPLAY" ]; then
-    DMENU_CMD="fzf --prompt"
+    MENU_CMD="fzf --prompt"
     MENU="Edit\nDelete\nPush"
     TYPE_CMD=cat
 fi
@@ -24,12 +27,18 @@ password_files=( "$prefix"/**/*.gpg )
 password_files=( "${password_files[@]#"$prefix"/}" )
 password_files=( "${password_files[@]%.gpg}" )
 
+pass_insert() {
+    local content=$1 loc=$2
+    pass insert "$loc" <<EOF
+$(echo -e "$content\n$content")
+EOF
+}
+
 add_entry(){
     local name="$1"
     local username="$2"
     local password="$3"
     local note="$4"
-
 
     [[ -z "$name" ]] && exit
     [[ -z "$username" ]] && exit
@@ -37,20 +46,14 @@ add_entry(){
 
     echo add entry for "$name"
 
-    pass insert $name/username <<EOF
-$(echo -e "$username\n$username")
-EOF
-
-    pass insert $name/password <<EOF
-$(echo -e "$password\n$password")
-EOF
+    pass_insert "$username" "$name/username"
+    pass_insert "$password" "$name/password"
 
     if [[ -n "$note" ]];then
         echo "$note" > "$prefix/$name/note.txt"
         pass git add "$prefix/$name/note.txt"
         pass git commit -m "add given notes for $prefix/$name"
     fi
-
 }
 
 if [[ -n "$1" ]]; then
@@ -58,25 +61,33 @@ if [[ -n "$1" ]]; then
     exit
 fi
 
-password=$(echo -e "$MENU\n\n$(printf '%s\n' "${password_files[@]}")" | $DMENU_CMD "Password Manager: ") || exit
+password=$(echo -e "$MENU\n\n$(printf '%s\n' "${password_files[@]}")" | $MENU_CMD "Password Manager: ") || exit
 
 case "$password" in
+    AddOTP)
+        directory=$(pass ls | grep '^├──' | sed 's/├── //' | $MENU_CMD -l -p "Directory: ")
+        tmp_image=/tmp/temp_qr.png
+        scan_image=$(scrot -s $tmp_image)
+        qr_content=$(zbarimg "$tmp_image" 2>/dev/null | sed 's/.*\(otpauth.*\)/\1/')
+        rm -f $tmp_image
+        pass_insert "$qr_content" "$directory/otp"
+        ;;
     Add)
-        name=$(echo "" | $DMENU_CMD "Name: ") || exit
-        username=$(echo "$DEFAULT_USER" | $DMENU_CMD "Username: ") || exit
-        pass_choice=$(echo -e "Generated\nManual" | $DMENU_CMD "How to create the Password: ") || exit
+        name=$(echo "" | $MENU_CMD "Name: ") || exit
+        username=$(echo "$DEFAULT_USER" | $MENU_CMD "Username: ") || exit
+        pass_choice=$(echo -e "Generated\nManual" | $MENU_CMD "How to create the Password: ") || exit
         case "$pass_choice" in
             Manual)
                 loop=t
                 while [[ "$loop" == "t" ]]; do
-                    password=$(echo "" | $DMENU_SECRET -p "Password: ") || exit
-                    retype_password=$(echo "" | $DMENU_SECRET -p "Retype Password: ") || exit
+                    password=$(echo "" | $MENU_SECRET_CMD -p "Password: ") || exit
+                    retype_password=$(echo "" | $MENU_SECRET_CMD -p "Retype Password: ") || exit
                     [[ ! "$retype_password" == "$password" ]] && $NOTIFY_CMD "Passwords doesn't match" || loop=f
                 done
                 ;;
             Generated)
-                pass_type=$(echo -e "Letter + Digits + Special Char\nLetter + Digit\nLetter only" | $DMENU_CMD "Choose: ") || exit
-                pass_length=$(echo -e "20\n30\n10" | $DMENU_CMD "Length: ") || exit
+                pass_type=$(echo -e "Letter + Digits + Special Char\nLetter + Digit\nLetter only" | $MENU_CMD "Choose: ") || exit
+                pass_length=$(echo -e "20\n30\n10" | $MENU_CMD "Length: ") || exit
                 case "$pass_type" in
                     "Letter only")
                         tr_option='A-Za-z' ;;
@@ -91,22 +102,22 @@ EOF
                 ;;
             *) exit
         esac
-        note=$(echo "" | $DMENU_CMD "Notes: ") || exit
+        note=$(echo "" | $MENU_CMD "Notes: ") || exit
 
         add_entry "$name" "$username" "$password" "$note"
         ;;
 
     Edit)
-        edit_choice=$(printf '%s\n' "${password_files[@]}" | $DMENU_CMD "Edit entry: ") || exit
+        edit_choice=$(printf '%s\n' "${password_files[@]}" | $MENU_CMD "Edit entry: ") || exit
         echo "TOTO : st -n floatingwin -e pass edit $edit_choice but it is not working"
         ;;
     Push)
         pass git push origin master > "$prefix/.last_push.log" && $NOTIFY_CMD "push successful" || $NOTIFY_CMD "push unsucessful"
         ;;
     Delete)
-        choice=$(ls "$prefix" | $DMENU_CMD "Delete entry: ") || exit
+        choice=$(ls "$prefix" | $MENU_CMD "Delete entry: ") || exit
         [[ -z "$choice" ]] && exit
-        besure=$(echo -e "No\nYes" | $DMENU_CMD "Are you sure you want to delete $choice? ") || exit
+        besure=$(echo -e "No\nYes" | $MENU_CMD "Are you sure you want to delete $choice? ") || exit
         if [[ "$besure" == "Yes" ]]; then
             pass rm -rf "$choice"
         fi

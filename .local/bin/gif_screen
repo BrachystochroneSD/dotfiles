@@ -9,6 +9,6 @@ if [ -n "$(pgrep gif_screener)" ];then
     pkill -P $(pgrep gif_screener) && notify-send "gif_screener killed" || error "Can't kill gif_screener"
     dragon-drag-and-drop -x $(ls ${HOME}/Images/screenshots/video/* | sort -r | head -n1)
 else
-    format=$(echo -n "mp4\ngif" | $DMENU_CMD)
+    format=$(echo -n "mkv\ngif" | $DMENU_CMD)
     ${HOME}/.local/bin/gif_screener "$format"
 fi

@@ -19,7 +19,8 @@
  '(package-selected-packages
    '(dape dap-mode subed codegpt uuidgen counsel-fzf pkgbuild multipe-cursors pkgbuild-mode nginx-mode sqlite3 django-manage django-mode glsl-mode mood-line forge elfeed-org magit gdscript-mode evil evil-collection undo-tree ivy gruvbox-theme elfeed multiple-cursors counsel helm-core vue-mode typescript-mode kivy-mode kotlin-mode lua-mode fzf eglot php-mode gh auctex company dired-hide-dotfiles evil-magit evil-mc evil-mu4e pyim))
  '(send-mail-function 'mailclient-send-it)
- '(warning-suppress-types '(((evil-collection)) ((evil-collection)))))
+ '(warning-suppress-log-types '((eglot)))
+ '(warning-suppress-types '((emacs) (comp) ((evil-collection)) ((evil-collection)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
