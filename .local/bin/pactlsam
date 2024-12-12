@@ -80,5 +80,3 @@ case $1 in
         notif ;;
     *) "usage: pactlsam --toggle --plus or --moins"
 esac
-
-[]
