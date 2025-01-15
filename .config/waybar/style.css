@@ -53,6 +53,7 @@ window#waybar {
 /* ALL */
 #custom-filesys,
 #custom-temp,
+#custom-music,
 #clock,
 #cpu,
 #temperature,
@@ -64,20 +65,7 @@ window#waybar {
     padding-right: 8px;
     border-radius: 8px;
     background-color: @background;
-}
-
-#custom-filesys {
-    color: @blue;
-}
-
-#custom-temp {
-    color: @red;
-}
-
-
-#cpu,
-#memory {
-    color: @teal;
+    color: @bright-white;
 }
 
 #cpu {
@@ -94,71 +82,56 @@ window#waybar {
 
 /* ------ Pulseaudio ------ */
 #pulseaudio {
-    color: @orange;
     padding: 2px 5px;
 }
 
 /* ------ Backlight ------ */
 #backlight {
-    color: @cyan;
     padding: 2px 5px;
 }
 
 /* ------ Network ------ */
 #network {
-    color: @cyan;
     padding: 2px 5px;
 }
 
 /* ------ Battery ------ */
 #battery {
-    color: @yellow;
     padding: 2px 5px;
 }
 
 /* ------ Clock ------ */
 #clock {
-    color: @yellow;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#custom-music {
+    background-color: #000000;
+    border-radius: 0px;
     font-weight: bold;
     font-size: 12px;
 }
 
 #custom-epoch {
     padding-left: 10px;
-    color: @yellow;
     border-radius: 0px;
-    background-color: @background;
     font-weight: bold;
     font-size: 12px;
 }
 
 /* ------ System Tray ------ */
 #tray {
-    background-color: @background;
     padding: 2px 5px;
 }
 
 /* ------ Custom Modules ------ */
 
 #custom-warp {
-    color: @yellow;
     padding: 2px 5px;
 }
 
-#custom-power {
-    color: @red;
-}
-
-#custom-mpd {
-    color: @bright-white;
-}
-
-#custom-mails {
-    color: @bright-white;
-}
-
 #custom-weather {
-    color: @bright-green;
     font-family: "Weather Icons";
 }
 
