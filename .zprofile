@@ -19,7 +19,7 @@ export TEXMFHOME="~/.config/texmf"
 
 #export XDG_CONFIG_HOME="~/.config"
 
-if test ! $DISPLAY && test $XDG_VTNR -eq 1; then
+if test ! "$DISPLAY" && test "$XDG_VTNR" -eq 1; then
     if uwsm check may-start; then
         exec uwsm start hyprland.desktop
     fi
