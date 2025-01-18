@@ -2,7 +2,7 @@
 
 winid=$(xprop -root _NET_ACTIVE_WINDOW | cut -d' ' -f5)
 
-# exec st 2>/dev/null -n cavaviz -e 'cava' &
+exec st 2>/dev/null -t cavaviz -e 'cava' &
 exec st -t album -e ~/.local/bin/musicvizu/albumshow.sh & 2>/dev/null
 sleep 0.1
 wmctrl -i -a "$winid"
