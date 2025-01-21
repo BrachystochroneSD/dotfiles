@@ -1,0 +1,39 @@
+@define-color background       #282828; /* Dark background */
+@define-color black            #282828; /* Same as background */
+@define-color hard-black       #1d2021; /* Harder black */
+@define-color bright-black     #928374; /* Gray */
+
+@define-color red              #cc241d; /* Red */
+@define-color bright-red       #fb4934; /* Bright Red */
+
+@define-color green            #98971a; /* Green */
+@define-color bright-green     #b8bb26; /* Bright Green */
+
+@define-color yellow           #d79921; /* Yellow */
+@define-color bright-yellow    #fabd2f; /* Bright Yellow */
+
+@define-color blue             #458588; /* Blue */
+@define-color bright-blue      #83a598; /* Bright Blue */
+
+@define-color magenta          #b16286; /* Magenta */
+@define-color bright-magenta   #d3869b; /* Bright Magenta */
+
+@define-color cyan             #689d6a; /* Cyan */
+@define-color bright-cyan      #8ec07c; /* Bright Cyan */
+
+@define-color white            #a89984; /* White */
+@define-color bright-white     #ebdbb2; /* Bright White */
+
+@define-color orange           #d65d0e; /* Orange */
+@define-color bright-orange    #fe8019; /* Bright Orange */
+
+@define-color xgray1           #3c3836; /* Lighter background gray */
+@define-color xgray2           #504945; /* Another gray shade */
+@define-color xgray3           #665c54; /* Another gray shade */
+@define-color xgray4           #7c6f64; /* Another gray shade */
+@define-color xgray5           #928374; /* Neutral gray */
+@define-color xgray6           #a89984; /* Neutral brighter gray */
+@define-color xgray7           #bdae93; /* Slightly more vivid gray */
+@define-color xgray8           #d5c4a1; /* Even more vivid */
+@define-color xgray9           #ebdbb2; /* Near white */
+@define-color xgray10          #fbf1c7; /* Almost white */

@@ -1,4 +1,4 @@
-@import "_srcery.css";
+@import "_gruv.css";
 
 * {
     padding: 0;
@@ -10,16 +10,14 @@
 
 /* ------ Window Title ------ */
 #window {
-    color: @bright-green;
-    background-color: @background;
+    color: @bright-yellow;
     border-radius: 0px 10px 10px 0px;
     padding-right: 4px;
 }
 
 window#waybar {
-    background-color: rgba(0, 0, 0, 0);
     border-bottom: 0px solid #ffffff;
-    background: transparent;
+    background: rgba(40, 40, 40, 0.5);
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -37,23 +35,22 @@ window#waybar {
     margin: 0;
     padding-left: 3px;
     padding-right: 3px;
-    color: @green;
-    background-color: @background;
+    color: @bright-white;
 }
 
 #workspaces button:hover {
-    color: @red;
+    color: @yellow;
 }
 
-#workspaces button.persistent.visible {
-    color: @black;
-    background-color: @yellow;
+#workspaces button.visible {
+    color: @bright-yellow;
 }
 
 /* ALL */
 #custom-filesys,
 #custom-temp,
 #custom-music,
+#custom-mails,
 #clock,
 #cpu,
 #temperature,
@@ -63,21 +60,19 @@ window#waybar {
     margin-right: 0px;
     padding-left: 8px;
     padding-right: 8px;
-    border-radius: 8px;
-    background-color: @background;
     color: @bright-white;
 }
 
 #cpu {
     margin-right: 0;
     padding-right: 0;
-    border-radius: 8px 0 0 8px;
 }
 
 #memory {
     margin-left: 0;
+    margin-right: 0;
     padding-left: 0;
-    border-radius: 0 8px 8px 0;
+    padding-right: 0;
 }
 
 /* ------ Pulseaudio ------ */
@@ -107,15 +102,12 @@ window#waybar {
 }
 
 #custom-music {
-    background-color: #000000;
-    border-radius: 0px;
     font-weight: bold;
     font-size: 12px;
 }
 
 #custom-epoch {
     padding-left: 10px;
-    border-radius: 0px;
     font-weight: bold;
     font-size: 12px;
 }
@@ -137,25 +129,10 @@ window#waybar {
 
 #custom-owl {
     padding-top: 4px;
-    border-radius: 14px 0 0 14px;
     margin-right: 0;
-    margin-left: 10px;
-    padding-left: 10px;
+    margin-left: 8px;
+    padding-left: 8px;
     padding-right: 10px;
     color: @white;
-    background-color: @background;
-}
-
-#custom-r_end {
-    border-radius: 0px 0px 0px 0px;
-    margin-right: 0px;
-    padding-right: 0px;
-    background-color: @background;
-}
-
-#custom-l_end {
-    border-radius: 0px 0px 0px 0px;
-    margin-left: 0px;
-    padding-left: 0px;
-    background-color: @background;
+    font-size: 18px;
 }

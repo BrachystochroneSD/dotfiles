@@ -93,20 +93,7 @@
                  (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)"))))
     (dolist (char-regexp alist)
       (set-char-table-range composition-function-table (car char-regexp)
-                            `([,(cdr char-regexp) 0 font-shape-gstring]))))
-
-  (set-frame-parameter nil 'alpha '(97))
-  (add-to-list 'default-frame-alist '(alpha 97))
-
-  (defun my-make-it-transparentier (x)
-    "add X to the current frame alpha value"
-    (set-frame-parameter nil 'alpha (list (max 20 (min 100 (+ x (car (frame-parameter nil 'alpha)))))))
-    (message (format "Current alpha: %d" (car (frame-parameter nil 'alpha)))))
-
-  :bind (("<f9>" . (lambda () (interactive) (my-make-it-transparentier -5)))
-         ("<C-f9>" . (lambda () (interactive) (my-make-it-transparentier 5)))
-         ("<M-f9>" . (lambda () (interactive) (my-make-it-transparentier -10)))
-         ("<C-M-f9>" . (lambda () (interactive) (my-make-it-transparentier 10)))))
+                            `([,(cdr char-regexp) 0 font-shape-gstring])))))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Bindings ;;
