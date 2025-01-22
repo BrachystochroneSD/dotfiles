@@ -1,0 +1,8 @@
+#!/bin/sh
+
+WALLPAPERS="${HOME}/Images/wallpapers"
+
+random_file=$(ls $WALLPAPERS | shuf | head -n1)
+
+hyprctl hyprpaper preload "$WALLPAPERS/$random_file"
+hyprctl hyprpaper wallpaper ",$WALLPAPERS/$random_file"
