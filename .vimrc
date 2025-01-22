@@ -15,6 +15,7 @@ call plug#begin('~/.vim/plugins')
 call plug#end()
 
 colorscheme wal
+hi Normal guibg=NONE ctermbg=NONE
 
 " map <C-m> <Esc>:split<CR>
 " map <C-M> <Esc>:vsplit<CR>
