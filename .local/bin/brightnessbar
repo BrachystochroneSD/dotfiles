@@ -1,6 +1,6 @@
 #!/bin/sh
 
-backlightdir=$(find /sys/devices/ -type d | grep "\(acpi_video0\|intel_backlight\)$")
+backlightdir=$(find /sys/devices/ -type d | grep "\(acpi_video0\|intel_backlight\|thinklight\)$")
 
 [ -z "$backlightdir" ] && echo "No devices" && exit 1
 
@@ -17,7 +17,7 @@ printxfoi(){
 
 print_curr_level(){
     max_level=$(cat "$backlightdir"/max_brightness)
-    actual_level=$(cat "$backlightdir"/actual_brightness)
+    actual_level=$(cat "$backlightdir"/brightness)
 
     curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
     message=$(printxfoi "$curr_level" "⭓")

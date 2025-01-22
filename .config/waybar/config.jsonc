@@ -25,7 +25,7 @@
         "custom/filesys",
         // "custom/cpu",
         // "custom/memram",
-        "cpu", "memory", "custom/temp", "battery",
+        "cpu", "memory", "custom/temp", "custom/battery",
         "clock",
         "tray"
     ],
@@ -219,6 +219,11 @@
         "format": "{}",
         "interval": 1,
         "exec": "$HOME/.local/bin/bar/temp 2> /dev/null",
+    },
+    "custom/battery": {
+        "format": "{}",
+        "interval": 1,
+        "exec": "$HOME/.local/bin/bar/battery 2> /dev/null",
     },
     "custom/memram": {
         "format": "{}",
