@@ -51,25 +51,20 @@
                               (horizontal-scroll-bars . nil)
                               (fullscreen . maximized)))
 
-
-
-
   (set-face-attribute 'default nil :family "firacode" :height 110)
-  (defun set-other-face ()
-    (message "TODO")
-    ;;(let ((h (face-attribute 'default :height)))
-    ;;  (set-face-attribute 'font-lock-string-face nil
-    ;;                      :family "cascadiacodepl" :weight 'semibold :slant 'italic :height (* 1.1 h))
-    ;;  (set-face-attribute 'font-lock-type-face nil
-    ;;                      :family "VictorMono NFM" :weight 'demibold :slant 'oblique :height (* 1.1 h))
-    ;;  (set-face-attribute 'font-lock-function-name-face nil
-    ;;                      :family "VictorMono NFM" :weight 'medium :height h)
-    ;;  (set-face-attribute 'font-lock-builtin-face nil
-    ;;                      :family "VictorMono NFM" :weight 'demibold :slant 'italic :height h)
-    ;;  (set-face-attribute 'font-lock-keyword-face nil
-    ;;                      :family "VictorMono NFM" :weight 'demibold :slant 'italic :height h))
-    )
-  ;; (set-other-face)
+  (defun set-other-faces ()
+    (let ((h (face-attribute 'default :height)))
+     (set-face-attribute 'font-lock-string-face nil
+                         :family "cascadiacodepl" :weight 'semibold :slant 'italic :height (round (* h 1.05)))
+     (set-face-attribute 'font-lock-type-face nil
+                         :family "VictorMono NFM" :weight 'demibold :slant 'oblique :height (round (* h 1.1)))
+     (set-face-attribute 'font-lock-function-name-face nil
+                         :family "VictorMono NFM" :weight 'medium :height (round (* h 1.1)))
+     (set-face-attribute 'font-lock-builtin-face nil
+                         :family "VictorMono NFM" :weight 'demibold :slant 'italic :height (round (* h 1.1)))
+     (set-face-attribute 'font-lock-keyword-face nil
+                        :family "VictorMono NFM" :weight 'demibold :slant 'italic :height (round (* h 1.1)))))
+  (set-other-faces)
 
   (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                  (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
