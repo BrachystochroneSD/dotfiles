@@ -41,6 +41,10 @@
 
 (use-package gruvbox-theme
   :ensure t
+  :bind (("<f9>" . (lambda () (interactive) (my-make-it-transparentier -5)))
+         ("<C-f9>" . (lambda () (interactive) (my-make-it-transparentier 5)))
+         ("<M-f9>" . (lambda () (interactive) (my-make-it-transparentier -10)))
+         ("<C-M-f9>" . (lambda () (interactive) (my-make-it-transparentier 10))))
   :config
   (load-theme 'gruvbox-dark-medium)
   (setq default-frame-alist '((vertical-scroll-bars . nil)
@@ -93,7 +97,16 @@
                  (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)"))))
     (dolist (char-regexp alist)
       (set-char-table-range composition-function-table (car char-regexp)
-                            `([,(cdr char-regexp) 0 font-shape-gstring])))))
+                            `([,(cdr char-regexp) 0 font-shape-gstring]))))
+
+  (set-frame-parameter nil 'alpha-background 70)
+  (add-to-list 'default-frame-alist '(alpha-background . 70))
+
+  (defun my-make-it-transparentier (x)
+    "add X to the current frame alpha value"
+    (set-frame-parameter nil 'alpha-background
+                         (max 20 (min 100 (+ x (frame-parameter nil 'alpha-background)))))
+    (message (format "Current alpha: %d" (frame-parameter nil 'alpha-background)))))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Bindings ;;
