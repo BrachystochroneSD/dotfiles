@@ -45,14 +45,14 @@
         "on-scroll-down": "hyprctl dispatch workspace +1",
     },
     "hyprland/window": {
-        "format": " - {}",
+        "format": " | {}",
         "rotate": 0,
         "separate-outputs": true,
         "rewrite": {
             "(.*)Mozilla Firefox": "$1󰈹",
             "(.*)Godot Engine": "$1",
             "(.*)GNU Emacs.*": "$1",
-            "(.*)Dolphin": "$1 󰉋",
+            "(.*)Thunar": "$1 󰉋",
             "(.*)Steam": "$1󰓓"
         },
         "max-length": 1000

@@ -8,7 +8,6 @@
     margin-top: 1px;
 }
 
-/* ------ Window Title ------ */
 #window {
     color: @bright-yellow;
     border-radius: 0px 10px 10px 0px;
@@ -22,9 +21,6 @@ window#waybar {
     transition-duration: .5s;
 }
 
-/* -----------------------------------------------------
- * Workspaces
- * ----------------------------------------------------- */
 #workspaces button.empty {
     color: @bright-white;
 }
@@ -43,7 +39,10 @@ window#waybar {
 }
 
 #workspaces button.visible {
+    background: transparent;
     color: @bright-yellow;
+    border-bottom: 1.3px solid;
+    border-radius: 5px;
 }
 
 /* ALL */
