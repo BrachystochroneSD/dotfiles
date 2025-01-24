@@ -1,5 +1,6 @@
 #!/bin/sh
 
+APPNAME=brightnessbar
 backlightdir=$(find /sys/devices/ -type d | grep "\(acpi_video0\|intel_backlight\|thinklight\)$")
 
 [ -z "$backlightdir" ] && echo "No devices" && exit 1
@@ -22,7 +23,7 @@ print_curr_level(){
     curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
     message=$(printxfoi "$curr_level" "⭓")
     message="$message"$(printxfoi $((10 - curr_level)) "⭔")
-    NID=$(dunstify -t 500 -p -i bright -r "$(cat /tmp/tmpNID)" "$message")
+    NID=$(notify-send -a $APPNAME -t 500 -p -i bright -r "$(cat /tmp/tmpNID)" "$message")
     echo "$NID" > /tmp/tmpNID
 }
 

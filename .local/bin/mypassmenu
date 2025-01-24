@@ -3,7 +3,6 @@
 . "${HOME}/.config/password_defaults"
 . "${HOME}/.config/zowl.sh"
 
-[ -z "$NOTIFY_CMD" ] && NOTIFY_CMD="dunstify -i owl"
 [ -z "$MENU_CMD" ] && MENU_CMD="wofi -d -i -nb -l 20 -p"
 [ -z "$MENU_SECRET_CMD" ] && MENU_SECRET_CMD="wofi -d"
 [ -z "$TYPE_CMD" ] && TYPE_CMD="wtype -"
@@ -82,7 +81,7 @@ case "$password" in
                 while [[ "$loop" == "t" ]]; do
                     password=$(echo "" | $MENU_SECRET_CMD -p "Password: ") || exit
                     retype_password=$(echo "" | $MENU_SECRET_CMD -p "Retype Password: ") || exit
-                    [[ ! "$retype_password" == "$password" ]] && $NOTIFY_CMD "Passwords doesn't match" || loop=f
+                    [[ ! "$retype_password" == "$password" ]] && notify-send -a mypassmenu "Passwords doesn't match" || loop=f
                 done
                 ;;
             Generated)
