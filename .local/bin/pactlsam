@@ -28,30 +28,18 @@ check_vol () {
     [ $sum -gt 150 ] && return 1 || return 0
 }
 
-print_curr_level () {
+notif () {
     level=$(pactl list sinks | grep  "[^ ]Volume:")
     level=${level%%%*}
     level=${level##* }
 
-    max_level=100 #TODO: make bar with over 100% zone
 
-    pactl get-sink-mute @DEFAULT_SINK@ | grep -q "Mute: yes" && icon=Mute_Icon || icon=Speaker_Icon
-
-    # [ $actual_level -gt 100 ] && #TODO: change color when over 100% or maybe block it until you use shift
-    # curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
-    # message=$(printxfoi "$curr_level" "⭓")
-    # message="$message"$(printxfoi $((10 - curr_level)) "⭔")
-
-    NID=$(notify-send " " -a $APPNAME -t 1000 -p -i $icon -r "$(cat /tmp/tmpNID)" -h int:value:$level)
-    echo "$NID" > /tmp/tmpNID
-}
-
-notif () {
-    print_curr_level
-    if [ -z "$1" ]; then
-        sleep 0.05
-        #paplay /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+    if pactl get-sink-mute @DEFAULT_SINK@ | grep -q "Mute: yes"; then
+        icon=Mute_Icon
+    else
+        icon=Speaker_Icon
     fi
+    notify-send "$level%" -i $icon -e -a "$APPNAME" -t 1000 -p -r "$(cat /tmp/tmpNID)" -h int:value:$level > /tmp/tmpNID
 }
 
 case $1 in

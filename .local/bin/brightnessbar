@@ -17,14 +17,8 @@ printxfoi(){
 }
 
 print_curr_level(){
-    max_level=$(cat "$backlightdir"/max_brightness)
-    actual_level=$(cat "$backlightdir"/brightness)
-
-    curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
-    message=$(printxfoi "$curr_level" "⭓")
-    message="$message"$(printxfoi $((10 - curr_level)) "⭔")
-    NID=$(notify-send -a $APPNAME -t 500 -p -i bright -r "$(cat /tmp/tmpNID)" "$message")
-    echo "$NID" > /tmp/tmpNID
+    level=$(cat "$backlightdir"/brightness)
+    notify-send "$level%" -i bright -e -a "$APPNAME" -t 500 -p -r "$(cat /tmp/tmpNID)" -h int:value:$level > /tmp/tmpNID
 }
 
 case $1 in

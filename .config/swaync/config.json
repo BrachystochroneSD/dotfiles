@@ -41,10 +41,10 @@
     // }
   },
   "notification-visibility": {
-    "example-name": {
+    "ignore-something": {
       "state": "muted",
       "urgency": "Low",
-      "app-name": "Spotify"
+      "app-name": "something"
     }
   },
   "widgets": [

@@ -149,13 +149,17 @@
 }
 
 progressbar trough {
-    background: @text-color;
+    border-radius: 5px;
+    border: 0;
+    min-height: 5px;
+    background: @white;
 }
 
 progressbar progress {
+    border: 0;
     border-radius: 5px;
     min-height: 5px;
-    background: linear-gradient(to right, @yellow, @red);
+    background: @bright-white;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .body-image {

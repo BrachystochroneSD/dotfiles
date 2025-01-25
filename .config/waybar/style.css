@@ -3,7 +3,7 @@
 * {
     padding: 0;
     margin: 0;
-    font-family: "FiraCode", "JetBrains Mono Nerd Font";
+    font-family: "FiraCode", "zenowlawesome";
     font-size: 14px;
     margin-top: 1px;
 }
@@ -66,19 +66,13 @@ window#waybar {
 }
 
 
-#custom-mails {
-    font-family: "JetBrains Mono Nerd Font";
-    font-size: 17px;
-}
-
 #cpu {
     margin-right: 0;
     padding-right: 0;
 }
 
 #custom-notification {
-    font-family: "NotoSansMono Nerd Font";
-    font-size: 20px;
+    font-size: 15px;
     padding-right: 10px;
     padding-left: 0px;
 }
