@@ -1,5 +1,7 @@
 #!/usr/bin/sh
 
+
+APPNAME=pactlsam
 sinknums=$(pactl list sinks | grep ^Sink | grep -o "[0-9]*")
 
 sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
@@ -27,20 +29,20 @@ check_vol () {
 }
 
 print_curr_level () {
-    actual_level=$(pactl list sinks | grep  "[^ ]Volume:")
-    actual_level=${actual_level%%%*}
-    actual_level=${actual_level##* }
+    level=$(pactl list sinks | grep  "[^ ]Volume:")
+    level=${level%%%*}
+    level=${level##* }
 
     max_level=100 #TODO: make bar with over 100% zone
 
     pactl get-sink-mute @DEFAULT_SINK@ | grep -q "Mute: yes" && icon=Mute_Icon || icon=Speaker_Icon
 
     # [ $actual_level -gt 100 ] && #TODO: change color when over 100% or maybe block it until you use shift
+    # curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
+    # message=$(printxfoi "$curr_level" "⭓")
+    # message="$message"$(printxfoi $((10 - curr_level)) "⭔")
 
-    curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
-    message=$(printxfoi "$curr_level" "⭓")
-    message="$message"$(printxfoi $((10 - curr_level)) "⭔")
-    NID=$(notify-send -t 1000 -p -i $icon -r "$(cat /tmp/tmpNID)" "$message")
+    NID=$(notify-send " " -a $APPNAME -t 1000 -p -i $icon -r "$(cat /tmp/tmpNID)" -h int:value:$level)
     echo "$NID" > /tmp/tmpNID
 }
 
