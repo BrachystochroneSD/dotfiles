@@ -85,7 +85,7 @@
     },
     "cpu": {
         "interval": 10,
-        "format": "󰍛 {usage}% ",
+        "format": " {usage}% ",
         "rotate": 0,
         "format-alt": "{icon0}{icon1}{icon2}{icon3}",
         "format-icons": [
@@ -106,15 +106,15 @@
             "m": 30 // medium
         },
         "interval": 30,
-        "format": "󰾆 {percentage}% ",
+        "format": " {percentage}% ",
         "rotate": 0,
-        "format-m": "󰾅 {percentage}% ",
-        "format-h": "󰓅 {percentage}% ",
+        "format-m": " {percentage}% ",
+        "format-h": " {percentage}% ",
         "format-c": " {percentage}% ",
-        "format-alt": "󰾆 {used}GB ",
+        "format-alt": " {used}GB ",
         "max-length": 10,
         "tooltip": true,
-        "tooltip-format": "󰾆 {percentage}%\n {used:0.1f}GB/{total:0.1f}GB "
+        "tooltip-format": " {percentage}%\n {used:0.1f}GB/{total:0.1f}GB "
     },
     "backlight": {
         "device": "intel_backlight",
@@ -235,42 +235,6 @@
         "format": "{}",
         "interval": 1,
         "exec": "$HOME/.local/bin/bar/wifi 2> /dev/null",
-    },
-    // modules for padding //
-    "custom/l_end": {
-        "format": " ",
-        "interval": "once",
-        "tooltip": false
-    },
-    "custom/r_end": {
-        "format": " ",
-        "interval": "once",
-        "tooltip": false
-    },
-    "custom/sl_end": {
-        "format": " ",
-        "interval": "once",
-        "tooltip": false
-    },
-    "custom/sr_end": {
-        "format": " ",
-        "interval": "once",
-        "tooltip": false
-    },
-    "custom/rl_end": {
-        "format": " ",
-        "interval": "once",
-        "tooltip": false
-    },
-    "custom/rr_end": {
-        "format": " ",
-        "interval": "once",
-        "tooltip": false
-    },
-    "custom/padd": {
-        "format": "",
-        "interval": "once",
-        "tooltip": false
     },
     "custom/notification": {
         "tooltip": false,
