@@ -48,6 +48,7 @@ window#waybar {
 /* ALL */
 #custom-filesys,
 #custom-temp,
+#custom-notification,
 #custom-music,
 #custom-mails,
 #custom-battery,
@@ -64,9 +65,22 @@ window#waybar {
     color: @bright-white;
 }
 
+
+#custom-mails {
+    font-family: "JetBrains Mono Nerd Font";
+    font-size: 17px;
+}
+
 #cpu {
     margin-right: 0;
     padding-right: 0;
+}
+
+#custom-notification {
+    font-family: "NotoSansMono Nerd Font";
+    font-size: 20px;
+    padding-right: 10px;
+    padding-left: 0px;
 }
 
 #memory {
