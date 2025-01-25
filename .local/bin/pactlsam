@@ -40,7 +40,7 @@ print_curr_level () {
     curr_level=$(echo "$actual_level / $max_level * 10" | bc -l | awk '{print int($1 + 0.5)}')
     message=$(printxfoi "$curr_level" "⭓")
     message="$message"$(printxfoi $((10 - curr_level)) "⭔")
-    NID=$(dunstify -t 1000 -p -i $icon -r "$(cat /tmp/tmpNID)" "$message")
+    NID=$(notify-send -t 1000 -p -i $icon -r "$(cat /tmp/tmpNID)" "$message")
     echo "$NID" > /tmp/tmpNID
 }
 
