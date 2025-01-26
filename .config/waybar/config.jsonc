@@ -61,7 +61,7 @@
     "clock": {
         "timezone":"Europe/Brussels",
         "locale":"fr_BE.utf-8",
-        "format": "{:L%R - %A %d %b %Y}",
+        "format": "{:L%R  %a %d/%m}",
         "rotate": 0,
         "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
