@@ -3,7 +3,7 @@ local temp_file = '/tmp/qrencode_mpv'
 local utils = require 'mp.utils'
 
 function show_qrcode()
-    local table = { args = { 'feh' } }
+    local table = { args = { 'feh', '--class', 'floatingwin' } }
     local a = table.args
     a[#a + 1] = temp_file
     local result = utils.subprocess(table)
