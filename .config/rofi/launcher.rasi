@@ -1,0 +1,144 @@
+configuration {
+    font:                           "FantasqueSansMono Nerd Font 10";
+    show-icons:                     true;
+    icon-theme:                     "Papirus";
+    display-drun:                   "";
+    drun-display-format:            "{name}";
+    disable-history:                false;
+    fullscreen:                     false;
+    sidebar-mode:                   false;
+}
+
+@import "theme.rasi"
+
+
+window {
+    padding:   0;
+    transparency:                   "real";
+    text-color:                     @foreground;
+    border:                         0% 1% 0% 0%;
+    border-color:                   @orange;
+    border-radius:                  0% 0% 0% 0%;
+    height:                         100%;
+    width:                          25%;
+    location:                       west;
+    x-offset:                       0;
+    y-offset:                       0;
+}
+
+mainbox {
+    background-color:               transparent;
+    border:                         0% 0.7% 0% 0%;
+    border-radius:                  0% 0% 0% 0%;
+    border-color:                   @yellow;
+    children:                       [ inputbar, listview ];
+    spacing:                           2%;
+    padding:                        2.5% 2% 2.5% 2%;
+}
+
+prompt, entry{
+    background-color:    transparent;
+}
+
+prompt {
+    enabled:                         true;
+    padding:                         0% 1% 0% 0%;
+    text-color:                      @foreground;
+    font:                            "FantasqueSansMono Nerd Font 12";
+}
+
+entry {
+    text-color:                     @foreground;
+    placeholder-color:              @foreground;
+    expand:                         true;
+    horizontal-align:               0;
+    placeholder:                    "Search Applications";
+    padding:                        0.15% 0% 0% 0%;
+    blink:                          true;
+}
+
+inputbar {
+    children:                       [ prompt, entry ];
+    background-color:               @background;
+    text-color:                     @foreground;
+    expand:                         false;
+    border:                         0% 0% 0.3% 0%;
+    border-radius:                  0% 0% 0% 0%;
+    border-color:                   @yellow;
+    margin:                         0% 0% 0% 0%;
+    padding:                        1%;
+    position:                       center;
+}
+
+listview {
+    border:                         0;
+    scrollbar:                      false;
+    background-color:               transparent;
+    columns:                        3;
+    spacing:                        1%;
+    cycle:                          false;
+    dynamic:                        true;
+    layout:                         vertical;
+}
+
+element {
+    background-color:               @background;
+    text-color:                     @foreground;
+    orientation:                    vertical;
+    border-radius:                  0%;
+    padding:                        2% 0% 2% 0%;
+    border: 0;
+}
+
+element-icon {
+    size:                           4em;
+    border:                         0px;
+}
+
+element-text {
+    expand:                         true;
+    border:                         0px;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    margin:                         0.5% 1% 0% 1%;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color:               @urgent;
+    text-color:                     @foreground;
+    border-radius:                  1%;
+}
+
+element normal.active,
+element alternate.active {
+    background-color:               @background-alt;
+    text-color:                     @foreground;
+    border:  0;
+}
+
+element alternate.normal {
+    background-color:               @background-alt;
+    text-color:                     @foreground;
+    border:  0;
+}
+
+element selected {
+    background-color:               @selected;
+    text-color:                     @foreground;
+    border:                         0% 0% 0.5% 0%;
+    border-radius:                  0% 0% 0% 0%;
+    border-color:                   @orange;
+}
+
+element selected.urgent {
+    background-color:               @urgent;
+    text-color:                     @foreground;
+    border:  0;
+}
+
+element selected.active {
+    background-color:               @background-alt;
+    color:                          @foreground;
+    border:  0;
+}

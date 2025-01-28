@@ -1,0 +1,52 @@
+* {
+    black:            #28282822;
+    hard-black:       #1d202122;
+    bright-black:     #92837422;
+
+    red:              #cc241d;
+    bright-red:       #fb4934;
+
+    green:            #98971a;
+    bright-green:     #b8bb26;
+
+    yellow:           #d79921;
+    bright-yellow:    #fabd2f;
+
+    blue:             #458588;
+    bright-blue:      #83a598;
+
+    magenta:          #b16286;
+    bright-magenta:   #d3869b;
+
+    cyan:             #689d6a;
+    bright-cyan:      #8ec07c;
+
+    white:            #a89984;
+    bright-white:     #ebdbb2;
+
+    orange:           #d65d0e;
+    bright-orange:    #fe8019;
+
+    xgray1:           #3c3836;
+    xgray2:           #504945;
+    xgray3:           #665c54;
+    xgray4:           #7c6f64;
+    xgray5:           #928374;
+    xgray6:           #a89984;
+    xgray7:           #bdae93;
+    xgray8:           #d5c4a1;
+    xgray9:           #ebdbb2;
+    xgray10:          #fbf1c7;
+
+    background:       #28282822;
+    foreground:       @bright-white;
+
+    background-alt:  #1d202122;
+    foreground-alt:  @white;
+
+    border:        #92837422;
+    border-alt:    #92837422;
+
+    urgent:        @red;
+    selected:      @background-alt;
+}
