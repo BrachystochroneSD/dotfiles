@@ -18,7 +18,7 @@ window {
     text-color:                     @foreground;
     border:                         0% 1% 0% 0%;
     border-color:                   @orange;
-    border-radius:                  0% 1% 0% 0%;
+    border-radius:                  0% 0% 0% 0%;
     height:                         100%;
     width:                          25%;
     location:                       west;
@@ -29,7 +29,7 @@ window {
 mainbox {
     background-color:               transparent;
     border:                         0% 0.7% 0% 0%;
-    border-radius:                  0% 1% 0% 0%;
+    border-radius:                  0% 0% 0% 0%;
     border-color:                   @yellow;
     children:                       [ inputbar, listview ];
     spacing:                           2%;

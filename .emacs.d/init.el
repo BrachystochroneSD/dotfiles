@@ -500,7 +500,8 @@
   :bind (:map eglot-mode-map
               ("M-*" . xref-find-definitions)
               ("C-c h" . eglot-help-at-point))
-  :hook (gdscript-mode . eglot-ensure)
+  :hook ((python-mode . eglot-ensure)
+         (gdscript-mode . eglot-ensure))
   :config
   (setq eglot-events-buffer-size 2000)
   (setq eglot-put-doc-in-help-buffer t)
