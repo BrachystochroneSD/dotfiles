@@ -34,6 +34,7 @@
     "custom/owl": {
         "format": "",
         "tooltip": false,
+        "on-click": "rofi -show drun -config ${HOME}/.config/rofi/launcher.rasi"
     },
 
     "hyprland/workspaces": {
@@ -46,7 +47,6 @@
         "on-scroll-down": "hyprctl dispatch workspace +1",
     },
     "hyprland/window": {
-        "format": " | {}",
         "rotate": 0,
         "separate-outputs": true,
         "rewrite": {

@@ -10,8 +10,12 @@
 
 #window {
     color: @bright-yellow;
-    border-radius: 0px 10px 10px 0px;
-    padding-right: 4px;
+    border-bottom: 2px solid;
+    border-color: @bright-yellow;
+    border-radius: 0px;
+    padding-right: 10px;
+    padding-left: 5px;
+    margin: 4px 0 0 4px;
 }
 
 window#waybar {
@@ -26,23 +30,27 @@ window#waybar {
 }
 
 #workspaces button {
-    border-radius: 0px;
-    padding: 0;
-    margin: 0;
+    border: 0;
     padding-left: 3px;
     padding-right: 3px;
+    margin: 2px;
     color: @bright-white;
+    border-radius: 0px;
 }
 
 #workspaces button:hover {
     color: @yellow;
+    background: transparent;
 }
 
 #workspaces button.visible {
-    background: transparent;
-    color: @bright-yellow;
-    border-bottom: 1.3px solid;
-    border-radius: 5px;
+    border-right: 0px;
+    border-left: 0px;
+    border-color: @orange;
+    border-style: solid;
+    border-radius: 4px;
+    background: @bright-yellow;
+    color: @background;
 }
 
 /* ALL */
@@ -64,7 +72,6 @@ window#waybar {
     padding-right: 8px;
     color: @bright-white;
 }
-
 
 #cpu {
     margin-right: 0;

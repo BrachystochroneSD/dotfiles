@@ -16,7 +16,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 export EDITOR="/usr/bin/vim"
 
-export PATH=$PATH:~/.local/bin
+export PATH=~/.local/bin:$PATH
 
 export TEXMFHOME="~/.config/texmf"
 

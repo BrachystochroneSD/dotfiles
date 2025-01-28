@@ -30,10 +30,10 @@
   "hide-on-action": true,
   "script-fail-notify": true,
   "scripts": {
-    // "example-script": {
-    //   "exec": "echo 'Do something...'",
-    //   "urgency": "Normal"
-    // },
+    "example-script": {
+        "app-name": "simple-twitch"
+        "exec": "simple-twitch --live \"${SWAY_BODY%% *}\"",
+    },
     // "example-action-script": {
     //   "exec": "echo 'Do something actionable!'",
     //   "urgency": "Normal",
