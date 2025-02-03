@@ -1,35 +1,24 @@
 #!/bin/sh
 
 APPNAME=brightnessbar
-backlightdir=$(find /sys/devices/ -type d | grep "\(acpi_video0\|intel_backlight\|thinklight\)$")
 
-[ -z "$backlightdir" ] && echo "No devices" && exit 1
+type brightnessctl > /dev/null || exit 1
+
+num=$2
+
+[ -z "$num" ] && num=10
+
+case $1 in
+    "plus") brightnessctl set $num%+ ;;
+    "moins") brightnessctl set $num%- ;;
+esac
 
 check=$(cat /tmp/tmpNID)
 [ -z "$check" ] && echo 0 > /tmp/tmpNID
 
-printxfoi(){
-    i=0
-    while [ $i -lt "$1" ]; do
-    printf "$2"
-    : $(( i= i + 1 ))
-    done
-}
+LEVEL=$(brightnessctl -m | awk -F "," '{print $4}' )
+LEVEL="${LEVEL%%%}"
 
-print_curr_level(){
-    level=$(cat "$backlightdir"/brightness)
-    notify-send "$level%" -i bright -e -a "$APPNAME" -t 500 -p -r "$(cat /tmp/tmpNID)" -h int:value:$level > /tmp/tmpNID
-}
+notify-send "$LEVEL%" -i bright -e -a "$APPNAME" -t 1000 -p -r "$(cat /tmp/tmpNID)" -h int:value:$LEVEL > /tmp/tmpNID
 
-case $1 in
-    "plus")
-    brightnessctl set 10%+
-    print_curr_level
-    ;;
-    "moins")
-    brightnessctl set 10%-
-    print_curr_level
-    ;;
-    *)
-    print_curr_level
-esac
+brightnessctl -m

@@ -10,14 +10,6 @@ sourcenum=${sourcenum##*#}
 check=$(cat /tmp/tmpNID)
 [ -z "$check" ] && echo 0 > /tmp/tmpNID
 
-printxfoi(){
-    i=0
-    while [ $i -lt "$1" ]; do
-        printf "$2"
-        : $(( i= i + 1 ))
-    done
-}
-
 check_vol () {
     shit=$1
     actual_level=$(pactl list sinks | grep  "[^ ]Volume:")
