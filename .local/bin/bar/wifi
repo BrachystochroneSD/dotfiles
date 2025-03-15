@@ -2,6 +2,9 @@
 
 grep -qs "wifi" ~/.config/bar/disabled_module && exit 0 #do nothing if disabled
 
+user_id=$(id -u)
+export TEMP_FILE="/tmp/.ifstat.u$user_id"
+
 load_config () {
     if [ -f "${HOME}/.config/wifirc" ];then
         . "${HOME}/.config/wifirc"
@@ -48,7 +51,7 @@ alert_data () {
 setup_zero () {
     get_bigdev
     read rxzero txzero <<EOF
-$(grep "$bigdev" /tmp/.ifstat.u$UID | awk '{print $7 " " $9}')
+$(grep "$bigdev" $TEMP_FILE | awk '{print $7 " " $9}')
 EOF
     echo $txzero > /tmp/wifi_ifstat_tx_zero
     [ -n "$1" ] && echo $(format_unit "$1") > /tmp/wifi_ifstat_rx_zeroplus || rm -f /tmp/wifi_ifstat_rx_zeroplus
@@ -57,9 +60,9 @@ EOF
 
 getifstat () {
     ifstat -n
-    if [ -n "$(grep "$bigdev" /tmp/.ifstat.u"$UID")" ];then
+    if [ -n "$(grep "$bigdev" "$TEMP_FILE")" ];then
         read received transmitted <<EOF
-$(grep "$bigdev" /tmp/.ifstat.u"$UID" | awk '{print $7 " " $9}')
+$(grep "$bigdev" "$TEMP_FILE" | awk '{print $7 " " $9}')
 EOF
         recminus=$(cat /tmp/wifi_ifstat_rx_zero 2>/dev/null)
         transminus=$(cat /tmp/wifi_ifstat_tx_zero 2>/dev/null)
@@ -91,8 +94,8 @@ get_bigdev () {
 
 print_wifi () {
 
-    ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/')
-    wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/')
+    ethdev=$(ip link | grep -E "[0-9]: e.*: " | grep UP | sed 's/[0-9]: \(e.*\): .*/\1/'| head -n 1)
+    wifidev=$(ip link | grep -E "[0-9]: w.*: " | grep UP | sed 's/[0-9]: \(w.*\): .*/\1/' | head -n 1)
 
     if [ -n "$ethdev" ];then
         [ "$(cat /sys/class/net/$ethdev/operstate)" = "up" ] && output="" && bigdev="$ethdev"
