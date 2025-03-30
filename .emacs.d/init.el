@@ -51,7 +51,7 @@
                               (horizontal-scroll-bars . nil)
                               (fullscreen . maximized)))
 
-  (set-face-attribute 'default nil :family "firacode" :height 110)
+  (set-face-attribute 'default nil :family "firacode" :height 90)
   (defun set-other-faces ()
     (let ((h (face-attribute 'default :height)))
      (set-face-attribute 'font-lock-string-face nil
@@ -298,67 +298,7 @@
 
 (global-set-key (kbd "C-M-g") 'my-goto-line)
 
-;;;;;;;;;;;;;;;;;;
-;; MY BOOKMARKS ;;
-;;;;;;;;;;;;;;;;;;
-
 (global-set-key (kbd "<f5>") (lambda () (interactive) (find-file "~/Documents/Administrative/a_faire.org")))
-
-(defvar my-bookmarks-default-file "~/.emacs.d/my-bookmarks")
-(defvar my-bookmarks-alist `())
-
-(defun my-save-bookmarks ()
-  (interactive)
-  (let ((file my-bookmarks-default-file))
-    (with-current-buffer (find-file-noselect my-bookmarks-default-file)
-      (delete-region (point-min) (point-max))
-      (dolist (bm my-bookmarks-alist)
-        (insert (format "%s %s\n" (car bm) (cdr bm))))
-      (write-file file)
-      (kill-buffer (current-buffer)))))
-
-(defun my-load-bookmarks ()
-  (let ((file my-bookmarks-default-file))
-    (with-current-buffer (find-file-noselect my-bookmarks-default-file)
-      (goto-char (point-min))
-      (dolist (line (split-string (substring (thing-at-point 'page) 0 -1) "\n"))
-        (let ((bm (split-string line " ")))
-          (my-bookmarks-add-bm (car bm) (cadr bm) t))))))
-
-(defun my-bookmarks (alias)
-  (interactive
-   (list
-    (completing-read "My-bookmarks goto: " my-bookmarks-alist nil t)))
-  (let ((file-path (cdr (assoc alias my-bookmarks-alist))))
-    (if (directory-name-p file-path)
-        (counsel-fzf nil file-path)
-      (my-dired-find-file-internal file-path t))))
-
-(defun my-bookmarks-add-bm (alias path &optional no-save)
-  (interactive
-   (list
-    (read-string "Add bookmark alias: ")
-    (read-file-name "Add bookmak pathway: " nil nil t)))
-  (unless (assoc alias my-bookmarks-alist)
-    (add-to-list 'my-bookmarks-alist (cons alias path)))
-  (unless no-save (my-save-bookmarks)))
-
-(defun my-bookmarks-remove-bm (alias)
-  (interactive
-   (list
-    (completing-read
-     "My-bookmarks remove: "
-     my-bookmarks-alist nil t)))
-  (setq my-bookmarks-alist
-        (delq (assoc alias my-bookmarks-alist)
-              my-bookmarks-alist))
-  (my-save-bookmarks))
-
-(global-set-key (kbd "C-ç") 'my-bookmarks)
-(global-set-key (kbd "C-M-ç") 'my-bookmarks-remove-bm)
-(global-set-key (kbd "M-ç") 'my-bookmarks-add-bm)
-
-(my-load-bookmarks)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SCRATCH MANAGEMENT ;;
@@ -482,18 +422,9 @@
   :after (ivy magit)
   :hook (after-init . counsel-mode)
   :bind (("C-c n" . my-git-fzf)
-         ("C-c C-n" . my-git-fzf)
-         ("C-c C-g" . my-grep-fzf))
+         ("C-c C-n" . my-git-fzf))
   :config
-  (defun my-git-fzf () (interactive) (counsel-fzf nil (magit-toplevel)))
-  (defun my-grep-fzf (regexp)
-    (interactive
-     (list (read-string
-            (format "rgrep on %s: "
-                    (or (magit-toplevel)
-                        (file-name-directory (buffer-file-name)))))))
-    (grep-compute-defaults)
-    (rgrep regexp "*" (magit-toplevel))))
+  (defun my-git-fzf () (interactive) (counsel-fzf nil (magit-toplevel))))
 
 (use-package eglot
   :ensure t
