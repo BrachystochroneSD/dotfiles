@@ -2,8 +2,6 @@
 
 (use-package lua-mode :config (setq lua-indent-level 4))
 
-(use-package python-mode :hook (python-mode . eglot))
-
 (use-package django-mode)
 
 (use-package django-manage

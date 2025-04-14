@@ -16,7 +16,7 @@
     (setq my-grep-history-file-regexp-last file-regexp)
     (grep-find
      (format
-      "find \"%s\" -type f -name \"%s\" -exec grep --color=auto -nH --null -e %s \\{\\} +"
+      "find \"%s\" -type f -name \"%s\" -exec grep --color=auto -nH --null -e \"%s\" \\{\\} +"
       (or (magit-toplevel)
           default-directory)
       file-regexp regexp)))
