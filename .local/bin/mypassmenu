@@ -8,8 +8,16 @@
 [ -z "$TYPE_CMD" ] && TYPE_CMD="wtype -"
 
 
-MENU_CMD="$MENU_CMD -l 20 -p"
-MENU="Add\nAddOTP\nEdit\nDelete\nPush"
+MENU_CMD="$MENU_CMD -l 20 -i -p"
+MENU=$(cat <<EOF
+Add
+AddOTP
+Edit
+Delete
+Sync
+EOF
+       )
+
 
 if [ -z "$DISPLAY" ]; then
     MENU_CMD="fzf --prompt"
@@ -25,6 +33,24 @@ prefix=${PASSWORD_STORE_DIR-~/.password-store}
 password_files=( "$prefix"/**/*.gpg )
 password_files=( "${password_files[@]#"$prefix"/}" )
 password_files=( "${password_files[@]%.gpg}" )
+
+run_pass_git() {
+    cmd=$1
+    pass git "$cmd" origin master > "$prefix/.last_$cmd.log" 2>&1
+    if [ $? = 0 ] ; then
+        $NOTIFY_CMD "$cmd successful"
+    else
+        $NOTIFY_CMD "$cmd unsucessful"
+    fi
+}
+
+push() {
+    run_pass_git push
+}
+
+pull() {
+    run_pass_git pull
+}
 
 pass_insert() {
     local content=$1 loc=$2
@@ -110,8 +136,9 @@ EOF
         edit_choice=$(printf '%s\n' "${password_files[@]}" | $MENU_CMD "Edit entry: ") || exit
         echo "TOTO : st -n floatingwin -e pass edit $edit_choice but it is not working"
         ;;
-    Push)
-        pass git push origin master > "$prefix/.last_push.log" && $NOTIFY_CMD "push successful" || $NOTIFY_CMD "push unsucessful"
+    Sync)
+        push
+        pull
         ;;
     Delete)
         choice=$(ls "$prefix" | $MENU_CMD "Delete entry: ") || exit

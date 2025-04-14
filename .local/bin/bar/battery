@@ -21,7 +21,7 @@ fg_alt="$color15"
 charging_underline="$yellow"
 discharging_underline="$orange"
 
-full_at=99
+full_at=98
 full_prefix=''
 full_prefix_fg="$fg_alt"
 full_underline="$yellow"

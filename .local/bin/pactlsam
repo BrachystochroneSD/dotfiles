@@ -31,7 +31,7 @@ notif () {
     else
         icon=Speaker_Icon
     fi
-    notify-send "$level%" -i $icon -e -a "$APPNAME" -t 1000 -p -r "$(cat /tmp/tmpNID)" -h int:value:$level > /tmp/tmpNID
+    notify-send "$level%" -i $icon -e -a "$APPNAME" -t 1000 -h boolean:SWAYNC_BYPASS_DND:true -e -p -r "$(cat /tmp/tmpNID)" -h int:value:$level > /tmp/tmpNID
 }
 
 case $1 in
