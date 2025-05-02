@@ -1,8 +1,17 @@
 #!/usr/bin/sh
 
 
+get_running_sinks() {
+    pactl --format=json list sinks  | jq -r ".[] | select(.state | contains (\"RUNNING\"))$1"
+}
+
+get_running_volume_percent() {
+    get_running_sinks '.volume.[].value_percent' | sort -u
+}
+
 APPNAME=pactlsam
-sinknums=$(pactl list sinks | grep ^Sink | grep -o "[0-9]*")
+sinknums=$(get_running_sinks | jq -r '.index')
+echo sinksnums
 
 sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
 sourcenum=${sourcenum##*#}
@@ -12,19 +21,16 @@ check=$(cat /tmp/tmpNID)
 
 check_vol () {
     shit=$1
-    actual_level=$(pactl list sinks | grep  "[^ ]Volume:")
-    actual_level=${actual_level%%%*}
-    actual_level=${actual_level##* }
+    level=$(get_running_volume_percent)
+    level=${level%%%}
 
-    : $(( sum= shit + actual_level ))
-    [ $sum -gt 150 ] && return 1 || return 0
+    : $(( sum= shit + level ))
+    [ $sum -le 150 ]
 }
 
 notif () {
-    level=$(pactl list sinks | grep  "[^ ]Volume:")
-    level=${level%%%*}
-    level=${level##* }
-
+    level=$(get_running_volume_percent)
+    level=${level%%%}
 
     if pactl get-sink-mute @DEFAULT_SINK@ | grep -q "Mute: yes"; then
         icon=Mute_Icon
