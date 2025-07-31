@@ -3,7 +3,7 @@
 
 TERM=alacritty
 MUSIC_DIR=$(grep music_dir ${HOME}/.config/mpd/mpd.conf | sed 's|.*"\(.*\)/".*|\1|;s/\\//g' | sed "s|~|${HOME}|")
-BACKUP_IMG=${HOME}/.config/wpg/mywalls/owl.png
+BACKUP_IMG=${HOME}/.config/mywalls/owl.png
 
 kill_loop() {
     [ -n "$LOOP_PID" ] && kill "$LOOP_PID"
