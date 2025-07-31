@@ -13,7 +13,7 @@ autoload -U colors && colors
 
 PS1="%B%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[red]%}%M%{$fg[blue]%}:%{$fg[magenta]%}%~%{$reset_color%}$%b "
 
-PATH="${PATH}:${HOME}/scripts"
+PATH="${HOME}/.local/scripts:${PATH}"
 
 stty -ixon
 
