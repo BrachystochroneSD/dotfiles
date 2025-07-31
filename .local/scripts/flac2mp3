@@ -1,0 +1,22 @@
+#!/bin/sh
+
+flac_to_mp3() {
+    input=$1
+    echo "$input" | grep -qv "\.flac$" && echo "$input not a flac file, skipping" && return
+    output=${input%.*}
+    ffmpeg -i "$input" -ab 320k -map_metadata 0 -id3v2_version 3 "$output.mp3"
+}
+
+if [ -z "$1" ]; then
+    echo "Need something"
+    exit 1
+elif [ -f "$1" ]; then
+    flac_to_mp3 "$1"
+elif [ -d "$1" ]; then
+    for file in "$1"/*; do
+        flac_to_mp3 "$file"
+    done
+else
+    echo "need directory or file in \$1"
+    exit 1
+fi
