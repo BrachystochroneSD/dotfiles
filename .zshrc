@@ -353,3 +353,5 @@ upload_to_zenocloud () {
     curl --basic --user "$user:$pass" -T "$1" "$url/$1"
 }
 alias tozeno='upload_to_zenocloud'
+
+alias wifimenu='nmtui'
