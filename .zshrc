@@ -13,6 +13,8 @@ autoload -U colors && colors
 
 PS1="%B%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[red]%}%M%{$fg[blue]%}:%{$fg[magenta]%}%~%{$reset_color%}$%b "
 
+PATH="${HOME}/.local/scripts:${PATH}"
+
 stty -ixon
 
 # COMPLETION
@@ -353,3 +355,5 @@ upload_to_zenocloud () {
     curl --basic --user "$user:$pass" -T "$1" "$url/$1"
 }
 alias tozeno='upload_to_zenocloud'
+
+alias wifimenu='nmtui'

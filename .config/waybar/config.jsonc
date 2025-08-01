@@ -44,7 +44,7 @@
         "on-click": "activate",
         "disable-scroll": false,
         "on-scroll-up": "hyprctl dispatch workspace -1",
-        "on-scroll-down": "hyprctl dispatch workspace +1",
+        "on-scroll-down": "hyprctl dispatch workspace +1"
     },
     "hyprland/window": {
         "rotate": 0,
@@ -187,54 +187,54 @@
     "custom/music": {
         "format": "{}",
         "interval": 1,
-        "exec": "$HOME/.local/bin/bar/music 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/music 2> /dev/null",
         "exec-if": "pgrep mpd",
         "on-click": "mpc toggle",
     },
     "custom/weather": {
         "format": "{}",
         "interval": 1800,
-        "exec": "$HOME/.local/bin/bar/weatherdir/weather 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/weatherdir/weather 2> /dev/null",
     },
     "custom/mails": {
         "format": "{}",
         "interval": 10,
-        "exec": "$HOME/.local/bin/bar/mails 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/mails 2> /dev/null",
     },
     "custom/filesys": {
         "format": "{}",
         "interval": 25,
-        "exec": "$HOME/.local/bin/bar/filesys 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/filesys 2> /dev/null",
     },
     "custom/update": {
         "format": "{}",
         "interval": 25,
-        "exec": "$HOME/.local/bin/bar/update 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/update 2> /dev/null",
     },
     "custom/cpu": {
         "format": "{}",
         "interval": 2,
-        "exec": "$HOME/.local/bin/bar/cpu 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/cpu 2> /dev/null",
     },
     "custom/temp": {
         "format": "{}",
         "interval": 1,
-        "exec": "$HOME/.local/bin/bar/temp 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/temp 2> /dev/null",
     },
     "custom/battery": {
         "format": "{}",
         "interval": 1,
-        "exec": "$HOME/.local/bin/bar/battery 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/battery 2> /dev/null",
     },
     "custom/memram": {
         "format": "{}",
         "interval": 1,
-        "exec": "$HOME/.local/bin/bar/memram 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/memram 2> /dev/null",
     },
     "custom/wifi": {
         "format": "{}",
         "interval": 1,
-        "exec": "$HOME/.local/bin/bar/wifi 2> /dev/null",
+        "exec": "$HOME/.local/scripts/bar/wifi 2> /dev/null",
     },
     "custom/notification": {
         "tooltip": false,
