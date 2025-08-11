@@ -235,6 +235,8 @@
         "format": "{}",
         "interval": 1,
         "exec": "$HOME/.local/scripts/bar/wifi 2> /dev/null",
+        "on-click": "$HOME/.local/scripts/bar/wifi --toggle-ifstat",
+        "on-click-right": "$HOME/.local/scripts/bar/wifi --prompt-zeroes"
     },
     "custom/notification": {
         "tooltip": false,

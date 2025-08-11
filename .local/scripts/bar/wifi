@@ -2,6 +2,8 @@
 
 grep -qs "wifi" ~/.config/bar/disabled_module && exit 0 #do nothing if disabled
 
+. "${HOME}/.config/zowl.sh"
+
 user_id=$(id -u)
 export TEMP_FILE="/tmp/.ifstat.u$user_id"
 
@@ -122,15 +124,11 @@ print_wifi () {
 
 case $1 in
     --help) echo "TODO" ;;
-    --prompt-zeros)
-
-        . "${HOME}/.cache/wal/colors.sh"
-        DMENU_CMD="dmenu -nb $color0 -nf $color15 -sb $color0 -sf $color3"
-
-        zero=$(echo | $DMENU_CMD -p "Zero to set:")
+    --prompt-zeroes)
+        zero=$(echo | $MENU_CMD -p "Zero to set:")
         setup_zero "$zero"
         ;;
-    --setup-zeros)
+    --setup-zeroes)
         setup_zero "$2"
         ;;
     --toggle-ifstat)
