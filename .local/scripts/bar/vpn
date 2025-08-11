@@ -1,0 +1,34 @@
+#!/bin/sh
+
+. ~/.config/zowl.sh
+
+VPN_CONNECT="mullvad connect"
+VPN_DISCONNECT="mullvad disconnect"
+VPN_GET_STATUS="mullvad status"
+
+
+status() {
+    mullvad status --json | jq -r $1
+}
+
+toggle() {
+    state=$(status ".state")
+    if [ "$state" = "connected" ]; then
+        mullvad disconnect
+    else
+        mullvad connect
+    fi
+}
+
+
+help() {
+    cat <<EOF
+Usage: vpn toggle
+EOF
+}
+
+
+case $1 in
+    toggle) toggle ;;
+    *) help
+esac
