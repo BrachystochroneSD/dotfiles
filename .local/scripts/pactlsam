@@ -1,8 +1,10 @@
 #!/usr/bin/sh
 
 
+DEFAULT_SINK=$(pactl get-default-sink)
+
 get_running_sinks() {
-    pactl --format=json list sinks  | jq -r ".[] | select(.state | contains (\"RUNNING\"))$1"
+    pactl --format=json list sinks  | jq -r ".[] | select(.name | contains (\"$DEFAULT_SINK\"))$1"
 }
 
 get_running_volume_percent() {
@@ -11,7 +13,6 @@ get_running_volume_percent() {
 
 APPNAME=pactlsam
 sinknums=$(get_running_sinks | jq -r '.index')
-echo sinksnums
 
 sourcenum=$(pactl list sources | grep Source | tail -n2 | head -n1) # TODO check the good source
 sourcenum=${sourcenum##*#}
