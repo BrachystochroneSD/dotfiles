@@ -56,7 +56,7 @@
    mu4e-maildir-shortcuts '(("/mailo/*"             . ?M)
                             ("/umons/*"             . ?U)
                             ("/gmail/*"             . ?G)
-                            ("/outlook/*"           . ?O)
+                            ;; ("/outlook/*"           . ?O)
 
                             ;; archives
                             ("/archives/"          . ?A)
@@ -80,8 +80,6 @@
             "/archives/mailo")
            ((mu4e-message-contact-field-matches msg '(:to :cc) "mlkjazeriulkjoiu@netc.it")
             "/archives/mailo")
-           ((mu4e-message-contact-field-matches msg '(:to :cc) "samrenfou@hotmail.com")
-            "/archives/outlook")
            ((mu4e-message-contact-field-matches msg '(:to :cc) "samuel.dawant@alumni.umons.ac.be")
             "/archives/umons")
            ((mu4e-message-contact-field-matches msg '(:to :cc) "mrsamrenfou@gmail.com")
@@ -116,19 +114,9 @@
        (smtpmail-smtp-server "mail.mailo.com")
        (smtpmail-smtp-service 587)
        )
-      ("outlook"
-       (mu4e-sent-folder "/outlook/Sent")
-       (user-mail-address "samrenfou@hotmail.com")
-       (user-full-name "\"Samuel D\"")
-       (smtpmail-smtp-user "samrenfou@hotmail.com")
-       (smtpmail-local-domain "office365.com")
-       (smtpmail-default-smtp-server "outlook.office365.com")
-       (smtpmail-smtp-server "outlook.office365.com")
-       (smtpmail-smtp-service 587)
-       )
       ("umons"
        (user-mail-address "samuel.dawant@alumni.umons.ac.be")
-       (user-full-name "\"Samuel Dawant\"")
+       (user-full-name "\"Samuel D\"")
        (smtpmail-smtp-user "120781@umons.ac.be")
        (smtpmail-local-domain "office365.com")
        (smtpmail-default-smtp-server "outlook.office365.com")

@@ -1,5 +1,5 @@
 configuration {
-    font:                           "FiraCode Regular 12";
+    font:                           "FiraCode Regular 10";
     show-icons:                     true;
     icon-theme:                     "Papirus";
     display-drun:                   "";
@@ -91,7 +91,7 @@ element {
 }
 
 element-icon {
-    size:                           4em;
+    size:                           3em;
     border:                         0px;
 }
 
