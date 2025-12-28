@@ -1,0 +1,230 @@
+# For the benefit of emacs users: -*- shell-script -*-
+###########################
+# xbindkeys configuration #
+###########################
+#
+# Version: 1.8.7
+#
+# If you edit this file, do not forget to uncomment any lines
+# that you change.
+# The pound(#) symbol may be used anywhere for comments.
+#
+# To specify a key, you can use 'xbindkeys --key' or
+# 'xbindkeys --multikey' and put one of the two lines in this file.
+#
+# The format of a command line is:
+#    "command to start"
+#       associated key
+#
+#
+# A list of keys is in /usr/include/X11/keysym.h and in
+# /usr/include/X11/keysymdef.h
+# The XK_ is not needed.
+#
+# List of modifier:
+#   Release, Control, Shift, Mod1 (Alt), Mod2 (NumLock),
+#   Mod3 (CapsLock), Mod4, Mod5 (Scroll).
+#
+
+# The release modifier is not a standard X modifier, but you can
+# use it if you want to catch release events instead of press events
+
+# Poweroff
+"poweroff"
+    Mod4 + Control + Escape
+
+# Terminal
+"alacritty -e ~/.local/scripts/tmuxa"
+    Mod4 + Return
+
+"alacritty --class floatingwin -e ~/.local/scripts/tmuxa"
+    Mod4 + Control + Return
+
+# Emacs
+"emacsclient --alternate-editor=\"\" -c"
+    Mod4 + Shift + Return
+
+# Browser
+"firefox"
+    Mod4 + z
+
+"xrandrsw"
+    Mod4 + Shift + Control + d
+
+"~/.local/scripts/klaysw"
+    Mod1 + Shift + Tab
+
+"nextcloud"
+    Mod4 + Control + n
+
+"killall nextcloud"
+    Mod4 + Mod1 + n
+
+#--# # WPG # #--#
+"alacritty --class fzf -e ~/.local/scripts/wpg_theme theme"
+    Mod4 + Shift + w
+
+"alacritty --class fzf -e ~/.local/scripts/wpg_theme wall"
+    Mod4 + Control + w
+
+"wpg -m"
+    Mod4 + w
+
+#App launcher bindings
+"alacritty -e tremc -X"
+    Mod4 + Shift + t
+
+"rofi -show drun -config ~/.config/rofi/launcher.rasi"
+    Mod4 + d
+
+
+#Calculette
+"alacritty --class floatingwin -e python"
+    XF86Calculator
+#
+#Calendar
+"alacritty --class floatingwin -e ~/.local/scripts/calendar"
+    Mod4 + XF86Calculator
+
+"alacritty --class floatingwin -e ~/.local/scripts/calendar"
+    Mod4 + c
+
+#pavucontrol
+"pavucontrol"
+    Mod4 + XF86AudioMute
+
+# Audio controls
+"~/.local/scripts/pactlsam --reset"
+    Shift + XF86AudioMute
+
+"~/.local/scripts/pactlsam --mictoggle"
+    XF86AudioMicMute
+
+"~/.local/scripts/pactlsam --plus 5"
+    XF86AudioRaiseVolume
+
+"~/.local/scripts/pactlsam --moins 5"
+    XF86AudioLowerVolume
+
+"~/.local/scripts/pactlsam --plus 10"
+    Shift + XF86AudioRaiseVolume
+
+"~/.local/scripts/pactlsam --moins 10"
+    Shift + XF86AudioLowerVolume
+
+# "amixer -q set Master 1+ toggle && sleep 0.05"
+#     XF86AudioMute
+"~/.local/scripts/pactlsam --toggle"
+    XF86AudioMute
+
+# Screen brightness controls
+"~/.local/scripts/brightnessbar moins 5"
+    XF86MonBrightnessDown
+"~/.local/scripts/brightnessbar plus 5"
+    XF86MonBrightnessUp
+
+"~/.local/scripts/brightnessbar moins 10"
+    Shift + XF86MonBrightnessDown
+"~/.local/scripts/brightnessbar plus 10"
+    Shift + XF86MonBrightnessUp
+
+#---# Music shits #---#
+
+"zenozik"
+    Mod4 + Control + Shift + m
+"alacritty --class ncmpcppwin -e ~/.local/scripts/musicvizu/musicvizu.sh"
+    Mod4 + m
+"~/.local/scripts/radiosam"
+    Mod4 + Mod1 + m
+
+#bindings for MPD MPC NCMPCPP
+"~/.local/scripts/mpcsam --prev"
+    Mod4 + v
+"~/.local/scripts/mpcsam --toggle"
+    Mod4 + b
+"~/.local/scripts/mpcsam --stop"
+    Mod4 + Shift + b
+"~/.local/scripts/mpcsam --next"
+    Mod4 + n
+
+"~/.local/scripts/mpcsam --seek +3"
+    Mod4 + Shift + n
+"~/.local/scripts/mpcsam --seek -3"
+    Mod4 + Shift + v
+
+"~/.local/scripts/mpcsam --random"
+    Mod4 + Control + b
+
+"~/.local/scripts/mpcsam --tggl-mupris"
+    Mod4 + Mod1 + b
+
+"~/.local/scripts/mpcsam --volume  +3"
+    Control + XF86AudioRaiseVolume
+
+"~/.local/scripts/mpcsam --volume -3"
+    Control + XF86AudioLowerVolume
+
+#--# # FZF # #--#
+
+"alacritty --class fzf -e /home/sam/.local/scripts/fzf-open.sh"
+    Mod4 + Shift + f
+"alacritty --class fzf -e /home/sam/.local/scripts/fzf-open.sh --hidden"
+    Mod4 + Control + f
+"alacritty --class fzf -e /home/sam/.local/scripts/fzf-open.sh --open-with"
+    Mod4 + Mod1 + f
+
+#---# Mail mu4e #---#
+
+"~/.local/scripts/edit -e '(mu4e)'"
+    Mod4 + Shift + m
+
+
+#NOTES#
+"alacritty --class floatingwin -e vim ~/.notes"
+    Mod4 + t
+
+#Twitch#
+"simple-twitch --menu"
+    Mod4 + Control + t
+
+#Youtube#
+"yt"
+    Mod4 + Shift + y
+
+#"matrix.org"
+"element-desktop"
+    Mod4 + Control + d
+
+"~/.local/scripts/xprop_dwm"
+    Mod4 + Mod1 + p
+
+"~/.local/scripts/mypassmenu"
+    Mod4 + p
+
+# mount-usb
+"~/.local/scripts/polybar/mount-usb.sh --mount"
+    Mod4 + u
+"~/.local/scripts/polybar/mount-usb.sh --unmount"
+    Mod4 + Shift + u
+
+#recording
+
+"alacritty --class floatingwin -e ffmpeg -f x11grab -s 1366x768 -i :0.0 ~/Movies/record.mkv"
+    Mod4 + Shift + Control + y
+
+#wifi bind
+
+"networkmanager_dmenu"
+    Mod4 + F7
+
+"~/.local/scripts/polybar/wifi --prompt-zeros"
+    Mod4 + Shift + Control + F7
+
+"~/.local/scripts/polybar/wifi --toggle-ifstat"
+    Mod4 + Control + F7
+
+"scrot -s ~/Images/screenshots/%Y-%m-%d_%T_screenshot.png -e 'xclip -selection clipboard -t image/png -i $f' && paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
+    Print
+
+"~/.local/scripts/gif_screen"
+    Mod4 + Print
