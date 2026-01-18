@@ -7,6 +7,8 @@
 [ -z "$MENU_SECRET_CMD" ] && MENU_SECRET_CMD="wofi -d"
 [ -z "$TYPE_CMD" ] && TYPE_CMD="wtype -"
 
+ICON="org.gnome.seahorse.Application"
+APPNAME="MYPASSMENU"
 
 MENU_CMD="$MENU_CMD -l 20 -i -p"
 MENU=$(cat <<EOF
@@ -18,6 +20,14 @@ Sync
 EOF
        )
 
+LAST_PUSH=$()
+
+notif() {
+    opt=
+    [ -n "$2" ] && LAST_ID=
+    [ -n "$LAST_ID" ] && opt=" -r $LAST_ID"
+    LAST_ID=$(notify-send -e -i $ICON -a "$APPNAME" "$1" -p $opt)
+}
 
 if [ -z "$DISPLAY" ]; then
     MENU_CMD="fzf --prompt"
@@ -36,20 +46,9 @@ password_files=( "${password_files[@]%.gpg}" )
 
 run_pass_git() {
     cmd=$1
-    pass git "$cmd" origin master > "$prefix/.last_$cmd.log" 2>&1
-    if [ $? = 0 ] ; then
-        $NOTIFY_CMD "$cmd successful"
-    else
-        $NOTIFY_CMD "$cmd unsucessful"
+    if ! pass git "$cmd" origin master > "$prefix/.last_$cmd.log" 2>&1; then
+        notif "Git $cmd unsucessful"
     fi
-}
-
-push() {
-    run_pass_git push
-}
-
-pull() {
-    run_pass_git pull
 }
 
 pass_insert() {
@@ -137,8 +136,10 @@ EOF
         echo "TOTO : st -n floatingwin -e pass edit $edit_choice but it is not working"
         ;;
     Sync)
-        push
-        pull
+        notif "Syncing..."
+        run_pass_git push || return
+        run_pass_git pull || return
+        notif "Syncing... Done!!"
         ;;
     Delete)
         choice=$(ls "$prefix" | $MENU_CMD "Delete entry: ") || exit
