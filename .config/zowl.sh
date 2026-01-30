@@ -1,6 +1,6 @@
 . "${HOME}/.config/colors.sh"
 
-NOTIFY_CMD="dunstify -i owl"
+NOTIFY_CMD="notify-send -e -i owl"
 # MENU_CMD="wofi -d -M=fuzzy -i -p"
 MENU_CMD="bemenu --fn FiraCode
 --cb $color0
